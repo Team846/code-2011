@@ -12,7 +12,7 @@
 class DriveEncoders
 {
 private:
-	static DriveEncoders* instance;
+    static DriveEncoders* instance;
     LRTEncoder encoderLeft, encoderRight;
 
     // floats to prevent integer division
@@ -23,13 +23,13 @@ private:
     const static float kTrackLength = 23.0; // in
 
 public:
-	static DriveEncoders& GetInstance();
+    static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
 
     const static float kPulsesPerRevolution = 187.5; // pulses per wheel revolution [BA]
-    const static float kMaxEncoderRate      = 3000 * 16./9;
-    const static double kMaxTurningRate     = 6725./15.0;
-    const static double kTicksPerFullTurn   = 6725./6;
+    const static float kMaxEncoderRate      = 3000 * 16. / 9;
+    const static double kMaxTurningRate     = 6725. / 15.0;
+    const static double kTicksPerFullTurn   = 6725. / 6;
 
     double GetForwardSpeed();
     double GetNormalizedForwardSpeed();
@@ -44,10 +44,10 @@ public:
     double GetNormalizedRightSpeed();
     LRTEncoder& GetLeftEncoder();
     LRTEncoder& GetRightEncoder();
-    
+
 protected:
-	DriveEncoders();
-	DISALLOW_COPY_AND_ASSIGN(DriveEncoders);
+    DriveEncoders();
+    DISALLOW_COPY_AND_ASSIGN(DriveEncoders);
 };
 
 #endif

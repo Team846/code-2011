@@ -94,7 +94,7 @@ public:
             return val1;
         return val2;
     }
-    
+
     template<typename T>
     static T Max(T val1, T val2)
     {

@@ -7,15 +7,16 @@ class ActionData : public SensorBase
 {
 private:
     static ActionData* instance;
-    
+
 public:
     ~ActionData();
     static ActionData& GetInstance();
-    
+
     // drive train
-    struct {
-    	float rawForward, rawTurn;
-    	bool brakeLeft, brakeRight;
+    struct
+    {
+        float rawForward, rawTurn;
+        bool brakeLeft, brakeRight;
     } driveTrain;
 
 protected:

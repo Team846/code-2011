@@ -64,13 +64,13 @@ DriveOutput ClosedLoopDriveTrain::ComputeArcadeDrive(float rawFwd,
 
     float fwdCorrection = fwdError * pGainFwd;
     float newFwd = rawFwd + fwdCorrection;
-    
-    SmartDashboard::Log( turningRate, "Turning Rate" );
-    SmartDashboard::Log( robotSpeed, "Robot Speed" );
-    SmartDashboard::Log( pGainFwd, "Forward Gain" );
-    SmartDashboard::Log( pGainTurn, "Turn Gain" );
-    SmartDashboard::Log( newFwd, "Forward" );
-    SmartDashboard::Log( newTurn, "Turn" );
+
+    SmartDashboard::Log(turningRate, "Turning Rate");
+    SmartDashboard::Log(robotSpeed, "Robot Speed");
+    SmartDashboard::Log(pGainFwd, "Forward Gain");
+    SmartDashboard::Log(pGainTurn, "Turn Gain");
+    SmartDashboard::Log(newFwd, "Forward");
+    SmartDashboard::Log(newTurn, "Turn");
 
     return dbsDrive.ComputeArcadeDrive(newFwd, newTurn);
 }

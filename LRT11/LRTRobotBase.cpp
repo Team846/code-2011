@@ -42,10 +42,10 @@ void LRTRobotBase::StartCompetition()
     int packetsMissedInLastReportPeriod = 0;
     packetsMissedInLifetime = 0;
 
-    Profiler &profiler = Profiler::GetInstance();
+    Profiler& profiler = Profiler::GetInstance();
     UINT32 lastPacketNumber = 0;
     bool veryFirstPacketInLifetime = true;
-    
+
     // buffer for the basic report period; see bottom of method
     char buffer[200];
 
@@ -95,11 +95,11 @@ void LRTRobotBase::StartCompetition()
             Util::MinMaxMean<double>(cycleWaitTimes, reportPeriod, &waitMin, &waitMax, &waitMean);
 
             packetsMissedInLifetime += packetsMissedInLastReportPeriod;
-            sprintf( buffer, "Run time: [%.2f-%.2f]ms, ~%.2fms | Wait: [%.2f-%.2f]ms, ~%.2fms | Miss: %d pkts, (%d total)\n"
+            sprintf(buffer, "Run time: [%.2f-%.2f]ms, ~%.2fms | Wait: [%.2f-%.2f]ms, ~%.2fms | Miss: %d pkts, (%d total)\n"
                     , runMin, runMax, runMean
                     , waitMin, waitMax, waitMean
-                    , packetsMissedInLastReportPeriod, packetsMissedInLifetime );
-            SmartDashboard::Log( buffer, "Basic Report" );
+                    , packetsMissedInLastReportPeriod, packetsMissedInLifetime);
+            SmartDashboard::Log(buffer, "Basic Report");
             packetsMissedInLastReportPeriod = 0;
 
             // minimum/maximum of all cycles

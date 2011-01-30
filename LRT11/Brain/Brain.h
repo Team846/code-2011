@@ -38,7 +38,7 @@ private:
 
     LRTEncoder& leftEncoder;
     LRTEncoder& rightEncoder;
-    
+
     void Common();
     void Disabled();
     void Auton();

@@ -31,9 +31,9 @@ void Profiler::StartNewCycle()
     {
         double reportStart = Timer::GetFPGATimestamp();
         stringstream data;
-        
+
         data << "Profiler (" << reportPeriod << " cycles)\n";
-        
+
         typedef map<string, double>::value_type paired;
         typedef set< paired , SortBySecondValue<paired> > SetSortedBySecond;
         SetSortedBySecond vals;
@@ -53,9 +53,9 @@ void Profiler::StartNewCycle()
             int count = loggedCounts[it->first];
             double mean = loggedSums[it->first] / count;
 
-            data << " | " << setw(30) << setiosflags( ios::left ) << it->first << resetiosflags( ios::left );
-            data << " ~" << fixed << setprecision(2) << mean << " [" << min << " - " << max << 
-            	"]" << "x" << count << "\n";
+            data << " | " << setw(30) << setiosflags(ios::left) << it->first << resetiosflags(ios::left);
+            data << " ~" << fixed << setprecision(2) << mean << " [" << min << " - " << max <<
+                    "]" << "x" << count << "\n";
 
             ++i;
             if(i > reportLimit)
@@ -68,7 +68,7 @@ void Profiler::StartNewCycle()
         ClearLogBuffer();
 
         data << "Report took " << reportTime << "ms\n";
-        SmartDashboard::Log( data.str().c_str(), "Detailed Report" );
+        SmartDashboard::Log(data.str().c_str(), "Detailed Report");
     }
 }
 

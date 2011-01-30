@@ -10,10 +10,10 @@
 class LRTEncoder : public Encoder
 {
 public:
-	LRTEncoder( UINT8 sourceA, UINT8 sourceB );
-	~LRTEncoder();
-	
-	double GetRate();
+    LRTEncoder(UINT8 sourceA, UINT8 sourceB);
+    ~LRTEncoder();
+
+    double GetRate();
 };
 
 #endif

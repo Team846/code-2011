@@ -4,18 +4,18 @@ DriveEncoders* DriveEncoders::instance = NULL;
 
 DriveEncoders& DriveEncoders::GetInstance()
 {
-	if( instance == NULL )
-		instance = new DriveEncoders();
-	return *instance;
+    if(instance == NULL)
+        instance = new DriveEncoders();
+    return *instance;
 }
 
 DriveEncoders::DriveEncoders()
-    : encoderLeft( RobotConfig::DIO_ENCODER_LEFT_A,
-            RobotConfig::DIO_ENCODER_LEFT_B )
-    , encoderRight( RobotConfig::DIO_ENCODER_RIGHT_A,
-            RobotConfig::DIO_ENCODER_RIGHT_B )
+    : encoderLeft(RobotConfig::DIO_ENCODER_LEFT_A,
+            RobotConfig::DIO_ENCODER_LEFT_B)
+    , encoderRight(RobotConfig::DIO_ENCODER_RIGHT_A,
+            RobotConfig::DIO_ENCODER_RIGHT_B)
 {
-	// want to stay with ticks/second
+    // want to stay with ticks/second
     encoderLeft.SetDistancePerPulse(1);
     encoderRight.SetDistancePerPulse(1);
 
@@ -30,7 +30,7 @@ DriveEncoders::~DriveEncoders()
 
 double DriveEncoders::GetForwardSpeed()
 {
-	return (encoderLeft.GetRate() + encoderRight.GetRate()) / 2;
+    return (encoderLeft.GetRate() + encoderRight.GetRate()) / 2;
 }
 
 double DriveEncoders::GetNormalizedForwardSpeed()
@@ -40,8 +40,8 @@ double DriveEncoders::GetNormalizedForwardSpeed()
 
 double DriveEncoders::GetTurningSpeed()
 {
-	// WPILib GetRate error still exists with LRTEncoder?
-	return encoderRight.GetRate() - encoderLeft.GetRate();
+    // WPILib GetRate error still exists with LRTEncoder?
+    return encoderRight.GetRate() - encoderLeft.GetRate();
 }
 
 double DriveEncoders::GetNormalizedTurningSpeed()

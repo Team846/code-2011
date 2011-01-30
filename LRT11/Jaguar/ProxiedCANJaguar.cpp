@@ -1,7 +1,7 @@
 #include "ProxiedCANJaguar.h"
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel) :
-	controller(CANBusController::GetInstance())
+    controller(CANBusController::GetInstance())
     , channel(channel)
 {
 
@@ -19,7 +19,7 @@ float ProxiedCANJaguar::Get()
 
 void ProxiedCANJaguar::Disable()
 {
-	controller.Set(channel, 0);
+    controller.Set(channel, 0);
 }
 
 float ProxiedCANJaguar::GetCurrent()
