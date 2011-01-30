@@ -3,6 +3,7 @@
 LRTRobot11::LRTRobot11()
     : brain()
     , drive()
+    , encoderData()
 {
 }
 
@@ -33,11 +34,16 @@ void LRTRobot11::MainLoop()
             ProfiledSection("Drive Train");
             drive.Output();
         }
+        
+        {
+        	ProfiledSection("Encoder Data Collection");
+        	encoderData.Output();
+        }
 
         // To add another component output:
         //
         // {
-        //      ProfiledSection( "Descriptive Phrase" );
+        //      ProfiledSection("Descriptive Phrase");
         //      component.Output();
         // }
     }

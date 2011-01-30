@@ -100,17 +100,12 @@ void LCD::ScrollLCD(int x, int y)
     AsynchronousPrinter::Printf("DS LCD Scroll %d %d => %d,%d\n", x, y, curLineIndex, curColumnIndex);
 }
 
-void LCD::UpdateHeartbeatAndScrolling(bool scrollUp, bool scrollDown,
-        bool isServiceMode)
+void LCD::UpdateHeartbeat(bool isServiceMode)
 {
     static int loops = 0;
+    
     if(loops % 12 == 0)
         LCDUpdate();
-
-    if(scrollUp)
-        ScrollLCD(0, -2);
-    else if(scrollDown)
-        ScrollLCD(0, 2);
 
     string mode = "Normal Mode";
     if(isServiceMode)

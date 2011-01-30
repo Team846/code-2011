@@ -5,6 +5,7 @@
 #include "LRTRobotBase.h"
 #include "Brain/Brain.h"
 #include "Components/DriveTrain.h"
+#include "Components/EncoderDataCollection.h"
 #include "Config/Config.h"
 
 class LRTRobot11 : public LRTRobotBase
@@ -13,6 +14,7 @@ private:
     Brain brain;
     DriveTrain drive;
 
+    EncoderDataCollection encoderData;
     GameState DetermineState();
 
 public:

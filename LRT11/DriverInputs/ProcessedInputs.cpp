@@ -33,6 +33,16 @@ void ProcessedInputs::Configure()
     turnDeadband = config.Get<float>(prefix + "turnDeadband", 0.25);
 }
 
+float ProcessedInputs::GetThrottle()
+{
+    return -driverStick.GetRawAxis(4);
+}
+
+bool ProcessedInputs::IsServiceMode()
+{
+    return GetThrottle() > 0.8;
+}
+
 bool ProcessedInputs::IsShiftPressed()
 {
     return driverStick.IsButtonDown(1);
@@ -58,24 +68,9 @@ bool ProcessedInputs::GetBrakeRight()
     return driverStick.IsButtonDown(12);
 }
 
-bool ProcessedInputs::GetServiceMode()
+bool ProcessedInputs::ShouldCollectEncoderData()
 {
-    return GetThrottle() > 0.8;
-}
-
-float ProcessedInputs::GetThrottle()
-{
-    return -driverStick.GetRawAxis(4);
-}
-
-bool ProcessedInputs::ShouldLCDScrollUp()
-{
-    return driverStick.IsHatSwitchJustPressed(6, -1);
-}
-
-bool ProcessedInputs::ShouldLCDScrollDown()
-{
-    return driverStick.IsHatSwitchJustPressed(6, -1);
+	return driverStick.IsButtonJustPressed(1);
 }
 
 void ProcessedInputs::UpdateDebouncing()

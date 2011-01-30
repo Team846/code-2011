@@ -35,8 +35,7 @@ public:
     void Print(UINT8 line, const char* format, ...);
 
     void ScrollLCD(int x, int y);
-    void UpdateHeartbeatAndScrolling(bool scrollUp, bool scrollDown,
-            bool isServiceMode);
+    void UpdateHeartbeat(bool isServiceMode);
 
 protected:
     LCD();

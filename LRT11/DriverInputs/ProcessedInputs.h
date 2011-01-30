@@ -31,18 +31,18 @@ public:
     static ProcessedInputs& GetInstance();
     virtual void Configure();
 
+    bool IsServiceMode();
     bool IsShiftPressed();
 
+    // drive train
     float GetForward();
     float GetTurn();
 
     bool GetBrakeLeft();
     bool GetBrakeRight();
 
-    bool GetServiceMode();
-
-    bool ShouldLCDScrollUp();
-    bool ShouldLCDScrollDown();
+    // encoder data collection
+    bool ShouldCollectEncoderData();
 
     void UpdateDebouncing();
 };

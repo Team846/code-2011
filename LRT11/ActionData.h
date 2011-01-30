@@ -18,6 +18,11 @@ public:
         float rawForward, rawTurn;
         bool brakeLeft, brakeRight;
     } driveTrain;
+    
+    struct
+    {
+    	bool shouldCollect;
+    } encoderData;
 
 protected:
     ActionData();

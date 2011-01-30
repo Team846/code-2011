@@ -6,6 +6,5 @@ void Brain::Common()
     config.UpdateAssignableDials();
 
     console.UpdateCycleCount();
-    lcd.UpdateHeartbeatAndScrolling(inputs.ShouldLCDScrollUp(),
-            inputs.ShouldLCDScrollDown(), inputs.GetServiceMode());
+    lcd.UpdateHeartbeat(inputs.IsServiceMode());
 }
