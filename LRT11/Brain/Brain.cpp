@@ -11,9 +11,10 @@ Brain::Brain()
     , lcd(LCD::GetInstance())
     , action(ActionData::GetInstance())
     , inputs(ProcessedInputs::GetInstance())
-    , isCompetition(false)
+    , gameTimer()
     , leftEncoder(DriveEncoders::GetInstance().GetLeftEncoder())
     , rightEncoder(DriveEncoders::GetInstance().GetRightEncoder())
+    , isFinale(false)
 {
 
 }
@@ -28,7 +29,7 @@ void Brain::Process(GameState gameState)
     if(previousState != gameState)
     {
         if(previousState == AUTONOMOUS && gameState == TELEOPERATED)
-            isCompetition = true;
+            gameTimer.Start();
     }
 
     Common();
@@ -47,6 +48,10 @@ void Brain::Process(GameState gameState)
         Auton();
         break;
     }
+
+    // match is over
+    if(gameTimer.Get() > 120)
+        gameTimer.Stop();
 
     UpdateDashboardValues(gameState);
     previousState = gameState;
@@ -75,4 +80,15 @@ void Brain::UpdateDashboardValues(GameState gameState)
         SmartDashboard::Log((Util::ToString<int>(config.Get<int>("BuildNumber")) + "-" +
                 Util::ToString<int>(config.Get<int>("RunNumber"))).c_str(), "Build/Run");
     }
+
+    SmartDashboard::Log(gameTimer.Get(), "Game Timer");
+
+    // can only deploy minibot with 10 seconds remaining
+    if(gameTimer.Get() > 110)
+    {
+        isFinale = true;
+        SmartDashboard::Log(true, "Can Deploy Minibot?");
+    }
+    else
+        SmartDashboard::Log(false, "Can Deploy Minibot?");
 }

@@ -8,4 +8,9 @@ void Brain::Teleop()
 
     action.driveTrain.brakeLeft  = inputs.GetBrakeLeft();
     action.driveTrain.brakeRight = inputs.GetBrakeRight();
+
+    if(isFinale /* && inputs.DeployMinibot() */)
+    {
+        /* Minibot deployment code */
+    }
 }

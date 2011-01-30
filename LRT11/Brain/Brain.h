@@ -34,10 +34,11 @@ private:
     GameState previousState;
 
     ProcessedInputs& inputs;
-    bool isCompetition;
+    Timer gameTimer;
 
     LRTEncoder& leftEncoder;
     LRTEncoder& rightEncoder;
+    bool isFinale;
 
     void Common();
     void Disabled();
