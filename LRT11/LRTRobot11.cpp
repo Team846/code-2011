@@ -5,6 +5,7 @@ LRTRobot11::LRTRobot11()
     , drive()
     , encoderData()
 {
+	
 }
 
 LRTRobot11::~LRTRobot11()
@@ -24,7 +25,6 @@ void LRTRobot11::RobotInit()
 
 void LRTRobot11::MainLoop()
 {
-    ProfiledSection("Main Loop");
     GameState state = DetermineState();
     brain.Process(state);
 
@@ -60,5 +60,6 @@ GameState LRTRobot11::DetermineState()
 
     return state;
 }
+
 
 START_ROBOT_CLASS(LRTRobot11);

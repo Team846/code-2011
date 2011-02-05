@@ -53,7 +53,12 @@ void Profiler::StartNewCycle()
             int count = loggedCounts[it->first];
             double mean = loggedSums[it->first] / count;
 
-            data << " | " << setw(30) << setiosflags(ios::left) << it->first << resetiosflags(ios::left);
+            data << " | " << left;
+            data.width(30);
+            
+            data << it->first << right;
+            data.width(-1);
+            
             data << " ~" << fixed << setprecision(2) << mean << " [" << min << " - " << max <<
                     "]" << "x" << count << "\n";
 
@@ -69,6 +74,7 @@ void Profiler::StartNewCycle()
 
         data << "Report took " << reportTime << "ms\n";
         SmartDashboard::Log(data.str().c_str(), "Detailed Report");
+        // AsynchronousPrinter::Printf( data.str().c_str() );
     }
 }
 

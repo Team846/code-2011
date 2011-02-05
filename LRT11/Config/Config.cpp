@@ -74,7 +74,7 @@ map<string, string> Config::tload(string path)
     while(getline(fin, key, '=') && getline(fin, val, '\n'))
     {
         {
-            ProfiledSection pf("tload-set");
+            ProfiledSection pf("Config.tload");
             ret[key] = val;
         }
         AsynchronousPrinter::Printf("Cfg:%s=%s\n", key.c_str(), val.c_str());

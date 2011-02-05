@@ -13,7 +13,7 @@ class DriveEncoders
 {
 private:
     static DriveEncoders* instance;
-    LRTEncoder encoderLeft, encoderRight;
+    LRTEncoder encoderLeftUseless, encoderLeft, encoderRightUseless, encoderRight;
 
     // floats to prevent integer division
     const static float kWheelDiameter = 8.0; // in
@@ -42,6 +42,7 @@ public:
     double GetRightWheelDist();
     double GetNormalizedLeftSpeed();
     double GetNormalizedRightSpeed();
+    
     LRTEncoder& GetLeftEncoder();
     LRTEncoder& GetRightEncoder();
 

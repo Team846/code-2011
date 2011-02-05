@@ -1,9 +1,14 @@
 #include "LRTEncoder.h"
 
 LRTEncoder::LRTEncoder(UINT8 sourceA, UINT8 sourceB)
-    : Encoder(sourceA, sourceB, false, CounterBase::k4X)
+    : Encoder(sourceA, sourceB, false, CounterBase::k1X)
 {
 
+}
+
+LRTEncoder::~LRTEncoder()
+{
+	// nothing
 }
 
 double LRTEncoder::GetRate()
@@ -13,5 +18,5 @@ double LRTEncoder::GetRate()
     double rate = Encoder::GetRate();
     if(rate != rate) // test if rate is NaN because NaN != NaN
         return 0.0;
-    return rate / 4; // divide by 4 to account for 4X encoding
+    return rate;
 }

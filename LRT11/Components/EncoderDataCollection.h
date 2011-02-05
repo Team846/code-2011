@@ -1,5 +1,5 @@
-#ifndef ENCODER_DATA_COLLECTION
-#define ENCODER_DATA_COLLECTION
+#ifndef ENCODER_DATA_COLLECTION_H_
+#define ENCODER_DATA_COLLECTION_H_
 
 #include "Component.h"
 #include "..\Sensors\DriveEncoders.h"

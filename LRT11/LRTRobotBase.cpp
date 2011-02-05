@@ -71,7 +71,7 @@ void LRTRobotBase::StartCompetition()
         profiler.StartNewCycle();
 
         {
-            ProfiledSection pf("MainLoop");
+            ProfiledSection pf("Main Loop");
             MainLoop();
         }
 

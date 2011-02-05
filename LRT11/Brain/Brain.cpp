@@ -60,10 +60,10 @@ void Brain::Process(GameState gameState)
 void Brain::UpdateDashboardValues(GameState gameState)
 {
     SmartDashboard::Log((int)(action.driveTrain.rawForward * 100), "Raw Forward (F)");
-    SmartDashboard::Log(100 - (int)(action.driveTrain.rawForward * 100), "Raw Forward (B)");
+    SmartDashboard::Log(200 + (int)(action.driveTrain.rawForward * 100), "Raw Forward (B)");
 
     SmartDashboard::Log((int)(action.driveTrain.rawTurn * 100), "Raw Turn (F)");
-    SmartDashboard::Log(100 - (int)(action.driveTrain.rawTurn * 100), "Raw Turn (B)");
+    SmartDashboard::Log(200 + (int)(action.driveTrain.rawTurn * 100), "Raw Turn (B)");
 
     SmartDashboard::Log(action.driveTrain.brakeLeft, "BL: ");
     SmartDashboard::Log(action.driveTrain.brakeRight, "BR: ");
