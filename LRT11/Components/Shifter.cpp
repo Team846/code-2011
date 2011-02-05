@@ -47,5 +47,5 @@ void Shifter::Output()
         rightShiftServo.Set(rightHighGearServoVal);
     }
     else
-        AsynchronousPrinter::Printf("Shifting error\n");
+        AsynchronousPrinter::Printf("Actiondata gear val not set\n");
 }
