@@ -1,6 +1,7 @@
 #include "Shifter.h"
 #include "..\Config\RobotConfig.h"
 #include "..\Util\AsynchronousPrinter.h"
+#include <cmath>
 
 Shifter::Shifter()
     : leftShiftServo(RobotConfig::LEFT_GEARBOX_SERVO_PORT)
@@ -18,21 +19,40 @@ Shifter::~Shifter()
 
 void Shifter::Output()
 {
+    bool leftEngaged, rightEngaged;
     switch(action.Gearbox.gear)
     {
     case kLowGear :
         newGear = kLowGear;
+
+        leftEngaged = fabs(leftShiftServo.Get() - leftLowGearServoVal)
+                < shifterEngagedMargin;
+        rightEngaged = fabs(rightShiftServo.Get() - rightLowGearServoVal)
+                < shifterEngagedMargin;
+
+        break;
     case kHighGear :
         newGear = kHighGear;
+
+        leftEngaged = fabs(leftShiftServo.Get() - leftHighGearServoVal)
+                < shifterEngagedMargin;
+        rightEngaged = fabs(rightShiftServo.Get() - rightHighGearServoVal)
+                < shifterEngagedMargin;
+
+        break;
     }
 
     if(currentGear != newGear) //force a shift right away
         tickCounter = 0;
 
+    //don't pulse servo when you haven't engaged
+
     if(tickCounter++ % (onPulseLength + offPulseLength) >= onPulseLength)
     {
-        leftShiftServo.SetOffline();
-        rightShiftServo.SetOffline();
+        if(leftEngaged)
+            leftShiftServo.SetOffline();
+        if(rightEngaged)
+            rightShiftServo.SetOffline();
         return;
     }
 

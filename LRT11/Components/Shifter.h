@@ -3,7 +3,7 @@
 
 #include "Component.h"
 
-class Shifter : Component
+class Shifter : public Component
 {
 private:
     Servo leftShiftServo, rightShiftServo;
@@ -21,6 +21,7 @@ private:
     const static float rightHighGearServoVal = 0.3;
     const static float rightLowGearServoVal = 0.65;
 
+    const static float shifterEngagedMargin = 0.05;
 public:
     Shifter();
     virtual ~Shifter();
