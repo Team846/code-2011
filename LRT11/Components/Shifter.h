@@ -2,12 +2,11 @@
 #define SHIFTER_H_
 
 #include "Component.h"
-#include "LRTServo.h"
 
 class Shifter : Component
 {
 private:
-    LRTServo leftShiftServo, rightShiftServo;
+    Servo leftShiftServo, rightShiftServo;
     enum {kLowGear = 1 , kHighGear = 2} currentGear, newGear;
 
     int tickCounter;

@@ -31,8 +31,8 @@ void Shifter::Output()
 
     if(tickCounter++ % (onPulseLength + offPulseLength) >= onPulseLength)
     {
-        leftShiftServo.TurnOff();
-        rightShiftServo.TurnOff();
+        leftShiftServo.SetOffline();
+        rightShiftServo.SetOffline();
         return;
     }
 
