@@ -24,6 +24,11 @@ public:
         bool shouldCollect;
     } encoderData;
 
+    struct
+    {
+        enum {kLowGear = 1, kHighGear = 2} gear;
+    } Gearbox;
+
 protected:
     ActionData();
     DISALLOW_COPY_AND_ASSIGN(ActionData);

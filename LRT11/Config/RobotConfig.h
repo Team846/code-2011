@@ -27,6 +27,12 @@ public:
     // Digital Outputs
     const static UINT32 DIO_BRAKE_LEFT  = CHANGEME;
     const static UINT32 DIO_BRAKE_RIGHT = CHANGEME;
+
+
+    //Servo Ports
+#warning "Servo port numbers not set"
+    const static int LEFT_GEARBOX_SERVO_PORT = 0;
+    const static int RIGHT_GEARBOX_SERVO_PORT = 0;
 };
 
 #endif
