@@ -4,6 +4,8 @@ LRTRobot11::LRTRobot11()
     : brain()
     , drive()
     , encoderData()
+    , shifter()
+    , config(Config::GetInstance())
 {
 
 }
@@ -27,6 +29,13 @@ void LRTRobot11::MainLoop()
 {
     GameState state = DetermineState();
     brain.Process(state);
+
+    {
+        ProfiledSection("Config output");
+        config.Output();
+    }
+
+    shifter.Output();
 
     if(!IsDisabled())
     {

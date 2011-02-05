@@ -10,8 +10,9 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include "..\Components\Component.h"
 
-class Config : public SensorBase
+class Config : public SensorBase, public Component
 {
 public:
     const static int kNumAnalogAssignable = 4;
@@ -32,6 +33,8 @@ public:
     static vector<Configurable*> configurables;
     static void RegisterConfigurable(Configurable* configurable);
     static void ConfigureAll();
+
+    virtual void Output();
 
 protected:
     Config();

@@ -6,6 +6,7 @@
 #include "Brain/Brain.h"
 #include "Components/DriveTrain.h"
 #include "Components/EncoderDataCollection.h"
+#include "Components/Shifter.h"
 #include "Config/Config.h"
 
 class LRTRobot11 : public LRTRobotBase
@@ -17,6 +18,9 @@ private:
     EncoderDataCollection encoderData;
     GameState DetermineState();
 
+    Shifter shifter;
+
+    Config& config;
 public:
     LRTRobot11();
     virtual ~LRTRobot11();

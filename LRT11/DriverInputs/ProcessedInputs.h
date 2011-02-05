@@ -44,6 +44,11 @@ public:
     // encoder data collection
     bool ShouldCollectEncoderData();
 
+    bool ShouldLoadConfig();
+    bool ShouldSaveConfig();
+    bool ShouldApplyConfig();
+
+
     void UpdateDebouncing();
 };
 

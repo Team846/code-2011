@@ -78,3 +78,18 @@ void ProcessedInputs::UpdateDebouncing()
     driverStick.Update();
     operatorStick.Update();
 }
+
+bool ProcessedInputs::ShouldLoadConfig()
+{
+    return operatorStick.IsButtonJustPressed(8);
+}
+
+bool ProcessedInputs::ShouldSaveConfig()
+{
+    return operatorStick.IsButtonJustPressed(9);
+}
+
+bool ProcessedInputs::ShouldApplyConfig()
+{
+    return operatorStick.IsButtonJustPressed(10);
+}

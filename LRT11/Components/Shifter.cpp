@@ -42,14 +42,9 @@ void Shifter::Output()
         break;
     }
 
-    if(currentGear != newGear) //force a shift right away
-        tickCounter = 0;
-
-    //don't pulse servo when you haven't engaged
-
     if(tickCounter++ % (onPulseLength + offPulseLength) >= onPulseLength)
     {
-        if(leftEngaged)
+        if(leftEngaged) //don't turn off the servo unless you are engaged
             leftShiftServo.SetOffline();
         if(rightEngaged)
             rightShiftServo.SetOffline();

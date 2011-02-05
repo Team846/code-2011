@@ -29,6 +29,11 @@ public:
         enum {kLowGear = 1, kHighGear = 2} gear;
     } Gearbox;
 
+    struct
+    {
+        bool load, save, apply;
+    } Config;
+
 protected:
     ActionData();
     DISALLOW_COPY_AND_ASSIGN(ActionData);

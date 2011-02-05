@@ -190,3 +190,12 @@ void Config::ConfigureAll()
         configurables.at(i)->Configure();
 }
 
+void Config::Output()
+{
+    if(action.Config.load)
+        Load();
+    if(action.Config.save)
+        Save();
+    if(action.Config.apply)
+        ConfigureAll();
+}
