@@ -56,16 +56,8 @@ void CANBusController::Set(int id, float val)
 
 void CANBusController::SetPID(int id, double p, double i, double d)
 {
-    Synchronized s(semaphore);
     int idx = BusIdToIndex(id);
-
-    if(gains[idx][0] != p || gains[idx][1] != i || gains[idx][2] != d)
-    {
-        gains[idx][0] = p;
-        gains[idx][1] = i;
-        gains[idx][2] = d;
-        gainsChanged[idx] = true;
-    }
+    jaguars[idx]->SetPID(p, i, d);
 }
 
 float CANBusController::Get(int id)
@@ -122,11 +114,9 @@ void CANBusController::BusWriterTask()
             int idx = BusIdToIndex(id);
 
             float setpoint;
-            CANJaguar::PositionReference positionReference;
-            double p, i, d;
 
             CANJaguar::NeutralMode mode;
-            bool setpointChanged, neutralModeChanged, gainsChanged, positionReferenceChanged;
+            bool setpointChanged, neutralModeChanged;
 
             {
                 Synchronized s(semaphore);
@@ -136,17 +126,6 @@ void CANBusController::BusWriterTask()
 
                 mode = neutralModes[idx];
                 neutralModeChanged = this->neutralModeChanged[idx];
-
-                gainsChanged = this->gainsChanged[idx];
-                if(gainsChanged)  //try to reduce amount of processing in Mutex section
-                {
-                    p = gains[idx][0];
-                    i = gains[idx][1];
-                    d = gains[idx][2];
-                }
-
-                positionReferenceChanged = positionReferencesChanged[idx];
-                positionReference = positionReferences[idx];
             }
 
             if(setpointChanged)
@@ -166,16 +145,6 @@ void CANBusController::BusWriterTask()
                 {
                     Synchronized s(semaphore);
                     this->neutralModeChanged[idx] = false;
-                }
-            }
-
-            if(gainsChanged)
-            {
-                jaguars[idx]->SetPID(p, i, d);
-
-                {
-                    Synchronized s(semaphore);
-                    this->gainsChanged[idx] = false;
                 }
             }
         }
@@ -222,14 +191,8 @@ double CANBusController::GetPosition(int id)
 
 void CANBusController::SetPositionReference(int id, CANJaguar::PositionReference reference)
 {
-    Synchronized s(semaphore);
     int idx = BusIdToIndex(id);
-
-    if(positionReferences[idx] != reference)
-    {
-        positionReferences[idx] = reference;
-        positionReferencesChanged[idx] = true;
-    }
+    jaguars[idx]->SetPositionReference(reference);
 }
 
 CANJaguar::PositionReference CANBusController::GetPositionReference(int id)
@@ -240,7 +203,8 @@ CANJaguar::PositionReference CANBusController::GetPositionReference(int id)
 
 void CANBusController::SetControlMode(int id, CANJaguar::ControlMode controlMode)
 {
-
+    int idx = BusIdToIndex(id);
+    jaguars[idx]->ChangeControlMode(controlMode);
 }
 
 CANJaguar::ControlMode CANBusController::GetControlMode(int id)
@@ -248,5 +212,6 @@ CANJaguar::ControlMode CANBusController::GetControlMode(int id)
     int idx = BusIdToIndex(id);
     return jaguars[idx]->GetControlMode();
 }
+
 
 
