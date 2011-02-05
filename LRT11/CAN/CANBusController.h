@@ -14,10 +14,20 @@ public:
     void Set(int id, float val);
     float Get(int id);
 
+    void SetPID(int id, double p, double i, double d);
+    void SetPositionReference(int id, CANJaguar::PositionReference reference);
+    CANJaguar::PositionReference GetPositionReference(int id);
+
+    void SetControlMode(int id, CANJaguar::ControlMode controlMode);
+    CANJaguar::ControlMode GetControlMode(int id);
+
     float GetCurrent(int id);
     float GetTemperature(int id);
     float GetBatteryVoltage(int id);
     float GetOutputVoltage(int id);
+
+    double GetSpeed(int id);
+    double GetPosition(int id);
 
     void ConfigNeutralMode(int id, CANJaguar::NeutralMode mode);
     void PrintOnlineStatus();
@@ -37,6 +47,12 @@ private:
 
     volatile float setpoints[kNumJaguars];
     volatile bool setpointChanged[kNumJaguars];
+
+    volatile double gains[kNumJaguars][3];
+    volatile bool gainsChanged[kNumJaguars];
+
+    volatile CANJaguar::PositionReference positionReferences[kNumJaguars];
+    volatile bool positionReferencesChanged[kNumJaguars];
 
     volatile CANJaguar::NeutralMode neutralModes[kNumJaguars];
     volatile bool neutralModeChanged[kNumJaguars];

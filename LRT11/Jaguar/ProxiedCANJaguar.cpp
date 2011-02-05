@@ -7,9 +7,14 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel) :
 
 }
 
-void ProxiedCANJaguar::Set(float speed, UINT8 syncGroup)
+void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
-    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));
+    controller.Set(channel, setpoint);
+}
+
+void ProxiedCANJaguar::SetPID(double p, double i, double d)
+{
+    controller.SetPID(channel, p, i, d);
 }
 
 float ProxiedCANJaguar::Get()
@@ -42,8 +47,38 @@ float ProxiedCANJaguar::GetOutputVoltage()
     return controller.GetOutputVoltage(channel);
 }
 
+double ProxiedCANJaguar::GetPosition()
+{
+    return controller.GetPosition(channel);
+}
+
+double ProxiedCANJaguar::GetSpeed()
+{
+    return controller.GetSpeed(channel);
+}
+
 void ProxiedCANJaguar::ConfigNeutralMode(CANJaguar::NeutralMode mode)
 {
     controller.ConfigNeutralMode(channel, mode);
+}
+
+void ProxiedCANJaguar::SetPositionReference(CANJaguar::PositionReference reference)
+{
+    controller.SetPositionReference(channel, reference);
+}
+
+CANJaguar::PositionReference ProxiedCANJaguar::GetPositionReference()
+{
+    return controller.GetPositionReference(channel);
+}
+
+void ProxiedCANJaguar::SetControlMode(CANJaguar::ControlMode controlMode)
+{
+    controller.SetControlMode(channel, controlMode);
+}
+
+CANJaguar::ControlMode ProxiedCANJaguar::GetControlMode()
+{
+    return controller.GetControlMode(channel);
 }
 
