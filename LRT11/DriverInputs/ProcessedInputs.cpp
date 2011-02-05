@@ -70,7 +70,7 @@ bool ProcessedInputs::GetBrakeRight()
 
 bool ProcessedInputs::ShouldCollectEncoderData()
 {
-	return driverStick.IsButtonJustPressed(1);
+    return driverStick.IsButtonJustPressed(1);
 }
 
 void ProcessedInputs::UpdateDebouncing()

@@ -12,8 +12,8 @@ using namespace std;
 class EncoderDataCollection : public Component
 {
 private:
-	LRTEncoder& leftEncoder;
-	Esc left;
+    LRTEncoder& leftEncoder;
+    Esc left;
 
 public:
     EncoderDataCollection();

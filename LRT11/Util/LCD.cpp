@@ -103,7 +103,7 @@ void LCD::ScrollLCD(int x, int y)
 void LCD::UpdateHeartbeat(bool isServiceMode)
 {
     static int loops = 0;
-    
+
     if(loops % 12 == 0)
         LCDUpdate();
 

@@ -5,7 +5,7 @@ LRTRobot11::LRTRobot11()
     , drive()
     , encoderData()
 {
-	
+
 }
 
 LRTRobot11::~LRTRobot11()
@@ -34,10 +34,10 @@ void LRTRobot11::MainLoop()
             ProfiledSection("Drive Train");
             drive.Output();
         }
-        
+
         {
-        	ProfiledSection("Encoder Data Collection");
-        	encoderData.Output();
+            ProfiledSection("Encoder Data Collection");
+            encoderData.Output();
         }
 
         // To add another component output:

@@ -8,7 +8,7 @@ void Brain::Teleop()
 
     action.driveTrain.brakeLeft  = inputs.GetBrakeLeft();
     action.driveTrain.brakeRight = inputs.GetBrakeRight();
-    
+
     action.encoderData.shouldCollect = inputs.ShouldCollectEncoderData();
 
     if(isFinale /* && inputs.DeployMinibot() */)

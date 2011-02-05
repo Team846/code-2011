@@ -15,7 +15,7 @@ private:
 public:
     Roller();
     virtual ~Roller();
-    
+
     void RollInward();
     void RollOutward();
     void RollOpposite(int direction);

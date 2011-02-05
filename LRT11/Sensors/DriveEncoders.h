@@ -13,7 +13,11 @@ class DriveEncoders
 {
 private:
     static DriveEncoders* instance;
-    LRTEncoder encoderLeftUseless, encoderLeft, encoderRightUseless, encoderRight;
+
+    // encoderLeftUseless and encoderRightUseless used to fix WPILib bug;
+    // only evenly instantiated encoders work
+    LRTEncoder encoderLeftUseless, encoderLeft;
+    LRTEncoder encoderRightUseless, encoderRight;
 
     // floats to prevent integer division
     const static float kWheelDiameter = 8.0; // in
@@ -42,7 +46,7 @@ public:
     double GetRightWheelDist();
     double GetNormalizedLeftSpeed();
     double GetNormalizedRightSpeed();
-    
+
     LRTEncoder& GetLeftEncoder();
     LRTEncoder& GetRightEncoder();
 

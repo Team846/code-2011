@@ -8,7 +8,7 @@ LRTEncoder::LRTEncoder(UINT8 sourceA, UINT8 sourceB)
 
 LRTEncoder::~LRTEncoder()
 {
-	// nothing
+    // nothing
 }
 
 double LRTEncoder::GetRate()

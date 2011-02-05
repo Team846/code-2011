@@ -55,10 +55,10 @@ void Profiler::StartNewCycle()
 
             data << " | " << left;
             data.width(30);
-            
+
             data << it->first << right;
             data.width(-1);
-            
+
             data << " ~" << fixed << setprecision(2) << mean << " [" << min << " - " << max <<
                     "]" << "x" << count << "\n";
 
