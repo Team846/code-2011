@@ -42,6 +42,9 @@ void Lift::Output()
     }
 
     float setPoint = config.Get<float>(key);
+    float physicalMax = config.Get<float>(prefix+"max");
+    float physicalMin = config.Get<float>(prefix+"min");
+    
     liftEsc.Set(setPoint);
 
     SmartDashboard::Log(setPoint, "LiftSetPoint");
