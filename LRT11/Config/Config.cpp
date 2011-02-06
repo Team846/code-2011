@@ -192,10 +192,10 @@ void Config::ConfigureAll()
 
 void Config::Output()
 {
-    if(action.Config.load)
+    if(action.config.load)
         Load();
-    if(action.Config.save)
+    if(action.config.save)
         Save();
-    if(action.Config.apply)
+    if(action.config.apply)
         ConfigureAll();
 }

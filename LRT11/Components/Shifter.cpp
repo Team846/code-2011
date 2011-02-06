@@ -20,7 +20,7 @@ Shifter::~Shifter()
 void Shifter::Output()
 {
     bool leftEngaged, rightEngaged;
-    switch(action.Gearbox.gear)
+    switch(action.gearbox.gear)
     {
     case kLowGear :
         newGear = kLowGear;
@@ -62,5 +62,5 @@ void Shifter::Output()
         rightShiftServo.Set(rightHighGearServoVal);
     }
     else
-        AsynchronousPrinter::Printf("Actiondata gear val not set\n");
+        AsynchronousPrinter::Printf("ActionData gearbox.gear value has not been set.\n");
 }

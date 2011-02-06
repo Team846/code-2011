@@ -22,6 +22,7 @@ private:
     const static float rightLowGearServoVal = 0.65;
 
     const static float shifterEngagedMargin = 0.05;
+
 public:
     Shifter();
     virtual ~Shifter();

@@ -34,8 +34,7 @@ public:
 
 private:
     CANBusController();
-    DISALLOW_COPY_AND_ASSIGN(CANBusController)
-    ;
+    DISALLOW_COPY_AND_ASSIGN(CANBusController);
 
     static void BusWriterTaskRunner();
     void BusWriterTask();

@@ -27,12 +27,12 @@ public:
     struct
     {
         enum {kLowGear = 1, kHighGear = 2} gear;
-    } Gearbox;
+    } gearbox;
 
     struct
     {
         bool load, save, apply;
-    } Config;
+    } config;
 
 protected:
     ActionData();

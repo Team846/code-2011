@@ -8,8 +8,7 @@ void Brain::Common()
     console.UpdateCycleCount();
     lcd.UpdateHeartbeat(inputs.IsServiceMode());
 
-    action.Config.load = inputs.ShouldLoadConfig();
-    action.Config.save = inputs.ShouldSaveConfig();
-    action.Config.apply = inputs.ShouldApplyConfig();
-
+    action.config.load = inputs.ShouldLoadConfig();
+    action.config.save = inputs.ShouldSaveConfig();
+    action.config.apply = inputs.ShouldApplyConfig();
 }

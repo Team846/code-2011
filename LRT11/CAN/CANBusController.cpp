@@ -212,6 +212,3 @@ CANJaguar::ControlMode CANBusController::GetControlMode(int id)
     int idx = BusIdToIndex(id);
     return jaguars[idx]->GetControlMode();
 }
-
-
-
