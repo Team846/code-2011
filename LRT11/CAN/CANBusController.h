@@ -20,6 +20,7 @@ public:
 
     void SetControlMode(int id, CANJaguar::ControlMode controlMode);
     CANJaguar::ControlMode GetControlMode(int id);
+    void EnableControl(int id);
 
     float GetCurrent(int id);
     float GetTemperature(int id);

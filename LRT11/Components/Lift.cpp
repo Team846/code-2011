@@ -6,9 +6,10 @@ Lift::Lift()
     , prefix("lift.")
     , liftEsc(RobotConfig::CAN_LIFT)
 {
-    liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
     liftEsc.SetControlMode(CANJaguar::kPosition);
+    liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
     liftEsc.SetPID(config.Get<double>(prefix+"PGain"), config.Get<double>(prefix+"IGain"), config.Get<double>(prefix+"DGain"));
+    liftEsc.EnableControl();
 }
 
 Lift::~Lift()
