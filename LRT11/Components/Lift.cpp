@@ -8,7 +8,7 @@ Lift::Lift()
 {
     liftEsc.SetControlMode(CANJaguar::kPosition);
     liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
-    liftEsc.SetPID(config.Get<double>(prefix+"PGain"), config.Get<double>(prefix+"IGain"), config.Get<double>(prefix+"DGain"));
+    liftEsc.SetPID(config.Get<double>(prefix + "PGain"), config.Get<double>(prefix + "IGain"), config.Get<double>(prefix + "DGain"));
     liftEsc.EnableControl();
 }
 
@@ -41,7 +41,11 @@ void Lift::Output()
         break;
     }
 
-    liftEsc.Set(config.Get<float>(key));
+    float setPoint = config.Get<float>(key);
+    liftEsc.Set(setPoint);
+
+    SmartDashboard::Log(setPoint, "LiftSetPoint");
+    SmartDashboard::Log(liftEsc.GetPosition(), "LiftPosition");
 
 }
 

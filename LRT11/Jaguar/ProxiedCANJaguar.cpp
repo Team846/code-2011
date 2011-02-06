@@ -82,7 +82,7 @@ CANJaguar::ControlMode ProxiedCANJaguar::GetControlMode()
     return controller.GetControlMode(channel);
 }
 
-void CANJaguar::EnableControl()
+void ProxiedCANJaguar::EnableControl()
 {
-	controller.EnableControl(channel);
+    controller.EnableControl(channel);
 }
