@@ -11,7 +11,7 @@ void Brain::Teleop()
 
     action.encoderData.shouldCollect = inputs.ShouldCollectEncoderData();
 
-    if(isFinale /* && inputs.DeployMinibot() */)
+    if(isFinale /* && inputs.ShouldDeployMinibot() */)
     {
         /* Minibot deployment code */
     }

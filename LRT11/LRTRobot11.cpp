@@ -17,7 +17,6 @@ LRTRobot11::~LRTRobot11()
 
 void LRTRobot11::RobotInit()
 {
-    Config& config = Config::GetInstance();
     config.ConfigureAll();
     config.Save();
 
@@ -30,23 +29,28 @@ void LRTRobot11::MainLoop()
     GameState state = DetermineState();
     brain.Process(state);
 
+    // components to output regardless of state
     {
-        ProfiledSection("Config output");
+        ProfiledSection("Configuration Buttons");
         config.Output();
     }
 
-    shifter.Output();
-
     if(!IsDisabled())
     {
+        // components to output only when enabled
         {
             ProfiledSection("Drive Train");
             drive.Output();
         }
 
+        // {
+        //    ProfiledSection("Encoder Data Collection");
+        //    encoderData.Output();
+        // }
+
         {
-            ProfiledSection("Encoder Data Collection");
-            encoderData.Output();
+            ProfiledSection("Servo Shifting");
+            shifter.Output();
         }
 
         // To add another component output:

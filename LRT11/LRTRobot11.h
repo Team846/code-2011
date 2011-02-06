@@ -16,11 +16,12 @@ private:
     DriveTrain drive;
 
     EncoderDataCollection encoderData;
-    GameState DetermineState();
-
     Shifter shifter;
 
     Config& config;
+
+    GameState DetermineState();
+
 public:
     LRTRobot11();
     virtual ~LRTRobot11();
