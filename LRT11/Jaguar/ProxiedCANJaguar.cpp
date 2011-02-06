@@ -29,7 +29,7 @@ void ProxiedCANJaguar::Disable()
 
 float ProxiedCANJaguar::GetCurrent()
 {
-    return controller.GetCurrent(channel);
+    return controller.GetOutputCurrent(channel);
 }
 
 float ProxiedCANJaguar::GetTemperature()
@@ -39,7 +39,7 @@ float ProxiedCANJaguar::GetTemperature()
 
 float ProxiedCANJaguar::GetBatteryVoltage()
 {
-    return controller.GetBatteryVoltage(channel);
+    return controller.GetBusVoltage(channel);
 }
 
 float ProxiedCANJaguar::GetOutputVoltage()

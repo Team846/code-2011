@@ -5,6 +5,16 @@
 #include "..\Jaguar\SafeCANJaguar.h"
 #include "..\Util\AsynchronousPrinter.h"
 
+//this macro defines a wrapper to the CANJag function mentioned in the macro argument.
+//It does not work with functions that have parameters. The reason I chose to use a macro here
+//is because this is used a lot and I wanted to avoid the extra 60+ lines of code and possibly introducing error
+//WARNING: These functions are blocking
+#define BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(a) a(int id)\
+    {                                   \
+        int idx = BusIdToIndex(id);     \
+        return jaguars[idx]->a();       \
+    }
+
 class CANBusController : public SensorBase
 {
 public:
@@ -16,27 +26,27 @@ public:
 
     void SetPID(int id, double p, double i, double d);
     void SetPositionReference(int id, CANJaguar::PositionReference reference);
-    CANJaguar::PositionReference GetPositionReference(int id);
+    CANJaguar::PositionReference BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetPositionReference);
 
     void SetControlMode(int id, CANJaguar::ControlMode controlMode);
     CANJaguar::ControlMode GetControlMode(int id);
-    void EnableControl(int id);
+    void BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(EnableControl);
 
-    float GetCurrent(int id);
-    float GetTemperature(int id);
-    float GetBatteryVoltage(int id);
-    float GetOutputVoltage(int id);
+    float BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetOutputCurrent);
+    float BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetTemperature);
+    float BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetBusVoltage);
+    float BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetOutputVoltage);
 
-    double GetSpeed(int id);
-    double GetPosition(int id);
+    double BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetSpeed);
+    double BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetPosition);
 
     void ConfigNeutralMode(int id, CANJaguar::NeutralMode mode);
     void PrintOnlineStatus();
 
     void ConfigSoftPositionLimits(int id, double forwardLimitPosition, double reverseLimitPosition);
-    void DisableSoftPositionLimits(int id);
-    bool GetForwardLimitOK(int id);
-    bool GetReverseLimitOK(int id);
+    void BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(DisableSoftPositionLimits);
+    bool BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetForwardLimitOK);
+    bool BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetReverseLimitOK);
 
 private:
     CANBusController();

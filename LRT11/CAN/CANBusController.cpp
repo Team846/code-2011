@@ -153,52 +153,10 @@ void CANBusController::BusWriterTask()
     }
 }
 
-float CANBusController::GetCurrent(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetOutputCurrent();
-}
-
-float CANBusController::GetTemperature(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetTemperature();
-}
-
-float CANBusController::GetBatteryVoltage(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetBusVoltage();
-}
-
-float CANBusController::GetOutputVoltage(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetOutputVoltage();
-}
-
-double CANBusController::GetSpeed(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetSpeed();
-}
-
-double CANBusController::GetPosition(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetPosition();
-}
-
 void CANBusController::SetPositionReference(int id, CANJaguar::PositionReference reference)
 {
     int idx = BusIdToIndex(id);
     jaguars[idx]->SetPositionReference(reference);
-}
-
-CANJaguar::PositionReference CANBusController::GetPositionReference(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetPositionReference();
 }
 
 void CANBusController::SetControlMode(int id, CANJaguar::ControlMode controlMode)
@@ -213,35 +171,10 @@ CANJaguar::ControlMode CANBusController::GetControlMode(int id)
     return jaguars[idx]->GetControlMode();
 }
 
-void CANBusController::EnableControl(int id)
-{
-    int idx = BusIdToIndex(id);
-    jaguars[idx]->EnableControl();
-}
-
 void CANBusController::ConfigSoftPositionLimits(int id, double forwardLimitPosition, double reverseLimitPosition)
 {
     int idx = BusIdToIndex(id);
     jaguars[idx]->ConfigSoftPositionLimits(forwardLimitPosition, reverseLimitPosition);
-}
-
-void CANBusController::DisableSoftPositionLimits(int id)
-{
-    int idx = BusIdToIndex(id);
-    jaguars[idx]->DisableSoftPositionLimits();
-
-}
-
-bool CANBusController::GetForwardLimitOK(int id)
-{
-    int idx = BusIdToIndex(id);
-    return jaguars[idx]->GetForwardLimitOK();
-}
-
-bool CANBusController::GetReverseLimitOK(int id)
-{
-    int idx = BusIdToIndex(id);
-    jaguars[idx]->GetReverseLimitOK();
 }
 
 
