@@ -9,6 +9,7 @@ Lift::Lift()
     liftEsc.SetControlMode(CANJaguar::kPosition);
     liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
     liftEsc.SetPID(config.Get<double>(prefix + "PGain"), config.Get<double>(prefix + "IGain"), config.Get<double>(prefix + "DGain"));
+    liftEsc.ConfigSoftPositionLimits(config.Get<float>(prefix+"max"),config.Get<float>(prefix+"min"));
     liftEsc.EnableControl();
 }
 
@@ -42,8 +43,6 @@ void Lift::Output()
     }
 
     float setPoint = config.Get<float>(key);
-    float physicalMax = config.Get<float>(prefix+"max");
-    float physicalMin = config.Get<float>(prefix+"min");
     
     liftEsc.Set(setPoint);
 
