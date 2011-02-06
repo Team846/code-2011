@@ -86,3 +86,26 @@ void ProxiedCANJaguar::EnableControl()
 {
     controller.EnableControl(channel);
 }
+
+void ProxiedCANJaguar::ConfigSoftPositionLimits(double forwardLimitPosition, double reverseLimitPosition)
+{
+    controller.ConfigSoftPositionLimits(channel, forwardLimitPosition, reverseLimitPosition);
+}
+
+void ProxiedCANJaguar::DisableSoftPositionLimits()
+{
+
+    controller.DisableSoftPositionLimits(channel);
+}
+
+bool ProxiedCANJaguar::GetForwardLimitOK()
+{
+    return controller.GetForwardLimitOK(channel);
+}
+
+bool ProxiedCANJaguar::GetReverseLimitOK()
+{
+    return controller.GetReverseLimitOK(channel);
+}
+
+

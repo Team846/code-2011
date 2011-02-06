@@ -218,3 +218,30 @@ void CANBusController::EnableControl(int id)
     int idx = BusIdToIndex(id);
     jaguars[idx]->EnableControl();
 }
+
+void CANBusController::ConfigSoftPositionLimits(int id, double forwardLimitPosition, double reverseLimitPosition)
+{
+    int idx = BusIdToIndex(id);
+    jaguars[idx]->ConfigSoftPositionLimits(forwardLimitPosition, reverseLimitPosition);
+}
+
+void CANBusController::DisableSoftPositionLimits(int id)
+{
+    int idx = BusIdToIndex(id);
+    jaguars[idx]->DisableSoftPositionLimits();
+
+}
+
+bool CANBusController::GetForwardLimitOK(int id)
+{
+    int idx = BusIdToIndex(id);
+    return jaguars[idx]->GetForwardLimitOK();
+}
+
+bool CANBusController::GetReverseLimitOK(int id)
+{
+    int idx = BusIdToIndex(id);
+    jaguars[idx]->GetReverseLimitOK();
+}
+
+

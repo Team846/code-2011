@@ -30,6 +30,11 @@ public:
     double GetPosition();
     double GetSpeed();
 
+    void ConfigSoftPositionLimits(double forwardLimitPosition, double reverseLimitPosition);
+    void DisableSoftPositionLimits();
+    bool GetForwardLimitOK();
+    bool GetReverseLimitOK();
+
     void ConfigNeutralMode(CANJaguar::NeutralMode mode);
 
 protected:

@@ -33,6 +33,11 @@ public:
     void ConfigNeutralMode(int id, CANJaguar::NeutralMode mode);
     void PrintOnlineStatus();
 
+    void ConfigSoftPositionLimits(int id, double forwardLimitPosition, double reverseLimitPosition);
+    void DisableSoftPositionLimits(int id);
+    bool GetForwardLimitOK(int id);
+    bool GetReverseLimitOK(int id);
+
 private:
     CANBusController();
     DISALLOW_COPY_AND_ASSIGN(CANBusController);
