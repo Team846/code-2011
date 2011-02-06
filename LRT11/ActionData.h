@@ -18,6 +18,19 @@ public:
         float rawForward, rawTurn;
         bool brakeLeft, brakeRight;
     } driveTrain;
+    
+    struct 
+    {
+    	enum {kStowed = 1, kLowPeg = 2, kMedPeg = 3, kHighPeg = 4} position;
+    	bool highRow;
+    } lift;
+    
+    struct 
+    {
+    	bool preset;
+    	enum {kLow = 1, kHigh = 2} position;
+    	float customSetpoint;
+    } arm;
 
     struct
     {
