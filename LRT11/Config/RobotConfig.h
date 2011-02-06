@@ -14,6 +14,9 @@ public:
     const static UINT32 CAN_DRIVE_LEFT  = 2;
     const static UINT32 CAN_DRIVE_RIGHT = 3;
 
+    const static UINT32 CAN_LIFT = 4;
+    const static UINT32 CAN_ARM = 4;
+
     // Servos
 
     // Relay Outputs

@@ -8,19 +8,19 @@
 class Arm : public Component
 {
 protected:
-	ProxiedCANJaguar armEsc;
-	
+    ProxiedCANJaguar armEsc;
+
 public:
-	Arm();
-	virtual ~Arm();
-	void ArmShiftUp();
-	void ArmShiftDown();
-	void AbortArm();
-	
-	int GetArmPosition();
-	AnalogChannel& GetArmPot();
-	SafeCANJaguar& GetSpeedController();
-	
-	
+    Arm();
+    virtual ~Arm();
+    void ArmShiftUp();
+    void ArmShiftDown();
+    void AbortArm();
+
+    int GetArmPosition();
+    AnalogChannel& GetArmPot();
+    SafeCANJaguar& GetSpeedController();
+
+
 };
 #endif

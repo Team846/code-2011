@@ -1,0 +1,46 @@
+#include "Lift.h"
+#include "..\Config\RobotConfig.h"
+
+Lift::Lift()
+    : config(Config::GetInstance())
+    , prefix("lift.")
+    , liftEsc(RobotConfig::CAN_LIFT)
+{
+    liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
+    liftEsc.SetControlMode(CANJaguar::kPosition);
+    liftEsc.SetPID(config.Get<double>(prefix+"PGain"), config.Get<double>(prefix+"IGain"), config.Get<double>(prefix+"DGain"));
+}
+
+Lift::~Lift()
+{
+
+}
+
+void Lift::Output()
+{
+    string key = prefix;
+    if(action.lift.highRow)
+        key += "high.";
+    else
+        key += "low.";
+
+    switch(action.lift.position)
+    {
+    case kStowed:
+        key += "stowed";
+        break;
+    case kLowPeg:
+        key += "lowPeg";
+        break;
+    case kMedPeg:
+        key += "medPeg";
+        break;
+    case kHighPeg:
+        key += "highPeg";
+        break;
+    }
+
+    liftEsc.Set(config.Get<float>(key));
+
+}
+
