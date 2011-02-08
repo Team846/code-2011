@@ -21,7 +21,7 @@ Arm::~Arm()
 void Arm::Output()
 {
 	string key = prefix;
-	float setPoint;
+	float armSetPoint;
 	
 	if(action.arm.preset)
 	{
@@ -34,12 +34,15 @@ void Arm::Output()
 			key += "high";
 			break;
 		}
-		setPoint = config.Get<float>(key);
+		armSetPoint = config.Get<float>(key);
 	}
 	else
 	{
-		setPoint = action.arm.customSetpoint;
+		armSetPoint = action.arm.customSetpoint;
 	}
 	
-	armEsc.Set(setPoint);
+	armEsc.Set(armSetPoint);
+	
+	SmartDashboard::Log(armSetPoint, "ArmSetPoint");
+	SmartDashboard::Log(armEsc.GetPosition(), "ArmPosition");
 }
