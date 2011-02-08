@@ -2,24 +2,22 @@
 #define Arm_H_
 
 #include "Component.h"
-#include "..\Config\RobotConfig.h"
-#include "..\Jaguar\Esc.h"
+#include "..\Config\Config.h"
+#include "..\Jaguar\ProxiedCANJaguar.h"
 
 class Arm : public Component
 {
-protected:
+private:
+	Config& config;
+	string prefix;
     ProxiedCANJaguar armEsc;
+    
+    enum {kLow = 1, kHigh = 2} position;
 
 public:
     Arm();
     virtual ~Arm();
-    void ArmShiftUp();
-    void ArmShiftDown();
-    void AbortArm();
-
-    int GetArmPosition();
-    AnalogChannel& GetArmPot();
-    SafeCANJaguar& GetSpeedController();
+    virtual void Output();
 
 
 };
