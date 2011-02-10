@@ -6,7 +6,6 @@ LRTRobot11::LRTRobot11()
     , drive()
     , encoderData()
     , shifter()
-    , test()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -57,11 +56,6 @@ void LRTRobot11::MainLoop()
         {
             ProfiledSection("Servo Shifting");
             shifter.Output();
-        }
-
-        {
-            ProfiledSection("Jag Test");
-            test.Output();
         }
 
         // To add another component output:
