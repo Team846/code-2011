@@ -27,7 +27,7 @@ public:
 
     struct
     {
-        bool preset;
+        bool usePreset;
         enum {kLow = 1, kHigh = 2} position;
         float customSetpoint;
     } arm;

@@ -2,7 +2,7 @@
 #define LIFT_H_
 
 #include "Component.h"
-#include "..\Jaguar\ProxiedCANJaguar.h"
+#include "..\Jaguar\CLPotJaguar.h"
 #include "..\Config\Config.h"
 
 class Lift : public Component
@@ -10,7 +10,7 @@ class Lift : public Component
 private:
     Config& config;
     string prefix;
-    ProxiedCANJaguar liftEsc;
+    CLPotJaguar liftEsc;
 
     enum {kStowed = 1, kLowPeg = 2, kMedPeg = 3, kHighPeg = 4};
 public:

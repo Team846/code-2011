@@ -3,14 +3,10 @@
 
 Lift::Lift()
     : config(Config::GetInstance())
-    , prefix("lift.")
-    , liftEsc(RobotConfig::CAN_LIFT)
+    , prefix("Lift.")
+    , liftEsc(RobotConfig::CAN_LIFT, 10, prefix)
 {
-    liftEsc.SetControlMode(CANJaguar::kPosition);
-    liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
-    liftEsc.SetPID(config.Get<double>(prefix + "PGain"), config.Get<double>(prefix + "IGain"), config.Get<double>(prefix + "DGain"));
-    liftEsc.ConfigSoftPositionLimits(config.Get<float>(prefix + "max"), config.Get<float>(prefix + "min"));
-    liftEsc.EnableControl();
+    liftEsc.LoadSoftPositionLimits(0, 10);
 }
 
 Lift::~Lift()
@@ -35,7 +31,7 @@ void Lift::Output()
         key += "lowPeg";
         break;
     case kMedPeg:
-        key += "medPeg";
+        key += "mediumPeg";
         break;
     case kHighPeg:
         key += "highPeg";
@@ -43,11 +39,8 @@ void Lift::Output()
     }
 
     float setPoint = config.Get<float>(key);
-
     liftEsc.Set(setPoint);
 
-    SmartDashboard::Log(setPoint, "LiftSetPoint");
-    SmartDashboard::Log(liftEsc.GetPosition(), "LiftPosition");
-
+    SmartDashboard::Log(setPoint, "Lift Set Point");
+    SmartDashboard::Log(liftEsc.GetPosition(), "Lift Position");
 }
-

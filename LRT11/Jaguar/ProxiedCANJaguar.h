@@ -32,7 +32,7 @@ public:
     double GetPosition();
     double GetSpeed();
 
-    void ConfigSoftPositionLimits(double forwardLimitPosition, double reverseLimitPosition);
+    void ConfigSoftPositionLimits(double forwardLimit, double reverseLimit);
     void DisableSoftPositionLimits();
     bool GetForwardLimitOK();
     bool GetReverseLimitOK();

@@ -3,14 +3,10 @@
 
 Arm::Arm()
     : config(Config::GetInstance())
-    , prefix("arm.")
-    , armEsc(RobotConfig::CAN_ARM)
+    , prefix("Arm.")
+    , armEsc(RobotConfig::CAN_ARM, 1, prefix)
 {
-    armEsc.SetControlMode(CANJaguar::kPosition);
-    armEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
-    armEsc.SetPID(config.Get<double>(prefix + "PGain"), config.Get<double>(prefix + "IGain"), config.Get<double>(prefix + "DGain"));
-    armEsc.ConfigSoftPositionLimits(config.Get<float>(prefix + "max"), config.Get<float>(prefix + "min"));
-    armEsc.EnableControl();
+    armEsc.ConfigSoftPositionLimits(0, 10);
 }
 
 Arm::~Arm()
@@ -23,7 +19,7 @@ void Arm::Output()
     string key = prefix;
     float armSetPoint;
 
-    if(action.arm.preset)
+    if(action.arm.usePreset)
     {
         switch(action.arm.position)
         {
@@ -34,15 +30,14 @@ void Arm::Output()
             key += "high";
             break;
         }
+
         armSetPoint = config.Get<float>(key);
     }
     else
-    {
         armSetPoint = action.arm.customSetpoint;
-    }
 
     armEsc.Set(armSetPoint);
 
-    SmartDashboard::Log(armSetPoint, "ArmSetPoint");
-    SmartDashboard::Log(armEsc.GetPosition(), "ArmPosition");
+    SmartDashboard::Log(armSetPoint, "Arm Set Point");
+    SmartDashboard::Log(armEsc.GetPosition(), "Arm Position");
 }
