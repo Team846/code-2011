@@ -33,7 +33,6 @@ public:
 
 
     //Servo Ports
-#warning "Servo port numbers not set for 2011 robot"
     const static int LEFT_GEARBOX_SERVO_PORT = 8;
     const static int RIGHT_GEARBOX_SERVO_PORT = 10;
 };

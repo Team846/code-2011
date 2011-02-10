@@ -21,16 +21,19 @@ public:
     virtual ~CANBusController();
     static CANBusController& GetInstance();
 
+    void ResetCache();
     void Set(int id, float val);
     float Get(int id);
 
     void SetPID(int id, double p, double i, double d);
     void SetPositionReference(int id, CANJaguar::PositionReference reference);
+    void SetPotentiometerTurns(int id, UINT16 turns);
     CANJaguar::PositionReference BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetPositionReference);
 
     void SetControlMode(int id, CANJaguar::ControlMode controlMode);
     CANJaguar::ControlMode GetControlMode(int id);
-    void BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(EnableControl);
+    void EnableControl(int id, double encoderInitialPosition = 0.0);
+    void BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(DisableControl);
 
     float BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetOutputCurrent);
     float BLOCKING_WRAP_CANJAGUAR_FUNCTION_NOPARAM(GetTemperature);
@@ -59,6 +62,8 @@ private:
     const static int kMinJaguarId = 2;
     const static int kMaxJaguarId = 5;
     const static int kNumJaguars = kMaxJaguarId - kMinJaguarId + 1;
+
+    volatile int forceSetpointUpdate;
 
     volatile float setpoints[kNumJaguars];
     volatile bool setpointChanged[kNumJaguars];

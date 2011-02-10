@@ -67,6 +67,11 @@ void ProxiedCANJaguar::SetPositionReference(CANJaguar::PositionReference referen
     controller.SetPositionReference(channel, reference);
 }
 
+void ProxiedCANJaguar::SetPotentiometerTurns(UINT16 turns)
+{
+    controller.SetPotentiometerTurns(channel, turns);
+}
+
 CANJaguar::PositionReference ProxiedCANJaguar::GetPositionReference()
 {
     return controller.GetPositionReference(channel);
@@ -82,9 +87,14 @@ CANJaguar::ControlMode ProxiedCANJaguar::GetControlMode()
     return controller.GetControlMode(channel);
 }
 
-void ProxiedCANJaguar::EnableControl()
+void ProxiedCANJaguar::EnableControl(double encoderInitialPosition)
 {
-    controller.EnableControl(channel);
+    controller.EnableControl(channel, encoderInitialPosition);
+}
+
+void ProxiedCANJaguar::DisableControl()
+{
+    controller.DisableControl(channel);
 }
 
 void ProxiedCANJaguar::ConfigSoftPositionLimits(double forwardLimitPosition, double reverseLimitPosition)
@@ -107,5 +117,3 @@ bool ProxiedCANJaguar::GetReverseLimitOK()
 {
     return controller.GetReverseLimitOK(channel);
 }
-
-

@@ -16,11 +16,13 @@ public:
 
     void SetPID(double p, double i, double d);
     void SetPositionReference(CANJaguar::PositionReference reference);
+    void SetPotentiometerTurns(UINT16 turns);
     CANJaguar::PositionReference GetPositionReference(void);
 
     void SetControlMode(CANJaguar::ControlMode controlMode);
     CANJaguar::ControlMode GetControlMode();
-    void EnableControl();
+    void EnableControl(double encoderInitialPosition = 0.0);
+    void DisableControl();
 
     float GetCurrent();
     float GetTemperature();

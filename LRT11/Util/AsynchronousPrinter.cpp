@@ -42,11 +42,12 @@ void AsynchronousPrinter::Printf(const char* format, ...)
     }
 }
 
-AsynchronousPrinter::AsynchronousPrinter() :
-    printerTask("AsynchronousPrinter",
-            (FUNCPTR)AsynchronousPrinter::PrinterTaskRunner),
-    semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE
-            | SEM_INVERSION_SAFE)), queueBytes(0)
+AsynchronousPrinter::AsynchronousPrinter()
+    : semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE
+            | SEM_INVERSION_SAFE))
+    , queueBytes(0)
+    , printerTask("AsynchronousPrinter",
+            (FUNCPTR)AsynchronousPrinter::PrinterTaskRunner)
 {
     AddToSingletonList();
     printerTask.Start();

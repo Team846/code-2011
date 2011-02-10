@@ -6,7 +6,7 @@
 Shifter::Shifter()
     : leftShiftServo(RobotConfig::LEFT_GEARBOX_SERVO_PORT)
     , rightShiftServo(RobotConfig::RIGHT_GEARBOX_SERVO_PORT)
-    , currentGear(kHighGear)
+    , currentGear(kLowGear)
     , tickCounter(0)
 {
 

@@ -17,8 +17,7 @@ public:
 
 protected:
     AsynchronousPrinter();
-    DISALLOW_COPY_AND_ASSIGN(AsynchronousPrinter)
-    ;
+    DISALLOW_COPY_AND_ASSIGN(AsynchronousPrinter);
 
 private:
     static void PrinterTaskRunner();
@@ -27,11 +26,11 @@ private:
     bool enabled;
     static AsynchronousPrinter* instance;
 
-    Task printerTask;
     SEM_ID semaphore;
-
-    queue<string> queue;
     int queueBytes;
+
+    Task printerTask;
+    queue<string> queue;
 
     const static int kMaxBuffer = 1024;
 };

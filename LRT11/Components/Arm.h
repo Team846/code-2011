@@ -8,17 +8,16 @@
 class Arm : public Component
 {
 private:
-	Config& config;
-	string prefix;
+    Config& config;
+    string prefix;
     ProxiedCANJaguar armEsc;
-    
+
     enum {kLow = 1, kHigh = 2} position;
 
 public:
     Arm();
     virtual ~Arm();
     virtual void Output();
-
-
 };
+
 #endif

@@ -2,10 +2,13 @@
 
 LRTRobot11::LRTRobot11()
     : brain()
+    , controller(CANBusController::GetInstance())
     , drive()
     , encoderData()
     , shifter()
+    , test()
     , config(Config::GetInstance())
+    , prevState(DISABLED)
 {
 
 }
@@ -26,8 +29,8 @@ void LRTRobot11::RobotInit()
 
 void LRTRobot11::MainLoop()
 {
-    GameState state = DetermineState();
-    brain.Process(state);
+    GameState gameState = DetermineState();
+    brain.Process(gameState);
 
     // components to output regardless of state
     {
@@ -35,7 +38,10 @@ void LRTRobot11::MainLoop()
         config.Output();
     }
 
-    if(!IsDisabled())
+    if(prevState != gameState)
+        controller.ResetCache();
+
+    if(gameState != DISABLED)
     {
         // components to output only when enabled
         {
@@ -53,6 +59,11 @@ void LRTRobot11::MainLoop()
             shifter.Output();
         }
 
+        {
+            ProfiledSection("Jag Test");
+            test.Output();
+        }
+
         // To add another component output:
         //
         // {
@@ -60,6 +71,8 @@ void LRTRobot11::MainLoop()
         //      component.Output();
         // }
     }
+
+    prevState = gameState;
 }
 
 GameState LRTRobot11::DetermineState()

@@ -9,11 +9,12 @@ CANBusController& CANBusController::GetInstance()
     return *instance;
 }
 
-CANBusController::CANBusController() :
-    busWriterTask("CANBusController",
-            (FUNCPTR)CANBusController::BusWriterTaskRunner),
-    semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE
+CANBusController::CANBusController()
+    : busWriterTask("CANBusController",
+            (FUNCPTR)CANBusController::BusWriterTaskRunner)
+    , semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE
             | SEM_INVERSION_SAFE))
+    , forceSetpointUpdate(-1)
 {
     AddToSingletonList();
 
@@ -28,6 +29,16 @@ CANBusController::CANBusController() :
     }
 
     busWriterTask.Start();
+}
+
+void CANBusController::ResetCache()
+{
+    Synchronized s(semaphore);
+
+    // force update all setpoints in 15 cycles after
+    // a switch in game state; must have delay for
+    // successful speed controller update
+    forceSetpointUpdate = 15;
 }
 
 CANBusController::~CANBusController()
@@ -114,6 +125,7 @@ void CANBusController::BusWriterTask()
             int idx = BusIdToIndex(id);
 
             float setpoint;
+            bool forceSetpointUpdate;
 
             CANJaguar::NeutralMode mode;
             bool setpointChanged, neutralModeChanged;
@@ -126,9 +138,11 @@ void CANBusController::BusWriterTask()
 
                 mode = neutralModes[idx];
                 neutralModeChanged = this->neutralModeChanged[idx];
+
+                forceSetpointUpdate = this->forceSetpointUpdate;
             }
 
-            if(setpointChanged)
+            if(setpointChanged || forceSetpointUpdate == 0)
             {
                 jaguars[idx]->Set(setpoint);
 
@@ -149,6 +163,12 @@ void CANBusController::BusWriterTask()
             }
         }
 
+        {
+            Synchronized s(semaphore);
+            if(forceSetpointUpdate >= 0)
+                forceSetpointUpdate--;
+        }
+
         Wait(0.001);   // allow other tasks to run
     }
 }
@@ -157,6 +177,12 @@ void CANBusController::SetPositionReference(int id, CANJaguar::PositionReference
 {
     int idx = BusIdToIndex(id);
     jaguars[idx]->SetPositionReference(reference);
+}
+
+void CANBusController::SetPotentiometerTurns(int id, UINT16 turns)
+{
+    int idx = BusIdToIndex(id);
+    jaguars[idx]->ConfigPotentiometerTurns(turns);
 }
 
 void CANBusController::SetControlMode(int id, CANJaguar::ControlMode controlMode)
@@ -171,10 +197,14 @@ CANJaguar::ControlMode CANBusController::GetControlMode(int id)
     return jaguars[idx]->GetControlMode();
 }
 
+void CANBusController::EnableControl(int id, double encoderInitialPosition)
+{
+    int idx = BusIdToIndex(id);
+    return jaguars[idx]->EnableControl(encoderInitialPosition);
+}
+
 void CANBusController::ConfigSoftPositionLimits(int id, double forwardLimitPosition, double reverseLimitPosition)
 {
     int idx = BusIdToIndex(id);
     jaguars[idx]->ConfigSoftPositionLimits(forwardLimitPosition, reverseLimitPosition);
 }
-
-
