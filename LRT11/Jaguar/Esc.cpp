@@ -4,8 +4,8 @@
 #include "Esc.h"
 
 // CurrentLimiter class
-Esc::CurrentLimiter::CurrentLimiter() :
-    timeExtended(0)
+Esc::CurrentLimiter::CurrentLimiter()
+    : timeExtended(0)
     , timeBurst(0)
     , coolExtended(0)
     , coolBurst(0)
@@ -14,15 +14,15 @@ Esc::CurrentLimiter::CurrentLimiter() :
 
 float Esc::CurrentLimiter::Limit(float targetSpeed, float robotSpeed)
 {
-    if(Util::Abs<float>(targetSpeed) < .001)
-        return 0.0; //dont defeat the dynamic braking
-
-    const static float kMaxConst = .55;
-    if(targetSpeed < 0)
-        return -Limit(-targetSpeed, - robotSpeed);
-
-    float voltage_normalized = DriverStation::GetInstance()->GetBatteryVoltage() / 12;
-    float voltageLim = kMaxConst / voltage_normalized;
+//    if(Util::Abs<float>(targetSpeed) < .001)
+//        return 0.0; //dont defeat the dynamic braking
+//
+//    const static float kMaxConst = .55;
+//    if(targetSpeed < 0)
+//        return -Limit(-targetSpeed, - robotSpeed);
+//
+//    float voltage_normalized = DriverStation::GetInstance()->GetBatteryVoltage() / 12;
+//    float voltageLim = kMaxConst / voltage_normalized;
     return targetSpeed;
 }
 

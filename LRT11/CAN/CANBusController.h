@@ -63,8 +63,6 @@ private:
     const static int kMaxJaguarId = 5;
     const static int kNumJaguars = kMaxJaguarId - kMinJaguarId + 1;
 
-    volatile int forceSetpointUpdate;
-
     volatile float setpoints[kNumJaguars];
     volatile bool setpointChanged[kNumJaguars];
 
@@ -82,6 +80,8 @@ private:
 
     Task busWriterTask;
     SEM_ID semaphore;
+
+    volatile int forceSetpointUpdate;
 };
 
 #endif

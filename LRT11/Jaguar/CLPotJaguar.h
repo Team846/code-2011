@@ -3,7 +3,7 @@
 
 #include "..\General.h"
 #include "ProxiedCANJaguar.h"
-#include "..\Util\Config.h"
+#include "..\Config\Config.h"
 
 class CLPotJaguar : public ProxiedCANJaguar
 {
@@ -12,7 +12,7 @@ private:
     string prefix;
 
 public:
-    CLPotJaguar(UINT8 channel, int turns, string prefix, double defaultP = 1,
+    CLPotJaguar(UINT8 channel, int turns, string configPrefix, double defaultP = 1,
             double defaultI = 0, double defaultD = 0);
     ~CLPotJaguar();
 

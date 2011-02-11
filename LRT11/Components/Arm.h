@@ -3,14 +3,15 @@
 
 #include "Component.h"
 #include "..\Config\Config.h"
-#include "..\Jaguar\ProxiedCANJaguar.h"
+#include "..\Jaguar\CLPotJaguar.h"
+using namespace std;
 
 class Arm : public Component
 {
 private:
     Config& config;
     string prefix;
-    ProxiedCANJaguar armEsc;
+    CLPotJaguar armEsc;
 
     enum {kLow = 1, kHigh = 2} position;
 

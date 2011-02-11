@@ -1,9 +1,9 @@
-#include "CLPositionJaguar.h"
+#include "CLPotJaguar.h"
 
-CLPotJaguar::CLPotJaguar(UINT8 channel, int turns, string prefix, double defaultP, double defaultI, double defaultD)
+CLPotJaguar::CLPotJaguar(UINT8 channel, int turns, string configPrefix, double defaultP, double defaultI, double defaultD)
     : ProxiedCANJaguar(channel)
     , config(Config::GetInstance())
-    , this->prefix(prefix)
+    , prefix(configPrefix)
 {
     // configuration to closed loop position control mode
     SetControlMode(CANJaguar::kPosition);
@@ -11,8 +11,8 @@ CLPotJaguar::CLPotJaguar(UINT8 channel, int turns, string prefix, double default
     SetPotentiometerTurns(turns);
 
     // pid configuration
-    SetPID(config.Get<int>(prefix + "pGain", defaultP), config.Get<int>(prefix + "iGain", defaultI),
-            config.Get<int>(prefix + "dGain", defaultD));
+    SetPID(config.Get<double>(prefix + "pGain", defaultP), config.Get<double>(prefix + "iGain", defaultI),
+            config.Get<double>(prefix + "dGain", defaultD));
 
     EnableControl();
 }
@@ -26,4 +26,5 @@ void CLPotJaguar::LoadSoftPositionLimits(double defaultForwardLimit, double defa
 {
     double forwardLimit = config.Get<double>(prefix + "forwardLimit", defaultForwardLimit);
     double reverseLimit = config.Get<double>(prefix + "reverseLimit", defaultReverseLimit);
+    ConfigSoftPositionLimits(forwardLimit, reverseLimit);
 }
