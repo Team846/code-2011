@@ -23,10 +23,10 @@ void Arm::Output()
     {
         switch(action.arm.position)
         {
-        case kLow:
+        case LOW:
             key += "low";
             break;
-        case kHigh:
+        case HIGH:
             key += "high";
             break;
         }

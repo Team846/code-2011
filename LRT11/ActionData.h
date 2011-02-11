@@ -21,14 +21,23 @@ public:
 
     struct
     {
-        enum {kStowed = 1, kLowPeg = 2, kMedPeg = 3, kHighPeg = 4} position;
+        bool shouldMoveDistance, shouldTurnAngle;
+        // moveDistance in inches, turnAngle in degrees
+        float moveDistance, turnAngle;
+        bool pivotLeft, pivotRight;
+        bool done;
+    } positionTrain;
+
+    struct
+    {
+        enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} position;
         bool highRow;
     } lift;
 
     struct
     {
         bool usePreset;
-        enum {kLow = 1, kHigh = 2} position;
+        enum {LOW = 1, HIGH = 2} position;
         float customSetpoint;
     } arm;
 
@@ -39,7 +48,7 @@ public:
 
     struct
     {
-        enum {kLowGear = 1, kHighGear = 2} gear;
+        enum {LOW_GEAR = 1, HIGH_GEAR = 2} gear;
     } gearbox;
 
     struct

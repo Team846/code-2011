@@ -42,6 +42,7 @@ public:
     double GetRobotDist();
     double GetTurnTicks();
     double GetTurnRevolutions();
+    double GetTurnAngle();
     double GetLeftWheelDist();
     double GetRightWheelDist();
     double GetNormalizedLeftSpeed();

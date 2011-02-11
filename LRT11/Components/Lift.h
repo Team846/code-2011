@@ -12,7 +12,8 @@ private:
     string prefix;
     CLPotJaguar liftEsc;
 
-    enum {kStowed = 1, kLowPeg = 2, kMedPeg = 3, kHighPeg = 4};
+    enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4};
+
 public:
     Lift();
     virtual ~Lift();

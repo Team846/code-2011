@@ -1,0 +1,57 @@
+#ifndef CL_POSITION_DRIVE_TRAIN_H_
+#define CL_POSITION_DRIVE_TRAIN_H_
+
+#include "..\..\General.h"
+#include "..\..\Sensors\DriveEncoders.h"
+#include "..\..\Config\Config.h"
+#include "..\..\Config\Configurable.h"
+#include "..\..\Util\RunningSum.h"
+#include "ClosedLoopDriveTrain.h"
+
+class CLPositionDriveTrain : public Configurable
+{
+public:
+    CLPositionDriveTrain(ClosedLoopDriveTrain train);
+
+    virtual void Configure();
+
+    void MoveInches(float inches);
+
+    // positive is CW; negative is CCW
+    void TurnAngle(float angle, bool pivotLeft = false, bool pivotRight = false);
+
+    // true returned if maneuver is finished (error < deadband)
+    bool MoveDistanceOutput();
+    bool TurnAngleOutput();
+
+private:
+    ClosedLoopDriveTrain drive;
+    DriveEncoders& encoders;
+
+    struct
+    {
+        bool hasCommand;
+        float target, distance;
+    } moveDistanceInfo;
+
+    struct
+    {
+        bool hasCommand;
+        bool pivotLeft, pivotRight;
+        float target, angle;
+    } turnAngleInfo;
+
+    float pGainFwd;
+    float pGainTurn;
+
+    float fwdDeadband;
+    float turnDeadband;
+
+    RunningSum forwardRunningError;
+    RunningSum turnRunningError;
+
+    const static float FWD_DECAY = 0.5;
+    const static float TURN_DECAY = 0.5;
+};
+
+#endif

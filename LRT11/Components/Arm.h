@@ -1,5 +1,5 @@
 #ifndef ARM_H_
-#define Arm_H_
+#define ARM_H_
 
 #include "Component.h"
 #include "..\Config\Config.h"
@@ -13,7 +13,7 @@ private:
     string prefix;
     CLPotJaguar armEsc;
 
-    enum {kLow = 1, kHigh = 2} position;
+    enum {LOW = 1, HIGH = 2};
 
 public:
     Arm();

@@ -8,8 +8,8 @@ ClosedLoopDriveTrain::ClosedLoopDriveTrain(Esc& escLeft, Esc& escRight,
     , encoders(encoders)
     , config(Config::GetInstance())
     , dbsDrive(dbsDrive)
-    , fwdRunningError(kFwdDecay)
-    , turnRunningError(kTurnDecay)
+    , fwdRunningError(FWD_DECAY)
+    , turnRunningError(TURN_DECAY)
     , brakeLeft(false)
     , brakeRight(false)
 {
@@ -32,7 +32,7 @@ void ClosedLoopDriveTrain::Configure()
 }
 
 DriveOutput ClosedLoopDriveTrain::ComputeArcadeDrive(float rawFwd,
-        float rawTurnRateRPS)
+        float rawTurn)
 {
     if(brakeLeft && brakeRight)
         Stop();
@@ -50,11 +50,11 @@ DriveOutput ClosedLoopDriveTrain::ComputeArcadeDrive(float rawFwd,
     turningRate = Util::Clamp<float>(turningRate, -1, 1);
 
     // update the running sum with the error
-    float turningError = rawTurnRateRPS - turningRate;
+    float turningError = rawTurn - turningRate;
     turningError = turnRunningError.UpdateSum(turningError);
 
     float turningCorrection = turningError * pGainTurn;
-    float newTurn = rawTurnRateRPS + turningCorrection;
+    float newTurn = rawTurn + turningCorrection;
 
     // normalized forward speed
     float robotSpeed = encoders.GetNormalizedForwardSpeed();

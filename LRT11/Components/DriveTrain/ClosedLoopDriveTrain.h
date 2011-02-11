@@ -6,28 +6,9 @@
 #include "..\..\Config\Config.h"
 #include "..\..\Config\Configurable.h"
 #include "..\..\Jaguar\Esc.h"
+#include "..\..\Util\RunningSum.h"
 #include "DriveMethod.h"
 #include "DBSDrive.h"
-
-class RunningSum
-{
-public:
-    RunningSum(float decayConstant) :
-        decayConstant(decayConstant), runningSum(0)
-    {
-    }
-
-    float UpdateSum(float x)
-    {
-        runningSum *= decayConstant;
-        runningSum += x;
-        return runningSum * (1 - decayConstant);
-    }
-
-private:
-    float decayConstant;
-    float runningSum;
-};
 
 class ClosedLoopDriveTrain : public DriveMethod, public Configurable
 {
@@ -65,9 +46,8 @@ private:
     bool brakeLeft;
     bool brakeRight;
 
-    const static float kFwdDecay = 0.5;
-    const static float kTurnDecay = 0.5;
-
+    const static float FWD_DECAY = 0.5;
+    const static float TURN_DECAY = 0.5;
 };
 
 #endif

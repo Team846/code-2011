@@ -10,7 +10,7 @@ void Brain::Teleop()
     action.driveTrain.brakeRight = inputs.GetBrakeRight();
 
     action.encoderData.shouldCollect = inputs.ShouldCollectEncoderData();
-    action.gearbox.gear = action.gearbox.kLowGear;
+    action.gearbox.gear = action.gearbox.LOW_GEAR;
 
     if(isFinale /* && inputs.ShouldDeployMinibot() */)
     {

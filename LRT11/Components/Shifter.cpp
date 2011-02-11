@@ -6,7 +6,7 @@
 Shifter::Shifter()
     : leftShiftServo(RobotConfig::LEFT_GEARBOX_SERVO_PORT)
     , rightShiftServo(RobotConfig::RIGHT_GEARBOX_SERVO_PORT)
-    , currentGear(kLowGear)
+    , currentGear(LOW_GEAR)
     , tickCounter(0)
 {
 
@@ -22,8 +22,8 @@ void Shifter::Output()
     bool leftEngaged, rightEngaged;
     switch(action.gearbox.gear)
     {
-    case kLowGear :
-        newGear = kLowGear;
+    case LOW_GEAR :
+        newGear = LOW_GEAR;
 
         leftEngaged = fabs(leftShiftServo.Get() - leftLowGearServoVal)
                 < shifterEngagedMargin;
@@ -31,8 +31,8 @@ void Shifter::Output()
                 < shifterEngagedMargin;
 
         break;
-    case kHighGear :
-        newGear = kHighGear;
+    case HIGH_GEAR :
+        newGear = HIGH_GEAR;
 
         leftEngaged = fabs(leftShiftServo.Get() - leftHighGearServoVal)
                 < shifterEngagedMargin;
@@ -51,12 +51,12 @@ void Shifter::Output()
         return;
     }
 
-    if(currentGear == kLowGear)
+    if(currentGear == LOW_GEAR)
     {
         leftShiftServo.Set(leftLowGearServoVal);
         rightShiftServo.Set(rightLowGearServoVal);
     }
-    else if(currentGear == kHighGear)
+    else if(currentGear == HIGH_GEAR)
     {
         leftShiftServo.Set(leftHighGearServoVal);
         rightShiftServo.Set(rightHighGearServoVal);

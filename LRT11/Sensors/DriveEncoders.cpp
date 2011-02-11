@@ -66,7 +66,12 @@ double DriveEncoders::GetTurnTicks()
 
 double DriveEncoders::GetTurnRevolutions()
 {
-    return (encoderRight.Get() - encoderLeft.Get()) / kTicksPerFullTurn;
+    return GetTurnTicks() / kTicksPerFullTurn;
+}
+
+double DriveEncoders::GetTurnAngle()
+{
+    return GetTurnRevolutions() * 360.0;
 }
 
 double DriveEncoders::GetLeftWheelDist()

@@ -24,16 +24,16 @@ void Lift::Output()
 
     switch(action.lift.position)
     {
-    case kStowed:
+    case STOWED:
         key += "stowed";
         break;
-    case kLowPeg:
+    case LOW_PEG:
         key += "lowPeg";
         break;
-    case kMedPeg:
+    case MED_PEG:
         key += "mediumPeg";
         break;
-    case kHighPeg:
+    case HIGH_PEG:
         key += "highPeg";
         break;
     }

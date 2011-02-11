@@ -7,7 +7,7 @@ class Shifter : public Component
 {
 private:
     Servo leftShiftServo, rightShiftServo;
-    enum {kLowGear = 1 , kHighGear = 2} currentGear, newGear;
+    enum {LOW_GEAR = 1 , HIGH_GEAR = 2} currentGear, newGear;
 
     int tickCounter;
 
