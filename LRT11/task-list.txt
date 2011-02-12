@@ -14,7 +14,7 @@ Tasks stil left to do
 - Calibrate methods					[A: 2/10/11]
 - Add register configurable			[A: 2/10/11]
 - Component takes in prefix			[A: 2/10/11]
-- Default values of all action data [A: 2/11/11]
+~ Default values of all action data [A: 2/11/11] K.Ve
 - Default configure in constructor 	[A: 2/11/11]
 - Log everything via SmartDashboard [A: 2/11/11]
 - Fix kicker 						[A: 2/11/11]
