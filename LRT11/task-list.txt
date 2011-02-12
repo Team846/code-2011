@@ -3,28 +3,28 @@
 | - Unfinished task  |
 | ~ Task in progress |
 | / Finished task    |
-| D: Date added      |
+| A: Date added      |
 | C: Date completed  |
 ======================
 
 Tasks stil left to do
-- SmartDashboard configuration		[D: 2/7/11]
-- Name gains correctly				[D: 2/10/11]
-- Roller							[D: 2/11/11]
-- Calibrate methods					[D: 2/10/11]
-- Add register configurable			[D: 2/10/11]
-- Component takes in prefix			[D: 2/10/11]
-- Default values of all action data [D: 2/11/11]
-- Default configure in constructor 	[D: 2/11/11]
-- Log everything via SmartDashboard [D: 2/11/11]
-- Fix kicker 						[D: 2/11/11]
+- SmartDashboard configuration		[A: 2/7/11]
+- Name gains correctly				[A: 2/10/11]
+- Roller							[A: 2/11/11]
+- Calibrate methods					[A: 2/10/11]
+- Add register configurable			[A: 2/10/11]
+- Component takes in prefix			[A: 2/10/11]
+- Default values of all action data [A: 2/11/11]
+- Default configure in constructor 	[A: 2/11/11]
+- Log everything via SmartDashboard [A: 2/11/11]
+- Fix kicker 						[A: 2/11/11]
 
 Periodic tasks
-- Take backup of LRTConfig11.txt	[D: 2/11/11]
+- Take backup of LRTConfig11.txt	[A: 2/11/11]
 
 Finished tasks
 / Servo shifter assumes that values are exact 	[C: 2/7/11]
-/ Update LRTEncoder class (add duplicate) 	  	[D: 2/7/11, C: 2/11/11]
+/ Update LRTEncoder class (add duplicate) 	  	[A: 2/7/11, C: 2/11/11]
 / Closed loop control on the jaguars 			[C: 2/7/11]
 / Apply/load config buttons 					[C: 2/7/11]
-/ CLPositionControl 							[D: 2/11/11, C: 2/11/11]
+/ CLPositionControl 							[A: 2/11/11, C: 2/11/11]
