@@ -16,8 +16,8 @@ private:
 
     // encoderLeftUseless and encoderRightUseless used to fix WPILib bug;
     // only evenly instantiated encoders work
-    LRTEncoder encoderLeftUseless, encoderLeft;
-    LRTEncoder encoderRightUseless, encoderRight;
+    LRTEncoder encoderLeft;
+    LRTEncoder encoderRight;
 
     // floats to prevent integer division
     const static float kWheelDiameter = 8.0; // in

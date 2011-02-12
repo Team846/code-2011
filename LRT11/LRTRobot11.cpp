@@ -3,9 +3,10 @@
 LRTRobot11::LRTRobot11()
     : brain()
     , controller(CANBusController::GetInstance())
-    , drive()
-    , encoderData()
-    , shifter()
+//    , drive()
+    , positionDrive()
+//    , encoderData()
+//    , shifter()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -43,9 +44,14 @@ void LRTRobot11::MainLoop()
     if(gameState != DISABLED)
     {
         // components to output only when enabled
+//        {
+//            ProfiledSection("Drive Train");
+//            drive.Output();
+//        }
+
         {
-            ProfiledSection("Drive Train");
-            drive.Output();
+            ProfiledSection("Position Drive");
+            positionDrive.Output();
         }
 
         // {
@@ -53,10 +59,10 @@ void LRTRobot11::MainLoop()
         //    encoderData.Output();
         // }
 
-        {
-            ProfiledSection("Servo Shifting");
-            shifter.Output();
-        }
+//        {
+//            ProfiledSection("Servo Shifting");
+//            shifter.Output();
+//        }
 
         // To add another component output:
         //

@@ -7,6 +7,7 @@
 #include "Components/DriveTrain.h"
 #include "Components/EncoderDataCollection.h"
 #include "Components/Shifter.h"
+#include "Components/PositionDriveTrain.h"
 #include "Config/Config.h"
 
 class LRTRobot11 : public LRTRobotBase
@@ -14,10 +15,11 @@ class LRTRobot11 : public LRTRobotBase
 private:
     Brain brain;
     CANBusController& controller;
-    DriveTrain drive;
+//    DriveTrain drive;
+    PositionDriveTrain positionDrive;
 
-    EncoderDataCollection encoderData;
-    Shifter shifter;
+//    EncoderDataCollection encoderData;
+//    Shifter shifter;
 
     Config& config;
 

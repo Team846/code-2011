@@ -24,6 +24,8 @@ public:
     bool MoveDistanceOutput();
     bool TurnAngleOutput();
 
+    void Stop();
+
 private:
     ClosedLoopDriveTrain drive;
     DriveEncoders& encoders;
@@ -31,18 +33,21 @@ private:
     struct
     {
         bool hasCommand;
-        float target, distance;
+        float target;
+        float delta;
     } moveDistanceInfo;
 
     struct
     {
         bool hasCommand;
         bool pivotLeft, pivotRight;
-        float target, angle;
+        float target, distance;
     } turnAngleInfo;
 
     float pGainFwd;
+    float pGainFwdTurnCorrection;
     float pGainTurn;
+    float pGainTurnFwdCorrection;
 
     float fwdDeadband;
     float turnDeadband;

@@ -1,7 +1,9 @@
 #include "LRTEncoder.h"
+#include "..\Util\AsynchronousPrinter.h"
 
 LRTEncoder::LRTEncoder(UINT8 sourceA, UINT8 sourceB)
-    : Encoder(sourceA, sourceB, false, CounterBase::k1X)
+    : useless(sourceA, sourceB, false, CounterBase::k1X)
+    , Encoder(sourceA, sourceB, false, CounterBase::k1X)
 {
 
 }

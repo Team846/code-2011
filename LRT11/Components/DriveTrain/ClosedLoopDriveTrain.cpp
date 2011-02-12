@@ -14,6 +14,7 @@ ClosedLoopDriveTrain::ClosedLoopDriveTrain(Esc& escLeft, Esc& escRight,
     , brakeRight(false)
 {
     Config::RegisterConfigurable(this);
+    Configure();
 }
 
 void ClosedLoopDriveTrain::Configure()
@@ -49,7 +50,7 @@ DriveOutput ClosedLoopDriveTrain::ComputeArcadeDrive(float rawFwd,
     // values over mag |1| will cause the closed loop to slow down
     turningRate = Util::Clamp<float>(turningRate, -1, 1);
 
-    // update the running sum with the error
+    // update the running sum witrah the error
     float turningError = rawTurn - turningRate;
     turningError = turnRunningError.UpdateSum(turningError);
 
@@ -65,10 +66,11 @@ DriveOutput ClosedLoopDriveTrain::ComputeArcadeDrive(float rawFwd,
     float fwdCorrection = fwdError * pGainFwd;
     float newFwd = rawFwd + fwdCorrection;
 
-    SmartDashboard::Log(turningRate, "Turning Rate");
-    SmartDashboard::Log(robotSpeed, "Robot Speed");
+    //SmartDashboard::Log(turningRate, "Turning Rate");
     SmartDashboard::Log(pGainFwd, "Forward Gain");
     SmartDashboard::Log(pGainTurn, "Turn Gain");
+    SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
+    SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
     SmartDashboard::Log(newFwd, "Forward");
     SmartDashboard::Log(newTurn, "Turn");
 

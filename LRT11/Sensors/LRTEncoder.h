@@ -9,6 +9,9 @@
  */
 class LRTEncoder : public Encoder
 {
+private:
+    Encoder useless;
+
 public:
     LRTEncoder(UINT8 sourceA, UINT8 sourceB);
     ~LRTEncoder();

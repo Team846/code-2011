@@ -22,6 +22,7 @@ public:
     struct
     {
         bool shouldMoveDistance, shouldTurnAngle;
+        bool shouldOutputMoveDistance, shouldOutputTurnAngle;
         // moveDistance in inches, turnAngle in degrees
         float moveDistance, turnAngle;
         bool pivotLeft, pivotRight;
