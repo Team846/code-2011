@@ -5,10 +5,9 @@
 #include "ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
 
-class CLPotJaguar : public ProxiedCANJaguar
+class CLPotJaguar : public ProxiedCANJaguar, public Configurable
 {
 private:
-    Config& config;
     string prefix;
 
 public:
@@ -16,8 +15,7 @@ public:
             double defaultI = 0, double defaultD = 0);
     ~CLPotJaguar();
 
-    void LoadSoftPositionLimits(double defaultForwardLimit,
-            double defaultReverseLimit);
+    virtual void Configure();
 };
 
 #endif

@@ -6,7 +6,7 @@ Lift::Lift()
     , prefix("Lift.")
     , liftEsc(RobotConfig::CAN_LIFT, 10, prefix)
 {
-    liftEsc.LoadSoftPositionLimits(0, 10);
+
 }
 
 Lift::~Lift()

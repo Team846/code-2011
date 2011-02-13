@@ -2,18 +2,9 @@
 
 CLPotJaguar::CLPotJaguar(UINT8 channel, int turns, string configPrefix, double defaultP, double defaultI, double defaultD)
     : ProxiedCANJaguar(channel)
-    , config(Config::GetInstance())
     , prefix(configPrefix)
 {
-    // configuration to closed loop position control mode
-    SetControlMode(CANJaguar::kPosition);
-    SetPositionReference(CANJaguar::kPosRef_Potentiometer);
     SetPotentiometerTurns(turns);
-
-    // pid configuration
-    SetPID(config.Get<double>(prefix + "pGain", defaultP), config.Get<double>(prefix + "iGain", defaultI),
-            config.Get<double>(prefix + "dGain", defaultD));
-
     EnableControl();
 }
 
@@ -22,9 +13,16 @@ CLPotJaguar::~CLPotJaguar()
     // nothing
 }
 
-void CLPotJaguar::LoadSoftPositionLimits(double defaultForwardLimit, double defaultReverseLimit)
+void CLPotJaguar::Configure()
 {
-    double forwardLimit = config.Get<double>(prefix + "forwardLimit", defaultForwardLimit);
-    double reverseLimit = config.Get<double>(prefix + "reverseLimit", defaultReverseLimit);
-    ConfigSoftPositionLimits(forwardLimit, reverseLimit);
+    Config& config = Config::GetInstance();
+
+    SetControlMode(CANJaguar::kPosition);
+    SetPositionReference(CANJaguar::kPosRef_Potentiometer);
+
+    SetPID(config.Get<double>(prefix + "pGain", 1), config.Get<double>(prefix + "iGain", 0),
+            config.Get<double>(prefix + "dGain", 0));
+
+    ConfigSoftPositionLimits(config.Get<double>(prefix + "forwardLimit", 0),
+            config.Get<double>(prefix + "reverseLimit", 10));
 }

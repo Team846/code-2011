@@ -8,8 +8,7 @@
 #include "..\Config\Configurable.h"
 #include "..\Util\Util.h"
 
-class ProcessedInputs : public SensorBase,
-    public Configurable
+class ProcessedInputs : public SensorBase, public Configurable
 {
 private:
     static ProcessedInputs* instance;

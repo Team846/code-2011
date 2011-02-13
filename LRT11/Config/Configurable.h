@@ -6,6 +6,8 @@
 class Configurable
 {
 public:
+    Configurable();
     virtual void Configure() = 0;
 };
+
 #endif

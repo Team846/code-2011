@@ -6,8 +6,6 @@ CLPositionDriveTrain::CLPositionDriveTrain(ClosedLoopDriveTrain train)
     , forwardRunningError(FWD_DECAY)
     , turnRunningError(TURN_DECAY)
 {
-    Config::RegisterConfigurable(this);
-    Configure();
     moveDistanceInfo.hasCommand = false;
     turnAngleInfo.hasCommand    = false;
     turnAngleInfo.pivotLeft     = false;

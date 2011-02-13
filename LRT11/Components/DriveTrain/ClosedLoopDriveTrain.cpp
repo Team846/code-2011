@@ -13,8 +13,6 @@ ClosedLoopDriveTrain::ClosedLoopDriveTrain(Esc& escLeft, Esc& escRight,
     , brakeLeft(false)
     , brakeRight(false)
 {
-    Config::RegisterConfigurable(this);
-    Configure();
 }
 
 void ClosedLoopDriveTrain::Configure()

@@ -31,13 +31,12 @@ Esc::Esc(int channel, LRTEncoder& encoder, string name) :
     ProxiedCANJaguar(channel), CANJaguarBrake((*(ProxiedCANJaguar*)this)),
     encoder(encoder), name(name), index(0), errorRunning(0)
 {
-    Config::RegisterConfigurable(this);
 }
 
 void Esc::Configure()
 {
     string prefix("Esc.");
-    pgain = Config::GetInstance().Get<float>(prefix + "pgain", 4.0);
+    pGain = Config::GetInstance().Get<float>(prefix + "pGain", 4.0);
 }
 
 float Esc::GetNormalizedSpeed()
@@ -59,7 +58,7 @@ void Esc::Stop()
     errorRunning *= k;
     errorRunning += error;
 
-    Set(errorRunning * pgain * (1 - k));
+    Set(errorRunning * pGain * (1 - k));
     ApplyBrakes(8);
 }
 

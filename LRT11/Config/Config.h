@@ -10,7 +10,7 @@
 #include <string>
 #include <fstream>
 #include <map>
-#include "..\Components\Component.h"
+#include "../Components/Component.h"
 
 class Config : public SensorBase, public Component
 {

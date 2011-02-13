@@ -5,7 +5,6 @@ DBSDrive::DBSDrive(Esc& leftDrive, Esc& rightDrive, bool isSquaredInputs)
     , isSquaredInputs(isSquaredInputs)
     , prefix("DBSDrive.")
 {
-    Config::RegisterConfigurable(this);
 }
 
 DBSDrive::~DBSDrive()

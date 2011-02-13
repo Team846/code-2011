@@ -9,7 +9,6 @@ ProcessedInputs::ProcessedInputs()
             DriverStationConfig::NUM_JOYSTICK_AXES)
 {
     AddToSingletonList();
-    Config::RegisterConfigurable(this);
 }
 
 ProcessedInputs::~ProcessedInputs()

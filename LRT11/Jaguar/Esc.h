@@ -19,6 +19,7 @@ public:
     virtual void Configure();
     void Stop();
     virtual void Set(float speed, UINT8 syncGroup = 0);
+
 private:
 
     class CurrentLimiter
@@ -47,11 +48,12 @@ private:
     string name;
 
     float GetNormalizedSpeed();
-    float pgain;
+    float pGain;
     int index;
 
     const static int kArraySize = 4;
     float errorRunning;
     float errors[kArraySize];
 };
+
 #endif /* ESC_H_ */
