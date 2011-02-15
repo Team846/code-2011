@@ -2,6 +2,7 @@
 #define CONFIGURABLE_H_
 
 #include "../General.h"
+#include "../Util/AsynchronousPrinter.h"
 
 class Configurable
 {

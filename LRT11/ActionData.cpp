@@ -10,28 +10,38 @@ ActionData& ActionData::GetInstance()
 }
 
 ActionData::ActionData()
-	:driveTrain.rawForward(0),
-    driveTrain.rawTurn(0),
-	driveTrain.brakeLeft(false),
-	driveTrain.brakeRight(false),
-	positionTrain.shouldMoveDistance(false),
-	positionTrain.shouldTurnAngle(false),
-	positionTrain.shouldOutputMoveDistance(false),
-	positionTrain.shouldOutputTurnAngle(false),
-	positionTrain.moveDistance(0),
-	positionTrain.turnAngle(0),
-	positionTrain.pivotLeft(false),
-	positionTrain.pivotRight(false),
-	positionTrain.done(false),
-	lift.highRow(false),
-	arm.usePreset(false),
-	arm.customSetpoint(LOW),
-	encoderData.shouldCollect(false),
-	config.load(false),
-	config.save(false),
-	config.apply(false)
 {
     AddToSingletonList();
+
+    driveTrain.rawForward = 0;
+    driveTrain.rawTurn = 0;
+    driveTrain.brakeLeft = false;
+    driveTrain.brakeRight = false;
+
+    positionTrain.shouldMoveDistance = false;
+    positionTrain.shouldTurnAngle = false;
+    positionTrain.shouldOutputMoveDistance = false;
+    positionTrain.shouldOutputTurnAngle = false;
+    positionTrain.moveDistance = 0;
+    positionTrain.turnAngle = 0;
+    positionTrain.pivotLeft = false;
+    positionTrain.pivotRight = false;
+    positionTrain.done = false;
+
+    lift.position = lift.STOWED;
+    lift.highRow = false;
+
+    arm.usePreset = false;
+    arm.position = arm.HIGH;
+    arm.customSetpoint = 0.5;
+
+    encoderData.shouldCollect = false;
+
+    gearbox.gear = gearbox.LOW_GEAR;
+
+    config.load = false;
+    config.save = false;
+    config.apply = false;
 }
 
 ActionData::~ActionData()

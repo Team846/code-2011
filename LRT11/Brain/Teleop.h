@@ -9,17 +9,17 @@ void Brain::Teleop()
     action.driveTrain.brakeLeft  = inputs.GetBrakeLeft();
     action.driveTrain.brakeRight = inputs.GetBrakeRight();
 
-    static bool shouldMoveDistance = false;
-    action.positionTrain.shouldMoveDistance = false;
-    action.positionTrain.shouldTurnAngle    = shouldMoveDistance;
-    shouldMoveDistance = false;
-
-    if(previousState == DISABLED)
-        shouldMoveDistance = true;
-
-    action.positionTrain.pivotLeft = false;
-    action.positionTrain.pivotRight = false;
-    action.positionTrain.turnAngle = 90;
+//    static bool shouldMoveDistance = false;
+//    action.positionTrain.shouldMoveDistance = false;
+//    action.positionTrain.shouldTurnAngle    = shouldMoveDistance;
+//    shouldMoveDistance = false;
+//
+//    if(previousState == DISABLED)
+//        shouldMoveDistance = true;
+//
+//    action.positionTrain.pivotLeft = false;
+//    action.positionTrain.pivotRight = false;
+//    action.positionTrain.turnAngle = 90;
 
     action.encoderData.shouldCollect = inputs.ShouldCollectEncoderData();
     action.gearbox.gear = action.gearbox.LOW_GEAR;
