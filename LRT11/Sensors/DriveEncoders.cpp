@@ -15,6 +15,8 @@ DriveEncoders::DriveEncoders()
     , encoderRight(RobotConfig::DIO_ENCODER_RIGHT_A,
             RobotConfig::DIO_ENCODER_RIGHT_B)
 {
+    AddToSingletonList();
+
     // want to stay with ticks/second
     encoderLeft.SetDistancePerPulse(1);
     encoderRight.SetDistancePerPulse(1);

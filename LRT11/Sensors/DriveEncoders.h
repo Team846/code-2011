@@ -9,7 +9,7 @@
 
 #define CHANGEME 0
 
-class DriveEncoders
+class DriveEncoders : public SensorBase
 {
 private:
     static DriveEncoders* instance;
