@@ -31,7 +31,7 @@ public:
     virtual ~DriveEncoders();
 
     const static float kPulsesPerRevolution = 187.5; // pulses per wheel revolution [BA]
-    const static float kMaxEncoderRate      = 3000 * 16. / 9;
+    const static float kMaxEncoderRate      = 1411.96;
     const static double kMaxTurningRate     = 6725. / 15.0;
     const static double kTicksPerFullTurn   = 6725. / 6;
 

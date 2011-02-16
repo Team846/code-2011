@@ -18,6 +18,8 @@ DriveTrain::~DriveTrain()
 
 void DriveTrain::Output()
 {
+    left.UpdateOutput();
+    right.UpdateOutput();
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
     robotDrive.SetBrakeRight(action.driveTrain.brakeRight);
     robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);

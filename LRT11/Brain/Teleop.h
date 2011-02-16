@@ -21,7 +21,7 @@ void Brain::Teleop()
 //    action.positionTrain.pivotRight = false;
 //    action.positionTrain.turnAngle = 90;
 
-    action.encoderData.shouldCollect = inputs.ShouldCollectEncoderData();
+//    action.encoderData.shouldCollect = inputs.ShouldCollectEncoderData();
     action.gearbox.gear = action.gearbox.LOW_GEAR;
 
     if(isFinale /* && inputs.ShouldDeployMinibot() */)

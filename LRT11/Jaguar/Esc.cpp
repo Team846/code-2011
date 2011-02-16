@@ -62,8 +62,9 @@ void Esc::Stop()
     ApplyBrakes(8);
 }
 
-void Esc::Set(float speed, UINT8 syncGroup)
+void Esc::Set(float speed)
 {
-    //No current limiting as of now
-    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));
+    // no current limiting
+    ProxiedCANJaguar::Set(Util::Clamp<float>(speed, -1.0, 1.0));
+//    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));
 }

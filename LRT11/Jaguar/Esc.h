@@ -18,7 +18,7 @@ public:
 
     virtual void Configure();
     void Stop();
-    virtual void Set(float speed, UINT8 syncGroup = 0);
+    virtual void Set(float speed);
 
 private:
 

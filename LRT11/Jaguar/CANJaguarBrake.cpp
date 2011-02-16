@@ -9,7 +9,6 @@ CANJaguarBrake::CANJaguarBrake(ProxiedCANJaguar& jaggie)
 
 void CANJaguarBrake::ApplyBrakes(int brakeAmount)
 {
-    AsynchronousPrinter::Printf("Apply brakes\n");
     amount = Util::Clamp<int>(brakeAmount, 0, 8);
 }
 
@@ -22,7 +21,6 @@ void CANJaguarBrake::UpdateOutput()
     if(cycleCount >= 8)
         cycleCount = 0;
 
-    AsynchronousPrinter::Printf("Updating output\n");
     if(ditherPattern[amount] & (1 << cycleCount))
         jaguar.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
     else
