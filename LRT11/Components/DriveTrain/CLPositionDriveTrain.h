@@ -6,12 +6,12 @@
 #include "..\..\Config\Config.h"
 #include "..\..\Config\Configurable.h"
 #include "..\..\Util\RunningSum.h"
-#include "ClosedLoopDriveTrain.h"
+#include "CLRateDriveTrain.h"
 
 class CLPositionDriveTrain : public Configurable
 {
 public:
-    CLPositionDriveTrain(ClosedLoopDriveTrain train);
+    CLPositionDriveTrain(CLRateDriveTrain train);
 
     virtual void Configure();
 
@@ -27,7 +27,7 @@ public:
     void Stop();
 
 private:
-    ClosedLoopDriveTrain drive;
+    CLRateDriveTrain drive;
     DriveEncoders& encoders;
 
     struct

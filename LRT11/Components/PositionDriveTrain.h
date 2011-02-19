@@ -6,7 +6,7 @@
 #include "..\Jaguar\Esc.h"
 #include "..\Sensors\DriveEncoders.h"
 #include "DriveTrain\DBSDrive.h"
-#include "DriveTrain\ClosedLoopDriveTrain.h"
+#include "DriveTrain\CLRateDriveTrain.h"
 #include "DriveTrain\CLPositionDriveTrain.h"
 
 class PositionDriveTrain : public Component
@@ -15,7 +15,7 @@ private:
     DriveEncoders& encoders;
     Esc left, right;
     DBSDrive dbsDrive;
-    ClosedLoopDriveTrain robotDrive;
+    CLRateDriveTrain robotDrive;
     CLPositionDriveTrain positionDrive;
 
 public:

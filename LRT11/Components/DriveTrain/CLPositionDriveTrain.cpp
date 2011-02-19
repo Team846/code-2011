@@ -1,6 +1,6 @@
 #include "CLPositionDriveTrain.h"
 
-CLPositionDriveTrain::CLPositionDriveTrain(ClosedLoopDriveTrain train)
+CLPositionDriveTrain::CLPositionDriveTrain(CLRateDriveTrain train)
     : drive(train)
     , encoders(DriveEncoders::GetInstance())
     , forwardRunningError(FWD_DECAY)

@@ -1,6 +1,6 @@
-#include "ClosedLoopDriveTrain.h"
+#include "CLRateDriveTrain.h"
 
-ClosedLoopDriveTrain::ClosedLoopDriveTrain(Esc& escLeft, Esc& escRight,
+CLRateDriveTrain::CLRateDriveTrain(Esc& escLeft, Esc& escRight,
         DriveEncoders& encoders, DBSDrive& dbsDrive)
     : DriveMethod(escLeft, escRight)
     , escLeft(escLeft)
@@ -15,7 +15,7 @@ ClosedLoopDriveTrain::ClosedLoopDriveTrain(Esc& escLeft, Esc& escRight,
 {
 }
 
-void ClosedLoopDriveTrain::Configure()
+void CLRateDriveTrain::Configure()
 {
     const static string prefix = "ClosedLoopDriveTrain.";
 
@@ -30,7 +30,7 @@ void ClosedLoopDriveTrain::Configure()
             + "driveStraightTurningTolerance", 0.15);
 }
 
-DriveOutput ClosedLoopDriveTrain::ComputeArcadeDrive(float rawFwd,
+DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
         float rawTurn)
 {
     if(brakeLeft && brakeRight)
@@ -75,29 +75,29 @@ DriveOutput ClosedLoopDriveTrain::ComputeArcadeDrive(float rawFwd,
     return dbsDrive.ComputeArcadeDrive(newFwd, newTurn);
 }
 
-void ClosedLoopDriveTrain::PivotLeft(float rightSpeed)
+void CLRateDriveTrain::PivotLeft(float rightSpeed)
 {
     escLeft.Stop();
     escRight.Set(rightSpeed);
 }
 
-void ClosedLoopDriveTrain::PivotRight(float leftSpeed)
+void CLRateDriveTrain::PivotRight(float leftSpeed)
 {
     escRight.Stop();
     escLeft.Set(leftSpeed);
 }
 
-void ClosedLoopDriveTrain::SetBrakeLeft(bool brakeLeft)
+void CLRateDriveTrain::SetBrakeLeft(bool brakeLeft)
 {
     this->brakeLeft = brakeLeft;
 }
 
-void ClosedLoopDriveTrain::SetBrakeRight(bool brakeRight)
+void CLRateDriveTrain::SetBrakeRight(bool brakeRight)
 {
     this->brakeRight = brakeRight;
 }
 
-void ClosedLoopDriveTrain::Stop()
+void CLRateDriveTrain::Stop()
 {
     escRight.Stop();
     escLeft.Stop();

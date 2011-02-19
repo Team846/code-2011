@@ -12,14 +12,15 @@ Tasks stil left to do (priority)
 - Calibrate methods					[A: 2/10/11] - Brian Axelrod
 	- Component takes in prefix		[A: 2/10/11]
 - Button mapings for ThurstMaster	[A: 2/15/11] - Brain Axelrod
-- Standardize CL nomenclature		[A: 2/12/11] - Karthik Viswanathan
-- Fix profiler						[A: 2/15/11] - Karthik Viswanathan
+/ Standardize CL nomenclature		[A: 2/12/11, C: 2/18/11] - Karthik Viswanathan
+/ Fix profiler						[A: 2/15/11, C: 2/18/11] - Karthik Viswanathan
+/ Print out build/run numbers       [A: 2/18/11, C: 2/18/11] - Karthik Viswanathan
 - SmartDashboard configuration		[A: 2/7/11 ]
 	- Log everything  				[A: 2/11/11]
 - Name gains correctly				[A: 2/10/11]
 
 Periodic tasks
-- Take backup of LRTConfig11.txt	[A: 2/11/11]
+- Take backup of LRTConfig11.txt	[A: 2/11/11, C: 2/18/11]
 
 Finished tasks
 / Servo shifter assumes that values are exact 	[A: 2/7/11,  C: 2/7/11 ]

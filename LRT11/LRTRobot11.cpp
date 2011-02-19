@@ -23,8 +23,11 @@ void LRTRobot11::RobotInit()
     config.ConfigureAll();
     config.Save();
 
-    SmartDashboard::Log((Util::ToString<int>(config.Get<int>("BuildNumber")) + "-" +
-            Util::ToString<int>(config.Get<int>("RunNumber"))).c_str(), "Build/Run");
+    const char* build = (Util::ToString<int>(config.Get<int>("BuildNumber")) + "-" +
+            Util::ToString<int>(config.Get<int>("RunNumber"))).c_str();
+
+    SmartDashboard::Log(build, "Build/Run");
+    AsynchronousPrinter::Printf(build);
 }
 
 void LRTRobot11::MainLoop()

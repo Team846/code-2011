@@ -10,10 +10,10 @@
 #include "DriveMethod.h"
 #include "DBSDrive.h"
 
-class ClosedLoopDriveTrain : public DriveMethod, public Configurable
+class CLRateDriveTrain : public DriveMethod, public Configurable
 {
 public:
-    ClosedLoopDriveTrain(Esc& escLeft, Esc& escRight, DriveEncoders& encoders,
+    CLRateDriveTrain(Esc& escLeft, Esc& escRight, DriveEncoders& encoders,
             DBSDrive& dbsDrive);
 
     virtual DriveOutput ComputeArcadeDrive(float rawFwd, float rawTurn);

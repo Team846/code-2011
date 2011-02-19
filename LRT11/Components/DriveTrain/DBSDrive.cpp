@@ -21,7 +21,6 @@ void DBSDrive::Configure()
 {
     Config& config = Config::GetInstance();
 
-    AsynchronousPrinter::Printf("Configuring DBSDrive\n");
     maxBraking = config.Get<int>(prefix + "maxBraking", 8);
     turnInPlaceThreshold = config.Get<float>(prefix + "turnInPlaceThreshold",
             10. / 128);

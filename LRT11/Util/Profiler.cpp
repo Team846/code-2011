@@ -30,9 +30,9 @@ void Profiler::StartNewCycle()
     if(cycleIndex >= reportPeriod)
     {
         double reportStart = Timer::GetFPGATimestamp();
-        stringstream data;
 
-        data << "Profiler (" << reportPeriod << " cycles)\n";
+        AsynchronousPrinter::Printf("----------------------\n");
+        AsynchronousPrinter::Printf("PROFILER (%d cycles)\n", reportPeriod);
 
         typedef map<string, double>::value_type paired;
         typedef set< paired , SortBySecondValue<paired> > SetSortedBySecond;
@@ -53,14 +53,9 @@ void Profiler::StartNewCycle()
             int count = loggedCounts[it->first];
             double mean = loggedSums[it->first] / count;
 
-            data << " | " << left;
-            // data.width(30);
 
-            data << it->first << right;
-            // data.width(-1);
-
-            data << " ~" << fixed << setprecision(2) << mean << " [" << min << " - " << max <<
-                    "]" << "x" << count << "\n";
+            AsynchronousPrinter::Printf("| %-30s ~%.2f [%.2f-%.2f] x%d\n", it->first.c_str()
+                    , mean, min, max, count);
 
             ++i;
             if(i > reportLimit)
@@ -72,9 +67,7 @@ void Profiler::StartNewCycle()
         cycleIndex = 0;
         ClearLogBuffer();
 
-        data << "Report took " << reportTime << "ms\n";
-        SmartDashboard::Log(data.str().c_str(), "Detailed Report");
-        // AsynchronousPrinter::Printf(data.str().c_str());
+        AsynchronousPrinter::Printf("End report (%.2f ms)\n", reportTime);
     }
 }
 

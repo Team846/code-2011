@@ -20,7 +20,6 @@ private:
 
 //    EncoderDataCollection encoderData;
     Shifter shifter;
-
     Config& config;
 
     GameState prevState;
