@@ -1,9 +1,10 @@
 #include "Roller.h"
 #include "..\Config\RobotConfig.h"
+
 Roller::Roller()
     : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port number later
     , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
-    , config(Config::GetInstance())
+    , prefix("Roller.")
 {
     topRoller.SetControlMode(CANJaguar::kCurrent);
     bottomRoller.SetControlMode(CANJaguar::kCurrent);
@@ -34,8 +35,9 @@ void Roller::Stop()
 
 void Roller::RollOpposite(int direction)
 {
-    topRoller.Set(Util::Sign<int>(direction) * 1.0);
-    bottomRoller.Set(Util::Sign<int>(direction) * -1.0);
+    int sign = Util::Sign<int>(direction);
+    topRoller.Set(sign * 1.0);
+    bottomRoller.Set(sign * -1.0);
 }
 
 void Roller::Output()
@@ -59,7 +61,8 @@ void Roller::Output()
 
 void Roller::Configure()
 {
-    const static string prefix = "Roller.";
+    Config& config = Config::GetInstance();
+
     currentSpittingOut = config.Get<float>(prefix + "currentSpittingOut");
     currentSuckingIn = config.Get<float>(prefix + "currentSuckingIn");
 }

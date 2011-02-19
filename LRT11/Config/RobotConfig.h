@@ -11,15 +11,16 @@ public:
     const static UINT32 PWM_DRIVE_LEFT  = CHANGEME;
     const static UINT32 PWM_DRIVE_RIGHT = CHANGEME;
 
-    const static UINT32 CAN_DRIVE_LEFTA  = 2;
-    const static UINT32 CAN_DRIVE_LEFTB  = 3;
-    const static UINT32 CAN_DRIVE_RIGHTA = 4;
-    const static UINT32 CAN_DRIVE_RIGHTB = 5;
+    const static UINT32 CAN_DRIVE_LEFT_A  = 2;
+    const static UINT32 CAN_DRIVE_LEFT_B  = 3;
+    const static UINT32 CAN_DRIVE_RIGHT_A = 4;
+    const static UINT32 CAN_DRIVE_RIGHT_B = 5;
 
-    const static UINT32 CAN_LIFT = 6;
-    const static UINT32 CAN_ARM = 7;
-    const static UINT32 CAN_ROLLER_TOP = 8;
-    const static UINT32 CAN_ROLLER_BOTTOM = 9;
+    const static UINT32 CAN_LIFT = CHANGEME;
+    const static UINT32 CAN_ARM  = CHANGEME;
+
+    const static UINT32 CAN_ROLLER_TOP    = CHANGEME;
+    const static UINT32 CAN_ROLLER_BOTTOM = CHANGEME;
 
     // Servos
 

@@ -7,22 +7,23 @@
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Util\Util.h"
 
-
 class Roller : public Component, public Configurable
 {
 private:
     ProxiedCANJaguar topRoller;
     ProxiedCANJaguar bottomRoller;
 
-    Config& config;
+    string prefix;
     enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROLLING = 4};
 
-    float currentSuckingIn, currentSpittingOut;
+    float currentSuckingIn;
+    float currentSpittingOut;
 
     void RollInward();
     void RollOutward();
-    void Stop();
     void RollOpposite(int direction);
+    void Stop();
+
 public:
     Roller();
     virtual ~Roller();

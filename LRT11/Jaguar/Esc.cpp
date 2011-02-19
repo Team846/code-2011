@@ -39,13 +39,13 @@ Esc::Esc(int channel, LRTEncoder& encoder, string name)
 {
 }
 
-Esc::Esc(int channela, int channelb, LRTEncoder& encoder, string name)
-    : ProxiedCANJaguar(channela)
+Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
+    : ProxiedCANJaguar(channelA)
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(true)
-    , partner(new Esc(channelb, encoder, name + "b"))
+    , partner(new Esc(channelB, encoder, name + "B"))
     , encoder(encoder)
-    , name(name + "a")
+    , name(name + "A")
     , index(0)
     , errorRunning(0)
 {
@@ -94,4 +94,20 @@ void Esc::Set(float speed)
     // no current limiting
     ProxiedCANJaguar::Set(Util::Clamp<float>(speed, -1.0, 1.0));
 //    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));
+}
+
+void Esc::UpdateOutput()
+{
+    if(hasPartner)
+        partner->UpdateOutput();
+
+    CANJaguarBrake::UpdateOutput();
+}
+
+void Esc::ApplyBrakes(int brakeAmount)
+{
+    if(hasPartner)
+        partner->ApplyBrakes(brakeAmount);
+
+    CANJaguarBrake::ApplyBrakes(brakeAmount);
 }
