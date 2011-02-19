@@ -31,11 +31,11 @@ Esc::Esc(int channel, LRTEncoder& encoder, string name)
     : ProxiedCANJaguar(channel)
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(false)
+    , partner(0)
     , encoder(encoder)
     , name(name)
     , index(0)
     , errorRunning(0)
-    , partner(0)
 {
 }
 

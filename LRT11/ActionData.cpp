@@ -35,6 +35,8 @@ ActionData::ActionData()
     arm.position = arm.HIGH;
     arm.customSetpoint = 0.5;
 
+    roller.state = roller.STOPPED;
+
     encoderData.shouldCollect = false;
 
     gearbox.gear = gearbox.LOW_GEAR;

@@ -44,6 +44,11 @@ public:
 
     struct
     {
+        enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROLLING = 4} state;
+    } roller;
+
+    struct
+    {
         bool shouldCollect;
     } encoderData;
 

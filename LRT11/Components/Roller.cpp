@@ -1,10 +1,12 @@
 #include "Roller.h"
-
+#include "..\Config\RobotConfig.h"
 Roller::Roller()
-    : topRoller(10) // change port number later
-    , bottomRoller(11)
+    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port number later
+    , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
+    , config(Config::GetInstance())
 {
-
+    topRoller.SetControlMode(CANJaguar::kCurrent);
+    bottomRoller.SetControlMode(CANJaguar::kCurrent);
 }
 
 Roller::~Roller()
@@ -14,14 +16,20 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
-    topRoller.Set(1.0);
-    bottomRoller.Set(1.0);
+    topRoller.Set(currentSuckingIn);
+    bottomRoller.Set(currentSuckingIn);
 }
 
 void Roller::RollOutward()
 {
-    topRoller.Set(-1.0);
-    bottomRoller.Set(-1.0);
+    topRoller.Set(currentSpittingOut);
+    bottomRoller.Set(currentSpittingOut);
+}
+
+void Roller::Stop()
+{
+    topRoller.Set(0.0);
+    bottomRoller.Set(0.0);
 }
 
 void Roller::RollOpposite(int direction)
@@ -32,5 +40,26 @@ void Roller::RollOpposite(int direction)
 
 void Roller::Output()
 {
-    // to be defined later
+    switch(action.roller.state)
+    {
+    case STOPPED:
+        Stop();
+        break;
+    case SUCKING:
+        RollInward();
+        break;
+    case SPITTING:
+        RollOutward();
+        break;
+    case ROLLING:
+        // TODO
+        break;
+    }
+}
+
+void Roller::Configure()
+{
+    const static string prefix = "Roller.";
+    currentSpittingOut = config.Get<float>(prefix + "currentSpittingOut");
+    currentSuckingIn = config.Get<float>(prefix + "currentSuckingIn");
 }

@@ -18,6 +18,8 @@ public:
 
     const static UINT32 CAN_LIFT = 6;
     const static UINT32 CAN_ARM = 7;
+    const static UINT32 CAN_ROLLER_TOP = 8;
+    const static UINT32 CAN_ROLLER_BOTTOM = 9;
 
     // Servos
 
