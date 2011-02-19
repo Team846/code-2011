@@ -18,6 +18,7 @@ Tasks stil left to do (priority)
 - SmartDashboard configuration		[A: 2/7/11 ]
 	- Log everything  				[A: 2/11/11]
 - Name gains correctly				[A: 2/10/11]
+- Add wrappers for the partner jag for esc [A: 2/18/11]
 
 Periodic tasks
 - Take backup of LRTConfig11.txt	[A: 2/11/11, C: 2/18/11]

@@ -27,14 +27,35 @@ float Esc::CurrentLimiter::Limit(float targetSpeed, float robotSpeed)
 }
 
 // Esc Class
-Esc::Esc(int channel, LRTEncoder& encoder, string name) :
-    ProxiedCANJaguar(channel), CANJaguarBrake((*(ProxiedCANJaguar*)this)),
-    encoder(encoder), name(name), index(0), errorRunning(0)
+Esc::Esc(int channel, LRTEncoder& encoder, string name)
+    : ProxiedCANJaguar(channel)
+    , CANJaguarBrake((*(ProxiedCANJaguar*)this))
+    , hasPartner(false)
+    , encoder(encoder)
+    , name(name)
+    , index(0)
+    , errorRunning(0)
+    , partner(0)
+{
+}
+
+Esc::Esc(int channela, int channelb, LRTEncoder& encoder, string name)
+    : ProxiedCANJaguar(channela)
+    , CANJaguarBrake((*(ProxiedCANJaguar*)this))
+    , hasPartner(true)
+    , partner(new Esc(channelb, encoder, name + "b"))
+    , encoder(encoder)
+    , name(name + "a")
+    , index(0)
+    , errorRunning(0)
 {
 }
 
 void Esc::Configure()
 {
+    if(hasPartner)
+        partner->Configure();
+
     string prefix("Esc.");
     pGain = Config::GetInstance().Get<float>(prefix + "pGain", 4.0);
 }
@@ -46,6 +67,9 @@ float Esc::GetNormalizedSpeed()
 
 void Esc::Stop()
 {
+    if(hasPartner)
+        partner->Stop();
+
     float RobotSpeed = GetNormalizedSpeed();
     if(Util::Abs<double>(RobotSpeed) > 0.3)
     {
@@ -64,6 +88,9 @@ void Esc::Stop()
 
 void Esc::Set(float speed)
 {
+    if(hasPartner)
+        partner->Set(speed);
+
     // no current limiting
     ProxiedCANJaguar::Set(Util::Clamp<float>(speed, -1.0, 1.0));
 //    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));

@@ -11,16 +11,25 @@
 #include <string>
 using namespace std;
 
+#define PARTNERWRAP(a,b) a(){if(hasPartner)partner->a(); b::a();}
+#define PARTNERWRAPPARAM(a,b,d) a(b param){if(hasPartner)partner->a(param); d::a(param);}
+
 class Esc : public ProxiedCANJaguar, public CANJaguarBrake, public Configurable
 {
 public:
     Esc(int channel, LRTEncoder& encoder, string name);
+    Esc(int channela, int channelb, LRTEncoder& encoder, string name);
 
     virtual void Configure();
     void Stop();
     virtual void Set(float speed);
 
+    void PARTNERWRAP(UpdateOutput, CANJaguarBrake)
+    void PARTNERWRAPPARAM(ApplyBrakes, int, CANJaguarBrake)
+
 private:
+    bool hasPartner;
+    Esc* partner;
 
     class CurrentLimiter
     {

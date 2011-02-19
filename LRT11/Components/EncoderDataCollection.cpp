@@ -3,7 +3,7 @@
 EncoderDataCollection::EncoderDataCollection()
     : Component()
     , leftEncoder(DriveEncoders::GetInstance().GetLeftEncoder())
-    , left(RobotConfig::CAN_DRIVE_LEFT, leftEncoder, "left")
+    , left(RobotConfig::CAN_DRIVE_LEFTA, leftEncoder, "left")
 {
 
 }
