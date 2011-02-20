@@ -6,7 +6,8 @@ LRTRobot11::LRTRobot11()
     , drive()
 //    , positionDrive()
 //    , encoderData()
-    , shifter()
+//    , shifter()
+    , lift()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -52,6 +53,11 @@ void LRTRobot11::MainLoop()
             drive.Output();
         }
 
+        {
+            ProfiledSection("Lift");
+            lift.Output();
+        }
+
 //        {
 //            ProfiledSection("Position Drive");
 //            positionDrive.Output();
@@ -62,10 +68,10 @@ void LRTRobot11::MainLoop()
         //    encoderData.Output();
         // }
 
-        {
-            ProfiledSection("Servo Shifting");
-            shifter.Output();
-        }
+//        {
+//            ProfiledSection("Servo Shifting");
+//            shifter.Output();
+//        }
 
         // To add another component output:
         //

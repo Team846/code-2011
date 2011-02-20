@@ -8,6 +8,7 @@
 #include "Components/EncoderDataCollection.h"
 #include "Components/Shifter.h"
 #include "Components/PositionDriveTrain.h"
+#include "Components/Lift.h"
 #include "Config/Config.h"
 
 class LRTRobot11 : public LRTRobotBase
@@ -19,7 +20,9 @@ private:
 //    PositionDriveTrain positionDrive;
 
 //    EncoderDataCollection encoderData;
-    Shifter shifter;
+//    Shifter shifter;
+
+    Lift lift;
     Config& config;
 
     GameState prevState;

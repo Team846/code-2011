@@ -59,8 +59,8 @@ private:
     void BusWriterTask();
     int BusIdToIndex(int id);
 
-    const static int kMinJaguarId = 2;
-    const static int kMaxJaguarId = 5;
+    const static int kMinJaguarId = 20;
+    const static int kMaxJaguarId = 28;
     const static int kNumJaguars = kMaxJaguarId - kMinJaguarId + 1;
 
     volatile float setpoints[kNumJaguars];

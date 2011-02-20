@@ -42,37 +42,40 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
     if(brakeLeft || brakeRight)
         return NO_OUTPUT;
 
-    float turningRate = encoders.GetNormalizedTurningSpeed();
+    return dbsDrive.ComputeArcadeDrive(rawFwd, rawTurn);
+    /*
+        float turningRate = encoders.GetNormalizedTurningSpeed();
 
-    // eliminate spurrious measurements above mag |1|
-    // values over mag |1| will cause the closed loop to slow down
-    turningRate = Util::Clamp<float>(turningRate, -1, 1);
+        // eliminate spurrious measurements above mag |1|
+        // values over mag |1| will cause the closed loop to slow down
+        turningRate = Util::Clamp<float>(turningRate, -1, 1);
 
-    // update the running sum witrah the error
-    float turningError = rawTurn - turningRate;
-    turningError = turnRunningError.UpdateSum(turningError);
+        // update the running sum witrah the error
+        float turningError = rawTurn - turningRate;
+        turningError = turnRunningError.UpdateSum(turningError);
 
-    float turningCorrection = turningError * pGainTurn;
-    float newTurn = rawTurn + turningCorrection;
+        float turningCorrection = turningError * pGainTurn;
+        float newTurn = rawTurn + turningCorrection;
 
-    // normalized forward speed
-    float robotSpeed = encoders.GetNormalizedForwardSpeed();
+        // normalized forward speed
+        float robotSpeed = encoders.GetNormalizedForwardSpeed();
 
-    float fwdError = rawFwd - robotSpeed;
-    fwdError = fwdRunningError.UpdateSum(fwdError);
+        float fwdError = rawFwd - robotSpeed;
+        fwdError = fwdRunningError.UpdateSum(fwdError);
 
-    float fwdCorrection = fwdError * pGainFwd;
-    float newFwd = rawFwd + fwdCorrection;
+        float fwdCorrection = fwdError * pGainFwd;
+        float newFwd = rawFwd + fwdCorrection;
 
-    //SmartDashboard::Log(turningRate, "Turning Rate");
-    SmartDashboard::Log(pGainFwd, "Forward Gain");
-    SmartDashboard::Log(pGainTurn, "Turn Gain");
-    SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
-    SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
-    SmartDashboard::Log(newFwd, "Forward");
-    SmartDashboard::Log(newTurn, "Turn");
+        //SmartDashboard::Log(turningRate, "Turning Rate");
+        SmartDashboard::Log(pGainFwd, "Forward Gain");
+        SmartDashboard::Log(pGainTurn, "Turn Gain");
+        SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
+        SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
+        SmartDashboard::Log(newFwd, "Forward");
+        SmartDashboard::Log(newTurn, "Turn");
 
-    return dbsDrive.ComputeArcadeDrive(newFwd, newTurn);
+        return dbsDrive.ComputeArcadeDrive(newFwd, newTurn);
+    */
 }
 
 void CLRateDriveTrain::PivotLeft(float rightSpeed)

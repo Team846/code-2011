@@ -16,6 +16,7 @@ Lift::~Lift()
 
 void Lift::Output()
 {
+    /*
     string key = prefix;
     if(action.lift.highRow)
         key += "high.";
@@ -42,5 +43,6 @@ void Lift::Output()
     liftEsc.Set(setPoint);
 
     SmartDashboard::Log(setPoint, "Lift Set Point");
+    */
     SmartDashboard::Log(liftEsc.GetPosition(), "Lift Position");
 }
