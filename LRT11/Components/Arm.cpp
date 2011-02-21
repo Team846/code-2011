@@ -33,15 +33,10 @@ void Arm::Output()
         }
 
         if(action.arm.position != action.arm.TOP)
-            armSetPoint = config.Get<float>(key);
-        if (action.arm.setCurrentPositionAsSetPoint)
-        	config.Set<float>(key, armEsc.GetPosition());
+            armSetPoint += config.Get<float>(key);
     }
     else
         armSetPoint = action.arm.customSetpoint;
-
-    if (!action.arm.calibrationMode)
-    	armEsc.Set(armSetPoint);
 
     SmartDashboard::Log(armSetPoint, "Arm Set Point");
     SmartDashboard::Log(armEsc.GetPosition(), "Arm Position");
