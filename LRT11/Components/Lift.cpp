@@ -39,9 +39,13 @@ void Lift::Output()
         break;
     }
 
-    if(action.lift.position != action.lift.STOWED)
+    if(action.lift.position != action.lift.STOWED && !action.lift.calibrationMode)
         setPoint += config.Get<float>(key); // relative to bottom
-
+    if (action.lift.setCurrentPositionAsSetPoint)
+    	config.Set<float>(key, liftEsc.GetPosition());
+    	
+    	
+        
     liftEsc.Set(setPoint);
 
     SmartDashboard::Log(setPoint, "Lift Set Point");

@@ -9,9 +9,9 @@
 
 Tasks stil left to do (priority)
 - Roller							[A: 2/11/11]
-- Calibrate methods					[A: 2/10/11] - Brian Axelrod
+- Calibrate methods					[A: 2/10/11, C: 2/21/11 (for arm and lift)] - Brian Axelrod
 	- Component takes in prefix		[A: 2/10/11]
-- Button mapings for ThurstMaster	[A: 2/15/11] - Brain Axelrod
+- Button mapings for ThurstMaster	[A: 2/15/11] - Brain Axelrod, easy to do, just open in windows game controllers thingy
 / Standardize CL nomenclature		[A: 2/12/11, C: 2/18/11] - Karthik Viswanathan
 / Fix profiler						[A: 2/15/11, C: 2/18/11] - Karthik Viswanathan
 / Print out build/run numbers       [A: 2/18/11, C: 2/18/11] - Karthik Viswanathan

@@ -30,6 +30,8 @@ ActionData::ActionData()
 
     lift.position = lift.STOWED;
     lift.highRow = false;
+    lift.setCurrentPositionAsSetPoint = false;
+    lift.calibrationMode = false;
 
     demoLift.forward = 0;
 

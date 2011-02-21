@@ -19,6 +19,7 @@ public:
     virtual ~Lift();
 
     virtual void Output();
+    virtual void Calibrate();
 };
 
 #endif
