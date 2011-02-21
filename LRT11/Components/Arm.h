@@ -18,6 +18,7 @@ private:
 public:
     Arm();
     virtual ~Arm();
+
     virtual void Output();
 };
 

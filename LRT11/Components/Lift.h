@@ -5,12 +5,15 @@
 #include "..\Jaguar\CLPotJaguar.h"
 #include "..\Config\Config.h"
 
-class Lift : public Component
+class Lift : public Component, public Configurable
 {
 private:
     Config& config;
     string prefix;
-    CLPotJaguar liftEsc;
+    ProxiedCANJaguar liftEsc;
+
+    int timeoutMs;
+    int cycleCount;
 
     enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4};
 
@@ -18,8 +21,8 @@ public:
     Lift();
     virtual ~Lift();
 
+    virtual void Configure();
     virtual void Output();
-    virtual void Calibrate();
 };
 
 #endif

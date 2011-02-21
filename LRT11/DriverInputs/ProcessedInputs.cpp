@@ -57,30 +57,40 @@ float ProcessedInputs::GetTurn()
     return Util::AddDeadband<float>(-driverStick.GetRawAxis(3), turnDeadband);
 }
 
-float ProcessedInputs::GetOperatorForwardScaled30()
-{
-    // in range [0, 0.3]
-    return .55 * Util::AddDeadband<float>(-operatorStick.GetY(), forwardDeadband);
-}
 
-bool ProcessedInputs::GetShiftLow()
-{
-    return driverStick.IsButtonJustPressed(9);
-}
-
-bool ProcessedInputs::GetShiftHigh()
-{
-    return driverStick.IsButtonJustPressed(10);
-}
-
-bool ProcessedInputs::GetBrakeLeft()
+bool ProcessedInputs::ShouldBrakeLeft()
 {
     return driverStick.IsButtonDown(11);
 }
 
-bool ProcessedInputs::GetBrakeRight()
+bool ProcessedInputs::ShouldBrakeRight()
 {
     return driverStick.IsButtonDown(12);
+}
+
+bool ProcessedInputs::ShouldShiftLow()
+{
+    return driverStick.IsButtonJustPressed(9);
+}
+
+bool ProcessedInputs::ShouldShiftHigh()
+{
+    return driverStick.IsButtonJustPressed(10);
+}
+
+bool ProcessedInputs::ShouldMoveLiftLow()
+{
+    return operatorStick.IsButtonJustPressed(12);
+}
+
+bool ProcessedInputs::ShouldMoveLiftMedium()
+{
+    return operatorStick.IsButtonJustPressed(10);
+}
+
+bool ProcessedInputs::ShouldMoveLiftHigh()
+{
+    return operatorStick.IsButtonJustPressed(8);
 }
 
 bool ProcessedInputs::ShouldCollectEncoderData()
@@ -96,15 +106,15 @@ void ProcessedInputs::UpdateDebouncing()
 
 bool ProcessedInputs::ShouldLoadConfig()
 {
-    return operatorStick.IsButtonJustPressed(8);
+    return operatorStick.IsButtonJustPressed(9);
 }
 
 bool ProcessedInputs::ShouldSaveConfig()
 {
-    return operatorStick.IsButtonJustPressed(9);
+    return operatorStick.IsButtonJustPressed(11);
 }
 
 bool ProcessedInputs::ShouldApplyConfig()
 {
-    return operatorStick.IsButtonJustPressed(10);
+    return operatorStick.IsButtonJustPressed(7);
 }

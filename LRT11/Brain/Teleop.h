@@ -6,17 +6,17 @@ void Brain::Teleop()
     action.driveTrain.rawForward = inputs.GetForward();
     action.driveTrain.rawTurn    = inputs.GetTurn();
 
-    action.driveTrain.brakeLeft  = inputs.GetBrakeLeft();
-    action.driveTrain.brakeRight = inputs.GetBrakeRight();
+    action.driveTrain.brakeLeft  = inputs.ShouldBrakeLeft();
+    action.driveTrain.brakeRight = inputs.ShouldBrakeRight();
 
     TeleopLift();
 
-    if(inputs.GetShiftLow())
+    if(inputs.ShouldShiftLow())
     {
         action.shifter.gear = action.shifter.LOW_GEAR;
         action.shifter.force = true;
     }
-    else if(inputs.GetShiftHigh())
+    else if(inputs.ShouldShiftHigh())
     {
         action.shifter.gear = action.shifter.HIGH_GEAR;
         action.shifter.force = true;

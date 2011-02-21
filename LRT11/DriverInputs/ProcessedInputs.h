@@ -37,15 +37,17 @@ public:
     float GetForward();
     float GetTurn();
 
-    bool GetBrakeLeft();
-    bool GetBrakeRight();
+    bool ShouldBrakeLeft();
+    bool ShouldBrakeRight();
 
     // lift
-    float GetOperatorForwardScaled30();
+    bool ShouldMoveLiftLow();
+    bool ShouldMoveLiftMedium();
+    bool ShouldMoveLiftHigh();
 
     // shifting
-    bool GetShiftLow();
-    bool GetShiftHigh();
+    bool ShouldShiftLow();
+    bool ShouldShiftHigh();
 
     // encoder data collection
     bool ShouldCollectEncoderData();
