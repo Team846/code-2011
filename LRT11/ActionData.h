@@ -33,8 +33,6 @@ public:
     {
         enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} position;
         bool highRow;
-        bool setCurrentPositionAsSetPoint;
-        bool calibrationMode;
     } lift;
 
     struct
@@ -47,8 +45,6 @@ public:
         bool usePreset;
         enum {BOTTOM = 1, TOP = 2} position;
         float customSetpoint;
-        bool setCurrentPositionAsSetPoint;
-        bool calibrationMode;
     } arm;
 
     struct
@@ -64,7 +60,8 @@ public:
     struct
     {
         enum {LOW_GEAR = 1, HIGH_GEAR = 2} gear;
-    } gearbox;
+        bool force;
+    } shifter;
 
     struct
     {

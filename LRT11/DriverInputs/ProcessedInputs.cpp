@@ -63,6 +63,16 @@ float ProcessedInputs::GetOperatorForwardScaled30()
     return .55 * Util::AddDeadband<float>(-operatorStick.GetY(), forwardDeadband);
 }
 
+bool ProcessedInputs::GetShiftLow()
+{
+    return driverStick.IsButtonJustPressed(9);
+}
+
+bool ProcessedInputs::GetShiftHigh()
+{
+    return driverStick.IsButtonJustPressed(10);
+}
+
 bool ProcessedInputs::GetBrakeLeft()
 {
     return driverStick.IsButtonDown(11);

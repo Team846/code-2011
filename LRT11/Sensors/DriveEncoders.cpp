@@ -85,11 +85,20 @@ double DriveEncoders::GetRightWheelDist()
     return encoderRight.Get() / kPulsesPerRevolution * kWheelDiameter * kPi;
 }
 
+double DriveEncoders::GetLeftSpeed()
+{
+    return encoderLeft.GetRate();
+}
+
 double DriveEncoders::GetNormalizedLeftSpeed()
 {
     return Util::Clamp<double>(encoderLeft.GetRate() / kMaxEncoderRate, -1.0, 1.0);
 }
 
+double DriveEncoders::GetRightSpeed()
+{
+    return encoderRight.GetRate();
+}
 double DriveEncoders::GetNormalizedRightSpeed()
 {
     return Util::Clamp<double>(encoderRight.GetRate() / kMaxEncoderRate, -1.0, 1.0);

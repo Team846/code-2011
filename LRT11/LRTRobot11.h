@@ -20,9 +20,9 @@ private:
 //    PositionDriveTrain positionDrive;
 
 //    EncoderDataCollection encoderData;
-//    Shifter shifter;
+    Shifter shifter;
 
-    DemoLift lift;
+//    DemoLift lift;
     Config& config;
 
     GameState prevState;

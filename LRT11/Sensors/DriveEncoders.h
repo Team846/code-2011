@@ -47,7 +47,9 @@ public:
     double GetTurnAngle();
     double GetLeftWheelDist();
     double GetRightWheelDist();
+    double GetLeftSpeed();
     double GetNormalizedLeftSpeed();
+    double GetRightSpeed();
     double GetNormalizedRightSpeed();
 
     LRTEncoder& GetLeftEncoder();

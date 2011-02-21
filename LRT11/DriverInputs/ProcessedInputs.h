@@ -43,6 +43,10 @@ public:
     // lift
     float GetOperatorForwardScaled30();
 
+    // shifting
+    bool GetShiftLow();
+    bool GetShiftHigh();
+
     // encoder data collection
     bool ShouldCollectEncoderData();
 

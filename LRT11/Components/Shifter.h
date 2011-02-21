@@ -2,23 +2,34 @@
 #define SHIFTER_H_
 
 #include "Component.h"
+#include "Shifter/LRTServo.h"
+#include "..\Config\RobotConfig.h"
+#include "..\Sensors\DriveEncoders.h"
+#include "..\Config\Config.h"
 
-class Shifter : public Component
+class Shifter : public Component, public Configurable
 {
 private:
-    Servo leftShiftServo, rightShiftServo;
+    LRTServo leftServo, rightServo;
+    DriveEncoders& encoders;
+
+    string prefix;
     enum {LOW_GEAR = 1 , HIGH_GEAR = 2} currentGear, newGear;
 
-    int tickCounter;
+    float leftSetpointDeadband;
+    float rightSetpointDeadband;
+
+    int forceShiftMs;
+    int cycleCounter;
 
     const static int onPulseLength = 2;
     const static int offPulseLength = 1;
 
-    const static float leftHighGearServoVal = 0.35;
-    const static float leftLowGearServoVal = 0.65;
+    const static float leftLowGearServoVal = 0.33;
+    const static float leftHighGearServoVal = 0.62;
 
-    const static float rightHighGearServoVal = 0.3;
-    const static float rightLowGearServoVal = 0.65;
+    const static float rightLowGearServoVal = 0.67;
+    const static float rightHighGearServoVal = 0.39;
 
     const static float shifterEngagedMargin = 0.05;
 
@@ -27,6 +38,7 @@ public:
     virtual ~Shifter();
 
     void virtual Output();
+    virtual void Configure();
 };
 
 #endif //SHIFTER_H_

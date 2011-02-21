@@ -11,6 +11,17 @@ void Brain::Teleop()
 
     TeleopLift();
 
+    if(inputs.GetShiftLow())
+    {
+        action.shifter.gear = action.shifter.LOW_GEAR;
+        action.shifter.force = true;
+    }
+    else if(inputs.GetShiftHigh())
+    {
+        action.shifter.gear = action.shifter.HIGH_GEAR;
+        action.shifter.force = true;
+    }
+
 //    static bool shouldMoveDistance = false;
 //    action.positionTrain.shouldMoveDistance = false;
 //    action.positionTrain.shouldTurnAngle    = shouldMoveDistance;
@@ -24,7 +35,6 @@ void Brain::Teleop()
 //    action.positionTrain.turnAngle = 90;
 
 //    action.encoderData.shouldCollect = inputs.ShouldCollectEncoderData();
-    action.gearbox.gear = action.gearbox.LOW_GEAR;
 
     if(isFinale /* && inputs.ShouldDeployMinibot() */)
     {

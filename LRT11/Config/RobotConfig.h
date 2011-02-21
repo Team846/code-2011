@@ -38,8 +38,8 @@ public:
 
 
     //Servo Ports
-    const static int LEFT_GEARBOX_SERVO_PORT  = CHANGEME;
-    const static int RIGHT_GEARBOX_SERVO_PORT = CHANGEME;
+    const static int LEFT_GEARBOX_SERVO_PORT  = 2;
+    const static int RIGHT_GEARBOX_SERVO_PORT = 1;
 };
 
 #endif

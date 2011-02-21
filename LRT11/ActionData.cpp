@@ -30,8 +30,6 @@ ActionData::ActionData()
 
     lift.position = lift.STOWED;
     lift.highRow = false;
-    lift.setCurrentPositionAsSetPoint = false;
-    lift.calibrationMode = false;
 
     demoLift.forward = 0;
 
@@ -43,7 +41,8 @@ ActionData::ActionData()
 
     encoderData.shouldCollect = false;
 
-    gearbox.gear = gearbox.LOW_GEAR;
+    shifter.gear = shifter.LOW_GEAR;
+    shifter.force = false;
 
     config.load = false;
     config.save = false;
