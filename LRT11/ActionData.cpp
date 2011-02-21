@@ -31,8 +31,10 @@ ActionData::ActionData()
     lift.position = lift.STOWED;
     lift.highRow = false;
 
+    demoLift.forward = 0;
+
     arm.usePreset = false;
-    arm.position = arm.HIGH;
+    arm.position = arm.TOP;
     arm.customSetpoint = 0.5;
 
     roller.state = roller.STOPPED;

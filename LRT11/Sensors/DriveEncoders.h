@@ -30,10 +30,12 @@ public:
     static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
 
-    const static float kPulsesPerRevolution = 187.5; // pulses per wheel revolution [BA]
-    const static float kMaxEncoderRate      = 1411.96;
-    const static double kMaxTurningRate     = 6725. / 15.0;
-    const static double kTicksPerFullTurn   = 6725. / 6;
+    const static float kPulsesPerRevolution = 100.0; // pulses per wheel revolution [BA]
+//    const static float kMaxEncoderRate      = 1411.96;
+    const static float kMaxEncoderRate      = 1400.0;
+    const static double kMaxTurningRate     = 2800.0;
+//    const static double kTicksPerFullTurn   = 6725. / 6;
+    const static double kTicksPerFullTurn   = 1350.0;
 
     double GetForwardSpeed();
     double GetNormalizedForwardSpeed();

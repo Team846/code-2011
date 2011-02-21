@@ -1,5 +1,4 @@
 #include "Brain.h"
-#include "..\ActionData.h"
 
 void Brain::Disabled()
 {

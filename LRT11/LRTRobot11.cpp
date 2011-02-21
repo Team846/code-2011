@@ -54,7 +54,7 @@ void LRTRobot11::MainLoop()
         }
 
         {
-            ProfiledSection("Lift");
+            ProfiledSection("Demo Lift");
             lift.Output();
         }
 
@@ -63,10 +63,10 @@ void LRTRobot11::MainLoop()
 //            positionDrive.Output();
 //        }
 
-        // {
-        //    ProfiledSection("Encoder Data Collection");
-        //    encoderData.Output();
-        // }
+//        {
+//            ProfiledSection("Encoder Data Collection");
+//            encoderData.Output();
+//        }
 
 //        {
 //            ProfiledSection("Servo Shifting");

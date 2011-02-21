@@ -40,13 +40,15 @@ public:
     bool GetBrakeLeft();
     bool GetBrakeRight();
 
+    // lift
+    float GetOperatorForwardScaled30();
+
     // encoder data collection
     bool ShouldCollectEncoderData();
 
     bool ShouldLoadConfig();
     bool ShouldSaveConfig();
     bool ShouldApplyConfig();
-
 
     void UpdateDebouncing();
 };

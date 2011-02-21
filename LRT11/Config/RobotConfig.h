@@ -27,10 +27,10 @@ public:
     // Relay Outputs
 
     // Digital Inputs
-    const static UINT32 DIO_ENCODER_LEFT_A  = CHANGEME;
-    const static UINT32 DIO_ENCODER_LEFT_B  = CHANGEME;
-    const static UINT32 DIO_ENCODER_RIGHT_A = CHANGEME;
-    const static UINT32 DIO_ENCODER_RIGHT_B = CHANGEME;
+    const static UINT32 DIO_ENCODER_LEFT_A  = 9;
+    const static UINT32 DIO_ENCODER_LEFT_B  = 10;
+    const static UINT32 DIO_ENCODER_RIGHT_A = 13;
+    const static UINT32 DIO_ENCODER_RIGHT_B = 14;
 
     // Digital Outputs
     const static UINT32 DIO_BRAKE_LEFT  = CHANGEME;

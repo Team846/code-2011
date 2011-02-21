@@ -37,8 +37,13 @@ public:
 
     struct
     {
+        float forward;
+    } demoLift;
+
+    struct
+    {
         bool usePreset;
-        enum {LOW = 1, HIGH = 2} position;
+        enum {BOTTOM = 1, TOP = 2} position;
         float customSetpoint;
     } arm;
 

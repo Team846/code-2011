@@ -9,10 +9,10 @@ class CLPotJaguar : public ProxiedCANJaguar, public Configurable
 {
 private:
     string prefix;
+    int turns;
 
 public:
-    CLPotJaguar(UINT8 channel, int turns, string configPrefix, double defaultP = 1,
-            double defaultI = 0, double defaultD = 0);
+    CLPotJaguar(UINT8 channel, int potTurns, string configPrefix);
     ~CLPotJaguar();
 
     virtual void Configure();

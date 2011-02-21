@@ -42,8 +42,15 @@ private:
 
     void Common();
     void Disabled();
+
     void Auton();
+
     void Teleop();
+//    void TeleopDriveTrain();
+    void TeleopLift();
+//    void TeleopArm();
+//    void TeleopRoller();
+
     void UpdateDashboardValues(GameState gameState);
 };
 

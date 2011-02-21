@@ -20,4 +20,5 @@ public:
 
     virtual void Output();
 };
+
 #endif

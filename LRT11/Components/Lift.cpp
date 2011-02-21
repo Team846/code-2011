@@ -16,33 +16,34 @@ Lift::~Lift()
 
 void Lift::Output()
 {
-    /*
     string key = prefix;
+
+    float setPoint;
     if(action.lift.highRow)
-        key += "high.";
+        setPoint = config.Get<float>(prefix + "highRowBottom");
     else
-        key += "low.";
+        setPoint = config.Get<float>(prefix + "lowRowBottom");
 
     switch(action.lift.position)
     {
     case STOWED:
-        key += "stowed";
-        break;
+        break; // no relative position
     case LOW_PEG:
-        key += "lowPeg";
+        key += "lowPegRelative";
         break;
     case MED_PEG:
-        key += "mediumPeg";
+        key += "mediumPegRelative";
         break;
     case HIGH_PEG:
-        key += "highPeg";
+        key += "highPegRelative";
         break;
     }
 
-    float setPoint = config.Get<float>(key);
+    if(action.lift.position != action.lift.STOWED)
+        setPoint += config.Get<float>(key); // relative to bottom
+
     liftEsc.Set(setPoint);
 
     SmartDashboard::Log(setPoint, "Lift Set Point");
-    */
     SmartDashboard::Log(liftEsc.GetPosition(), "Lift Position");
 }

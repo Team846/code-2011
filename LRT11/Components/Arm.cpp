@@ -21,17 +21,19 @@ void Arm::Output()
 
     if(action.arm.usePreset)
     {
+        armSetPoint = config.Get<float>(key + "top");
+
         switch(action.arm.position)
         {
-        case LOW:
-            key += "low";
+        case BOTTOM:
+            key += "bottomRelative";
             break;
-        case HIGH:
-            key += "high";
-            break;
+        case TOP:
+            break; // no relative position
         }
 
-        armSetPoint = config.Get<float>(key);
+        if(action.arm.position != action.arm.TOP)
+            armSetPoint = config.Get<float>(key);
     }
     else
         armSetPoint = action.arm.customSetpoint;

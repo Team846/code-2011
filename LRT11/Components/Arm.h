@@ -13,7 +13,7 @@ private:
     string prefix;
     CLPotJaguar armEsc;
 
-    enum {LOW = 1, HIGH = 2};
+    enum {BOTTOM = 1, TOP = 2};
 
 public:
     Arm();

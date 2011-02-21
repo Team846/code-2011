@@ -3,6 +3,7 @@
 #include "Disabled.h"
 #include "Auton.h"
 #include "Teleop.h"
+#include "TeleopLift.h"
 #include "..\ActionData.h"
 
 Brain::Brain()

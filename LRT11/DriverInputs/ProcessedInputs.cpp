@@ -57,6 +57,12 @@ float ProcessedInputs::GetTurn()
     return Util::AddDeadband<float>(-driverStick.GetRawAxis(3), turnDeadband);
 }
 
+float ProcessedInputs::GetOperatorForwardScaled30()
+{
+    // in range [0, 0.3]
+    return .55 * Util::AddDeadband<float>(-operatorStick.GetY(), forwardDeadband);
+}
+
 bool ProcessedInputs::GetBrakeLeft()
 {
     return driverStick.IsButtonDown(11);

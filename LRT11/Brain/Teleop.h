@@ -9,6 +9,8 @@ void Brain::Teleop()
     action.driveTrain.brakeLeft  = inputs.GetBrakeLeft();
     action.driveTrain.brakeRight = inputs.GetBrakeRight();
 
+    TeleopLift();
+
 //    static bool shouldMoveDistance = false;
 //    action.positionTrain.shouldMoveDistance = false;
 //    action.positionTrain.shouldTurnAngle    = shouldMoveDistance;
