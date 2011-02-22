@@ -12,10 +12,18 @@ private:
     string prefix;
     ProxiedCANJaguar liftEsc;
 
+    const static float inchesToTurns = 1 / 12.0;
+
     int timeoutMs;
     int cycleCount;
 
+    float safetyDeadbandInches;
+    float safetyMarginInches;
+
+//    bool safety;
+
     enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4};
+    void StartTimer();
 
 public:
     Lift();

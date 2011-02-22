@@ -38,7 +38,14 @@ void CANBusController::ResetCache()
     // force update all setpoints in 15 cycles after
     // a switch in game state; must have delay for
     // successful speed controller update
-    forceSetpointUpdate = 15;
+//    forceSetpointUpdate = 1000; // 1 cycle = 1 ms
+
+    for(int id = kMinJaguarId; id <= kMaxJaguarId; ++id)
+    {
+        int idx = BusIdToIndex(id);
+        setpoints[idx] = -91387; // bogus value that will ensure a setpoint change
+        setpointChanged[idx] = false;
+    }
 }
 
 CANBusController::~CANBusController()

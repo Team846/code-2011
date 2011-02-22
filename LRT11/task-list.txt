@@ -14,14 +14,15 @@ Tasks before shipping
 - Controls must be decided and mapped (how can I do something; use a key)
 
 Shifting
-- When shift button is pressed, set shift timer to 2 seconds
-- If shift timer hasn't expired or power is applied to drive train, set servo to value
-- Else turn servo power off
+/ When shift button is pressed, set shift timer to 2 seconds
+/ If shift timer hasn't expired or power is applied to drive train, set servo to value
+/ Else turn servo power off
 
 Lift
 - Manual modes and protection against stalling (predicted time; shut off power)
-- Presets and joystick 
+/ Presets and joystick 
 - Fault indicator on dashboard (light + description)
+- Address power loss
 
 Arm
 - Manual modes and protection against stalling (predicted time; shut off power)

@@ -54,7 +54,11 @@ void Brain::Process(GameState gameState)
     if(gameTimer.Get() > 120)
         gameTimer.Stop();
 
-    UpdateDashboardValues(gameState);
+    {
+        ProfiledSection ps("Dashboard Logging");
+        UpdateDashboardValues(gameState);
+    }
+
     previousState = gameState;
 }
 

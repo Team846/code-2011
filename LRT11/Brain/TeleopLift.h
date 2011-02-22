@@ -9,6 +9,7 @@ void Brain::TeleopLift()
     }
     else if(inputs.ShouldMoveLiftMedium())
     {
+        AsynchronousPrinter::Printf("Moving medium\n");
         action.lift.position = action.lift.MED_PEG;
         action.lift.givenCommand = true;
     }

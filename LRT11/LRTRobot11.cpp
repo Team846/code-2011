@@ -34,11 +34,15 @@ void LRTRobot11::RobotInit()
 void LRTRobot11::MainLoop()
 {
     GameState gameState = DetermineState();
-    brain.Process(gameState);
+
+    {
+        ProfiledSection ps("Brain Processing");
+        brain.Process(gameState);
+    }
 
     // components to output regardless of state
     {
-        ProfiledSection("Configuration Buttons");
+        ProfiledSection ps("Configuration Buttons");
         config.Output();
     }
 
@@ -49,34 +53,34 @@ void LRTRobot11::MainLoop()
     {
         // components to output only when enabled
         {
-            ProfiledSection("Drive Train");
+            ProfiledSection ps("Drive Train");
             drive.Output();
         }
 
         {
-            ProfiledSection("Lift");
+            ProfiledSection ps("Lift");
             lift.Output();
         }
 
 //        {
-//            ProfiledSection("Position Drive");
+//            ProfiledSection ps("Position Drive");
 //            positionDrive.Output();
 //        }
 
 //        {
-//            ProfiledSection("Encoder Data Collection");
+//            ProfiledSection ps("Encoder Data Collection");
 //            encoderData.Output();
 //        }
 
         {
-            ProfiledSection("Servo Shifting");
+            ProfiledSection ps("Servo Shifting");
             shifter.Output();
         }
 
         // To add another component output:
         //
         // {
-        //      ProfiledSection("Descriptive Phrase");
+        //      ProfiledSection ps("Descriptive Phrase");
         //      component.Output();
         // }
     }
