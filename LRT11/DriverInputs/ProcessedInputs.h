@@ -45,6 +45,12 @@ public:
     bool ShouldMoveLiftMedium();
     bool ShouldMoveLiftHigh();
 
+    // arm
+    bool ShouldMoveArmDown();
+    bool ShouldMoveArmUp();
+    bool ShouldMoveArmBottomPreset();
+    bool ShouldMoveArmTopPreset();
+
     // shifting
     bool ShouldShiftLow();
     bool ShouldShiftHigh();

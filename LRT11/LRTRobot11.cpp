@@ -8,6 +8,7 @@ LRTRobot11::LRTRobot11()
 //    , encoderData()
     , shifter()
     , lift()
+    , arm()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -60,6 +61,11 @@ void LRTRobot11::MainLoop()
         {
             ProfiledSection ps("Lift");
             lift.Output();
+        }
+
+        {
+            ProfiledSection ps("Arm");
+            arm.Output();
         }
 
 //        {

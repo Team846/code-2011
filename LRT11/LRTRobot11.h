@@ -9,6 +9,7 @@
 #include "Components/Shifter.h"
 #include "Components/PositionDriveTrain.h"
 #include "Components/Lift.h"
+#include "Components/Arm.h"
 #include "Config/Config.h"
 
 class LRTRobot11 : public LRTRobotBase
@@ -23,6 +24,8 @@ private:
     Shifter shifter;
 
     Lift lift;
+    Arm arm;
+
     Config& config;
 
     GameState prevState;

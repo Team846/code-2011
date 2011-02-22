@@ -6,12 +6,16 @@
 #include "..\Jaguar\CLPotJaguar.h"
 using namespace std;
 
-class Arm : public Component
+class Arm : public Component, public Configurable
 {
 private:
     Config& config;
     string prefix;
-    CLPotJaguar armEsc;
+    ProxiedCANJaguar armEsc;
+    AnalogChannel armPot;
+
+    float maxPosition, minPosition;
+    float powerUp, powerDown;
 
     enum {BOTTOM = 1, TOP = 2};
 
@@ -19,6 +23,7 @@ public:
     Arm();
     virtual ~Arm();
 
+    virtual void Configure();
     virtual void Output();
 };
 

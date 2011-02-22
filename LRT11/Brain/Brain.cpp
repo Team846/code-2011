@@ -4,6 +4,7 @@
 #include "Auton.h"
 #include "Teleop.h"
 #include "TeleopLift.h"
+#include "TeleopArm.h"
 #include "..\ActionData.h"
 
 Brain::Brain()

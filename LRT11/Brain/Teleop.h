@@ -10,6 +10,7 @@ void Brain::Teleop()
     action.driveTrain.brakeRight = inputs.ShouldBrakeRight();
 
     TeleopLift();
+    TeleopArm();
 
     if(inputs.ShouldShiftLow())
     {

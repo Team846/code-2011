@@ -17,7 +17,7 @@ public:
     const static UINT32 CAN_DRIVE_RIGHT_B = 21;
 
     const static UINT32 CAN_LIFT = 28;
-    const static UINT32 CAN_ARM  = CHANGEME;
+    const static UINT32 CAN_ARM  = 24;
 
     const static UINT32 CAN_ROLLER_TOP    = CHANGEME;
     const static UINT32 CAN_ROLLER_BOTTOM = CHANGEME;
@@ -36,8 +36,10 @@ public:
     const static UINT32 DIO_BRAKE_LEFT  = CHANGEME;
     const static UINT32 DIO_BRAKE_RIGHT = CHANGEME;
 
+    // Analog Inputs
+    const static UINT32 POT_ARM = 3;
 
-    //Servo Ports
+    // Servo Ports
     const static int LEFT_GEARBOX_SERVO_PORT  = 2;
     const static int RIGHT_GEARBOX_SERVO_PORT = 1;
 };

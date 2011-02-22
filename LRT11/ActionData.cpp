@@ -34,9 +34,12 @@ ActionData::ActionData()
 
     demoLift.forward = 0;
 
-    arm.usePreset = false;
+    arm.givenCommand = false;
+    arm.manualDown = false;
+    arm.manualUp = false;
+//    arm.presetTop = false;
+//    arm.presetBottom = false;
     arm.position = arm.TOP;
-    arm.customSetpoint = 0.5;
 
     roller.state = roller.STOPPED;
 

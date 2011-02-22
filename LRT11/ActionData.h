@@ -43,9 +43,10 @@ public:
 
     struct
     {
-        bool usePreset;
+        bool givenCommand;
+        bool manualDown, manualUp;
+//        bool presetTop, presetBottom;
         enum {BOTTOM = 1, TOP = 2} position;
-        float customSetpoint;
     } arm;
 
     struct

@@ -93,6 +93,26 @@ bool ProcessedInputs::ShouldMoveLiftHigh()
     return operatorStick.IsButtonJustPressed(8);
 }
 
+bool ProcessedInputs::ShouldMoveArmDown()
+{
+    return driverStick.IsButtonDown(10);
+}
+
+bool ProcessedInputs::ShouldMoveArmUp()
+{
+    return driverStick.IsButtonDown(8);
+}
+
+bool ProcessedInputs::ShouldMoveArmBottomPreset()
+{
+    return driverStick.IsButtonDown(9);
+}
+
+bool ProcessedInputs::ShouldMoveArmTopPreset()
+{
+    return driverStick.IsButtonDown(7);
+}
+
 bool ProcessedInputs::ShouldCollectEncoderData()
 {
     return driverStick.IsButtonJustPressed(1);

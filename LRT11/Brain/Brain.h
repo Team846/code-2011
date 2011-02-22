@@ -48,7 +48,7 @@ private:
     void Teleop();
 //    void TeleopDriveTrain();
     void TeleopLift();
-//    void TeleopArm();
+    void TeleopArm();
 //    void TeleopRoller();
 
     void UpdateDashboardValues(GameState gameState);
