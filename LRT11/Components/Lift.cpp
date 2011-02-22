@@ -49,7 +49,6 @@ void Lift::Output()
 
     if(!action.lift.givenCommand && cycleCount == 0)
     {
-//        liftEsc.Set(liftEsc.GetPosition());
         {
             ProfiledSection ps("Lift disable control");
             liftEsc.DisableControl();
@@ -61,10 +60,7 @@ void Lift::Output()
         action.lift.givenCommand = false;
         StartTimer();
 
-        AsynchronousPrinter::Printf("Enabling-----------------------------------------------------\n");
         liftEsc.EnableControl();
-//        if(action.lift.position == action.lift.LOW_PEG || action.lift.position == action.lift.HIGH_PEG)
-//            safety = true;
     }
 
     string key = prefix;
@@ -93,28 +89,8 @@ void Lift::Output()
     if(action.lift.position != action.lift.STOWED)
         setPoint += config.Get<float>(key); // relative to bottom
 
-//    if(safety)
-//    {
-//        if(action.lift.position == action.lift.LOW_PEG)
-//            setPoint += safetyMarginInches * inchesToTurns;
-//        else if(action.lift.position == action.lift.HIGH_PEG)
-//            setPoint -= safetyMarginInches * inchesToTurns;
-//    }
-
-    AsynchronousPrinter::Printf("Setting %.2f, Current: %.2f\n", setPoint, liftEsc.GetPosition());
     liftEsc.Set(setPoint);
     cycleCount--;
-
-//    SmartDashboard::Log(Util::Abs<float>(liftEsc.GetPosition() - setPoint), "Lift error");
-//    SmartDashboard::Log(safetyDeadbandInches * inchesToTurns, "Lift error deadband");
-
-//    if(safety && Util::Abs<float>(liftEsc.GetPosition() - setPoint) < (safetyDeadbandInches * inchesToTurns))
-//    if(safety && cycleCount == 0)
-//    {
-//        action.lift.givenCommand = false;
-//        StartTimer();
-//        safety = false;
-//    }
 
     SmartDashboard::Log(setPoint, "Lift Set Point");
 }
