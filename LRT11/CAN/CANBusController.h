@@ -22,6 +22,7 @@ public:
     static CANBusController& GetInstance();
 
     void ResetCache();
+    void ResetCache(int id);
     void Set(int id, float val);
     float Get(int id);
 

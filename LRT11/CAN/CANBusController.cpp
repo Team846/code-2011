@@ -48,6 +48,15 @@ void CANBusController::ResetCache()
     }
 }
 
+void CANBusController::ResetCache(int id)
+{
+    Synchronized s(semaphore);
+
+    int idx = BusIdToIndex(id);
+    setpoints[idx] = -91387; // bogus value that will ensure a setpoint change
+    setpointChanged[idx] = false;
+}
+
 CANBusController::~CANBusController()
 {
     for(int id = kMinJaguarId; id <= kMaxJaguarId; ++id)

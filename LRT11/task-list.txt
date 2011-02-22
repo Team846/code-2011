@@ -59,9 +59,13 @@ Finished tasks
 / Fix profiler									[A: 2/15/11, C: 2/18/11]
 / Print out build/run numbers       			[A: 2/18/11, C: 2/18/11]
 
-
+Before shipping
 - Fuses OK?
+	- Arm/lift
 - Calibrate jaguars
 - Encoder wire
 - Lift testing
 - Change lift power
+- Anchor wires
+- Signal Light
+- 

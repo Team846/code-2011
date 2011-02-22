@@ -11,6 +11,7 @@ private:
     Config& config;
     string prefix;
     ProxiedCANJaguar liftEsc;
+    CANBusController& controller;
 
     const static float inchesToTurns = 1 / 12.0;
 
@@ -24,6 +25,7 @@ private:
     void StartTimer();
 
     enum {MANUAL = 1, PRESET = 2} prevMode;
+    int prevPotPos;
 
 public:
     Lift();

@@ -7,6 +7,16 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel) :
 
 }
 
+ProxiedCANJaguar::~ProxiedCANJaguar()
+{
+
+}
+
+int ProxiedCANJaguar::GetChannel()
+{
+    return channel;
+}
+
 void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
     controller.Set(channel, setpoint);

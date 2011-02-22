@@ -5,6 +5,7 @@ Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
     , liftEsc(RobotConfig::CAN_LIFT)
+    , controller(CANBusController::GetInstance())
     , timeoutMs(0)
     , cycleCount(0)
 //    , safety(false)
@@ -43,7 +44,7 @@ void Lift::Configure()
 
 void Lift::ConfigureVoltageMode()
 {
-    liftEsc.SetControlMode(CANJaguar::kVoltage);
+    liftEsc.SetControlMode(CANJaguar::kPercentVbus);
     liftEsc.EnableControl();
 }
 
@@ -61,6 +62,7 @@ void Lift::Output()
     {
         {
             ProfiledSection ps("Lift disable control");
+            AsynchronousPrinter::Printf("Disabling control, yo\n");
             liftEsc.DisableControl();
         }
         return;
@@ -75,12 +77,17 @@ void Lift::Output()
 
     if(action.lift.manualMode)
     {
+        liftEsc.EnableControl();
+
         if(prevMode == PRESET)
             ConfigureVoltageMode();
 
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
+        {
+            controller.ResetCache(liftEsc.GetChannel());
             liftEsc.Set(action.lift.power);
+        }
 
         action.lift.givenCommand = false;
         prevMode = MANUAL;

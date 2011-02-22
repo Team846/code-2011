@@ -9,8 +9,11 @@ class ProxiedCANJaguar : public SpeedController
 {
 public:
     ProxiedCANJaguar(UINT8 channel);
+    ~ProxiedCANJaguar();
 
+    int GetChannel();
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
+
     virtual float Get();
     virtual void Disable();
 

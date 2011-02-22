@@ -94,12 +94,12 @@ bool ProcessedInputs::ShouldMoveLiftHigh()
 
 bool ProcessedInputs::ShouldManuallyPowerLift()
 {
-    return Util::Abs<float>(Util::AddDeadband<float>(-driverStick.GetY(), forwardDeadband)) > 0;
+    return Util::Abs<float>(Util::AddDeadband<float>(-operatorStick.GetY(), forwardDeadband)) > 0;
 }
 
 float ProcessedInputs::GetLiftPower()
 {
-    return -driverStick.GetY();
+    return 0.5 * -operatorStick.GetY();
 }
 
 bool ProcessedInputs::ShouldMoveArmDown()
