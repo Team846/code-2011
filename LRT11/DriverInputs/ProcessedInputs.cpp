@@ -105,12 +105,12 @@ bool ProcessedInputs::ShouldMoveArmUp()
 
 bool ProcessedInputs::ShouldMoveArmBottomPreset()
 {
-    return driverStick.IsButtonDown(9);
+    return driverStick.IsButtonJustPressed(9);
 }
 
 bool ProcessedInputs::ShouldMoveArmTopPreset()
 {
-    return driverStick.IsButtonDown(7);
+    return driverStick.IsButtonJustPressed(7);
 }
 
 bool ProcessedInputs::ShouldCollectEncoderData()

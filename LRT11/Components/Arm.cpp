@@ -7,7 +7,7 @@ Arm::Arm()
     , armEsc(RobotConfig::CAN_ARM)
     , armPot(RobotConfig::POT_ARM)
 {
-
+    armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 }
 
 Arm::~Arm()
@@ -32,29 +32,33 @@ void Arm::Output()
     if(!action.arm.givenCommand)
     {
         armEsc.Set(0);
-//        armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
         return;
     }
 
-    if(action.arm.manualUp /*|| action.arm.presetTop*/)
+    if(action.arm.manualUp || action.arm.presetTop)
     {
         if(potValue < maxPosition)
             armEsc.Set(powerUp);
-//        else if(action.arm.presetTop)
-//            action.arm.presetTop = true;
+        else if(action.arm.presetTop)
+        {
+            action.arm.presetTop = false;
+            action.arm.givenCommand = false;
+        }
 
-        // command processed
         if(action.arm.manualUp)
+            // only run as long as button is down
             action.arm.givenCommand = false;
     }
-    else if(action.arm.manualDown /*|| action.arm.presetBottom*/)
+    else if(action.arm.manualDown || action.arm.presetBottom)
     {
         if(potValue > minPosition)
             armEsc.Set(powerDown);
-//        else if(action.arm.presetBottom)
-//            action.arm.presetBottom = false;
+        else if(action.arm.presetBottom)
+        {
+            action.arm.presetBottom = false;
+            action.arm.givenCommand = false;
+        }
 
-        // command processed
         if(action.arm.manualDown)
             // only run as long as button is down
             action.arm.givenCommand = false;

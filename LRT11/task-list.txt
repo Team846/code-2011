@@ -19,13 +19,13 @@ Shifting
 / Else turn servo power off
 
 Lift
-- Manual modes and protection against stalling (predicted time; shut off power)
+* Manual modes and protection against stalling (predicted time; shut off power)
 / Presets and joystick 
 - Fault indicator on dashboard (light + description)
-- Address power loss
+* Address power loss
 
 Arm
-- Manual modes and protection against stalling (predicted time; shut off power)
+* Manual modes and protection against stalling (predicted time; shut off power)
 - Presets and up/down buttons
 - Fault indicator on dashboard (light + description)
 

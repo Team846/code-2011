@@ -45,7 +45,7 @@ public:
     {
         bool givenCommand;
         bool manualDown, manualUp;
-//        bool presetTop, presetBottom;
+        bool presetTop, presetBottom;
         enum {BOTTOM = 1, TOP = 2} position;
     } arm;
 

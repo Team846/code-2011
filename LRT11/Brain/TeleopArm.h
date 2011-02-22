@@ -2,7 +2,7 @@
 
 void Brain::TeleopArm()
 {
-    action.arm.manualDown = true;
+    action.arm.manualDown = false;
     action.arm.manualUp = false;
 
     if(inputs.ShouldMoveArmDown())
@@ -15,14 +15,14 @@ void Brain::TeleopArm()
         action.arm.manualUp = true;
         action.arm.givenCommand = true;
     }
-//    else if(inputs.ShouldMoveArmTopPreset())
-//    {
-//        action.arm.presetTop = true;
-//        action.arm.givenCommand = true;
-//    }
-//    else if(inputs.ShouldMoveArmBottomPreset())
-//    {
-//        action.arm.presetBottom = true;
-//        action.arm.givenCommand = true;
-//    }
+    else if(inputs.ShouldMoveArmTopPreset())
+    {
+        action.arm.presetTop = true;
+        action.arm.givenCommand = true;
+    }
+    else if(inputs.ShouldMoveArmBottomPreset())
+    {
+        action.arm.presetBottom = true;
+        action.arm.givenCommand = true;
+    }
 }

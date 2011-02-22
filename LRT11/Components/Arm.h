@@ -3,7 +3,7 @@
 
 #include "Component.h"
 #include "..\Config\Config.h"
-#include "..\Jaguar\CLPotJaguar.h"
+#include "..\Jaguar\ProxiedCANJaguarWithBrake.h"
 using namespace std;
 
 class Arm : public Component, public Configurable

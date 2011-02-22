@@ -37,8 +37,8 @@ ActionData::ActionData()
     arm.givenCommand = false;
     arm.manualDown = false;
     arm.manualUp = false;
-//    arm.presetTop = false;
-//    arm.presetBottom = false;
+    arm.presetTop = false;
+    arm.presetBottom = false;
     arm.position = arm.TOP;
 
     roller.state = roller.STOPPED;
