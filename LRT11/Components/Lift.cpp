@@ -55,7 +55,7 @@ void Lift::Output()
         }
         return;
     }
-    else if(cycleCount == 0)
+    else if(cycleCount == 0 || action.lift.givenCommand)
     {
         action.lift.givenCommand = false;
         StartTimer();
