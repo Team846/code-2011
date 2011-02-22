@@ -8,8 +8,8 @@
 ======================
 
 Tasks before shipping
-- Calibrating shifter, lift, and arm
-- Prepare control board for shipping
+/ Calibrating shifter, lift, and arm
+/ Prepare control board for shipping
 - Configure SmartDashboard
 - Controls must be decided and mapped (how can I do something; use a key)
 
@@ -19,7 +19,7 @@ Shifting
 / Else turn servo power off
 
 Lift
-* Manual modes and protection against stalling (predicted time; shut off power)
+/ Manual modes and protection against stalling (predicted time; shut off power)
 / Presets and joystick 
 - Fault indicator on dashboard (light + description)
 / Address power loss [press apply config button; no need to disable]
@@ -30,18 +30,18 @@ Arm
 - Fault indicator on dashboard (light + description)
 
 Tasks to assign
-- Control board
-- Make smaller encoder wire
+/ Control board
+/ Make smaller encoder wire
 
 Tasks stil left to do (priority)
 / Shifter							[A: 2/21/11]
 - Calibrate methods					[A: 2/10/11]
 	- Component takes in prefix		[A: 2/10/11]
 - Roller							[A: 2/11/11]
-- Button mapings for ThurstMaster	[A: 2/15/11]
+/ Button mapings for ThurstMaster	[A: 2/15/11]
 - SmartDashboard configuration		[A: 2/7/11 ]
 	- Log everything  				[A: 2/11/11]
-- Add wrappers for the partner jag for esc [A: 2/18/11]
+- Add partner jaguar wrappers		[A: 2/18/11]
 
 Periodic tasks
 - Take backup of LRTConfig11.txt	[A: 2/11/11, C: 2/18/11]
@@ -60,12 +60,10 @@ Finished tasks
 / Print out build/run numbers       			[A: 2/18/11, C: 2/18/11]
 
 Before shipping
-- Fuses OK?
-	- Arm/lift
+/ Fuses OK?
+	- Arm/lift (Put in lift fuse!)
 - Calibrate jaguars
-- Encoder wire
-- Lift testing
-- Change lift power
-- Anchor wires
-- Signal Light
-- 
+/ Encoder wire
+/ Lift testing
+/ Change lift power
+/ Signal Light

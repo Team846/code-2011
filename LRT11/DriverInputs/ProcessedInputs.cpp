@@ -59,37 +59,37 @@ float ProcessedInputs::GetTurn()
 
 bool ProcessedInputs::ShouldBrakeLeft()
 {
-    return driverStick.IsButtonDown(11);
+    return driverStick.IsButtonDown(10);
 }
 
 bool ProcessedInputs::ShouldBrakeRight()
 {
-    return driverStick.IsButtonDown(12);
+    return driverStick.IsButtonDown(9);
 }
 
 bool ProcessedInputs::ShouldShiftLow()
 {
-    return driverStick.IsButtonJustPressed(9);
+    return driverStick.IsButtonJustPressed(3);
 }
 
 bool ProcessedInputs::ShouldShiftHigh()
 {
-    return driverStick.IsButtonJustPressed(10);
+    return driverStick.IsButtonJustPressed(4);
 }
 
 bool ProcessedInputs::ShouldMoveLiftLow()
 {
-    return operatorStick.IsButtonJustPressed(12);
+    return operatorStick.IsButtonJustPressed(8);
 }
 
 bool ProcessedInputs::ShouldMoveLiftMedium()
 {
-    return operatorStick.IsButtonJustPressed(10);
+    return operatorStick.IsButtonJustPressed(9);
 }
 
 bool ProcessedInputs::ShouldMoveLiftHigh()
 {
-    return operatorStick.IsButtonJustPressed(8);
+    return operatorStick.IsButtonJustPressed(10);
 }
 
 bool ProcessedInputs::ShouldManuallyPowerLift()
@@ -104,17 +104,17 @@ float ProcessedInputs::GetLiftPower()
 
 bool ProcessedInputs::ShouldMoveArmDown()
 {
-    return driverStick.IsButtonDown(10);
+    return operatorStick.IsButtonDown(7);
 }
 
 bool ProcessedInputs::ShouldMoveArmUp()
 {
-    return driverStick.IsButtonDown(8);
+    return operatorStick.IsButtonDown(6);
 }
 
 bool ProcessedInputs::ShouldMoveArmBottomPreset()
 {
-    return driverStick.IsButtonJustPressed(9);
+    return driverStick.IsButtonJustPressed(8);
 }
 
 bool ProcessedInputs::ShouldMoveArmTopPreset()
@@ -124,7 +124,8 @@ bool ProcessedInputs::ShouldMoveArmTopPreset()
 
 bool ProcessedInputs::ShouldCollectEncoderData()
 {
-    return driverStick.IsButtonJustPressed(1);
+//    return driverStick.IsButtonJustPressed(1);
+    return false;
 }
 
 void ProcessedInputs::UpdateDebouncing()
@@ -135,15 +136,15 @@ void ProcessedInputs::UpdateDebouncing()
 
 bool ProcessedInputs::ShouldLoadConfig()
 {
-    return operatorStick.IsButtonJustPressed(9);
+    return operatorStick.IsButtonJustPressed(15);
 }
 
 bool ProcessedInputs::ShouldSaveConfig()
 {
-    return operatorStick.IsButtonJustPressed(11);
+    return operatorStick.IsButtonJustPressed(16);
 }
 
 bool ProcessedInputs::ShouldApplyConfig()
 {
-    return operatorStick.IsButtonJustPressed(7);
+    return operatorStick.IsButtonJustPressed(14);
 }

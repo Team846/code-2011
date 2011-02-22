@@ -2,7 +2,7 @@
 #include <cstdio>
 #include "..\Util\AsynchronousPrinter.h"
 
-DebouncedJoystick::DebouncedJoystick(unsigned port, int nBtns, int nAxes) :
+DebouncedJoystick::DebouncedJoystick(UINT32 port, int nBtns, int nAxes) :
     Joystick(port)
     , nBtns(nBtns)
     , nAxes(nAxes)
