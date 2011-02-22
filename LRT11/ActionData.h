@@ -34,6 +34,8 @@ public:
         enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} position;
         bool highRow;
         bool givenCommand;
+        bool manualMode;
+        float power;
     } lift;
 
     struct

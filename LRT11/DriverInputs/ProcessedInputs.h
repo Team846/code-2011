@@ -44,6 +44,8 @@ public:
     bool ShouldMoveLiftLow();
     bool ShouldMoveLiftMedium();
     bool ShouldMoveLiftHigh();
+    bool ShouldManuallyPowerLift();
+    float GetLiftPower();
 
     // arm
     bool ShouldMoveArmDown();

@@ -31,6 +31,8 @@ ActionData::ActionData()
     lift.position = lift.STOWED;
     lift.highRow = false;
     lift.givenCommand = false;
+    lift.manualMode = false;
+    lift.power = 0;
 
     demoLift.forward = 0;
 

@@ -8,6 +8,7 @@ Lift::Lift()
     , timeoutMs(0)
     , cycleCount(0)
 //    , safety(false)
+    , prevMode(PRESET)
 {
 
 }
@@ -36,15 +37,24 @@ void Lift::Configure()
     Config& config = Config::GetInstance();
     timeoutMs = config.Get<int>(prefix + "timeoutMs", 1500);
 
-    safetyDeadbandInches = config.Get<float>(prefix + "safetyDeadbandInches", 2);
-    safetyMarginInches = config.Get<float>(prefix + "safetyMarginInches", 6);
+    minPosition = config.Get<float>(prefix + "lowRowBottom");
+    maxPosition = minPosition + config.Get<float>(prefix + "highPegRelative");
+}
+
+void Lift::ConfigureVoltageMode()
+{
+    liftEsc.SetControlMode(CANJaguar::kVoltage);
+    liftEsc.EnableControl();
 }
 
 void Lift::Output()
 {
+    float potValue;
+
     {
-        ProfiledSection ps("Lift log position");
-        SmartDashboard::Log(liftEsc.GetPosition(), "Lift Position");
+        ProfiledSection ps("Lift Log Position");
+        potValue = liftEsc.GetPosition();
+        SmartDashboard::Log(potValue, "Lift Pot Value");
     }
 
     if(!action.lift.givenCommand && cycleCount == 0)
@@ -55,7 +65,7 @@ void Lift::Output()
         }
         return;
     }
-    else if(cycleCount == 0 || action.lift.givenCommand)
+    else if((cycleCount == 0 || action.lift.givenCommand) && !action.lift.manualMode)
     {
         action.lift.givenCommand = false;
         StartTimer();
@@ -63,36 +73,55 @@ void Lift::Output()
         liftEsc.EnableControl();
     }
 
-    string key = prefix;
-
-    float setPoint;
-    if(action.lift.highRow)
-        setPoint = config.Get<float>(prefix + "highRowBottom");
-    else
-        setPoint = config.Get<float>(prefix + "lowRowBottom");
-
-    switch(action.lift.position)
+    if(action.lift.manualMode)
     {
-    case STOWED:
-        break; // no relative position
-    case LOW_PEG:
-        key += "lowPegRelative";
-        break;
-    case MED_PEG:
-        key += "mediumPegRelative";
-        break;
-    case HIGH_PEG:
-        key += "highPegRelative";
-        break;
+        if(prevMode == PRESET)
+            ConfigureVoltageMode();
+
+        if((action.lift.power > 0 && potValue < maxPosition) ||
+                (action.lift.power < 0 && potValue > minPosition))
+            liftEsc.Set(action.lift.power);
+
+        action.lift.givenCommand = false;
+        prevMode = MANUAL;
     }
+    else
+    {
+        if(prevMode == MANUAL)
+            Configure(); // position control mode
 
-    if(action.lift.position != action.lift.STOWED)
-        setPoint += config.Get<float>(key); // relative to bottom
+        string key = prefix;
 
-    liftEsc.Set(setPoint);
-    cycleCount--;
+        float setPoint;
+        if(action.lift.highRow)
+            setPoint = config.Get<float>(prefix + "highRowBottom");
+        else
+            setPoint = config.Get<float>(prefix + "lowRowBottom");
 
-    SmartDashboard::Log(setPoint, "Lift Set Point");
+        switch(action.lift.position)
+        {
+        case STOWED:
+            break; // no relative position
+        case LOW_PEG:
+            key += "lowPegRelative";
+            break;
+        case MED_PEG:
+            key += "mediumPegRelative";
+            break;
+        case HIGH_PEG:
+            key += "highPegRelative";
+            break;
+        }
+
+        if(action.lift.position != action.lift.STOWED)
+            setPoint += config.Get<float>(key); // relative to bottom
+
+        liftEsc.Set(setPoint);
+        cycleCount--;
+
+        SmartDashboard::Log(setPoint, "Lift Set Point");
+        prevMode = PRESET;
+    }
 }
 
 void Lift::StartTimer()

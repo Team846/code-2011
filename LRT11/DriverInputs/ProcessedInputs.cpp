@@ -57,7 +57,6 @@ float ProcessedInputs::GetTurn()
     return Util::AddDeadband<float>(-driverStick.GetRawAxis(3), turnDeadband);
 }
 
-
 bool ProcessedInputs::ShouldBrakeLeft()
 {
     return driverStick.IsButtonDown(11);
@@ -91,6 +90,16 @@ bool ProcessedInputs::ShouldMoveLiftMedium()
 bool ProcessedInputs::ShouldMoveLiftHigh()
 {
     return operatorStick.IsButtonJustPressed(8);
+}
+
+bool ProcessedInputs::ShouldManuallyPowerLift()
+{
+    return Util::Abs<float>(Util::AddDeadband<float>(-driverStick.GetY(), forwardDeadband)) > 0;
+}
+
+float ProcessedInputs::GetLiftPower()
+{
+    return -driverStick.GetY();
 }
 
 bool ProcessedInputs::ShouldMoveArmDown()

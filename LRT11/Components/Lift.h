@@ -17,19 +17,21 @@ private:
     int timeoutMs;
     int cycleCount;
 
-    float safetyDeadbandInches;
-    float safetyMarginInches;
-
-//    bool safety;
+    float minPosition;
+    float maxPosition;
 
     enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4};
     void StartTimer();
+
+    enum {MANUAL = 1, PRESET = 2} prevMode;
 
 public:
     Lift();
     virtual ~Lift();
 
     virtual void Configure();
+    void ConfigureVoltageMode();
+
     virtual void Output();
 };
 

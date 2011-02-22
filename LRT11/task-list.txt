@@ -22,11 +22,11 @@ Lift
 * Manual modes and protection against stalling (predicted time; shut off power)
 / Presets and joystick 
 - Fault indicator on dashboard (light + description)
-* Address power loss
+/ Address power loss [press apply config button; no need to disable]
 
 Arm
-* Manual modes and protection against stalling (predicted time; shut off power)
-- Presets and up/down buttons
+/ Manual modes and protection against stalling (predicted time; shut off power)
+/ Presets and up/down buttons
 - Fault indicator on dashboard (light + description)
 
 Tasks to assign
@@ -34,11 +34,11 @@ Tasks to assign
 - Make smaller encoder wire
 
 Tasks stil left to do (priority)
-- Shifter							[A: 2/21/11]
-- Calibrate methods					[A: 2/10/11] - Brian Axelrod
+/ Shifter							[A: 2/21/11]
+- Calibrate methods					[A: 2/10/11]
 	- Component takes in prefix		[A: 2/10/11]
 - Roller							[A: 2/11/11]
-- Button mapings for ThurstMaster	[A: 2/15/11] - Brain Axelrod
+- Button mapings for ThurstMaster	[A: 2/15/11]
 - SmartDashboard configuration		[A: 2/7/11 ]
 	- Log everything  				[A: 2/11/11]
 - Add wrappers for the partner jag for esc [A: 2/18/11]
@@ -58,3 +58,10 @@ Finished tasks
 / Standardize CL nomenclature					[A: 2/12/11, C: 2/18/11]
 / Fix profiler									[A: 2/15/11, C: 2/18/11]
 / Print out build/run numbers       			[A: 2/18/11, C: 2/18/11]
+
+
+- Fuses OK?
+- Calibrate jaguars
+- Encoder wire
+- Lift testing
+- Change lift power
