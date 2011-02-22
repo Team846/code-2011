@@ -6,6 +6,7 @@ Arm::Arm()
     , prefix("Arm.")
     , armEsc(RobotConfig::CAN_ARM)
     , armPot(RobotConfig::POT_ARM)
+    , cycleCount(0)
 {
     armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 }
@@ -22,6 +23,8 @@ void Arm::Configure()
 
     powerUp = config.Get<float>(prefix + "powerUp", 0.30);
     powerDown = config.Get<float>(prefix + "powerDown", -0.15);
+
+    timeoutMs = config.Get<int>(prefix + "timeoutMs", 1500);
 }
 
 void Arm::Output()
@@ -29,10 +32,14 @@ void Arm::Output()
     float potValue = armPot.GetAverageValue();
     SmartDashboard::Log(potValue, "Arm Pot Value");
 
-    if(!action.arm.givenCommand)
+    if(!action.arm.givenCommand && cycleCount == 0)
     {
         armEsc.Set(0);
         return;
+    }
+    else if((cycleCount == 0 || action.arm.givenCommand) && (action.arm.presetTop || action.arm.presetBottom))
+    {
+        cycleCount = (int)(timeoutMs * 1.0 / 1000 * 50.0 / 1);
     }
 
     if(action.arm.manualUp || action.arm.presetTop)
@@ -40,28 +47,32 @@ void Arm::Output()
         if(potValue < maxPosition)
             armEsc.Set(powerUp);
         else if(action.arm.presetTop)
-        {
-            action.arm.presetTop = false;
-            action.arm.givenCommand = false;
-        }
+            cycleCount = 1; // will get decremented to 0
 
-        if(action.arm.manualUp)
-            // only run as long as button is down
-            action.arm.givenCommand = false;
+//        if(action.arm.manualUp)
+        // only run as long as button is down
     }
     else if(action.arm.manualDown || action.arm.presetBottom)
     {
         if(potValue > minPosition)
             armEsc.Set(powerDown);
         else if(action.arm.presetBottom)
-        {
-            action.arm.presetBottom = false;
-            action.arm.givenCommand = false;
-        }
+            cycleCount = 1; // will get decremented to 0
 
-        if(action.arm.manualDown)
-            // only run as long as button is down
-            action.arm.givenCommand = false;
+//        if(action.arm.manualDown)
+        // only run as long as button is down
+    }
+
+    action.arm.givenCommand = false;
+    if(action.arm.presetTop || action.arm.presetBottom)
+    {
+        cycleCount--;
+
+        if(cycleCount == 0)
+        {
+            action.arm.presetTop = false;
+            action.arm.presetBottom = false;
+        }
     }
 
     /*
