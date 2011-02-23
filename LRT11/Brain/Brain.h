@@ -44,13 +44,15 @@ private:
     void Disabled();
 
     void Auton();
-
     void Teleop();
-//    void TeleopDriveTrain();
+
+    void TeleopDriveTrain();
+    void TeleopShifter();
+
     void TeleopLift();
     void TeleopArm();
-//    void TeleopRoller();
 
+    void TeleopRoller();
     void UpdateDashboardValues(GameState gameState);
 };
 

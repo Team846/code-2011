@@ -67,3 +67,8 @@ Before shipping
 / Lift testing
 / Change lift power
 / Signal Light
+
+At competition
+- Set gains to 1.5
+- Fix bottom of robot
+- Test cleaned up code

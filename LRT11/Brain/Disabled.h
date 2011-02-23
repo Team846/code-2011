@@ -6,4 +6,5 @@ void Brain::Disabled()
     action.driveTrain.rawTurn    = 0;
 
     action.lift.givenCommand = false;
+    action.arm.givenCommand  = false;
 }
