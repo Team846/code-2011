@@ -55,7 +55,11 @@ public:
 
     struct
     {
-        enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROLLING = 4} state;
+        enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROTATING = 4} state;
+        
+        // true to rotate upward, false to rotate downward;
+        // only active in ROTATING state
+        bool rotateUpward;
     } roller;
 
     struct

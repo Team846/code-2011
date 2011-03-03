@@ -2,12 +2,11 @@
 #include "..\Config\RobotConfig.h"
 
 Roller::Roller()
-    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port number later
+    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port numbers later
     , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
     , prefix("Roller.")
 {
-    topRoller.SetControlMode(CANJaguar::kCurrent);
-    bottomRoller.SetControlMode(CANJaguar::kCurrent);
+	
 }
 
 Roller::~Roller()
@@ -17,14 +16,14 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
-    topRoller.Set(currentSuckingIn);
-    bottomRoller.Set(currentSuckingIn);
+    topRoller.Set(dutyCycleSucking);
+    bottomRoller.Set(dutyCycleSucking);
 }
 
 void Roller::RollOutward()
 {
-    topRoller.Set(currentSpittingOut);
-    bottomRoller.Set(currentSpittingOut);
+    topRoller.Set(dutyCycleSpitting);
+    bottomRoller.Set(dutyCycleSpitting);
 }
 
 void Roller::Stop()
@@ -33,11 +32,19 @@ void Roller::Stop()
     bottomRoller.Set(0.0);
 }
 
-void Roller::RollOpposite(int direction)
+void Roller::RollOpposite(bool rotateUpward)
 {
-    int sign = Util::Sign<int>(direction);
-    topRoller.Set(sign * 1.0);
-    bottomRoller.Set(sign * -1.0);
+	// set duty cycles based on rotation direction
+    if(rotateUpward)
+    {
+    	topRoller.Set(dutyCycleRotatingIn);
+    	bottomRoller.Set(dutyCycleRotatingOut);
+    }
+    else
+    {
+    	topRoller.Set(dutyCycleRotatingOut);
+    	bottomRoller.Set(dutyCycleRotatingIn);
+    }
 }
 
 void Roller::Output()
@@ -53,8 +60,8 @@ void Roller::Output()
     case SPITTING:
         RollOutward();
         break;
-    case ROLLING:
-        // TODO
+    case ROTATING:
+        RollOpposite(action.roller.rotateUpward);
         break;
     }
 }
@@ -63,6 +70,16 @@ void Roller::Configure()
 {
     Config& config = Config::GetInstance();
 
-    currentSpittingOut = config.Get<float>(prefix + "currentSpittingOut");
-    currentSuckingIn = config.Get<float>(prefix + "currentSuckingIn");
+    // 6V is sufficient for sucking (3/2/11)
+    dutyCycleSucking = config.Get<float>(prefix + "dutyCycleSucking", 0.5);
+    
+    // 12V is ideal for spitting out the ringer at a range of about 3-15 inches (3/2/11)
+    dutyCycleSpitting = config.Get<float>(prefix + "dutyCycleSpitting", -1.0);
+    
+    // 3V results in a good speed for rotating the ringer (3/2/11)
+    dutyCycleRotatingOut = config.Get<float>(prefix + "dutyCycleRotatingOut", -0.25);
+    
+    // duty cycle for roller rotating inward is higher so that the ringer stays 
+    // inside the grabber (no tendency to move out)
+    dutyCycleRotatingIn = config.Get<float>(prefix + "dutyCycleRotatingIn", 0.30);
 }

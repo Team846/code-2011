@@ -46,6 +46,8 @@ ActionData::ActionData()
     arm.position = arm.TOP;
 
     roller.state = roller.STOPPED;
+    // if in roller.ROTATING state, default to rotating upward
+    roller.rotateUpward = true;
 
     encoderData.shouldCollect = false;
 

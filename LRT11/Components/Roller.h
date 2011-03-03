@@ -14,10 +14,13 @@ private:
     ProxiedCANJaguar bottomRoller;
 
     string prefix;
-    enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROLLING = 4};
+    enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROTATING = 4};
 
-    float currentSuckingIn;
-    float currentSpittingOut;
+    float dutyCycleSucking;
+    float dutyCycleSpitting;
+    
+    float dutyCycleRotatingIn;
+    float dutyCycleRotatingOut;
 
     void RollInward();
     void RollOutward();
