@@ -2,14 +2,15 @@
 
 void Brain::TeleopShifter()
 {
+	// assume force shift; set to false in last else
+	// statement (see below)
+	action.shifter.force = true;
+	
     if(inputs.ShouldShiftLow())
-    {
         action.shifter.gear = action.shifter.LOW_GEAR;
-        action.shifter.force = true;
-    }
     else if(inputs.ShouldShiftHigh())
-    {
         action.shifter.gear = action.shifter.HIGH_GEAR;
-        action.shifter.force = true;
-    }
+    else
+    	// no force shift
+    	action.shifter.force = false;
 }

@@ -4,11 +4,10 @@
 void Brain::Teleop()
 {
     TeleopDriveTrain();
+    TeleopShifter();
 
     TeleopLift();
     TeleopArm();
-
-    TeleopShifter();
 
     if(isFinale /* && inputs.ShouldDeployMinibot() */)
     {

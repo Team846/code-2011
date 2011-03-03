@@ -23,6 +23,7 @@ public:
     Brain();
     ~Brain();
 
+    // called from the main loop
     void Process(GameState gameState);
 
 private:
@@ -40,12 +41,14 @@ private:
     LRTEncoder& rightEncoder;
     bool isFinale;
 
+    // Mode-specific methods
     void Common();
     void Disabled();
 
     void Auton();
     void Teleop();
 
+    // Teleop subroutines
     void TeleopDriveTrain();
     void TeleopShifter();
 
@@ -53,6 +56,8 @@ private:
     void TeleopArm();
 
     void TeleopRoller();
+    
+    // SmartDashboard updating
     void UpdateDashboardValues(GameState gameState);
 };
 

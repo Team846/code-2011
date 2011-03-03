@@ -2,6 +2,7 @@
 
 void Brain::Disabled()
 {
+	// reset action data values
     action.driveTrain.rawForward = 0;
     action.driveTrain.rawTurn    = 0;
 

@@ -7,6 +7,9 @@
 | C: Date completed  |
 ======================
 
+Tasks after shipping
+- Reset more action data values in disabled mode?
+
 Tasks before shipping
 / Calibrating shifter, lift, and arm
 / Prepare control board for shipping
