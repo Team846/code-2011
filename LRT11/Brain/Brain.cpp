@@ -31,7 +31,7 @@ Brain::~Brain()
 
 void Brain::Process(GameState gameState)
 {
-	// start game timer if transitioning from autonomous to teleop
+    // start game timer if transitioning from autonomous to teleop
     if(previousState != gameState)
     {
         if(previousState == AUTONOMOUS && gameState == TELEOPERATED)
@@ -70,7 +70,7 @@ void Brain::Process(GameState gameState)
 
 void Brain::UpdateDashboardValues(GameState gameState)
 {
-	// drive train and encoder logging
+    // drive train and encoder logging
     SmartDashboard::Log((int)(action.driveTrain.rawForward * 100), "Raw Forward (F)");
     SmartDashboard::Log(200 + (int)(action.driveTrain.rawForward * 100), "Raw Forward (B)");
 

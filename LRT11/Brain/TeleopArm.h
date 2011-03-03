@@ -4,8 +4,8 @@ void Brain::TeleopArm()
 {
     action.arm.manualDown = false;
     action.arm.manualUp = false;
-    
-    // assume command is given; set to false in last else 
+
+    // assume command is given; set to false in last else
     // statement (see below)
     action.arm.givenCommand = true;
 
@@ -19,6 +19,6 @@ void Brain::TeleopArm()
     else if(inputs.ShouldMoveArmBottomPreset())
         action.arm.presetBottom = true;
     else
-    	// no command given
-    	action.arm.givenCommand = false;
+        // no command given
+        action.arm.givenCommand = false;
 }

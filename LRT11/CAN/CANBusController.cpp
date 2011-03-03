@@ -14,10 +14,10 @@ CANBusController::CANBusController()
             (FUNCPTR)CANBusController::BusWriterTaskRunner)
     , semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE
             | SEM_INVERSION_SAFE))
-    , forceSetpointUpdate(-1)
 {
     AddToSingletonList();
 
+    // fill arrays with default values
     for(int id = kMinJaguarId; id <= kMaxJaguarId; ++id)
     {
         int idx = BusIdToIndex(id);
@@ -35,17 +35,8 @@ void CANBusController::ResetCache()
 {
     Synchronized s(semaphore);
 
-    // force update all setpoints in 15 cycles after
-    // a switch in game state; must have delay for
-    // successful speed controller update
-//    forceSetpointUpdate = 1000; // 1 cycle = 1 ms
-
     for(int id = kMinJaguarId; id <= kMaxJaguarId; ++id)
-    {
-        int idx = BusIdToIndex(id);
-        setpoints[idx] = -91387; // bogus value that will ensure a setpoint change
-        setpointChanged[idx] = false;
-    }
+        ResetCache(id);
 }
 
 void CANBusController::ResetCache(int id)
@@ -74,6 +65,7 @@ void CANBusController::Set(int id, float val)
     Synchronized s(semaphore);
     int idx = BusIdToIndex(id);
 
+    // caching; only set if changed
     if(setpoints[idx] != val)
     {
         setpoints[idx] = val;
@@ -81,6 +73,7 @@ void CANBusController::Set(int id, float val)
     }
 }
 
+// blocking function, as it is only called during jaguar configuration
 void CANBusController::SetPID(int id, double p, double i, double d)
 {
     int idx = BusIdToIndex(id);
@@ -91,6 +84,7 @@ float CANBusController::Get(int id)
 {
     Synchronized s(semaphore);
 
+    // get from the cache
     int idx = BusIdToIndex(id);
     return setpoints[idx];
 }
@@ -100,6 +94,7 @@ void CANBusController::ConfigNeutralMode(int id, CANJaguar::NeutralMode mode)
     Synchronized s(semaphore);
     int idx = BusIdToIndex(id);
 
+    // caching; only set if changed
     if(neutralModes[idx] != mode)
     {
         neutralModes[idx] = mode;
@@ -141,12 +136,12 @@ void CANBusController::BusWriterTask()
             int idx = BusIdToIndex(id);
 
             float setpoint;
-            bool forceSetpointUpdate;
 
             CANJaguar::NeutralMode mode;
             bool setpointChanged, neutralModeChanged;
 
             {
+                // get the data to update
                 Synchronized s(semaphore);
 
                 setpoint = setpoints[idx];
@@ -154,11 +149,10 @@ void CANBusController::BusWriterTask()
 
                 mode = neutralModes[idx];
                 neutralModeChanged = this->neutralModeChanged[idx];
-
-                forceSetpointUpdate = this->forceSetpointUpdate;
             }
 
-            if(setpointChanged || forceSetpointUpdate == 0)
+            // set new values only if the old ones changed
+            if(setpointChanged)
             {
                 jaguars[idx]->Set(setpoint);
 
@@ -179,15 +173,14 @@ void CANBusController::BusWriterTask()
             }
         }
 
-        {
-            Synchronized s(semaphore);
-            if(forceSetpointUpdate >= 0)
-                forceSetpointUpdate--;
-        }
-
         Wait(0.001);   // allow other tasks to run
     }
 }
+
+/*
+ * All the following are blocking functions, as they are
+ * only called during jaguar configuration.
+ */
 
 void CANBusController::SetPositionReference(int id, CANJaguar::PositionReference reference)
 {

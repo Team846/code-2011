@@ -3,8 +3,8 @@
 void Brain::TeleopLift()
 {
     action.lift.manualMode = false;
-    
-    // assume command is given; set to false in last else 
+
+    // assume command is given; set to false in last else
     // statement (see below)
     action.lift.givenCommand = true;
 
@@ -21,6 +21,6 @@ void Brain::TeleopLift()
         action.lift.power = inputs.GetLiftPower();
     }
     else
-    	// no command given
-    	action.lift.givenCommand = false;
+        // no command given
+        action.lift.givenCommand = false;
 }

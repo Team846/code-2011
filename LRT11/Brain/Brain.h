@@ -56,7 +56,7 @@ private:
     void TeleopArm();
 
     void TeleopRoller();
-    
+
     // SmartDashboard updating
     void UpdateDashboardValues(GameState gameState);
 };
