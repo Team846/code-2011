@@ -6,7 +6,7 @@ Roller::Roller()
     , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
     , prefix("Roller.")
 {
-	
+
 }
 
 Roller::~Roller()
@@ -34,16 +34,16 @@ void Roller::Stop()
 
 void Roller::RollOpposite(bool rotateUpward)
 {
-	// set duty cycles based on rotation direction
+    // set duty cycles based on rotation direction
     if(rotateUpward)
     {
-    	topRoller.Set(dutyCycleRotatingIn);
-    	bottomRoller.Set(dutyCycleRotatingOut);
+        topRoller.Set(dutyCycleRotatingIn);
+        bottomRoller.Set(dutyCycleRotatingOut);
     }
     else
     {
-    	topRoller.Set(dutyCycleRotatingOut);
-    	bottomRoller.Set(dutyCycleRotatingIn);
+        topRoller.Set(dutyCycleRotatingOut);
+        bottomRoller.Set(dutyCycleRotatingIn);
     }
 }
 
@@ -72,14 +72,14 @@ void Roller::Configure()
 
     // 6V is sufficient for sucking (3/2/11)
     dutyCycleSucking = config.Get<float>(prefix + "dutyCycleSucking", 0.5);
-    
+
     // 12V is ideal for spitting out the ringer at a range of about 3-15 inches (3/2/11)
     dutyCycleSpitting = config.Get<float>(prefix + "dutyCycleSpitting", -1.0);
-    
+
     // 3V results in a good speed for rotating the ringer (3/2/11)
     dutyCycleRotatingOut = config.Get<float>(prefix + "dutyCycleRotatingOut", -0.25);
-    
-    // duty cycle for roller rotating inward is higher so that the ringer stays 
+
+    // duty cycle for roller rotating inward is higher so that the ringer stays
     // inside the grabber (no tendency to move out)
     dutyCycleRotatingIn = config.Get<float>(prefix + "dutyCycleRotatingIn", 0.30);
 }

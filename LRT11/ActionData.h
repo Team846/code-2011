@@ -51,12 +51,13 @@ public:
         bool manualDown, manualUp;
         bool presetTop, presetBottom;
         enum {BOTTOM = 1, TOP = 2} position;
+        bool done;
     } arm;
 
     struct
     {
         enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROTATING = 4} state;
-        
+
         // true to rotate upward, false to rotate downward;
         // only active in ROTATING state
         bool rotateUpward;

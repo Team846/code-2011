@@ -44,6 +44,7 @@ ActionData::ActionData()
     arm.presetTop = false;
     arm.presetBottom = false;
     arm.position = arm.TOP;
+    arm.done = false;
 
     roller.state = roller.STOPPED;
     // if in roller.ROTATING state, default to rotating upward

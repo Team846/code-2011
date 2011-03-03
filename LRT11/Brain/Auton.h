@@ -8,11 +8,11 @@ enum
     WAIT_FOR_DRIVE,
     WAIT_FOR_LIFT,
     WAIT_FOR_RELEASE
-} state = DRIVE_FORWARD;
+} autonState = DRIVE_FORWARD;
 
 void Brain::Auton()
 {
-    switch(state)
+    switch(autonState)
     {
     case DRIVE_FORWARD:
         action.positionTrain.enabled = true;
@@ -21,7 +21,7 @@ void Brain::Auton()
         // placeholder; distance to pegs in inches
         action.positionTrain.moveDistance = 36.0;
 
-        state = WAIT_FOR_DRIVE;
+        autonState = WAIT_FOR_DRIVE;
         break;
 
     case MOVE_LIFT:
@@ -29,13 +29,13 @@ void Brain::Auton()
         action.lift.highRow = false; // should change based off position
         action.lift.position = action.lift.HIGH_PEG;
 
-        state = WAIT_FOR_LIFT;
+        autonState = WAIT_FOR_LIFT;
         break;
 
     case RELEASE_TUBE:
         // TODO make release routine
 
-        state = WAIT_FOR_RELEASE;
+        autonState = WAIT_FOR_RELEASE;
         break;
 
     case WAIT_FOR_DRIVE:
@@ -44,7 +44,7 @@ void Brain::Auton()
             action.positionTrain.enabled = false;
             // should move distance is automatically reset
 
-            state = MOVE_LIFT;
+            autonState = MOVE_LIFT;
         }
         break;
 
@@ -53,7 +53,7 @@ void Brain::Auton()
         {
             action.lift.givenCommand = false;
 
-            state = RELEASE_TUBE;
+            autonState = RELEASE_TUBE;
         }
         break;
 

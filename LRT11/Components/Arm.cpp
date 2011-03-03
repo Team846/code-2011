@@ -40,6 +40,7 @@ void Arm::Output()
     else if((cycleCount == 0 || action.arm.givenCommand) && (action.arm.presetTop || action.arm.presetBottom))
     {
         cycleCount = (int)(timeoutMs * 1.0 / 1000 * 50.0 / 1);
+        action.arm.done = false;
     }
 
     if(action.arm.manualUp || action.arm.presetTop)
@@ -47,7 +48,10 @@ void Arm::Output()
         if(potValue < maxPosition)
             armEsc.Set(powerUp);
         else if(action.arm.presetTop)
+        {
             cycleCount = 1; // will get decremented to 0
+            action.arm.done = true;
+        }
 
 //        if(action.arm.manualUp)
         // only run as long as button is down
@@ -57,7 +61,10 @@ void Arm::Output()
         if(potValue > minPosition)
             armEsc.Set(powerDown);
         else if(action.arm.presetBottom)
+        {
             cycleCount = 1; // will get decremented to 0
+            action.arm.done = true;
+        }
 
 //        if(action.arm.manualDown)
         // only run as long as button is down

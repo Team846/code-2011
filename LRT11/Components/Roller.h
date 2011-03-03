@@ -18,13 +18,13 @@ private:
 
     float dutyCycleSucking;
     float dutyCycleSpitting;
-    
+
     float dutyCycleRotatingIn;
     float dutyCycleRotatingOut;
 
     void RollInward();
     void RollOutward();
-    void RollOpposite(int direction);
+    void RollOpposite(bool rotateUpward);
     void Stop();
 
 public:
