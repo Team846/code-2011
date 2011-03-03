@@ -4,7 +4,7 @@ LRTRobot11::LRTRobot11()
     : brain()
     , controller(CANBusController::GetInstance())
     , drive()
-//    , positionDrive()
+    , positionDrive()
 //    , encoderData()
     , shifter()
     , lift()
@@ -68,10 +68,10 @@ void LRTRobot11::MainLoop()
             arm.Output();
         }
 
-//        {
-//            ProfiledSection ps("Position Drive");
-//            positionDrive.Output();
-//        }
+        {
+            ProfiledSection ps("Position Drive");
+            positionDrive.Output();
+        }
 
 //        {
 //            ProfiledSection ps("Encoder Data Collection");

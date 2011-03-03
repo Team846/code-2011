@@ -9,6 +9,9 @@
 
 Tasks after shipping
 - Reset more action data values in disabled mode?
+- Capacitor
+- Autonomous routine
+	- Release ringer
 
 Tasks before shipping
 / Calibrating shifter, lift, and arm

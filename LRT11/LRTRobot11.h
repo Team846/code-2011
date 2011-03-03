@@ -17,10 +17,10 @@ class LRTRobot11 : public LRTRobotBase
 private:
     Brain brain;
     CANBusController& controller;
-    DriveTrain drive;
-//    PositionDriveTrain positionDrive;
 
-//    EncoderDataCollection encoderData;
+    DriveTrain drive;
+    PositionDriveTrain positionDrive;
+
     Shifter shifter;
 
     Lift lift;

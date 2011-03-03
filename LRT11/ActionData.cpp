@@ -27,12 +27,14 @@ ActionData::ActionData()
     positionTrain.pivotLeft = false;
     positionTrain.pivotRight = false;
     positionTrain.done = false;
+    positionTrain.enabled = false;
 
     lift.position = lift.STOWED;
     lift.highRow = false;
     lift.givenCommand = false;
     lift.manualMode = false;
     lift.power = 0;
+    lift.done = false;
 
     demoLift.forward = 0;
 

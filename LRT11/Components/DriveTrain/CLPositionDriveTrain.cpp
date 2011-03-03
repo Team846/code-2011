@@ -77,10 +77,7 @@ bool CLPositionDriveTrain::TurnAngleOutput()
 
     // output based on pivot flags
     if(turnAngleInfo.pivotLeft)
-    {
-        AsynchronousPrinter::Printf("pl\n");
         drive.PivotLeft(correction);
-    }
     else if(turnAngleInfo.pivotRight)
         drive.PivotRight(correction);
     else

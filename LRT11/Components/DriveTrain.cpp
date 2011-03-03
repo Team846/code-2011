@@ -20,8 +20,14 @@ DriveTrain::~DriveTrain()
 
 void DriveTrain::Output()
 {
+    // rate train (normal joystick driving) and position train
+    // can't run simultaneously
+    if(action.positionTrain.enabled)
+        return;
+
     left.UpdateOutput();
     right.UpdateOutput();
+
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
     robotDrive.SetBrakeRight(action.driveTrain.brakeRight);
     robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);

@@ -27,6 +27,7 @@ public:
         float moveDistance, turnAngle;
         bool pivotLeft, pivotRight;
         bool done;
+        bool enabled;
     } positionTrain;
 
     struct
@@ -36,6 +37,7 @@ public:
         bool givenCommand;
         bool manualMode;
         float power;
+        bool done; // done with preset movement
     } lift;
 
     struct

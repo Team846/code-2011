@@ -25,7 +25,7 @@ private:
     void StartTimer();
 
     enum {MANUAL = 1, PRESET = 2} prevMode;
-    int prevPotPos;
+    float potDeadband;
 
 public:
     Lift();

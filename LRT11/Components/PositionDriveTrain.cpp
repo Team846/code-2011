@@ -21,38 +21,35 @@ PositionDriveTrain::~PositionDriveTrain()
 
 void PositionDriveTrain::Output()
 {
+    // only run position train if enabled
+    if(!action.positionTrain.enabled)
+        return;
+
     if(action.positionTrain.shouldMoveDistance)
     {
-        action.positionTrain.shouldOutputTurnAngle = false;
-        action.positionTrain.shouldOutputMoveDistance = true;
         positionDrive.MoveInches(action.positionTrain.moveDistance);
         action.positionTrain.shouldMoveDistance = false;
+
+        // should only output move distance on a subsequent call of output
+        action.positionTrain.shouldOutputMoveDistance = true;
+        action.positionTrain.shouldOutputTurnAngle = false;
     }
     // interlock; can't move distance and turn simultaneously
     else if(action.positionTrain.shouldTurnAngle)
     {
-        action.positionTrain.shouldOutputMoveDistance = false;
-        action.positionTrain.shouldOutputTurnAngle = true;
         positionDrive.TurnAngle(action.positionTrain.turnAngle, action.positionTrain.pivotLeft,
                 action.positionTrain.pivotRight);
         action.positionTrain.shouldTurnAngle = false;
+
+        // should only output turn angle on a subsequent call of output
+        action.positionTrain.shouldOutputTurnAngle = true;
+        action.positionTrain.shouldOutputMoveDistance = false;
     }
 
     if(action.positionTrain.shouldOutputMoveDistance)
-    {
-        //AsynchronousPrinter::Printf("Outputting move distance\n");
+        // output and store whether movement is done
         action.positionTrain.done = positionDrive.MoveDistanceOutput();
-//        action.positionTrain.shouldOutputMoveDistance = !action.positionTrain.done;
-//
-//        if(action.positionTrain.done)
-//            positionDrive.Stop();
-    }
     else if(action.positionTrain.shouldOutputTurnAngle)
-    {
+        // output and store whether movement is done
         action.positionTrain.done = positionDrive.TurnAngleOutput();
-//        action.positionTrain.shouldOutputTurnAngle = !action.positionTrain.done;
-//
-//        if(action.positionTrain.done)
-//            positionDrive.Stop();
-    }
 }

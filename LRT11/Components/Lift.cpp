@@ -8,8 +8,8 @@ Lift::Lift()
     , controller(CANBusController::GetInstance())
     , timeoutMs(0)
     , cycleCount(0)
-//    , safety(false)
     , prevMode(PRESET)
+    , potDeadband(0)
 {
 
 }
@@ -40,6 +40,8 @@ void Lift::Configure()
 
     minPosition = config.Get<float>(prefix + "lowRowBottom");
     maxPosition = minPosition + config.Get<float>(prefix + "highPegRelative");
+
+    potDeadband = config.Get<float>(prefix + "deadband", 0.3);
 }
 
 void Lift::ConfigureVoltageMode()
@@ -122,6 +124,12 @@ void Lift::Output()
 
         if(action.lift.position != action.lift.STOWED)
             setPoint += config.Get<float>(key); // relative to bottom
+
+        // update done status
+        if(Util::Abs<float>(potValue - setPoint) < potDeadband)
+            action.lift.done = true;
+        else
+            action.lift.done = false;
 
         liftEsc.Set(setPoint);
         cycleCount--;
