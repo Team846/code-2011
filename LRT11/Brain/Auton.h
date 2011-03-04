@@ -7,7 +7,8 @@ enum
     RELEASE_TUBE,
     WAIT_FOR_DRIVE,
     WAIT_FOR_LIFT,
-    WAIT_FOR_RELEASE
+    WAIT_FOR_RELEASE,
+    IDLE
 } autonState = DRIVE_FORWARD;
 
 void Brain::Auton()
@@ -33,7 +34,7 @@ void Brain::Auton()
         break;
 
     case RELEASE_TUBE:
-        // TODO make release routine
+    	action.roller.state = action.roller.SPITTING;
 
         autonState = WAIT_FOR_RELEASE;
         break;
@@ -51,6 +52,7 @@ void Brain::Auton()
     case WAIT_FOR_LIFT:
         if(action.lift.done)
         {
+        	// disable the lift
             action.lift.givenCommand = false;
 
             autonState = RELEASE_TUBE;
@@ -58,8 +60,14 @@ void Brain::Auton()
         break;
 
     case WAIT_FOR_RELEASE:
-        // TODO check if relase is done
-        // no state change; done with routine
+    	static int releaseCount = 0;
+    	
+    	// two second release
+    	if(++releaseCount % 100 == 0)
+    		autonState = IDLE;
         break;
+    	
+    case IDLE:
+    	break;
     }
 }
