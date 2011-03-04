@@ -2,7 +2,7 @@
 #define PROXIED_CAN_JAGUAR_H_
 
 #include "..\General.h"
-#include "..\CAN\CANBusController.h"
+#include "..\CAN\VirtualCANBusController.h"
 #include "..\Util\Util.h"
 
 class ProxiedCANJaguar : public SpeedController
@@ -11,9 +11,7 @@ public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();
 
-    int GetChannel();
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
-
     virtual float Get();
     virtual void Disable();
 
@@ -35,15 +33,11 @@ public:
     double GetPosition();
     double GetSpeed();
 
-    void ConfigSoftPositionLimits(double forwardLimit, double reverseLimit);
-    void DisableSoftPositionLimits();
-    bool GetForwardLimitOK();
-    bool GetReverseLimitOK();
-
     void ConfigNeutralMode(CANJaguar::NeutralMode mode);
+    void ResetCache();
 
 protected:
-    CANBusController& controller;
+    VirtualCANBusController& controller;
     int channel;
 };
 

@@ -2,7 +2,7 @@
 #define LIFT_H_
 
 #include "Component.h"
-#include "..\Jaguar\CLPotJaguar.h"
+#include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
 
 class Lift : public Component, public Configurable
@@ -11,7 +11,6 @@ private:
     Config& config;
     string prefix;
     ProxiedCANJaguar liftEsc;
-    CANBusController& controller;
 
     const static float inchesToTurns = 1 / 12.0;
 

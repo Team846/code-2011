@@ -1,7 +1,7 @@
 #include "ProxiedCANJaguar.h"
 
-ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel) :
-    controller(CANBusController::GetInstance())
+ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
+    : controller(VirtualCANBusController::GetInstance())
     , channel(channel)
 {
 
@@ -10,11 +10,6 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel) :
 ProxiedCANJaguar::~ProxiedCANJaguar()
 {
 
-}
-
-int ProxiedCANJaguar::GetChannel()
-{
-    return channel;
 }
 
 void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
@@ -107,23 +102,7 @@ void ProxiedCANJaguar::DisableControl()
     controller.DisableControl(channel);
 }
 
-void ProxiedCANJaguar::ConfigSoftPositionLimits(double forwardLimit, double reverseLimit)
+void ProxiedCANJaguar::ResetCache()
 {
-    controller.ConfigSoftPositionLimits(channel, forwardLimit, reverseLimit);
-}
-
-void ProxiedCANJaguar::DisableSoftPositionLimits()
-{
-
-    controller.DisableSoftPositionLimits(channel);
-}
-
-bool ProxiedCANJaguar::GetForwardLimitOK()
-{
-    return controller.GetForwardLimitOK(channel);
-}
-
-bool ProxiedCANJaguar::GetReverseLimitOK()
-{
-    return controller.GetReverseLimitOK(channel);
+    controller.ResetCache(channel);
 }

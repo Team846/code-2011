@@ -5,7 +5,6 @@ Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
     , liftEsc(RobotConfig::CAN_LIFT)
-    , controller(CANBusController::GetInstance())
     , timeoutMs(0)
     , cycleCount(0)
     , prevMode(PRESET)
@@ -87,7 +86,7 @@ void Lift::Output()
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
         {
-            controller.ResetCache(liftEsc.GetChannel());
+            liftEsc.ResetCache();
             liftEsc.Set(action.lift.power);
         }
 

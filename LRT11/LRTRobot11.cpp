@@ -2,7 +2,7 @@
 
 LRTRobot11::LRTRobot11()
     : brain()
-    , controller(CANBusController::GetInstance())
+    , controller(VirtualCANBusController::GetInstance())
     , drive()
     , positionDrive()
 //    , encoderData()

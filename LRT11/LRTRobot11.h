@@ -16,7 +16,7 @@ class LRTRobot11 : public LRTRobotBase
 {
 private:
     Brain brain;
-    CANBusController& controller;
+    VirtualCANBusController& controller;
 
     DriveTrain drive;
     PositionDriveTrain positionDrive;

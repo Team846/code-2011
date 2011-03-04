@@ -1,5 +1,5 @@
-#ifndef LRT_CANBUSCTRLR_H_
-#define LRT_CANBUSCTRLR_H_
+#ifndef CAN_BUS_CONTROLLER_H_
+#define CAN_BUS_CONTROLLER_H_
 
 #include "..\General.h"
 #include "..\Jaguar\SafeCANJaguar.h"

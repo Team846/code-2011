@@ -10,8 +10,8 @@
 Tasks after shipping
 - Reset more action data values in disabled mode?
 - Capacitor
-- Autonomous routine
-	- Release ringer
+/ Autonomous routine
+	/ Release ringer
 - Back off after squaring ringer up with lift?
 - Confirm button mappings of roller
 

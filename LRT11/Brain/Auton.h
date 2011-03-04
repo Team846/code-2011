@@ -16,6 +16,10 @@ void Brain::Auton()
     switch(autonState)
     {
     case DRIVE_FORWARD:
+        // switch to low gear and shift
+        action.shifter.gear = action.shifter.LOW_GEAR;
+        action.shifter.force = true;
+
         action.positionTrain.enabled = true;
         action.positionTrain.shouldMoveDistance = true;
 
@@ -34,7 +38,7 @@ void Brain::Auton()
         break;
 
     case RELEASE_TUBE:
-    	action.roller.state = action.roller.SPITTING;
+        action.roller.state = action.roller.SPITTING;
 
         autonState = WAIT_FOR_RELEASE;
         break;
@@ -52,7 +56,7 @@ void Brain::Auton()
     case WAIT_FOR_LIFT:
         if(action.lift.done)
         {
-        	// disable the lift
+            // disable the lift
             action.lift.givenCommand = false;
 
             autonState = RELEASE_TUBE;
@@ -60,14 +64,14 @@ void Brain::Auton()
         break;
 
     case WAIT_FOR_RELEASE:
-    	static int releaseCount = 0;
-    	
-    	// two second release
-    	if(++releaseCount % 100 == 0)
-    		autonState = IDLE;
+        static int releaseCount = 0;
+
+        // two second release
+        if(++releaseCount % 100 == 0)
+            autonState = IDLE;
         break;
-    	
+
     case IDLE:
-    	break;
+        break;
     }
 }
