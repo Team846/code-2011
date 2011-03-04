@@ -12,6 +12,8 @@ Tasks after shipping
 - Capacitor
 - Autonomous routine
 	- Release ringer
+- Back off after squaring ringer up with lift?
+- Confirm button mappings of roller
 
 Tasks before shipping
 / Calibrating shifter, lift, and arm

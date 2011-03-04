@@ -53,6 +53,9 @@ public:
     bool ShouldMoveArmBottomPreset();
     bool ShouldMoveArmTopPreset();
 
+    // roller
+    bool ShouldSpitRoller();
+
     // shifting
     bool ShouldShiftLow();
     bool ShouldShiftHigh();

@@ -6,7 +6,8 @@ enum
     ARM_GOING_TO_BOTTOM,
     ARM_GOING_TO_TOP,
     SQUARING_RINGER_WITH_LIFT,
-    STOPPING
+    STOPPING,
+    SPITTING
 } rollerState = WAITING;
 
 void Brain::TeleopRoller()
@@ -14,7 +15,10 @@ void Brain::TeleopRoller()
     switch(rollerState)
     {
     case WAITING:
-        if(action.arm.givenCommand)
+        // spitting overrides other modes
+        if(inputs.ShouldSpitRoller())
+            rollerState = SPITTING;
+        else if(action.arm.givenCommand)
         {
             if(action.arm.presetTop)
                 rollerState = ARM_GOING_TO_TOP;
@@ -28,7 +32,7 @@ void Brain::TeleopRoller()
         // completed, but was not necessarily successful
         if(!action.arm.presetBottom)
         {
-        	// action.arm.done represents success
+            // action.arm.done represents success
             if(action.arm.done)
                 action.roller.state = action.roller.SUCKING;
 
@@ -51,22 +55,30 @@ void Brain::TeleopRoller()
         break;
 
     case SQUARING_RINGER_WITH_LIFT:
-        static int count = 0;
+        static int squaringCycles = 0;
 
         // square ringer with the lift
         action.roller.state = action.roller.ROTATING;
         action.roller.rotateUpward = true;
 
         // finish squaring up after 1 second (50 cycles)
-        if(++count % 50 == 0)
+        if(++squaringCycles % 50 == 0)
             rollerState = STOPPING;
 
-        // might have to back off
+        // TODO might have to back off
         break;
 
     case STOPPING:
         action.roller.state = action.roller.STOPPED;
         rollerState = WAITING;
+        break;
+
+    case SPITTING:
+        action.roller.state = action.roller.SPITTING;
+
+        // if button is released, stop the roller
+        if(!inputs.ShouldSpitRoller())
+            rollerState = STOPPING;
         break;
     }
 }

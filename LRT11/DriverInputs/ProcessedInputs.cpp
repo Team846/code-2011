@@ -122,6 +122,12 @@ bool ProcessedInputs::ShouldMoveArmTopPreset()
     return driverStick.IsButtonJustPressed(7);
 }
 
+bool ProcessedInputs::ShouldSpitRoller()
+{
+    // TODO confirm button mapping
+    return operatorStick.IsButtonJustPressed(12);
+}
+
 bool ProcessedInputs::ShouldCollectEncoderData()
 {
 //    return driverStick.IsButtonJustPressed(1);
