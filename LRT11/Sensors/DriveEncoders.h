@@ -2,7 +2,7 @@
 #define DRIVE_ENCODERS_H_
 
 #include "..\General.h"
-#include "LRTEncoder.h"
+#include "VirtualLRTEncoder.h"
 #include "..\Config\RobotConfig.h"
 #include "..\Util\Util.h"
 #include "..\Util\AsynchronousPrinter.h"
@@ -14,28 +14,22 @@ class DriveEncoders : public SensorBase
 private:
     static DriveEncoders* instance;
 
-    // encoderLeftUseless and encoderRightUseless used to fix WPILib bug;
-    // only evenly instantiated encoders work
-    LRTEncoder encoderLeft;
-    LRTEncoder encoderRight;
-
-    // floats to prevent integer division
-    const static float kWheelDiameter = 8.0; // in
-
-    // output sprocket:wheel sprocket is 36:48
-    const static float kPi          = 3.14159;
-    const static float kTrackLength = 23.0; // in
+    VirtualLRTEncoder encoderLeft;
+    VirtualLRTEncoder encoderRight;
 
 public:
     static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
 
-    const static float kPulsesPerRevolution = 100.0; // pulses per wheel revolution [BA]
+    const static float PULSES_PER_REVOLUTION = 100.0; // pulses per wheel revolution [BA]
 //    const static float kMaxEncoderRate      = 1411.96;
-    const static float kMaxEncoderRate      = 1400.0;
-    const static double kMaxTurningRate     = 2800.0;
+    const static float MAX_ENCODER_RATE      = 1400.0;
+    const static double MAX_TURNING_RATE     = 2800.0;
 //    const static double kTicksPerFullTurn   = 6725. / 6;
-    const static double kTicksPerFullTurn   = 1350.0;
+    const static double TICKS_PER_FULL_TURN   = 1350.0;
+
+    const static float WHEEL_DIAMETER = 8.0; // in
+    const static float PI = 3.14159;
 
     double GetForwardSpeed();
     double GetNormalizedForwardSpeed();
@@ -52,8 +46,8 @@ public:
     double GetRightSpeed();
     double GetNormalizedRightSpeed();
 
-    LRTEncoder& GetLeftEncoder();
-    LRTEncoder& GetRightEncoder();
+    VirtualLRTEncoder& GetLeftEncoder();
+    VirtualLRTEncoder& GetRightEncoder();
 
 protected:
     DriveEncoders();

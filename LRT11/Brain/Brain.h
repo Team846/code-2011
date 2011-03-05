@@ -37,8 +37,8 @@ private:
     ProcessedInputs& inputs;
     Timer gameTimer;
 
-    LRTEncoder& leftEncoder;
-    LRTEncoder& rightEncoder;
+    VirtualLRTEncoder& leftEncoder;
+    VirtualLRTEncoder& rightEncoder;
     bool isFinale;
 
     // Mode-specific methods

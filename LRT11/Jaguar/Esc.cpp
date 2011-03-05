@@ -27,7 +27,7 @@ float Esc::CurrentLimiter::Limit(float targetSpeed, float robotSpeed)
 }
 
 // Esc Class
-Esc::Esc(int channel, LRTEncoder& encoder, string name)
+Esc::Esc(int channel, VirtualLRTEncoder& encoder, string name)
     : ProxiedCANJaguar(channel)
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(false)
@@ -39,7 +39,7 @@ Esc::Esc(int channel, LRTEncoder& encoder, string name)
 {
 }
 
-Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
+Esc::Esc(int channelA, int channelB, VirtualLRTEncoder& encoder, string name)
     : ProxiedCANJaguar(channelA)
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(true)
@@ -62,7 +62,7 @@ void Esc::Configure()
 
 float Esc::GetNormalizedSpeed()
 {
-    return encoder.GetRate() / DriveEncoders::kMaxEncoderRate;
+    return encoder.GetRate() / DriveEncoders::MAX_ENCODER_RATE;
 }
 
 void Esc::Stop()

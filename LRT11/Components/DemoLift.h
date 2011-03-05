@@ -2,7 +2,7 @@
 #define DEMO_LIFT_H_
 
 #include "Component.h"
-#include "..\Jaguar\CLPotJaguar.h"
+#include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
 
 class DemoLift : public Component

@@ -73,15 +73,17 @@ void LineSensor::ResetSensor()
 
 float LineSensor::GetLinePosition()
 {
-    int sum, avg, value;
-    bool onLine = false; //TODO changeme
+    unsigned int sum, avg, value;
+    bool onLine = false;
+    UpdateReadings();
+
     for(int i = 0; i < NUM_PIXELS; i++)
     {
         value = Util::Max<int>(pixelData[i] - noiseThreshold, 0); //try to compensate for noise
 
         if(value > 0)  //why is this here with the above max statement, Robert? -BA
         {
-            onLine = onLine | (value > lineThreshold);//if the line has been seen
+            onLine = onLine || (value > lineThreshold);//if the line has been seen
             avg += value * i * 10; //weight by thresholded value, better would be to weight based on values around this one as well (exponential decrease)
             sum += value; //add to total sum
         }
@@ -102,7 +104,7 @@ float LineSensor::GetLinePosition()
     }
 }
 
-void LineSensor::DelayMicroSeconds(int ms)
+void LineSensor::DelayMicroSeconds(int us)
 {
-    Wait(ms / 1000000.0);
+    Wait(us * 1.0e-6);
 }

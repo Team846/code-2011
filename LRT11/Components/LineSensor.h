@@ -11,6 +11,7 @@ public:
     virtual ~LineSensor();
 
     float GetLinePosition();
+
 private:
     AnalogChannel analogIn;
     DigitalOutput clockOut, siOut;
@@ -27,8 +28,7 @@ private:
     void ResetSensor();
     void PrepFrame();
 
-    inline void DelayMicroSeconds(int ms);
-
+    inline void DelayMicroSeconds(int us);
 };
 
 #endif

@@ -12,7 +12,7 @@ using namespace std;
 class EncoderDataCollection : public Component
 {
 private:
-    LRTEncoder& leftEncoder;
+    VirtualLRTEncoder& leftEncoder;
     Esc left;
 
 public:

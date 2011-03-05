@@ -14,8 +14,8 @@ using namespace std;
 class Esc : public ProxiedCANJaguar, public CANJaguarBrake, public Configurable
 {
 public:
-    Esc(int channel, LRTEncoder& encoder, string name);
-    Esc(int channelA, int channelB, LRTEncoder& encoder, string name);
+    Esc(int channel, VirtualLRTEncoder& encoder, string name);
+    Esc(int channelA, int channelB, VirtualLRTEncoder& encoder, string name);
 
     virtual void Configure();
     void Stop();
@@ -50,7 +50,7 @@ private:
     };
 
     CurrentLimiter currentLimiter;
-    LRTEncoder& encoder;
+    VirtualLRTEncoder& encoder;
     string name;
 
     float GetNormalizedSpeed();

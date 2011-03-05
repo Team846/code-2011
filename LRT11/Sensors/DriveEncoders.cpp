@@ -37,7 +37,7 @@ double DriveEncoders::GetForwardSpeed()
 
 double DriveEncoders::GetNormalizedForwardSpeed()
 {
-    return Util::Clamp<double>(GetForwardSpeed() / kMaxEncoderRate, -1.0, 1.0);
+    return Util::Clamp<double>(GetForwardSpeed() / MAX_ENCODER_RATE, -1.0, 1.0);
 }
 
 double DriveEncoders::GetTurningSpeed()
@@ -48,7 +48,7 @@ double DriveEncoders::GetTurningSpeed()
 
 double DriveEncoders::GetNormalizedTurningSpeed()
 {
-    return GetTurningSpeed() / kMaxTurningRate;
+    return GetTurningSpeed() / MAX_TURNING_RATE;
 }
 
 double DriveEncoders::GetRobotDist()
@@ -64,7 +64,7 @@ double DriveEncoders::GetTurnTicks()
 
 double DriveEncoders::GetTurnRevolutions()
 {
-    return GetTurnTicks() / kTicksPerFullTurn;
+    return GetTurnTicks() / TICKS_PER_FULL_TURN;
 }
 
 double DriveEncoders::GetTurnAngle()
@@ -76,13 +76,13 @@ double DriveEncoders::GetLeftWheelDist()
 {
     // ( pulses / second ) / ( pulses / revolution )
     // * ( circumference / revolution ) = centimeter distance
-    return encoderLeft.Get() / kPulsesPerRevolution * kWheelDiameter * kPi;
+    return encoderLeft.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
 }
 
 double DriveEncoders::GetRightWheelDist()
 {
     // see GetLeftWheelDist() for calculation explanation
-    return encoderRight.Get() / kPulsesPerRevolution * kWheelDiameter * kPi;
+    return encoderRight.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
 }
 
 double DriveEncoders::GetLeftSpeed()
@@ -92,7 +92,7 @@ double DriveEncoders::GetLeftSpeed()
 
 double DriveEncoders::GetNormalizedLeftSpeed()
 {
-    return Util::Clamp<double>(encoderLeft.GetRate() / kMaxEncoderRate, -1.0, 1.0);
+    return Util::Clamp<double>(encoderLeft.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
 }
 
 double DriveEncoders::GetRightSpeed()
@@ -101,15 +101,15 @@ double DriveEncoders::GetRightSpeed()
 }
 double DriveEncoders::GetNormalizedRightSpeed()
 {
-    return Util::Clamp<double>(encoderRight.GetRate() / kMaxEncoderRate, -1.0, 1.0);
+    return Util::Clamp<double>(encoderRight.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
 }
 
-LRTEncoder& DriveEncoders::GetLeftEncoder()
+VirtualLRTEncoder& DriveEncoders::GetLeftEncoder()
 {
     return encoderLeft;
 }
 
-LRTEncoder& DriveEncoders::GetRightEncoder()
+VirtualLRTEncoder& DriveEncoders::GetRightEncoder()
 {
     return encoderRight;
 }

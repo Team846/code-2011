@@ -15,6 +15,16 @@ Tasks after shipping
 - Back off after squaring ringer up with lift?
 - Confirm button mappings of roller
 
+List of changes
+- Virtual CANBusController
+	- LRTRobot11
+	- ProxiedCANJaguar
+- VirtualLRTEncoder
+	- DriveEncoders
+	- Brain
+	- Esc
+	- EncoderDataCollection
+
 Tasks before shipping
 / Calibrating shifter, lift, and arm
 / Prepare control board for shipping
