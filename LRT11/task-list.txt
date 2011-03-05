@@ -24,6 +24,8 @@ List of changes
 	- Brain
 	- Esc
 	- EncoderDataCollection
+- VirtualLRTServo
+	- Shifter
 
 Tasks before shipping
 / Calibrating shifter, lift, and arm

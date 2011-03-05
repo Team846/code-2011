@@ -2,7 +2,7 @@
 #define SHIFTER_H_
 
 #include "Component.h"
-#include "Shifter/LRTServo.h"
+#include "Shifter\VirtualLRTServo.h"
 #include "..\Config\RobotConfig.h"
 #include "..\Sensors\DriveEncoders.h"
 #include "..\Config\Config.h"
@@ -10,7 +10,7 @@
 class Shifter : public Component, public Configurable
 {
 private:
-    LRTServo leftServo, rightServo;
+    VirtualLRTServo leftServo, rightServo;
     DriveEncoders& encoders;
 
     string prefix;
