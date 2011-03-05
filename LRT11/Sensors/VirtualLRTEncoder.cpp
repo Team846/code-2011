@@ -30,7 +30,7 @@ double VirtualLRTEncoder::GetRate()
 }
 
 // called at 50 Hz
-void VirtualLRTEncoder::Update(int dutyCycle)
+void VirtualLRTEncoder::Update(float dutyCycle)
 {
     switch(action.shifter.gear)
     {
@@ -45,5 +45,5 @@ void VirtualLRTEncoder::Update(int dutyCycle)
 
     // use dutyCycle to determine rate and add to the tick count
     rate *= dutyCycle;
-    ticks += (int)(rate * 1.0 / 50.0);  // ticks / s * s; s = period = 1 / 50 Hz
+    ticks += (int)(rate * 1.0 / 50.0); // ticks / s * s = ticks; s = period = 1 / 50 Hz
 }

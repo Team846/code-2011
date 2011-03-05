@@ -32,7 +32,7 @@ public:
     double GetRate();
 
     // called at 50 Hz
-    void Update(int dutyCycle);
+    void Update(float dutyCycle);
 };
 
 #endif
