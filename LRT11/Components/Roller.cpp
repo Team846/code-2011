@@ -74,7 +74,7 @@ void Roller::Configure()
     dutyCycleSucking = config.Get<float>(prefix + "dutyCycleSucking", 0.5);
 
     // 12V is ideal for spitting out the ringer at a range of about 3-15 inches (3/2/11)
-    dutyCycleSpitting = config.Get<float>(prefix + "dutyCycleSpitting", -1.0);
+    dutyCycleSpitting = config.Get<float>(prefix + "dutyCycleSpitting", -0.5);
 
     // 3V results in a good speed for rotating the ringer (3/2/11)
     dutyCycleRotatingOut = config.Get<float>(prefix + "dutyCycleRotatingOut", -0.25);
