@@ -5,3 +5,8 @@ Configurable::Configurable()
 {
     Config::RegisterConfigurable(this);
 }
+
+Configurable::~Configurable()
+{
+
+}

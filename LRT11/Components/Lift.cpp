@@ -5,6 +5,7 @@ Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
     , liftEsc(RobotConfig::CAN_LIFT)
+    , liftPot(RobotConfig::CAN_LIFT, 10, 1.0, 6.5)
     , timeoutMs(0)
     , cycleCount(0)
     , prevMode(PRESET)
@@ -55,7 +56,8 @@ void Lift::Output()
 
     {
         ProfiledSection ps("Lift Log Position");
-        potValue = liftEsc.GetPosition();
+//        potValue = liftEsc.GetPosition();
+        potValue = liftPot.GetPosition();
         SmartDashboard::Log(potValue, "Lift Pot Value");
     }
 

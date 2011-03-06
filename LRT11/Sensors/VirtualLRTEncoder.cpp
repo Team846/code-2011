@@ -10,8 +10,15 @@ VirtualLRTEncoder::VirtualLRTEncoder(UINT8 sourceA, UINT8 sourceB)
     : action(ActionData::GetInstance())
     , rate(0)
     , ticks(0)
+    , semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE
+            | SEM_INVERSION_SAFE))
 {
-
+    // working with left encoder, so subscribe to left CAN drive
+    if(sourceA == RobotConfig::DIO_ENCODER_LEFT_A)
+        Subscribe(RobotConfig::CAN_DRIVE_LEFT_A);
+    // working with right encoder, so subscribe to right CAN drive
+    else if(sourceA == RobotConfig::DIO_ENCODER_LEFT_B)
+        Subscribe(RobotConfig::CAN_DRIVE_LEFT_B);
 }
 
 VirtualLRTEncoder::~VirtualLRTEncoder()
@@ -21,7 +28,7 @@ VirtualLRTEncoder::~VirtualLRTEncoder()
 
 INT32 VirtualLRTEncoder::Get()
 {
-    return ticks;
+    return (INT32) ticks;
 }
 
 double VirtualLRTEncoder::GetRate()
@@ -32,18 +39,29 @@ double VirtualLRTEncoder::GetRate()
 // called at 50 Hz
 void VirtualLRTEncoder::Update(float dutyCycle)
 {
+    double maxRate = 0.0;
+
     switch(action.shifter.gear)
     {
     case LOW_GEAR:
-        rate = LOW_GEAR_MAX_RATE;
+        maxRate = LOW_GEAR_MAX_RATE;
         break;
 
     case HIGH_GEAR:
-        rate = HIGH_GEAR_MAX_RATE;
+        maxRate = HIGH_GEAR_MAX_RATE;
         break;
     }
 
+    double tempRate, tempTicks;
+
     // use dutyCycle to determine rate and add to the tick count
-    rate *= dutyCycle;
-    ticks += (int)(rate * 1.0 / 50.0); // ticks / s * s = ticks; s = period = 1 / 50 Hz
+    tempRate = maxRate * dutyCycle;
+    tempTicks = rate * 1.0 / 50.0; // ticks / s * s = ticks; s = period = 1 / 50 Hz
+
+    {
+        Synchronized s(semaphore);
+
+        rate = tempRate;
+        ticks += tempTicks;
+    }
 }

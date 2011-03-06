@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "..\Config\Config.h"
 #include "..\Jaguar\ProxiedCANJaguarWithBrake.h"
+#include "..\Sensors\VirtualPot.h"
 using namespace std;
 
 class Arm : public Component, public Configurable
@@ -12,7 +13,8 @@ private:
     Config& config;
     string prefix;
     ProxiedCANJaguar armEsc;
-    AnalogChannel armPot;
+//    AnalogChannel armPot;
+    VirtualPot armPot;
 
     float maxPosition, minPosition;
     float powerUp, powerDown;

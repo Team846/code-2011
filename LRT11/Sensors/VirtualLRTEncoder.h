@@ -3,15 +3,16 @@
 
 #include "..\General.h"
 #include "..\ActionData.h"
+#include "..\Util\DutyCycleSubscriber.h"
 
-class VirtualLRTEncoder
+class VirtualLRTEncoder : public DutyCycleSubscriber
 {
 private:
     // used to determine if low or high gear
     ActionData& action;
 
     double rate; // ticks/sec
-    int ticks;
+    double ticks;
 
     // conversion from ft / s rate input to ticks / s
     // ft / s * in / ft * rev / in * ticks / rev = ticks / s
@@ -20,6 +21,9 @@ private:
     static double LOW_GEAR_MAX_RATE;
 
     enum {LOW_GEAR = 1 , HIGH_GEAR = 2};
+
+    // used to synchronized rate and tick updates
+    SEM_ID semaphore;
 
 public:
     VirtualLRTEncoder(UINT8 sourceA, UINT8 sourceB);
@@ -32,7 +36,7 @@ public:
     double GetRate();
 
     // called at 50 Hz
-    void Update(float dutyCycle);
+    virtual void Update(float dutyCycle);
 };
 
 #endif

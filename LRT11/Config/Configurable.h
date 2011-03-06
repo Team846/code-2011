@@ -8,6 +8,8 @@ class Configurable
 {
 public:
     Configurable();
+    virtual ~Configurable();
+
     virtual void Configure() = 0;
 };
 

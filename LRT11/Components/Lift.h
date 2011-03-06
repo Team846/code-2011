@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
+#include "..\Sensors\VirtualPot.h"
 
 class Lift : public Component, public Configurable
 {
@@ -11,6 +12,7 @@ private:
     Config& config;
     string prefix;
     ProxiedCANJaguar liftEsc;
+    VirtualPot liftPot;
 
     const static float inchesToTurns = 1 / 12.0;
 

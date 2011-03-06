@@ -4,6 +4,9 @@
 #include "..\General.h"
 #include "..\Jaguar\SafeCANJaguar.h"
 #include "..\Util\AsynchronousPrinter.h"
+#include "..\Util\DutyCycleSubscriber.h"
+#include <vector>
+using namespace std;
 
 class VirtualCANBusController : public SensorBase
 {
@@ -75,11 +78,33 @@ public:
     void ConfigNeutralMode(int id, CANJaguar::NeutralMode mode) {}
     void PrintOnlineStatus() {}
 
+    void SetDutyCycleSubscriber(int channel, DutyCycleSubscriber* subscriber);
+
 private:
     VirtualCANBusController();
     DISALLOW_COPY_AND_ASSIGN(VirtualCANBusController);
 
     static VirtualCANBusController* instance;
+    int BusIdToIndex(int id);
+
+    // CAN jaguar ids (should be a contiguous block)
+
+    static void BusWriterTaskRunner();
+    void BusWriterTask();
+
+    const static int kMinJaguarId = 20;
+    const static int kMaxJaguarId = 28;
+    const static int kNumJaguars = kMaxJaguarId - kMinJaguarId + 1;
+
+    volatile float setpoints[kNumJaguars];
+
+    // can't put volatile in front of DutyCycleSubscriber*, as that would mean
+    // that the pointee is volatile; instead, the contents of the array, or the
+    // pointers themselves, should be volatile
+    DutyCycleSubscriber* volatile subscribers[kNumJaguars];
+
+    Task busWriterTask;
+    SEM_ID semaphore;
 };
 
 #endif
