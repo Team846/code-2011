@@ -32,14 +32,12 @@ public:
 
     struct
     {
-        enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} position;
-        bool highRow;
         bool givenCommand;
         bool manualMode;
         float power;
-        bool done;
-
-//        enum {NONE = 1, MANUAL = 2, PRESET = 3, DONE = 3, ABORTED = 4} state;
+        bool highRow;
+        enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} position;
+        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORT = 4} doneState;
     } lift;
 
     struct

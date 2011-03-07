@@ -14,9 +14,9 @@ private:
     ProxiedCANJaguar liftEsc;
     VirtualPot liftPot;
 
-    const static float inchesToTurns = 1 / 12.0;
+    const static float inchesToTurns = 1.0 / 12.0;
 
-    int timeoutMs;
+    int timeoutCycles;
     int cycleCount;
 
     float minPosition;
@@ -28,12 +28,14 @@ private:
     enum {MANUAL = 1, PRESET = 2} prevMode;
     float potDeadband;
 
+    bool positionMode;
+
 public:
     Lift();
     virtual ~Lift();
 
     virtual void Configure();
-    void ConfigureVoltageMode();
+    void ConfigureManualMode();
 
     virtual void Output();
 };

@@ -56,12 +56,15 @@ void Brain::Auton()
         break;
 
     case WAIT_FOR_LIFT:
-        if(action.lift.done)
+        // wait until lift is done
+        if(action.lift.doneState != action.lift.STALE) // message is available
         {
-            // disable the lift
-            action.lift.givenCommand = false;
-
-            state = RELEASE_TUBE;
+            if(action.lift.doneState == action.lift.SUCCESS)
+                state = RELEASE_TUBE;
+            else if(action.lift.doneState == action.lift.FAILURE)
+                state = IDLE; // TODO correct state
+            else if(action.lift.doneState == action.lift.ABORT)
+                state = IDLE; // TODO correct state
         }
         break;
 

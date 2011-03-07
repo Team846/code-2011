@@ -19,6 +19,7 @@ Tasks after shipping
 - Change lift preset based on high/low row
 - Lift aborted flag
 - Abort button
+- Disable control = what value to set? (setpoint array)
 / Synchronized for Update calls
 / Pot values 0 to 1023
 / Lift/arm pot configuration

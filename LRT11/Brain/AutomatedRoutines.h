@@ -50,8 +50,15 @@ void Brain::AutomatedRoutines()
 
     case WAIT_FOR_LIFT:
         // wait until lift is done
-        if(action.lift.done)
-            state = END_SPITTING;
+        if(action.lift.doneState != action.lift.STALE) // message is available
+        {
+            if(action.lift.doneState == action.lift.SUCCESS)
+                state = END_SPITTING;
+            else if(action.lift.doneState == action.lift.FAILURE)
+                state = ABORT; // TODO correct state
+            else if(action.lift.doneState == action.lift.ABORT)
+                state = ABORT; // TODO correct state
+        }
         break;
 
     case END_SPITTING:
