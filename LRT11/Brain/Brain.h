@@ -48,6 +48,9 @@ private:
     void Auton();
     void Teleop();
 
+    // Subroutines used in multiple modes
+    void AutomatedRoutines();
+
     // Teleop subroutines
     void TeleopDriveTrain();
     void TeleopShifter();

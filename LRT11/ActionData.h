@@ -37,7 +37,9 @@ public:
         bool givenCommand;
         bool manualMode;
         float power;
-        bool done; // done with preset movement
+        bool done;
+
+//        enum {NONE = 1, MANUAL = 2, PRESET = 3, DONE = 3, ABORTED = 4} state;
     } lift;
 
     struct
@@ -73,6 +75,11 @@ public:
         enum {LOW_GEAR = 1, HIGH_GEAR = 2} gear;
         bool force;
     } shifter;
+
+    struct
+    {
+        bool releaseRinger;
+    } automation;
 
     struct
     {

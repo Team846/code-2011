@@ -16,6 +16,9 @@ Tasks after shipping
 - Confirm button mappings of roller
 - TODOs
 - Current sensing + 2CAN
+- Change lift preset based on high/low row
+- Lift aborted flag
+- Abort button
 / Synchronized for Update calls
 / Pot values 0 to 1023
 / Lift/arm pot configuration

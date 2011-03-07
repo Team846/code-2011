@@ -1,19 +1,20 @@
 #include "Brain.h"
 
-enum
-{
-    DRIVE_FORWARD,
-    MOVE_LIFT,
-    RELEASE_TUBE,
-    WAIT_FOR_DRIVE,
-    WAIT_FOR_LIFT,
-    WAIT_FOR_RELEASE,
-    IDLE
-} autonState = DRIVE_FORWARD;
-
 void Brain::Auton()
 {
-    switch(autonState)
+    // used for state machine
+    static enum
+    {
+        DRIVE_FORWARD,
+        MOVE_LIFT,
+        RELEASE_TUBE,
+        WAIT_FOR_DRIVE,
+        WAIT_FOR_LIFT,
+        WAIT_FOR_RELEASE,
+        IDLE
+    } state = DRIVE_FORWARD;
+
+    switch(state)
     {
     case DRIVE_FORWARD:
         // switch to low gear and shift
@@ -26,7 +27,7 @@ void Brain::Auton()
         // placeholder; distance to pegs in inches
         action.positionTrain.moveDistance = 36.0;
 
-        autonState = WAIT_FOR_DRIVE;
+        state = WAIT_FOR_DRIVE;
         break;
 
     case MOVE_LIFT:
@@ -34,13 +35,14 @@ void Brain::Auton()
         action.lift.highRow = false; // should change based off position
         action.lift.position = action.lift.HIGH_PEG;
 
-        autonState = WAIT_FOR_LIFT;
+        state = WAIT_FOR_LIFT;
         break;
 
     case RELEASE_TUBE:
-        action.roller.state = action.roller.SPITTING;
+        action.roller.rotateUpward = true;
+        action.roller.state = action.roller.ROTATING;
 
-        autonState = WAIT_FOR_RELEASE;
+        state = WAIT_FOR_RELEASE;
         break;
 
     case WAIT_FOR_DRIVE:
@@ -49,7 +51,7 @@ void Brain::Auton()
             action.positionTrain.enabled = false;
             // should move distance is automatically reset
 
-            autonState = MOVE_LIFT;
+            state = MOVE_LIFT;
         }
         break;
 
@@ -59,7 +61,7 @@ void Brain::Auton()
             // disable the lift
             action.lift.givenCommand = false;
 
-            autonState = RELEASE_TUBE;
+            state = RELEASE_TUBE;
         }
         break;
 
@@ -68,10 +70,13 @@ void Brain::Auton()
 
         // two second release
         if(++releaseCount % 100 == 0)
-            autonState = IDLE;
+            state = IDLE;
         break;
 
     case IDLE:
         break;
     }
+
+    // includes system of movements to release the ringer
+    AutomatedRoutines();
 }

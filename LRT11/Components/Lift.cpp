@@ -65,7 +65,6 @@ void Lift::Output()
     {
         {
             ProfiledSection ps("Lift disable control");
-            AsynchronousPrinter::Printf("Disabling control, yo\n");
             liftEsc.DisableControl();
         }
         return;
@@ -75,6 +74,8 @@ void Lift::Output()
         action.lift.givenCommand = false;
         StartTimer();
 
+        // reset preset flags
+        action.lift.done = false;
         liftEsc.EnableControl();
     }
 
@@ -126,11 +127,9 @@ void Lift::Output()
         if(action.lift.position != action.lift.STOWED)
             setPoint += config.Get<float>(key); // relative to bottom
 
-        // update done status
+        // update done flag
         if(Util::Abs<float>(potValue - setPoint) < potDeadband)
             action.lift.done = true;
-        else
-            action.lift.done = false;
 
         liftEsc.Set(setPoint);
         cycleCount--;

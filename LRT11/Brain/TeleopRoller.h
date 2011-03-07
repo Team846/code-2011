@@ -1,29 +1,30 @@
 #include "Brain.h"
 
-enum
-{
-    WAITING,
-    ARM_GOING_TO_BOTTOM,
-    ARM_GOING_TO_TOP,
-    SQUARING_RINGER_WITH_LIFT,
-    STOPPING,
-    SPITTING
-} rollerState = WAITING;
-
 void Brain::TeleopRoller()
 {
-    switch(rollerState)
+    // used for state machine
+    static enum
     {
-    case WAITING:
+        IDLE,
+        ARM_GOING_TO_BOTTOM,
+        ARM_GOING_TO_TOP,
+        SQUARING_RINGER_WITH_LIFT,
+        STOPPING,
+        SPITTING
+    } state = IDLE;
+
+    switch(state)
+    {
+    case IDLE:
         // spitting overrides other modes
         if(inputs.ShouldSpitRoller())
-            rollerState = SPITTING;
+            state = SPITTING;
         else if(action.arm.givenCommand)
         {
             if(action.arm.presetTop)
-                rollerState = ARM_GOING_TO_TOP;
+                state = ARM_GOING_TO_TOP;
             else if(action.arm.presetBottom)
-                rollerState = ARM_GOING_TO_BOTTOM;
+                state = ARM_GOING_TO_BOTTOM;
         }
         break;
 
@@ -37,7 +38,7 @@ void Brain::TeleopRoller()
                 action.roller.state = action.roller.SUCKING;
 
             // wait for next arm command
-            rollerState = WAITING;
+            state = IDLE;
         }
         break;
 
@@ -47,10 +48,10 @@ void Brain::TeleopRoller()
         {
             if(action.arm.done)
                 // ringer needs to be rotated to vertical position
-                rollerState = SQUARING_RINGER_WITH_LIFT;
+                state = SQUARING_RINGER_WITH_LIFT;
             else
                 // maneuver not successful; return to waiting state
-                rollerState = WAITING;
+                state = IDLE;
         }
         break;
 
@@ -63,14 +64,14 @@ void Brain::TeleopRoller()
 
         // finish squaring up after 1 second (50 cycles)
         if(++squaringCycles % 50 == 0)
-            rollerState = STOPPING;
+            state = STOPPING;
 
         // TODO might have to back off
         break;
 
     case STOPPING:
         action.roller.state = action.roller.STOPPED;
-        rollerState = WAITING;
+        state = IDLE;
         break;
 
     case SPITTING:
@@ -78,7 +79,7 @@ void Brain::TeleopRoller()
 
         // if button is released, stop the roller
         if(!inputs.ShouldSpitRoller())
-            rollerState = STOPPING;
+            state = STOPPING;
         break;
     }
 }

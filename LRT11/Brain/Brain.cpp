@@ -4,6 +4,7 @@
 #include "Disabled.h"
 #include "Auton.h"
 #include "Teleop.h"
+#include "AutomatedRoutines.h"
 #include "TeleopDriveTrain.h"
 #include "TeleopShifter.h"
 #include "TeleopLift.h"

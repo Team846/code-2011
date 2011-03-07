@@ -9,6 +9,9 @@ void Brain::Teleop()
     TeleopLift();
     TeleopArm();
 
+    // includes system of movements to release the ringer
+    AutomatedRoutines();
+
     if(isFinale /* && inputs.ShouldDeployMinibot() */)
     {
         /* Minibot deployment code */
