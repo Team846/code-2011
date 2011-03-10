@@ -22,6 +22,7 @@ VirtualCANBusController::VirtualCANBusController()
     {
         int idx = BusIdToIndex(id);
         setpoints[idx] = 0.0;
+        subscribers[idx] = NULL;
     }
 
     busWriterTask.Start();
@@ -70,10 +71,8 @@ void VirtualCANBusController::BusWriterTask()
         {
             int idx = BusIdToIndex(id);
 
-            {
-                Synchronized s(semaphore);
+            if(subscribers[idx] != NULL)
                 subscribers[idx]->Update(setpoints[idx]);
-            }
         }
 
         Wait(0.02); // run at 50 Hz

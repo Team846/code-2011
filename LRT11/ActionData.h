@@ -48,10 +48,10 @@ public:
     struct
     {
         bool givenCommand;
-        bool manualDown, manualUp;
-        bool presetTop, presetBottom;
-        enum {BOTTOM = 1, TOP = 2} position;
-        bool done;
+        bool manualMode;
+        bool manualUp;
+        bool presetTop;
+        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORT = 4} doneState;
     } arm;
 
     struct

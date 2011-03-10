@@ -20,6 +20,11 @@ VirtualPot::VirtualPot(UINT32 channel, int potTurns, float ftPerTurn,
         Subscribe(channel);
 }
 
+VirtualPot::~VirtualPot()
+{
+
+}
+
 float VirtualPot::GetPosition()
 {
     return position;

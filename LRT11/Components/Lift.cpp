@@ -44,7 +44,7 @@ void Lift::Configure()
     minPosition = config.Get<float>(prefix + "lowRowBottom");
     maxPosition = minPosition + config.Get<float>(prefix + "highPegRelative");
 
-    potDeadband = config.Get<float>(prefix + "deadband", 0.3);
+    potDeadband = config.Get<float>(prefix + "deadband", 0.2);
 }
 
 void Lift::ConfigureManualMode()
@@ -60,7 +60,7 @@ void Lift::Output()
         IDLE,
         MANUAL,
         PRESET
-    } state;
+    } state = IDLE;
 
     if(action.lift.givenCommand)
     {
@@ -104,7 +104,7 @@ void Lift::Output()
 
         if(!positionMode)
         {
-            // just exited from manual mode; done with maneuver
+            // exited from manual mode; done with maneuver
             action.lift.doneState = action.lift.SUCCESS;
             liftEsc.Set(0.0);
         }
@@ -153,7 +153,10 @@ void Lift::Output()
 
         // update done flag
         if(Util::Abs<float>(potValue - setPoint) < potDeadband)
+        {
             action.lift.doneState = action.lift.SUCCESS;
+            cycleCount = 1; // will get decremented to 0
+        }
 
         liftEsc.Set(setPoint);
         cycleCount--;

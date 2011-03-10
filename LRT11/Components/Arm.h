@@ -19,10 +19,11 @@ private:
     float maxPosition, minPosition;
     float powerUp, powerDown;
 
-    int timeoutMs;
+    int timeoutCycles;
     int cycleCount;
 
     enum {BOTTOM = 1, TOP = 2};
+    bool presetMode;
 
 public:
     Arm();

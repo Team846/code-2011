@@ -29,8 +29,8 @@ void Shifter::Configure()
 
 void Shifter::Output()
 {
-    SmartDashboard::Log(leftServo.Get(), "Left servo position");
-    SmartDashboard::Log(rightServo.Get(), "Right servo position");
+//    SmartDashboard::Log(leftServo.Get(), "Left servo position");
+//    SmartDashboard::Log(rightServo.Get(), "Right servo position");
 
 //    DriverStation& station = *DriverStation::GetInstance();
 //    leftShiftServo.Set(station.GetAnalogIn(1));

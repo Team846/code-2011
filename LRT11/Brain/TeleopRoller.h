@@ -19,39 +19,43 @@ void Brain::TeleopRoller()
         // spitting overrides other modes
         if(inputs.ShouldSpitRoller())
             state = SPITTING;
-        else if(action.arm.givenCommand)
+        else if(action.arm.givenCommand && !action.arm.manualMode)
         {
             if(action.arm.presetTop)
                 state = ARM_GOING_TO_TOP;
-            else if(action.arm.presetBottom)
+            else
                 state = ARM_GOING_TO_BOTTOM;
         }
         break;
 
     case ARM_GOING_TO_BOTTOM:
-        // if the preset flag is no longer set, the maneuver has
-        // completed, but was not necessarily successful
-        if(!action.arm.presetBottom)
+        // wait until arm is done
+        if(action.arm.doneState != action.arm.STALE) // message is available
         {
-            // action.arm.done represents success
-            if(action.arm.done)
+            if(action.arm.doneState == action.arm.SUCCESS)
+            {
                 action.roller.state = action.roller.SUCKING;
-
-            // wait for next arm command
-            state = IDLE;
+                state = IDLE;
+            }
+            else if(action.arm.doneState == action.arm.FAILURE)
+                state = IDLE; // TODO correct state
+            else if(action.arm.doneState == action.arm.ABORT)
+                state = IDLE; // TODO correct state
         }
         break;
 
     case ARM_GOING_TO_TOP:
-        // see comment from ARM_GOING_TO_BOTTOM
-        if(!action.arm.presetTop)
+        // see comments above
+        if(action.arm.doneState != action.arm.STALE)
         {
-            if(action.arm.done)
+            if(action.arm.doneState == action.arm.SUCCESS)
                 // ringer needs to be rotated to vertical position
                 state = SQUARING_RINGER_WITH_LIFT;
-            else
+            else if(action.arm.doneState == action.arm.FAILURE)
                 // maneuver not successful; return to waiting state
-                state = IDLE;
+                state = IDLE; // TODO correct state
+            else if(action.arm.doneState == action.arm.ABORT)
+                state = IDLE; // TODO correct state
         }
         break;
 

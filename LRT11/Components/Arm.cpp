@@ -12,6 +12,7 @@ Arm::Arm()
     // ft / turn: 29 in * 1 ft / 12 in * 2 pi rad / rev = ~15.2 ft
     , armPot(RobotConfig::POT_ARM, 1, 15.2, 19.7)
     , cycleCount(0)
+    , presetMode(true)
 {
     armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 }
@@ -29,9 +30,109 @@ void Arm::Configure()
     powerUp = config.Get<float>(prefix + "powerUp", 0.30);
     powerDown = config.Get<float>(prefix + "powerDown", -0.15);
 
-    timeoutMs = config.Get<int>(prefix + "timeoutMs", 1500);
+    timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 }
 
+void Arm::Output()
+{
+    static enum
+    {
+        IDLE,
+        MANUAL,
+        PRESET
+    } state = IDLE;
+
+    if(action.arm.givenCommand)
+    {
+        if(action.arm.manualMode)
+        {
+            presetMode = false;
+            state = MANUAL;
+        }
+        else
+        {
+            cycleCount = timeoutCycles;
+            presetMode = true;
+
+            state = PRESET;
+        }
+
+        action.arm.givenCommand = false; // command has been processed
+        action.arm.manualMode = false;
+        action.arm.manualUp = false;
+        action.arm.presetTop = false;
+    }
+
+    float potValue = 0.0;
+    if(state != IDLE)
+//      potValue = liftEsc.GetPosition();
+        potValue = armPot.GetPosition();
+
+    switch(state)
+    {
+    case IDLE:
+        armEsc.Set(0.0);
+
+        if(!presetMode)
+            // exited from manual mode; done with maneuver
+            action.arm.doneState = action.arm.SUCCESS;
+        break;
+
+    case MANUAL:
+        action.arm.doneState = action.arm.STALE; // not done yet
+
+        if(action.arm.manualUp)
+        {
+            if(potValue < maxPosition)
+                armEsc.Set(powerUp);
+        }
+        else
+        {
+            if(potValue > minPosition)
+                armEsc.Set(powerDown);
+        }
+
+        state = IDLE;
+        break;
+
+    case PRESET:
+        action.lift.doneState = action.lift.STALE; // not done yet
+
+        if(action.arm.presetTop)
+        {
+            if(potValue < maxPosition)
+                armEsc.Set(powerUp);
+            else
+            {
+                action.lift.doneState = action.lift.SUCCESS;
+                cycleCount = 1; // will get decremented to 0
+            }
+        }
+        else
+        {
+            if(potValue > minPosition)
+                armEsc.Set(powerDown);
+            else
+            {
+                action.lift.doneState = action.lift.SUCCESS;
+                cycleCount = 1; // will get decremented to 0
+            }
+        }
+
+        cycleCount--;
+
+        if(cycleCount == 0)
+        {
+            if(action.lift.doneState != action.lift.SUCCESS)
+                action.lift.doneState = action.lift.FAILURE;
+            state = IDLE;
+        }
+
+        break;
+    }
+}
+
+/*
 void Arm::Output()
 {
     float potValue = armPot.GetAverageValue();
@@ -87,32 +188,28 @@ void Arm::Output()
         }
     }
 
-    /*
-    string key = prefix;
-    float armSetPoint = config.Get<float>(key + "top");
-
-    float sign;
-    switch(action.arm.position)
-    {
-    case BOTTOM:
-        key += "bottomRelative";
-        sign = -1;
-        break;
-    case TOP:
-        // no relative position
-        sign = 1;
-        break;
-    }
-
-    if(action.arm.position != action.arm.TOP)
-        armSetPoint += config.Get<int>(key);
-    */
-
-
-
+//    string key = prefix;
+//    float armSetPoint = config.Get<float>(key + "top");
+//
+//    float sign;
+//    switch(action.arm.position)
+//    {
+//    case BOTTOM:
+//        key += "bottomRelative";
+//        sign = -1;
+//        break;
+//    case TOP:
+//        // no relative position
+//        sign = 1;
+//        break;
+//    }
+//
+//    if(action.arm.position != action.arm.TOP)
+//        armSetPoint += config.Get<int>(key);
+//
 //    input += Util::Sign<float>(armSetPoint - armPot.GetAverageValue()) * hysteresis;
 //    armEsc.Set(input);
-
+//
 //    string key = prefix;
 //    float armSetPoint;
 //
@@ -138,3 +235,4 @@ void Arm::Output()
 //    SmartDashboard::Log(armSetPoint, "Arm Set Point");
 //    SmartDashboard::Log(armEsc.GetPosition(), "Arm Position");
 }
+*/

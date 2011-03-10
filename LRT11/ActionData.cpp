@@ -34,16 +34,14 @@ ActionData::ActionData()
     lift.givenCommand = false;
     lift.manualMode = false;
     lift.power = 0;
+    lift.doneState = lift.STALE;
 
     demoLift.forward = 0;
 
     arm.givenCommand = false;
-    arm.manualDown = false;
     arm.manualUp = false;
     arm.presetTop = false;
-    arm.presetBottom = false;
-    arm.position = arm.TOP;
-    arm.done = false;
+    arm.doneState = arm.STALE;
 
     roller.state = roller.STOPPED;
     // if in roller.ROTATING state, default to rotating upward

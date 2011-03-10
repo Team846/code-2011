@@ -63,7 +63,7 @@ void Brain::Process(GameState gameState)
 
     {
         ProfiledSection ps("Dashboard Logging");
-        UpdateDashboardValues(gameState);
+//        UpdateDashboardValues(gameState);
     }
 
     previousState = gameState;
