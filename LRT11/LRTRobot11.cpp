@@ -53,35 +53,36 @@ void LRTRobot11::MainLoop()
     if(gameState != DISABLED)
     {
         // components to output only when enabled
-        {
-            ProfiledSection ps("Drive Train");
-            drive.Output();
-        }
+//        {
+//            ProfiledSection ps("Drive Train");
+//            drive.Output();
+//        }
 
-        {
-            ProfiledSection ps("Lift");
-            lift.Output();
-        }
+//        {
+//            ProfiledSection ps("Lift");
+//            lift.Output();
+//        }
 
-        {
-            ProfiledSection ps("Arm");
-            arm.Output();
-        }
+        // Tested successfully 3/10/11 [KV] [BA]
+//        {
+//            ProfiledSection ps("Arm");
+//            arm.Output();
+//        }
 
-        {
-            ProfiledSection ps("Position Drive");
-            positionDrive.Output();
-        }
+//        {
+//            ProfiledSection ps("Position Drive");
+//            positionDrive.Output();
+//        }
 
 //        {
 //            ProfiledSection ps("Encoder Data Collection");
 //            encoderData.Output();
 //        }
 
-        {
-            ProfiledSection ps("Servo Shifting");
-            shifter.Output();
-        }
+//        {
+//            ProfiledSection ps("Servo Shifting");
+//            shifter.Output();
+//        }
 
         // To add another component output:
         //

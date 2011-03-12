@@ -17,8 +17,8 @@ VirtualLRTEncoder::VirtualLRTEncoder(UINT8 sourceA, UINT8 sourceB)
     if(sourceA == RobotConfig::DIO_ENCODER_LEFT_A)
         Subscribe(RobotConfig::CAN_DRIVE_LEFT_A);
     // working with right encoder, so subscribe to right CAN drive
-    else if(sourceA == RobotConfig::DIO_ENCODER_LEFT_B)
-        Subscribe(RobotConfig::CAN_DRIVE_LEFT_B);
+    else if(sourceA == RobotConfig::DIO_ENCODER_RIGHT_A)
+        Subscribe(RobotConfig::CAN_DRIVE_RIGHT_A);
 }
 
 VirtualLRTEncoder::~VirtualLRTEncoder()
@@ -56,7 +56,7 @@ void VirtualLRTEncoder::Update(float dutyCycle)
 
     // use dutyCycle to determine rate and add to the tick count
     tempRate = maxRate * dutyCycle;
-    tempTicks = rate * 1.0 / 50.0; // ticks / s * s = ticks; s = period = 1 / 50 Hz
+    tempTicks = tempRate * 1.0 / 50.0; // ticks / s * s = ticks; s = period = 1 / 50 Hz
 
     {
         Synchronized s(semaphore);

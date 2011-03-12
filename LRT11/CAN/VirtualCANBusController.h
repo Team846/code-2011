@@ -11,7 +11,10 @@ using namespace std;
 class VirtualCANBusController : public SensorBase
 {
 public:
-    virtual ~VirtualCANBusController() {}
+    virtual ~VirtualCANBusController()
+    {
+        delete * jaguarLabels;
+    }
     static VirtualCANBusController& GetInstance();
 
     void ResetCache() {}
@@ -96,6 +99,7 @@ private:
     const static int kMaxJaguarId = 28;
     const static int kNumJaguars = kMaxJaguarId - kMinJaguarId + 1;
 
+    char jaguarLabels[kNumJaguars][30];
     volatile float setpoints[kNumJaguars];
 
     // can't put volatile in front of DutyCycleSubscriber*, as that would mean

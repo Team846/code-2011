@@ -26,7 +26,7 @@ LineSensor::LineSensor(int adcPort, int clockOut, int siOut)
     lineThreshold = config.Get<int>(prefix + "lineThreshold");
     lineThreshold = 200;
 //    lineThreshold = 250;
-    
+
     lineThreshold -= noiseThreshold;
 
 //    UpdateReadings(); // throw away first reading
@@ -51,18 +51,18 @@ void LineSensor::UpdateReadings()
 //        DelayMicroSeconds(1); //wait a microsecond
 
         pixelData[i] = analogIn.GetValue(); //if signal is noisy change to analogIn.GetAverageValue();
-        
+
         if(firstRun)
-        	pixelData[i] = 0;
+            pixelData[i] = 0;
 
         //clock
-        
+
         clockOut.Set(0);
 //        DelayMicroSeconds(1); //wait a microsecond
         Delay(50 * 10);
         clockOut.Set(1);
     }
-    
+
 //    DelayMicroSeconds(1); //wait a microsecond
     Delay(50 * 10);
     clockOut.Set(0);
@@ -70,14 +70,14 @@ void LineSensor::UpdateReadings()
     clockOut.Set(0);
     Delay(50 * 10);
 //    DelayMicroSeconds(1); //wait a microsecond
-    
+
     firstRun = false;
 }
 
 void LineSensor::ResetFirstRun()
 {
-	firstRun = true;
-	lastLinePos = 0;
+    firstRun = true;
+    lastLinePos = 0;
 }
 
 void LineSensor::Flush()
@@ -100,7 +100,7 @@ void LineSensor::PrepFrame()
 //    DelayMicroSeconds(1);
     siOut.Set(0);//reset frame
 //    DelayMicroSeconds(1);
-    
+
 //    DefDelay();
     Delay(50 * 10);
 }
@@ -127,62 +127,62 @@ float LineSensor::GetLinePosition()
     unsigned int sum = 0, avg = 0, value, max = 0;
     onLine = false;
     UpdateReadings();
-    
+
     for(int i = 0; i < NUM_PIXELS; i++)
     {
-//    	value = pixelData[i];
+//      value = pixelData[i];
         value = Util::Max<int>(pixelData[i] - noiseThreshold, 0); //try to compensate for noise
-        if( pixelData[max] < pixelData[i] )
-        	max = i;
+        if(pixelData[max] < pixelData[i])
+            max = i;
         if(value > 0)  //why is this here with the above max statement, Robert? -BA
         {
-//        	SmartDashboard::Log(value, "Linsense");
+//          SmartDashboard::Log(value, "Linsense");
             onLine = onLine || (value > lineThreshold);//if the line has been seen
             avg += value * i; //weight by thresholded value, better would be to weight based on values around this one as well (exponential decrease)
             sum += value; //add to total sum
         }
     }
-    
+
     {
-    	ProfiledSection pf("Test timer");
-//    	DefDelay(1);
+        ProfiledSection pf("Test timer");
+//      DefDelay(1);
     }
-    
+
 //    SmartDashboard::Log((int)max, "Max Line Sensor Pixel Value");
 //    SmartDashboard::Log((int)pixelData[max], "Max Line Sensor Value");
-    
-/*    static int e=0;
-    	//AsynchronousPrinter::Printf("Hello\n");
-    if(e == 500) {
-    	char a;
-	    ofstream out("/lineout.txt", ios::app);
-	    out<<"\nHi";
-	    out.close();
-	    AsynchronousPrinter::Printf("Done.\n");
-    }
-	e++;*/
-    
-//	static int e = 0;
-//	if(e++%25 == 0) // update every half second 
-//	{
-//		ofstream out("/lineout.csv", ios::app);
-//		for(int i = 0; i< NUM_PIXELS; i+=2) 
-//		{
-////			value = Util::Max<int>(pixelData[i] - noiseThreshold, 0); //try to compensate for noise
-//			value = pixelData[i];
-//			out<<setw(3)<<value<<",";
-//		}
-//		out<<endl;
-//		out.close();
-//	}
-	
+
+    /*    static int e=0;
+            //AsynchronousPrinter::Printf("Hello\n");
+        if(e == 500) {
+            char a;
+            ofstream out("/lineout.txt", ios::app);
+            out<<"\nHi";
+            out.close();
+            AsynchronousPrinter::Printf("Done.\n");
+        }
+        e++;*/
+
+//  static int e = 0;
+//  if(e++%25 == 0) // update every half second
+//  {
+//      ofstream out("/lineout.csv", ios::app);
+//      for(int i = 0; i< NUM_PIXELS; i+=2)
+//      {
+////            value = Util::Max<int>(pixelData[i] - noiseThreshold, 0); //try to compensate for noise
+//          value = pixelData[i];
+//          out<<setw(3)<<value<<",";
+//      }
+//      out<<endl;
+//      out.close();
+//  }
+
     // 0 pixels is clockwise
 
     if(!onLine)
     {
-    	if(lastLinePos == 0) // starts out at 0 for floating point
-    		return 0;
-    	else if(lastLinePos < 0)
+        if(lastLinePos == 0) // starts out at 0 for floating point
+            return 0;
+        else if(lastLinePos < 0)
             return -0.25;
         else
             return 0.25;
@@ -197,20 +197,20 @@ float LineSensor::GetLinePosition()
 
 bool LineSensor::IsOnLine()
 {
-	return onLine;
+    return onLine;
 }
 
 void LineSensor::DelayMilliSeconds(UINT32 ms)
 {
-	taskDelay(ms);
-	// do not use Wait(); its resolution is only 1ms
-//	UINT32 expiration = GetFPGATime() + us + 1;
-//	while( GetFPGATime() < expiration )
-//		; // wait
+    taskDelay(ms);
+    // do not use Wait(); its resolution is only 1ms
+//  UINT32 expiration = GetFPGATime() + us + 1;
+//  while( GetFPGATime() < expiration )
+//      ; // wait
 }
 
 void LineSensor::Delay(UINT32 ticks)
 {
-	while(ticks > 0)
-		ticks--;
+    while(ticks > 0)
+        ticks--;
 }

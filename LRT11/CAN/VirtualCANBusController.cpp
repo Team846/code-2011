@@ -23,6 +23,8 @@ VirtualCANBusController::VirtualCANBusController()
         int idx = BusIdToIndex(id);
         setpoints[idx] = 0.0;
         subscribers[idx] = NULL;
+        // idx is the array index; id is the CAN-bus ID
+        sprintf(jaguarLabels[idx], "Esc %d Setpoint: ", id);
     }
 
     busWriterTask.Start();
@@ -41,19 +43,13 @@ int VirtualCANBusController::BusIdToIndex(int id)
 
 void VirtualCANBusController::Set(int id, float val)
 {
-    {
-        Synchronized s(semaphore);
-        setpoints[id] = val;
-    }
-
-    char buffer[20];
-    sprintf(buffer, "Esc %d Setpoint: ", id);
-    SmartDashboard::Log(val, buffer);
+    int idx = BusIdToIndex(id);
+    setpoints[idx] = val;
+    SmartDashboard::Log(val, jaguarLabels[idx]);
 }
 
 void VirtualCANBusController::SetDutyCycleSubscriber(int channel, DutyCycleSubscriber* subscriber)
 {
-    Synchronized s(semaphore);
     int idx = BusIdToIndex(channel);
     subscribers[idx] = subscriber;
 }

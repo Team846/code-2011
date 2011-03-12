@@ -12,7 +12,7 @@ public:
 
     void ResetFirstRun();
     float GetLinePosition();
-    
+
     bool IsOnLine();
 private:
     AnalogChannel analogIn;
@@ -25,7 +25,7 @@ private:
     unsigned int exposure, noiseThreshold, lineThreshold;
     bool firstRun;
     bool onLine;
-    
+
     void UpdateReadings();
     void SetExpo(unsigned int exposure);
     void Flush();

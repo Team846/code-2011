@@ -59,14 +59,13 @@ void Arm::Output()
 
         action.arm.givenCommand = false; // command has been processed
         action.arm.manualMode = false;
-        action.arm.manualUp = false;
-        action.arm.presetTop = false;
     }
 
-    float potValue = 0.0;
-    if(state != IDLE)
+    float potValue = armPot.GetAverageValue();
+    SmartDashboard::Log(potValue, "Arm Pot Value");
+//    if(state != IDLE)
 //      potValue = liftEsc.GetPosition();
-        potValue = armPot.GetPosition();
+//        potValue = armPot.GetPosition();
 
     switch(state)
     {
@@ -85,11 +84,15 @@ void Arm::Output()
         {
             if(potValue < maxPosition)
                 armEsc.Set(powerUp);
+            else
+                armEsc.Set(0.0);
         }
         else
         {
             if(potValue > minPosition)
                 armEsc.Set(powerDown);
+            else
+                armEsc.Set(0.0);
         }
 
         state = IDLE;
