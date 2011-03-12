@@ -26,6 +26,8 @@ Tasks after shipping
 / Pot values 0 to 1023
 / Lift/arm pot configuration
 - Deadband issue
+- ID integrity
+- Turn off all speed controllers getting sent
 
 List of changes
 - Virtual CANBusController

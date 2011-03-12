@@ -5,7 +5,7 @@ EncoderDataCollection::EncoderDataCollection()
     , leftEncoder(DriveEncoders::GetInstance().GetLeftEncoder())
 #ifdef LRT_ROBOT_2011
     , left(RobotConfig::CAN_DRIVE_LEFT_A, RobotConfig::CAN_DRIVE_LEFT_B,
-    		leftEncoder, "left")
+            leftEncoder, "left")
 #else
     , left(RobotConfig::CAN_DRIVE_LEFT, leftEncoder, "left")
 #endif

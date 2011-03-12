@@ -21,14 +21,14 @@ private:
 #else
     CANBusController& controller;
 #endif
-    
+
     DriveTrain drive;
     PositionDriveTrain positionDrive;
 
-    Shifter shifter;
+//    Shifter shifter;
 
-    Lift lift;
-    Arm arm;
+//    Lift lift;
+//    Arm arm;
 
     Config& config;
 

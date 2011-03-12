@@ -44,7 +44,7 @@ private:
     LRTEncoder& leftEncoder;
     LRTEncoder& rightEncoder;
 #endif
-    
+
     bool isFinale;
 
     // Mode-specific methods

@@ -68,6 +68,7 @@ void CANBusController::Set(int id, float val)
     // caching; only set if changed
     if(setpoints[idx] != val)
     {
+        AsynchronousPrinter::Printf("Setting %d with %.2f\n", id, val);
         setpoints[idx] = val;
         setpointChanged[idx] = true;
     }

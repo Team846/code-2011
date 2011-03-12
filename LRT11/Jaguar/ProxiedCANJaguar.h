@@ -43,7 +43,7 @@ protected:
 #else
     CANBusController& controller;
 #endif
-    
+
     int channel;
 };
 

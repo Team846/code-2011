@@ -17,7 +17,7 @@ private:
 #else
     LRTEncoder& leftEncoder;
 #endif
-    
+
     Esc left;
 
 public:

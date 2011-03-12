@@ -10,9 +10,9 @@ LRTRobot11::LRTRobot11()
     , drive()
     , positionDrive()
 //    , encoderData()
-    , shifter()
-    , lift()
-    , arm()
+//    , shifter()
+//    , lift()
+//    , arm()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -61,7 +61,7 @@ void LRTRobot11::MainLoop()
             ProfiledSection ps("Drive Train");
             drive.Output();
         }
-        
+
 //        {
 //            ProfiledSection ps("Lift");
 //            lift.Output();

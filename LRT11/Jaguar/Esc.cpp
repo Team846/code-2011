@@ -48,7 +48,7 @@ Esc::Esc(int channelA, int channelB, VirtualLRTEncoder& encoder, string name)
 #else
 Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
 #endif
-	: ProxiedCANJaguar(channelA)
+    : ProxiedCANJaguar(channelA)
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(true)
     , partner(new Esc(channelB, encoder, name + "B"))
@@ -98,6 +98,8 @@ void Esc::Set(float speed)
 {
     if(hasPartner)
         partner->Set(speed);
+
+//    SmartDashboard::Log(speed, name.c_str());
 
     // no current limiting
     ProxiedCANJaguar::Set(Util::Clamp<float>(speed, -1.0, 1.0));

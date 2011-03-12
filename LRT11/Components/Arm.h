@@ -18,6 +18,7 @@ private:
 #else
     AnalogChannel armPot;
 #endif
+
     float maxPosition, minPosition;
     float powerUp, powerDown;
 

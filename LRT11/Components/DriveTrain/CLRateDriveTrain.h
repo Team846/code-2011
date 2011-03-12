@@ -22,8 +22,8 @@ public:
 
     void SetBrakeLeft(bool brakeLeft);
     void SetBrakeRight(bool brakeRight);
-    
-    void SetClosedLoopEnabled(bool enabled);	
+
+    void SetClosedLoopEnabled(bool enabled);
 
     void Stop();
     virtual void Configure();
@@ -47,8 +47,8 @@ private:
 
     bool brakeLeft;
     bool brakeRight;
-    
-    bool closedLoop;
+
+    bool usingClosedLoop;
 
     const static float FWD_DECAY = 0.5;
     const static float TURN_DECAY = 0.5;

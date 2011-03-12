@@ -17,7 +17,7 @@ private:
 #else
     LRTServo leftServo, rightServo;
 #endif
-    
+
     DriveEncoders& encoders;
 
     string prefix;

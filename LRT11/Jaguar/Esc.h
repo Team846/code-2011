@@ -21,7 +21,7 @@ public:
     Esc(int channel, LRTEncoder& encoder, string name);
     Esc(int channelA, int channelB, LRTEncoder& encoder, string name);
 #endif
-    
+
     virtual void Configure();
     void Stop();
     virtual void Set(float speed);
@@ -60,7 +60,7 @@ private:
 #else
     LRTEncoder& encoder;
 #endif
-    
+
     string name;
 
     float GetNormalizedSpeed();

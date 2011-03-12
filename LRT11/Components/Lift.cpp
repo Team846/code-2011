@@ -4,7 +4,7 @@
 Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
-    , liftEsc(RobotConfig::CAN_LIFT)
+    , liftEsc(4)
 #ifdef VIRTUAL
     , liftPot(RobotConfig::CAN_LIFT, 10, 1.0, 6.5)
 #endif
@@ -100,7 +100,7 @@ void Lift::Output()
 #else
     potValue = liftEsc.GetPosition();
 #endif
-    
+
     switch(state)
     {
     case IDLE:

@@ -10,7 +10,7 @@ public:
     // Jaguars
     const static UINT32 PWM_DRIVE_LEFT  = CHANGEME;
     const static UINT32 PWM_DRIVE_RIGHT = CHANGEME;
-    
+
 #ifdef LRT_ROBOT_2011
     const static UINT32 CAN_DRIVE_LEFT_A  = 22;
     const static UINT32 CAN_DRIVE_LEFT_B  = 23;
@@ -20,7 +20,7 @@ public:
     const static UINT32 CAN_DRIVE_LEFT  = 2;
     const static UINT32 CAN_DRIVE_RIGHT = 3;
 #endif
-    
+
     const static UINT32 CAN_LIFT = 28;
     const static UINT32 CAN_ARM  = 24;
 

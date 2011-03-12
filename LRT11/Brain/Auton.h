@@ -31,13 +31,13 @@ void Brain::Auton()
 
         state = WAIT_FOR_DRIVE;
         break;
-        
+
     case RUN_INTO_PEG:
-    	action.driveTrain.closedLoop = false;
-    	action.driveTrain.rawForward = 0.1;
-    	action.driveTrain.rawTurn = 0;
-    	state = WAIT_FOR_PEG;
-    	break;
+        action.driveTrain.usingClosedLoop = false;
+        action.driveTrain.rawForward = 0.1;
+        action.driveTrain.rawTurn = 0;
+        state = WAIT_FOR_PEG;
+        break;
 
     case MOVE_LIFT:
         action.lift.givenCommand = true;
@@ -63,15 +63,15 @@ void Brain::Auton()
             state = RUN_INTO_PEG;
         }
         break;
-        
+
     case WAIT_FOR_PEG:
-    	if (DriveEncoders::GetInstance().GetNormalizedForwardSpeed() < 0.05)
-    	{
-    		action.driveTrain.rawForward = 0.0;
-    		action.driveTrain.closedLoop = true;
-	    	state = MOVE_LIFT;
-    	}
-    	break;
+        if(DriveEncoders::GetInstance().GetNormalizedForwardSpeed() < 0.05)
+        {
+            action.driveTrain.rawForward = 0.0;
+            action.driveTrain.usingClosedLoop = true;
+            state = MOVE_LIFT;
+        }
+        break;
 
     case WAIT_FOR_LIFT:
         // wait until lift is done

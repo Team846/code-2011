@@ -21,7 +21,7 @@ private:
     LRTEncoder encoderLeft;
     LRTEncoder encoderRight;
 #endif
-    
+
 public:
     static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
@@ -58,7 +58,7 @@ public:
     LRTEncoder& GetLeftEncoder();
     LRTEncoder& GetRightEncoder();
 #endif
-    
+
 protected:
     DriveEncoders();
     DISALLOW_COPY_AND_ASSIGN(DriveEncoders);

@@ -32,10 +32,11 @@ void DriveTrain::Output()
 
     left.UpdateOutput();
     right.UpdateOutput();
-    
-    robotDrive.SetClosedLoopEnabled(action.driveTrain.closedLoop);
+
+    robotDrive.SetClosedLoopEnabled(action.driveTrain.usingClosedLoop);
 
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
     robotDrive.SetBrakeRight(action.driveTrain.brakeRight);
+
     robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);
 }

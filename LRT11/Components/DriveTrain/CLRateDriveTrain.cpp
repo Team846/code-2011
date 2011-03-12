@@ -12,7 +12,7 @@ CLRateDriveTrain::CLRateDriveTrain(Esc& escLeft, Esc& escRight,
     , turnRunningError(TURN_DECAY)
     , brakeLeft(false)
     , brakeRight(false)
-    , closedLoop(true)
+    , usingClosedLoop(false)
 {
 }
 
@@ -42,9 +42,13 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
         PivotRight(rawFwd);
     if(brakeLeft || brakeRight)
         return NO_OUTPUT;
-    if (!closedLoop)
-    	dbsDrive.ComputeArcadeDrive(rawFwd, rawTurn);
-   
+
+    if(!usingClosedLoop)
+    {
+        SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
+        SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
+        return dbsDrive.ComputeArcadeDrive(rawFwd, rawTurn);
+    }
 
     float turningRate = encoders.GetNormalizedTurningSpeed();
 
@@ -109,5 +113,5 @@ void CLRateDriveTrain::Stop()
 
 void CLRateDriveTrain::SetClosedLoopEnabled(bool enabled)
 {
-	closedLoop = enabled;
+    usingClosedLoop = enabled;
 }

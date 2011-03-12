@@ -2,11 +2,11 @@
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
 #ifdef VIRTUAL
-	: controller(VirtualCANBusController::GetInstance())
+    : controller(VirtualCANBusController::GetInstance())
 #else
-	: controller(CANBusController::GetInstance())
+    : controller(CANBusController::GetInstance())
 #endif
-	, channel(channel)
+    , channel(channel)
 {
 
 }
