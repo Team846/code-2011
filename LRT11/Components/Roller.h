@@ -17,7 +17,9 @@ private:
     enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROTATING = 4};
 
     float dutyCycleSucking;
-    float dutyCycleSpitting;
+
+    float dutyCycleSpittingTop;
+    float dutyCycleSpittingBottom;
 
     float dutyCycleRotatingIn;
     float dutyCycleRotatingOut;

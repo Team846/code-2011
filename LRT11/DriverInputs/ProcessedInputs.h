@@ -57,6 +57,8 @@ public:
     bool ShouldRollerSpit();
     bool ShouldRollerSuck();
     bool ShouldRollerRotate();
+    bool ShouldRollerBeAutomated();
+    bool ShouldRollerCommenceAutomation();
     bool GetOperatorThrottle();
 
     // shifting

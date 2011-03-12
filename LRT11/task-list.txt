@@ -8,27 +8,48 @@
 ======================
 
 Tasks after shipping
-- Reset more action data values in disabled mode?
-- Capacitor
 / Autonomous routine
 	/ Release ringer
+/ Current sensing + 2CAN
+/ Synchronized for Update calls
+/ Pot values 0 to 1023
+/ Lift/arm pot configuration
+/ Difference in speed when spitting
 - Back off after squaring ringer up with lift?
-- Confirm button mappings of roller
 - TODOs
-- Current sensing + 2CAN
+- Roller automation
+- Periodic movement of roller inward
+- Line sensing
+
+What to test
+- Set roller gains to the default values in code
+- Get apply/load config working
+- Test difference in speed when spitting
+- Look at current values
+	- Detect a ringer?
+- Roller automation
+	- Set correct button mappings
+	- Test automated routine
+- Switching to CANJaguar (figure out how to do virtual mode)
+- Line sensing
+
+Simulation
+- Confirm button mappings of roller
 - Change lift preset based on high/low row
 - Lift aborted flag
 - Abort button
 - Disable control = what value to set? (setpoint array)
 - Set lift pot config value to 0.2
-- Bring line sensor data
-/ Synchronized for Update calls
-/ Pot values 0 to 1023
-/ Lift/arm pot configuration
 - Deadband issue
+- Reset more action data values in disabled mode?
+- Autonomous mode (without line sensing)
 - ID integrity
-- Turn off all speed controllers getting sent
-- Difference in speed when spitting
+- Turn off all speed controllers values getting sent
+
+At competition
+- Capacitor
+- Bring line sensor data
+- Set lift pot config value to 0.2
 
 List of changes
 - Virtual CANBusController

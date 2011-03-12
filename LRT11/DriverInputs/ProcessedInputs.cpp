@@ -140,6 +140,18 @@ bool ProcessedInputs::ShouldRollerRotate()
     return operatorStick.IsButtonDown(10);
 }
 
+bool ProcessedInputs::ShouldRollerBeAutomated()
+{
+    // TODO add correct button mapping
+    return operatorStick.IsButtonDown(-1);
+}
+
+bool ProcessedInputs::ShouldRollerCommenceAutomation()
+{
+    // TODO add correct button mapping
+    return operatorStick.IsButtonJustPressed(-1);
+}
+
 bool ProcessedInputs::GetOperatorThrottle()
 {
     return -operatorStick.GetRawAxis(4) > 0.8;

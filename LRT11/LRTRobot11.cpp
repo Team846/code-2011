@@ -90,7 +90,7 @@ void LRTRobot11::MainLoop()
 //        }
 
         {
-            ProfiledSection pf("Roller");
+            ProfiledSection ps("Roller");
             roller.Output();
         }
 

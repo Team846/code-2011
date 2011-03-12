@@ -2,18 +2,57 @@
 
 void Brain::TeleopRoller()
 {
+    // spitting the ringer out
     if(inputs.ShouldRollerSpit())
-    {
         action.roller.state = action.roller.SPITTING;
-    }
+    // sucking the ringer in
     else if(inputs.ShouldRollerSuck())
-    {
         action.roller.state = action.roller.SUCKING;
-    }
+    // rotating the ringer upward/downward
     else if(inputs.ShouldRollerRotate())
     {
         action.roller.rotateUpward = inputs.GetOperatorThrottle();
         action.roller.state = action.roller.ROTATING;
+    }
+    // spitting the ringer (automated routine)
+    else if(inputs.ShouldRollerBeAutomated())
+    {
+        static enum
+        {
+            IDLE,
+            ROTATING,
+            SPITTING
+        } state = IDLE;
+
+        // begin, or set the state, only when the button is just pressed
+        if(inputs.ShouldRollerCommenceAutomation())
+            state = ROTATING;
+
+        switch(state)
+        {
+        case IDLE:
+            break;
+
+        case ROTATING:
+            static int rotateCycle = 0;
+
+            action.roller.rotateUpward = false;
+            action.roller.state = action.roller.ROTATING;
+
+            // rotate for half a second
+            if(++rotateCycle % 25 == 0)
+                state = ROTATING;
+            break;
+
+        case SPITTING:
+            static int spitCycle = 0;
+            action.roller.state = action.roller.SPITTING;
+
+            // spit for one second
+            if(++spitCycle % 100 == 0)
+                state = IDLE;
+            break;
+        }
     }
     else
         action.roller.state = action.roller.STOPPED;

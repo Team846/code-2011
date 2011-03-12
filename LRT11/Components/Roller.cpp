@@ -16,9 +16,9 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
-    //observe currents
-    SmartDashboard::Log(topRoller.GetCurrent(), "top current");
-    SmartDashboard::Log(bottomRoller.GetCurrent(), "bottom current");
+    // observe currents
+    SmartDashboard::Log(topRoller.GetCurrent(), "Top Current");
+    SmartDashboard::Log(bottomRoller.GetCurrent(), "Bottom Current");
 
     topRoller.Set(dutyCycleSucking);
     bottomRoller.Set(dutyCycleSucking);
@@ -26,8 +26,8 @@ void Roller::RollInward()
 
 void Roller::RollOutward()
 {
-    topRoller.Set(dutyCycleSpitting);
-    bottomRoller.Set(dutyCycleSpitting - 0.4);
+    topRoller.Set(dutyCycleSpittingTop);
+    bottomRoller.Set(dutyCycleSpittingBottom);
 }
 
 void Roller::Stop()
@@ -74,16 +74,15 @@ void Roller::Configure()
 {
     Config& config = Config::GetInstance();
 
-    // 6V is sufficient for sucking (3/2/11)
-    dutyCycleSucking = config.Get<float>(prefix + "dutyCycleSucking", 0.5);
+    // default values empirically determined on 3/11/11 in room 612 -KV
+    dutyCycleSucking = config.Get<float>(prefix + "dutyCycleSucking", 1.0);
 
-    // 12V is ideal for spitting out the ringer at a range of about 3-15 inches (3/2/11)
-    dutyCycleSpitting = config.Get<float>(prefix + "dutyCycleSpitting", -0.5);
-
-    // 3V results in a good speed for rotating the ringer (3/2/11)
-    dutyCycleRotatingOut = config.Get<float>(prefix + "dutyCycleRotatingOut", -0.25);
+    // independent so that the ringer may be rotated when it is ejected
+    dutyCycleSpittingTop = config.Get<float>(prefix + "dutyCycleSpittingTop", -1.0);
+    dutyCycleSpittingBottom = config.Get<float>(prefix + "dutyCycleSpittingBottom", -0.6);
 
     // duty cycle for roller rotating inward is higher so that the ringer stays
     // inside the grabber (no tendency to move out)
-    dutyCycleRotatingIn = config.Get<float>(prefix + "dutyCycleRotatingIn", 0.30);
+    dutyCycleRotatingOut = config.Get<float>(prefix + "dutyCycleRotatingOut", -0.9);
+    dutyCycleRotatingIn = config.Get<float>(prefix + "dutyCycleRotatingIn", 1.0);
 }
