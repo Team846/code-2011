@@ -3,38 +3,37 @@
 #include "..\Config\Configurable.h"
 #include "..\Config\Config.h"
 #include "..\General.h"
+#include "LRTDigitalOutput.h"
 
-class LineSensor : public Configurable
+class LineSensor
 {
 public:
     LineSensor(int adcPort, int clockOut, int siOut);
     virtual ~LineSensor();
 
+    bool Read(int exposure_us);
     void ResetFirstRun();
-    float GetLinePosition();
 
-    bool IsOnLine();
+    float GetLinePosition();
+    bool IsLineDetected();
+
 private:
-    AnalogChannel analogIn;
-    DigitalOutput clockOut, siOut;
-    Config& config;
+    AnalogChannel adc;
+    LRTDigitalOutput clock, si;
 
     const static int NUM_PIXELS = 128;
     float lastLinePos;
-    unsigned int pixelData[NUM_PIXELS];
-    unsigned int exposure, noiseThreshold, lineThreshold;
+
+    unsigned int pixels[NUM_PIXELS + 1];
+    unsigned int lineThreshold;
+
     bool firstRun;
-    bool onLine;
+    bool lineDetected;
 
-    void UpdateReadings();
-    void SetExpo(unsigned int exposure);
-    void Flush();
-    void ResetSensor();
-    void PrepFrame();
+    void ResetPixelData();
 
-    inline void DelayMilliSeconds(UINT32 ms);
+    inline void DelayMilliseconds(UINT32 ms);
     inline void Delay(UINT32 ticks);
-
 };
 
 #endif
