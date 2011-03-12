@@ -107,3 +107,4 @@ At competition
 - Set gains to 1.5
 - Fix bottom of robot
 - Test cleaned up code
+- test auton, set things such as speeds and other parameters

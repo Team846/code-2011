@@ -3,7 +3,12 @@
 EncoderDataCollection::EncoderDataCollection()
     : Component()
     , leftEncoder(DriveEncoders::GetInstance().GetLeftEncoder())
-    , left(RobotConfig::CAN_DRIVE_LEFT_A, leftEncoder, "left")
+#ifdef LRT_ROBOT_2011
+    , left(RobotConfig::CAN_DRIVE_LEFT_A, RobotConfig::CAN_DRIVE_LEFT_B,
+    		leftEncoder, "left")
+#else
+    , left(RobotConfig::CAN_DRIVE_LEFT, leftEncoder, "left")
+#endif
 {
 
 }

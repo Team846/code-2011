@@ -1,8 +1,12 @@
 #include "ProxiedCANJaguar.h"
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
-    : controller(VirtualCANBusController::GetInstance())
-    , channel(channel)
+#ifdef VIRTUAL
+	: controller(VirtualCANBusController::GetInstance())
+#else
+	: controller(CANBusController::GetInstance())
+#endif
+	, channel(channel)
 {
 
 }

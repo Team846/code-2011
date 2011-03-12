@@ -2,6 +2,7 @@
 #define DRIVE_ENCODERS_H_
 
 #include "..\General.h"
+#include "LRTEncoder.h"
 #include "VirtualLRTEncoder.h"
 #include "..\Config\RobotConfig.h"
 #include "..\Util\Util.h"
@@ -13,10 +14,14 @@ class DriveEncoders : public SensorBase
 {
 private:
     static DriveEncoders* instance;
-
+#ifdef VIRTUAL
     VirtualLRTEncoder encoderLeft;
     VirtualLRTEncoder encoderRight;
-
+#else
+    LRTEncoder encoderLeft;
+    LRTEncoder encoderRight;
+#endif
+    
 public:
     static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
@@ -46,9 +51,14 @@ public:
     double GetRightSpeed();
     double GetNormalizedRightSpeed();
 
+#ifdef VIRTUAL
     VirtualLRTEncoder& GetLeftEncoder();
     VirtualLRTEncoder& GetRightEncoder();
-
+#else
+    LRTEncoder& GetLeftEncoder();
+    LRTEncoder& GetRightEncoder();
+#endif
+    
 protected:
     DriveEncoders();
     DISALLOW_COPY_AND_ASSIGN(DriveEncoders);

@@ -16,8 +16,12 @@ class LRTRobot11 : public LRTRobotBase
 {
 private:
     Brain brain;
+#ifdef VIRTUAL
     VirtualCANBusController& controller;
-
+#else
+    CANBusController& controller;
+#endif
+    
     DriveTrain drive;
     PositionDriveTrain positionDrive;
 

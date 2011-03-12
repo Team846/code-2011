@@ -5,7 +5,9 @@ Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
     , liftEsc(RobotConfig::CAN_LIFT)
+#ifdef VIRTUAL
     , liftPot(RobotConfig::CAN_LIFT, 10, 1.0, 6.5)
+#endif
     , timeoutCycles(0)
     , cycleCount(0)
     , prevMode(PRESET)
@@ -93,10 +95,12 @@ void Lift::Output()
     }
 
     float potValue = 0.0;
-    if(state != IDLE)
-//      potValue = liftEsc.GetPosition();
-        potValue = liftPot.GetPosition();
-
+#ifdef VIRTUAL
+    potValue = liftPot.GetPosition();
+#else
+    potValue = liftEsc.GetPosition();
+#endif
+    
     switch(state)
     {
     case IDLE:

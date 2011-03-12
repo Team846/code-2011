@@ -13,9 +13,11 @@ private:
     Config& config;
     string prefix;
     ProxiedCANJaguar armEsc;
-//    AnalogChannel armPot;
+#ifdef VIRTUAL
     VirtualPot armPot;
-
+#else
+    AnalogChannel armPot;
+#endif
     float maxPosition, minPosition;
     float powerUp, powerDown;
 

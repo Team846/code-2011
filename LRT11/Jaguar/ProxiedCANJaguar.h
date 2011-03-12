@@ -2,6 +2,7 @@
 #define PROXIED_CAN_JAGUAR_H_
 
 #include "..\General.h"
+#include "..\CAN\CANBusController.h"
 #include "..\CAN\VirtualCANBusController.h"
 #include "..\Util\Util.h"
 
@@ -37,7 +38,12 @@ public:
     void ResetCache();
 
 protected:
+#ifdef VIRTUAL
     VirtualCANBusController& controller;
+#else
+    CANBusController& controller;
+#endif
+    
     int channel;
 };
 

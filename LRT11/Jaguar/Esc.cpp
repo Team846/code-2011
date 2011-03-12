@@ -27,7 +27,11 @@ float Esc::CurrentLimiter::Limit(float targetSpeed, float robotSpeed)
 }
 
 // Esc Class
+#ifdef VIRTUAL
 Esc::Esc(int channel, VirtualLRTEncoder& encoder, string name)
+#else
+Esc::Esc(int channel, LRTEncoder& encoder, string name)
+#endif
     : ProxiedCANJaguar(channel)
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(false)
@@ -39,8 +43,12 @@ Esc::Esc(int channel, VirtualLRTEncoder& encoder, string name)
 {
 }
 
+#ifdef VIRTUAL
 Esc::Esc(int channelA, int channelB, VirtualLRTEncoder& encoder, string name)
-    : ProxiedCANJaguar(channelA)
+#else
+Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
+#endif
+	: ProxiedCANJaguar(channelA)
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(true)
     , partner(new Esc(channelB, encoder, name + "B"))

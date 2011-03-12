@@ -64,10 +64,16 @@ private:
     static void BusWriterTaskRunner();
     void BusWriterTask();
     int BusIdToIndex(int id);
-
+    
     // CAN jaguar ids (should be a contiguous block)
+#ifdef LRT_ROBOT_2011
     const static int kMinJaguarId = 20;
     const static int kMaxJaguarId = 28;
+#else
+    const static int kMinJaguarId = 2;
+    const static int kMaxJaguarId = 5;
+#endif
+    
     const static int kNumJaguars = kMaxJaguarId - kMinJaguarId + 1;
 
     // arrays for storing values and caching

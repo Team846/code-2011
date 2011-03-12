@@ -104,12 +104,20 @@ double DriveEncoders::GetNormalizedRightSpeed()
     return Util::Clamp<double>(encoderRight.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
 }
 
+#ifdef VIRTUAL
 VirtualLRTEncoder& DriveEncoders::GetLeftEncoder()
+#else
+LRTEncoder& DriveEncoders::GetLeftEncoder()
+#endif
 {
     return encoderLeft;
 }
 
+#ifdef VIRTUAL
 VirtualLRTEncoder& DriveEncoders::GetRightEncoder()
+#else
+LRTEncoder& DriveEncoders::GetRightEncoder()
+#endif
 {
     return encoderRight;
 }

@@ -37,8 +37,14 @@ private:
     ProcessedInputs& inputs;
     Timer gameTimer;
 
+#ifdef VIRTUAL
     VirtualLRTEncoder& leftEncoder;
     VirtualLRTEncoder& rightEncoder;
+#else
+    LRTEncoder& leftEncoder;
+    LRTEncoder& rightEncoder;
+#endif
+    
     bool isFinale;
 
     // Mode-specific methods

@@ -2,7 +2,11 @@
 
 LRTRobot11::LRTRobot11()
     : brain()
+#ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
+#else
+    , controller(CANBusController::GetInstance())
+#endif
     , drive()
     , positionDrive()
 //    , encoderData()
@@ -53,11 +57,11 @@ void LRTRobot11::MainLoop()
     if(gameState != DISABLED)
     {
         // components to output only when enabled
-//        {
-//            ProfiledSection ps("Drive Train");
-//            drive.Output();
-//        }
-
+        {
+            ProfiledSection ps("Drive Train");
+            drive.Output();
+        }
+        
 //        {
 //            ProfiledSection ps("Lift");
 //            lift.Output();

@@ -6,8 +6,10 @@ void Brain::Auton()
     static enum
     {
         DRIVE_FORWARD,
+        RUN_INTO_PEG,
         MOVE_LIFT,
         RELEASE_TUBE,
+        WAIT_FOR_PEG,
         WAIT_FOR_DRIVE,
         WAIT_FOR_LIFT,
         WAIT_FOR_RELEASE,
@@ -29,6 +31,13 @@ void Brain::Auton()
 
         state = WAIT_FOR_DRIVE;
         break;
+        
+    case RUN_INTO_PEG:
+    	action.driveTrain.closedLoop = false;
+    	action.driveTrain.rawForward = 0.1;
+    	action.driveTrain.rawTurn = 0;
+    	state = WAIT_FOR_PEG;
+    	break;
 
     case MOVE_LIFT:
         action.lift.givenCommand = true;
@@ -51,9 +60,18 @@ void Brain::Auton()
             action.positionTrain.enabled = false;
             // should move distance is automatically reset
 
-            state = MOVE_LIFT;
+            state = RUN_INTO_PEG;
         }
         break;
+        
+    case WAIT_FOR_PEG:
+    	if (DriveEncoders::GetInstance().GetNormalizedForwardSpeed() < 0.05)
+    	{
+    		action.driveTrain.rawForward = 0.0;
+    		action.driveTrain.closedLoop = true;
+	    	state = MOVE_LIFT;
+    	}
+    	break;
 
     case WAIT_FOR_LIFT:
         // wait until lift is done

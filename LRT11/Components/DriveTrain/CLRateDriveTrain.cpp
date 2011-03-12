@@ -12,6 +12,7 @@ CLRateDriveTrain::CLRateDriveTrain(Esc& escLeft, Esc& escRight,
     , turnRunningError(TURN_DECAY)
     , brakeLeft(false)
     , brakeRight(false)
+    , closedLoop(true)
 {
 }
 
@@ -41,6 +42,9 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
         PivotRight(rawFwd);
     if(brakeLeft || brakeRight)
         return NO_OUTPUT;
+    if (!closedLoop)
+    	dbsDrive.ComputeArcadeDrive(rawFwd, rawTurn);
+   
 
     float turningRate = encoders.GetNormalizedTurningSpeed();
 
@@ -101,4 +105,9 @@ void CLRateDriveTrain::Stop()
 {
     escRight.Stop();
     escLeft.Stop();
+}
+
+void CLRateDriveTrain::SetClosedLoopEnabled(bool enabled)
+{
+	closedLoop = enabled;
 }

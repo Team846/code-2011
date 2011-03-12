@@ -12,8 +12,10 @@ private:
     Config& config;
     string prefix;
     ProxiedCANJaguar liftEsc;
+#ifdef VIRTUAL
     VirtualPot liftPot;
-
+#endif
+    
     const static float inchesToTurns = 1.0 / 12.0;
 
     int timeoutCycles;

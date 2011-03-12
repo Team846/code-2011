@@ -3,10 +3,15 @@
 PositionDriveTrain::PositionDriveTrain()
     : Component()
     , encoders(DriveEncoders::GetInstance())
+#ifdef LRT_ROBOT_2011
     , left(RobotConfig::CAN_DRIVE_LEFT_A, RobotConfig::CAN_DRIVE_LEFT_B,
             encoders.GetLeftEncoder(), "left")
     , right(RobotConfig::CAN_DRIVE_RIGHT_A, RobotConfig::CAN_DRIVE_RIGHT_B,
             encoders.GetRightEncoder(), "right")
+#else
+    , left(RobotConfig::CAN_DRIVE_LEFT, encoders.GetLeftEncoder(), "left")
+    , right(RobotConfig::CAN_DRIVE_RIGHT, encoders.GetRightEncoder(), "right")
+#endif
     , dbsDrive(left, right, false)
     , robotDrive(left, right, encoders, dbsDrive)
     , positionDrive(robotDrive)

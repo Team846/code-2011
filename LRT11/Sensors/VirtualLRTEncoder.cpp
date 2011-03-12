@@ -15,10 +15,18 @@ VirtualLRTEncoder::VirtualLRTEncoder(UINT8 sourceA, UINT8 sourceB)
 {
     // working with left encoder, so subscribe to left CAN drive
     if(sourceA == RobotConfig::DIO_ENCODER_LEFT_A)
+#ifdef LRT_ROBOT_2011
         Subscribe(RobotConfig::CAN_DRIVE_LEFT_A);
+#else
+        Subscribe(RobotConfig::CAN_DRIVE_LEFT);
+#endif
     // working with right encoder, so subscribe to right CAN drive
     else if(sourceA == RobotConfig::DIO_ENCODER_RIGHT_A)
+#ifdef LRT_ROBOT_2011
         Subscribe(RobotConfig::CAN_DRIVE_RIGHT_A);
+#else
+        Subscribe(RobotConfig::CAN_DRIVE_RIGHT);
+#endif
 }
 
 VirtualLRTEncoder::~VirtualLRTEncoder()
