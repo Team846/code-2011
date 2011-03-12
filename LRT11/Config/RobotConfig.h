@@ -24,8 +24,8 @@ public:
     const static UINT32 CAN_LIFT = 28;
     const static UINT32 CAN_ARM  = 24;
 
-    const static UINT32 CAN_ROLLER_TOP    = CHANGEME;
-    const static UINT32 CAN_ROLLER_BOTTOM = CHANGEME;
+    const static UINT32 CAN_ROLLER_TOP    = 2;
+    const static UINT32 CAN_ROLLER_BOTTOM = 3;
 
     // Servos
 

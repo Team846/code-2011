@@ -2,6 +2,23 @@
 
 void Brain::TeleopRoller()
 {
+    if(inputs.ShouldRollerSpit())
+    {
+        action.roller.state = action.roller.SPITTING;
+    }
+    else if(inputs.ShouldRollerSuck())
+    {
+        action.roller.state = action.roller.SUCKING;
+    }
+    else if(inputs.ShouldRollerRotate())
+    {
+        action.roller.rotateUpward = inputs.GetOperatorThrottle();
+        action.roller.state = action.roller.ROTATING;
+    }
+    else
+        action.roller.state = action.roller.STOPPED;
+
+    /*
     // used for state machine
     static enum
     {
@@ -86,4 +103,5 @@ void Brain::TeleopRoller()
             state = STOPPING;
         break;
     }
+    */
 }

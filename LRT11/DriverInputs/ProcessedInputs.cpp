@@ -122,10 +122,27 @@ bool ProcessedInputs::ShouldMoveArmTopPreset()
     return driverStick.IsButtonJustPressed(7);
 }
 
-bool ProcessedInputs::ShouldSpitRoller()
+bool ProcessedInputs::ShouldRollerSpit()
 {
     // TODO confirm button mapping
-    return operatorStick.IsButtonJustPressed(12);
+    return operatorStick.IsButtonDown(8);
+}
+
+bool ProcessedInputs::ShouldRollerSuck()
+{
+    // TODO confirm button mapping
+    return operatorStick.IsButtonDown(9);
+}
+
+bool ProcessedInputs::ShouldRollerRotate()
+{
+    // TODO confirm button mapping
+    return operatorStick.IsButtonDown(10);
+}
+
+bool ProcessedInputs::GetOperatorThrottle()
+{
+    return -operatorStick.GetRawAxis(4) > 0.8;
 }
 
 bool ProcessedInputs::ShouldCollectEncoderData()

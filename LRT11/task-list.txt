@@ -28,6 +28,7 @@ Tasks after shipping
 - Deadband issue
 - ID integrity
 - Turn off all speed controllers getting sent
+- Difference in speed when spitting
 
 List of changes
 - Virtual CANBusController

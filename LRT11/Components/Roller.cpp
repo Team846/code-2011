@@ -16,6 +16,10 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
+    //observe currents
+    SmartDashboard::Log(topRoller.GetCurrent(), "top current");
+    SmartDashboard::Log(bottomRoller.GetCurrent(), "bottom current");
+
     topRoller.Set(dutyCycleSucking);
     bottomRoller.Set(dutyCycleSucking);
 }
@@ -23,7 +27,7 @@ void Roller::RollInward()
 void Roller::RollOutward()
 {
     topRoller.Set(dutyCycleSpitting);
-    bottomRoller.Set(dutyCycleSpitting);
+    bottomRoller.Set(dutyCycleSpitting - 0.4);
 }
 
 void Roller::Stop()

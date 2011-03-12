@@ -10,6 +10,7 @@
 #include "Components/PositionDriveTrain.h"
 #include "Components/Lift.h"
 #include "Components/Arm.h"
+#include "Components/Roller.h"
 #include "Config/Config.h"
 
 class LRTRobot11 : public LRTRobotBase
@@ -23,12 +24,13 @@ private:
 #endif
 
     DriveTrain drive;
-    PositionDriveTrain positionDrive;
+//    PositionDriveTrain positionDrive;
 
 //    Shifter shifter;
 
 //    Lift lift;
 //    Arm arm;
+    Roller roller;
 
     Config& config;
 

@@ -54,7 +54,10 @@ public:
     bool ShouldMoveArmTopPreset();
 
     // roller
-    bool ShouldSpitRoller();
+    bool ShouldRollerSpit();
+    bool ShouldRollerSuck();
+    bool ShouldRollerRotate();
+    bool GetOperatorThrottle();
 
     // shifting
     bool ShouldShiftLow();
