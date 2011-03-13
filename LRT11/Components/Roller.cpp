@@ -75,11 +75,11 @@ void Roller::Configure()
     Config& config = Config::GetInstance();
 
     // default values empirically determined on 3/11/11 in room 612 -KV
-    dutyCycleSucking = config.Get<float>(prefix + "dutyCycleSucking", 1.0);
+    dutyCycleSucking = config.Get<float>(prefix + "dutyCycleSucking", -1.0);
 
     // independent so that the ringer may be rotated when it is ejected
-    dutyCycleSpittingTop = config.Get<float>(prefix + "dutyCycleSpittingTop", -1.0);
-    dutyCycleSpittingBottom = config.Get<float>(prefix + "dutyCycleSpittingBottom", -0.6);
+    dutyCycleSpittingTop = config.Get<float>(prefix + "dutyCycleSpittingTop", 1.0);
+    dutyCycleSpittingBottom = config.Get<float>(prefix + "dutyCycleSpittingBottom", 0.6);
 
     // duty cycle for roller rotating inward is higher so that the ringer stays
     // inside the grabber (no tendency to move out)

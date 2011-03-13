@@ -14,9 +14,12 @@ public:
     bool Read(int exposure_us);
     void ResetFirstRun();
 
-    float GetLinePosition();
+    int GetLinePosition();
     bool IsLineDetected();
 
+    const static int LINE_NOT_DETECTED = -1;
+    const static int END_OF_LINE = -2;
+    
 private:
     AnalogChannel adc;
     LRTDigitalOutput clock, si;

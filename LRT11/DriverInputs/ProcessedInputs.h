@@ -31,7 +31,8 @@ public:
     virtual void Configure();
 
     bool IsServiceMode();
-    bool IsShiftPressed();
+    bool IsDriverTriggerDown();
+    bool IsOperatorTriggerDown();
 
     // drive train
     float GetForward();

@@ -9,6 +9,7 @@
 #include "..\DriverInputs\ProcessedInputs.h"
 #include "..\Sensors\DriveEncoders.h"
 #include "..\Sensors\LRTEncoder.h"
+#include "..\Sensors\LineSensor.h"
 
 typedef enum GameState
 {
@@ -44,6 +45,12 @@ private:
     LRTEncoder& leftEncoder;
     LRTEncoder& rightEncoder;
 #endif
+
+    LineSensor lineSensor;
+    int prevLinePosition;
+
+    bool firstReading;
+    bool leftSide;
 
     bool isFinale;
 

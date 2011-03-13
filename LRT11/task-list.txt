@@ -22,16 +22,22 @@ Tasks after shipping
 - Line sensing
 
 What to test
-- Set roller gains to the default values in code
-- Get apply/load config working
-- Test difference in speed when spitting
+/ Address Mr. G's concerns
+	/ Software deployment - LRT_ROBOT_2011 and enabling one component at a time
+/ Set roller gains to the default values in code
+/ Get apply/load config working
+/ Test difference in speed when spitting
 - Look at current values
 	- Detect a ringer?
 - Roller automation
 	- Set correct button mappings
-	- Test automated routine
+	/ Test automated routine
 - Switching to CANJaguar (figure out how to do virtual mode)
 - Line sensing
+	- Config values
+	- Remove get line position
+- Autonomous detect wall
+- Assign buttons
 
 Simulation
 - Confirm button mappings of roller
@@ -45,6 +51,7 @@ Simulation
 - Autonomous mode (without line sensing)
 - ID integrity
 - Turn off all speed controllers values getting sent
+- Minibot deployment code
 
 At competition
 - Capacitor

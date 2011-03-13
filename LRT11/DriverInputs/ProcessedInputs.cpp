@@ -42,9 +42,14 @@ bool ProcessedInputs::IsServiceMode()
     return GetThrottle() > 0.8;
 }
 
-bool ProcessedInputs::IsShiftPressed()
+bool ProcessedInputs::IsDriverTriggerDown()
 {
     return driverStick.IsButtonDown(1);
+}
+
+bool ProcessedInputs::IsOperatorTriggerDown()
+{
+    return operatorStick.IsButtonDown(1);
 }
 
 float ProcessedInputs::GetForward()
@@ -143,13 +148,13 @@ bool ProcessedInputs::ShouldRollerRotate()
 bool ProcessedInputs::ShouldRollerBeAutomated()
 {
     // TODO add correct button mapping
-    return operatorStick.IsButtonDown(-1);
+    return operatorStick.IsButtonDown(5);
 }
 
 bool ProcessedInputs::ShouldRollerCommenceAutomation()
 {
     // TODO add correct button mapping
-    return operatorStick.IsButtonJustPressed(-1);
+    return operatorStick.IsButtonJustPressed(5);
 }
 
 bool ProcessedInputs::GetOperatorThrottle()
@@ -171,15 +176,15 @@ void ProcessedInputs::UpdateDebouncing()
 
 bool ProcessedInputs::ShouldLoadConfig()
 {
-    return operatorStick.IsButtonJustPressed(15);
+    return IsOperatorTriggerDown() && operatorStick.IsButtonJustPressed(9);
 }
 
 bool ProcessedInputs::ShouldSaveConfig()
 {
-    return operatorStick.IsButtonJustPressed(16);
+    return IsOperatorTriggerDown() && operatorStick.IsButtonJustPressed(8);
 }
 
 bool ProcessedInputs::ShouldApplyConfig()
 {
-    return operatorStick.IsButtonJustPressed(14);
+    return IsOperatorTriggerDown() && operatorStick.IsButtonJustPressed(10);
 }

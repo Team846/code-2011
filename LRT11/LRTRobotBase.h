@@ -43,10 +43,10 @@ protected:
     LRTRobotBase();
     virtual ~LRTRobotBase();
 
-    int packetsMissedInLifetime;
-    double minCycleTime, maxCycleTime;
+//    int packetsMissedInLifetime;
+//    double minCycleTime, maxCycleTime;
 
-    bool NextPeriodReady();
+//    bool NextPeriodReady();
 };
 
 #endif

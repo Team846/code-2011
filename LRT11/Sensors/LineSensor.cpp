@@ -15,7 +15,7 @@ LineSensor::LineSensor(int adcPort, int clockPort, int siPort)
 {
     const static string prefix = "LineSensor.";
 
-    lineThreshold = 200;
+    lineThreshold = 275;
 
     si.Set(0);
     clock.Set(0);
@@ -43,30 +43,19 @@ bool LineSensor::Read(int exposure_us)
     si.Set(0);
     clock.Set(0);
 
+    UINT32 expireTime;
+
     // clock out to the 18th cycle
-    while(++clockCycle <= 18)
+    while(++clockCycle <= 128)
     {
         clock.Set(1);
         clock.Set(0);
+
+        // camera exposure (integration) starts at the 18th cycle
+        if(clockCycle == 18)
+            // microseconds
+            expireTime = GetFPGATime() + exposure_us;
     }
-
-    // microseconds
-    UINT32 expireTime = GetFPGATime() + exposure_us;
-
-    // clock out to the 128th cycle
-    do
-    {
-        clock.Set(1);
-        clock.Set(0);
-    }
-    while(++clockCycle <= 128);
-
-    // unwanted data is clocked out; now wait for exposure to complete
-    while(GetFPGATime() < expireTime)
-        ; // wait
-
-    bool isGoodReading = (GetFPGATime() < expireTime + exposure_us / 10);
-    clockCycle = 1; // reset to read data
 
     // 129th clock cycle triggers tristate and ends cycle
     clock.Set(1);
@@ -74,6 +63,13 @@ bool LineSensor::Read(int exposure_us)
 
     // 129th clock cycle requires a minimum 20 microsecond delay
     Delay(50 * 20);
+
+    // unwanted data is clocked out; now wait for exposure to complete
+    while(GetFPGATime() < expireTime)
+        ; // wait
+
+    bool isGoodReading = (GetFPGATime() < expireTime + exposure_us / 10);
+    clockCycle = 1; // reset to read data
 
     si.Set(1); // starts sensor reset for next 18 cycles and schedules integrator after
     clock.Set(1); // sensor reset starts here
@@ -101,54 +97,72 @@ void LineSensor::ResetFirstRun()
     lastLinePos = 0;
 }
 
-float LineSensor::GetLinePosition()
+int LineSensor::GetLinePosition()
 {
-    unsigned int sum = 0, avg = 0, value, max = 0;
+    unsigned int intensitySum = 0, weightedSum = 0;
+    unsigned int pixelValue, maxPixel = 0;
+
     lineDetected = false;
 
     {
-        ProfiledSection pf("Update Readings");
+        // read line sensor
+        ProfiledSection pf("Reading line sensor");
         Read(4000);
     }
 
-    for(int i = 0; i < NUM_PIXELS; i++)
+// cut off 4 pixels that tend to hold high, bogus values 3/12/11 -KV
+#define START_PIXEL 4
+
+    for(int i = START_PIXEL; i < NUM_PIXELS; i++)
     {
-//      value = pixelData[i];
-        value = pixels[i]; //try to compensate for noise
-        if(pixels[max] < value)
-            max = i;
-        if(value > 0)
-        {
-            lineDetected = lineDetected || (value > lineThreshold);//if the line has been seen
-            avg += value * i; //weight by thresholded value, better would be to weight based on values around this one as well (exponential decrease)
-            sum += value; //add to total sum
-        }
+        pixelValue = Util::Max<int>(pixels[i] - lineThreshold, 0);
+        if(pixels[maxPixel] < pixelValue)
+            maxPixel = i;
+
+        // check if the line has been detected
+        lineDetected = lineDetected || (pixelValue > 0);
+
+        // weighted average based on pixel position
+        weightedSum += pixelValue * i;
+        intensitySum += pixelValue;
     }
 
-    SmartDashboard::Log((int)max, "Max Line Sensor Pixel Value");
-    SmartDashboard::Log((int)pixels[max], "Max Line Sensor Value");
+
+    // log pixel data for debugging
+    SmartDashboard::Log((int)maxPixel, "Max Line Sensor Pixel Value");
+    SmartDashboard::Log((int)pixels[maxPixel], "Max Line Sensor Value");
+    SmartDashboard::Log((int)intensitySum, "Line Sensor Intensity Sum");
+
+    // 25000 empirically determined to be a cutoff intensity sum
+    // for the end of the line in room 612 on 3/12/11 -KV
+    if(intensitySum > 25000)
+        return END_OF_LINE;
 
     // 0 pixels is clockwise
 
-    float linePos;
+    int linePosition = LINE_NOT_DETECTED; // assume no line detected
+    if(lineDetected)
+        // similar to a center of gravity calculation
+        linePosition = weightedSum / intensitySum;
 
-    if(!lineDetected)
-    {
-        if(lastLinePos == 0) // starts out at 0 for floating point
-            linePos = 0;
-        else if(lastLinePos < 0)
-            linePos = 0.25;
-        else
-            linePos = -0.25;
-    }
-    else
-    {
-        avg /= sum; //find the avg. in the range [0, NUM_PIXELS*10]
-        lastLinePos = Util::Rescale<float>(avg, 0, NUM_PIXELS, -1.0, 1.0); //map from 1 to -1
-        linePos = lastLinePos;
-    }
+//    static int cycleCount = 0;
+//    if(cycleCount++ % 25 == 0)   // update every quarter second
+//    {
+//        ofstream out("/lineout.csv", ios::app);
+//
+//        for(int i = START_PIXEL; i < NUM_PIXELS; i += 2)
+//        {
+//            pixelValue = pixels[i];
+//            out << setw(3) << pixelValue << ",";
+//        }
+//
+//        out << endl;
+//        out.close();
+//    }
 
-    return linePos;
+#undef START_PIXEL
+
+    return linePosition;
 }
 
 bool LineSensor::IsLineDetected()

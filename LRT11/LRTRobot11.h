@@ -30,8 +30,8 @@ private:
 
 //    Lift lift;
 //    Arm arm;
-    Roller roller;
 
+    Roller roller;
     Config& config;
 
     GameState prevState;

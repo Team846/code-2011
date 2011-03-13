@@ -12,7 +12,7 @@ CLRateDriveTrain::CLRateDriveTrain(Esc& escLeft, Esc& escRight,
     , turnRunningError(TURN_DECAY)
     , brakeLeft(false)
     , brakeRight(false)
-    , usingClosedLoop(false)
+    , usingClosedLoop(true)
 {
 }
 

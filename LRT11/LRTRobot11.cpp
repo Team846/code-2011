@@ -35,6 +35,9 @@ void LRTRobot11::RobotInit()
 
     SmartDashboard::Log(build, "Build/Run");
     AsynchronousPrinter::Printf(build);
+
+    // get rid of bogus reading 3/12/11 -KV
+    LRTDigitalOutput::SetDelay(50 * 10); // 5 us; tested in room 612 on 3/12/11 -KV
 }
 
 void LRTRobot11::MainLoop()
@@ -57,11 +60,14 @@ void LRTRobot11::MainLoop()
 
     if(gameState != DISABLED)
     {
+//    LRTDigitalOutput::SetDelay((int)(50 * 100 * Util::Rescale<float>(ds.GetAnalogIn(1), 0, 5, 0, 1)));
+
         // components to output only when enabled
-//        {
-//            ProfiledSection ps("Drive Train");
-//            drive.Output();
-//        }
+
+        {
+            ProfiledSection ps("Drive Train");
+            drive.Output();
+        }
 
 //        {
 //            ProfiledSection ps("Lift");
@@ -89,10 +95,10 @@ void LRTRobot11::MainLoop()
 //            shifter.Output();
 //        }
 
-        {
-            ProfiledSection ps("Roller");
-            roller.Output();
-        }
+//        {
+//            ProfiledSection ps("Roller");
+//            roller.Output();
+//        }
 
         // To add another component output:
         //

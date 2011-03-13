@@ -20,9 +20,14 @@ Brain::Brain()
     , gameTimer()
     , leftEncoder(DriveEncoders::GetInstance().GetLeftEncoder())
     , rightEncoder(DriveEncoders::GetInstance().GetRightEncoder())
+    , lineSensor(3, 8, 7)
+    , prevLinePosition(-1)
+    , firstReading(true)
+    , leftSide(false)
     , isFinale(false)
 {
-
+    // first reading is bogus; throw it out 3/12/11 -KV
+    lineSensor.GetLinePosition();
 }
 
 Brain::~Brain()

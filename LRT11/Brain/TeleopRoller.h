@@ -19,38 +19,35 @@ void Brain::TeleopRoller()
     {
         static enum
         {
-            IDLE,
             ROTATING,
             SPITTING
-        } state = IDLE;
+        } state = ROTATING;
+
+        static int rotateCycle = 0, spitCycle = 0;
 
         // begin, or set the state, only when the button is just pressed
         if(inputs.ShouldRollerCommenceAutomation())
+        {
             state = ROTATING;
+            rotateCycle = 0;
+            spitCycle = 0;
+        }
 
         switch(state)
         {
-        case IDLE:
-            break;
-
         case ROTATING:
-            static int rotateCycle = 0;
-
             action.roller.rotateUpward = false;
             action.roller.state = action.roller.ROTATING;
 
             // rotate for half a second
-            if(++rotateCycle % 25 == 0)
-                state = ROTATING;
+            if(++rotateCycle % 5 == 0)
+                state = SPITTING;
             break;
 
         case SPITTING:
-            static int spitCycle = 0;
             action.roller.state = action.roller.SPITTING;
 
-            // spit for one second
-            if(++spitCycle % 100 == 0)
-                state = IDLE;
+            // stay in spitting mode until operator stops pushing button
             break;
         }
     }

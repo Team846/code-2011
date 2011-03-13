@@ -17,7 +17,7 @@ ActionData::ActionData()
     driveTrain.rawTurn = 0;
     driveTrain.brakeLeft = false;
     driveTrain.brakeRight = false;
-    driveTrain.usingClosedLoop = false;
+    driveTrain.usingClosedLoop = true;
 
     positionTrain.shouldMoveDistance = false;
     positionTrain.shouldTurnAngle = false;
