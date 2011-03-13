@@ -8,7 +8,8 @@ void Brain::AutomatedRoutines()
         IDLE,
         ROTATING_RINGER,
         START_SPITTING,
-        MOVE_LIFT,
+        MOVE_LIFT_UP,
+        MOVE_LIFT_DOWN,
         WAIT_FOR_LIFT,
         END_SPITTING,
         ABORT
@@ -36,13 +37,22 @@ void Brain::AutomatedRoutines()
 
     case START_SPITTING:
         action.roller.state = action.roller.SPITTING;
-        state = MOVE_LIFT;
+        state = MOVE_LIFT_UP;
         break;
 
-    case MOVE_LIFT:
+    case MOVE_LIFT_UP:
         // configuration for moving to a preset
         action.lift.givenCommand = true;
-        action.lift.position = action.lift.LOW_PEG;
+        action.lift.position = action.lift.HIGH_PEG;
+        action.lift.highRow = false; // should change based off position
+
+        state = WAIT_FOR_LIFT;
+        break;
+
+    case MOVE_LIFT_DOWN:
+        // configuration for moving to a preset
+        action.lift.givenCommand = true;
+        action.lift.position = action.lift.STOWED;
         action.lift.highRow = false; // should change based off position
 
         state = WAIT_FOR_LIFT;

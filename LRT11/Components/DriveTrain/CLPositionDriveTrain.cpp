@@ -98,3 +98,8 @@ void CLPositionDriveTrain::Stop()
 {
     drive.Stop();
 }
+
+void CLPositionDriveTrain::SetClosedLoopEnabled(bool enabled)
+{
+    drive.SetClosedLoopEnabled(enabled);
+}

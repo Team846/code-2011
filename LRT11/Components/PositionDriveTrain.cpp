@@ -30,6 +30,8 @@ void PositionDriveTrain::Output()
     if(!action.positionTrain.enabled)
         return;
 
+    positionDrive.SetClosedLoopEnabled(action.positionTrain.closedLoopEnabled);
+
     if(action.positionTrain.shouldMoveDistance)
     {
         positionDrive.MoveInches(action.positionTrain.moveDistance);

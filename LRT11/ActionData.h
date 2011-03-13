@@ -29,6 +29,7 @@ public:
         bool pivotLeft, pivotRight;
         bool done;
         bool enabled;
+        bool closedLoopEnabled;
     } positionTrain;
 
     struct

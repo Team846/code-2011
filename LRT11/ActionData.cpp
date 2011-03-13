@@ -29,6 +29,7 @@ ActionData::ActionData()
     positionTrain.pivotRight = false;
     positionTrain.done = false;
     positionTrain.enabled = false;
+    positionTrain.closedLoopEnabled = true;
 
     lift.position = lift.STOWED;
     lift.highRow = false;

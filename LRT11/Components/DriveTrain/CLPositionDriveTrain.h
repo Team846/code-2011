@@ -26,6 +26,8 @@ public:
 
     void Stop();
 
+    void SetClosedLoopEnabled(bool enabled);
+
 private:
     CLRateDriveTrain drive;
     DriveEncoders& encoders;

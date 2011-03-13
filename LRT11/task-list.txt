@@ -20,6 +20,7 @@ Tasks after shipping
 - Roller automation
 - Periodic movement of roller inward
 - Line sensing
+- set buttons on ds for auton modes
 
 What to test
 / Address Mr. G's concerns

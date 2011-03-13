@@ -31,6 +31,7 @@ private:
     Config& config;
     Console& console;
     LCD& lcd;
+    DriverStation& ds;
 
     ActionData& action;
     GameState previousState;
@@ -45,6 +46,8 @@ private:
     LRTEncoder& leftEncoder;
     LRTEncoder& rightEncoder;
 #endif
+
+    DriveEncoders& driveEncoders;
 
     LineSensor lineSensor;
     int prevLinePosition;
@@ -63,6 +66,7 @@ private:
 
     // Subroutines used in multiple modes
     void AutomatedRoutines();
+    bool highPeg;
 
     // Teleop subroutines
     void TeleopDriveTrain();
@@ -72,6 +76,10 @@ private:
     void TeleopArm();
 
     void TeleopRoller();
+
+    //Autonomous routines
+    void Side();
+    void Middle(int numberOfTubes);
 
     // SmartDashboard updating
     void UpdateDashboardValues(GameState gameState);
