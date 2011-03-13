@@ -5,7 +5,7 @@ LRTRobot11::LRTRobot11()
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
 #else
-    , controller(CANBusController::GetInstance())
+//    , controller(CANBusController::GetInstance())
 #endif
     , drive()
 //    , positionDrive()
@@ -55,8 +55,8 @@ void LRTRobot11::MainLoop()
         config.Output();
     }
 
-    if(prevState != gameState)
-        controller.ResetCache();
+//    if(prevState != gameState)
+//        controller.ResetCache();
 
     if(gameState != DISABLED)
     {

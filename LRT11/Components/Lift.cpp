@@ -24,8 +24,8 @@ Lift::~Lift()
 
 void Lift::Configure()
 {
-    liftEsc.SetControlMode(CANJaguar::kPosition);
-//    liftEsc.ChangeControlMode(CANJaguar::kPosition);
+//    liftEsc.SetControlMode(CANJaguar::kPosition);
+    liftEsc.ChangeControlMode(CANJaguar::kPosition);
     liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
 
     liftEsc.SetPID(config.Get<double>(prefix + "pGain", 100), config.Get<double>(prefix + "iGain", 0),
@@ -33,8 +33,8 @@ void Lift::Configure()
 
 //    liftEsc.ConfigSoftPositionLimits(config.Get<double>(prefix + "forwardLimit", 0),
 //            config.Get<double>(prefix + "reverseLimit", 10));
-    liftEsc.SetPotentiometerTurns(10);
-//    liftEsc.ConfigPotentiometerTurns(10);
+//    liftEsc.SetPotentiometerTurns(10);
+    liftEsc.ConfigPotentiometerTurns(10);
 
     liftEsc.EnableControl();
 
@@ -51,7 +51,8 @@ void Lift::Configure()
 
 void Lift::ConfigureManualMode()
 {
-    liftEsc.SetControlMode(CANJaguar::kPercentVbus);
+//    liftEsc.SetControlMode(CANJaguar::kPercentVbus);
+    liftEsc.ChangeControlMode(CANJaguar::kPercentVbus);
     liftEsc.EnableControl();
 }
 
@@ -120,7 +121,7 @@ void Lift::Output()
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
         {
-            liftEsc.ResetCache();
+//            liftEsc.ResetCache();
             liftEsc.Set(action.lift.power);
         }
 

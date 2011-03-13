@@ -1,12 +1,13 @@
 #include "ProxiedCANJaguar.h"
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
+    : CANJaguar(channel)
 #ifdef VIRTUAL
-    : controller(VirtualCANBusController::GetInstance())
+    , controller(VirtualCANBusController::GetInstance())
 #else
-    : controller(CANBusController::GetInstance())
+//    : controller(CANBusController::GetInstance())
 #endif
-    , channel(channel)
+//    , channel(channel)
 {
 
 }
@@ -16,6 +17,7 @@ ProxiedCANJaguar::~ProxiedCANJaguar()
 
 }
 
+/*
 void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
     controller.Set(channel, setpoint);
@@ -110,3 +112,4 @@ void ProxiedCANJaguar::ResetCache()
 {
     controller.ResetCache(channel);
 }
+*/

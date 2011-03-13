@@ -4,8 +4,8 @@
  * Constructor for RobotIterativeBase. Initializes member variables.
  */
 LRTRobotBase::LRTRobotBase()
-//    : minCycleTime(1e6)
-//    , maxCycleTime(0)
+    : cycleCount(0)
+    , extraCycles(0)
 {
 
 }
@@ -112,6 +112,12 @@ void LRTRobotBase::StartCompetition()
 //        }
 
         while(GetFPGATime() < newCycleExpire)
-            ; // wait
+            extraCycles++; // count up extra cycles while waiting
+
+        if(cycleCount++ % 50 == 0)
+        {
+            AsynchronousPrinter::Printf("Extra cycles: %d\n", extraCycles);
+            extraCycles = 0;
+        }
     }
 }

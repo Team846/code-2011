@@ -2,16 +2,16 @@
 #define PROXIED_CAN_JAGUAR_H_
 
 #include "..\General.h"
-#include "..\CAN\CANBusController.h"
 #include "..\CAN\VirtualCANBusController.h"
 #include "..\Util\Util.h"
 
-class ProxiedCANJaguar : public SpeedController
+class ProxiedCANJaguar : public CANJaguar
 {
 public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();
 
+    /*
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
     virtual float Get();
     virtual void Disable();
@@ -36,15 +36,16 @@ public:
 
     void ConfigNeutralMode(CANJaguar::NeutralMode mode);
     void ResetCache();
+    */
 
 protected:
 #ifdef VIRTUAL
     VirtualCANBusController& controller;
 #else
-    CANBusController& controller;
+//    CANBusController& controller;
 #endif
 
-    int channel;
+//    int channel;
 };
 
 #endif /* PROXIED_CAN_JAGUAR_H_ */

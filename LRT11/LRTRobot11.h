@@ -20,7 +20,7 @@ private:
 #ifdef VIRTUAL
     VirtualCANBusController& controller;
 #else
-    CANBusController& controller;
+//    CANBusController& controller;
 #endif
 
     DriveTrain drive;

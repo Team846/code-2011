@@ -2,10 +2,9 @@
 
 void Brain::TeleopDriveTrain()
 {
-    action.driveTrain.rawForward = inputs.GetForward();
-    action.driveTrain.rawTurn    = inputs.GetTurn();
+//    action.driveTrain.rawForward = inputs.GetForward();
+//    action.driveTrain.rawTurn    = inputs.GetTurn();
 
-#if 0
     {
         ProfiledSection ps("Line sensing");
 
@@ -162,7 +161,6 @@ void Brain::TeleopDriveTrain()
         prevLinePosition = linePosition;
         SmartDashboard::Log(linePosition, "Calculated Line position");
     }
-#endif
 
     action.driveTrain.brakeLeft  = inputs.ShouldBrakeLeft();
     action.driveTrain.brakeRight = inputs.ShouldBrakeRight();

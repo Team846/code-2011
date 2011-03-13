@@ -39,6 +39,18 @@ What to test
 - Autonomous detect wall
 - Assign buttons
 
+Task list at 612
+- Service mode
+- Autonomous stall detection
+- Autonomous with hardware
+- Bring carpet + tape replica
+- Add servo values for 2010
+- LED issue
+- Lift DS soft switch for autonomous
+- End line detection
+- Split detection + choosing a side
+- Fix extra cycle count printing (increased period)
+
 Simulation
 - Confirm button mappings of roller
 - Change lift preset based on high/low row

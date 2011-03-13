@@ -43,6 +43,8 @@ protected:
     LRTRobotBase();
     virtual ~LRTRobotBase();
 
+    int cycleCount;
+    int extraCycles;
 //    int packetsMissedInLifetime;
 //    double minCycleTime, maxCycleTime;
 
