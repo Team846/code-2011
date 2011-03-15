@@ -85,8 +85,8 @@ void Brain::UpdateDashboardValues(GameState gameState)
     SmartDashboard::Log((int)(action.driveTrain.rawTurn * 100), "Raw Turn (F)");
     SmartDashboard::Log(200 + (int)(action.driveTrain.rawTurn * 100), "Raw Turn (B)");
 
-    SmartDashboard::Log(action.driveTrain.brakeLeft, "BL: ");
-    SmartDashboard::Log(action.driveTrain.brakeRight, "BR: ");
+//    SmartDashboard::Log(action.driveTrain.brakeLeft, "BL: ");
+//    SmartDashboard::Log(action.driveTrain.brakeRight, "BR: ");
 
     SmartDashboard::Log(leftEncoder.Get(), "Left Ticks");
     SmartDashboard::Log(rightEncoder.Get(), "Right Ticks");
@@ -101,7 +101,7 @@ void Brain::UpdateDashboardValues(GameState gameState)
                 Util::ToString<int>(config.Get<int>("RunNumber"))).c_str(), "Build/Run");
     }
 
-    SmartDashboard::Log(gameTimer.Get(), "Game Timer");
+    SmartDashboard::Log((float)gameTimer.Get(), "Game Timer");
 
     // can only deploy minibot with 10 seconds remaining
     if(gameTimer.Get() > 110)

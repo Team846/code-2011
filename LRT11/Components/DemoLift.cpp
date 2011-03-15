@@ -17,5 +17,5 @@ void DemoLift::Output()
     float forward = action.demoLift.forward;
     liftEsc.Set(forward);
 
-    SmartDashboard::Log(forward, "Demo Lift Set Point");
+//    SmartDashboard::Log(forward, "Demo Lift Set Point");
 }

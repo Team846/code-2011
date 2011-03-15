@@ -65,6 +65,15 @@ Simulation
 - ID integrity
 - Turn off all speed controllers values getting sent
 - Minibot deployment code
+- Lift prevent movement after certain pot value
+- Components
+	- Drive train
+	- Position drive train
+	- Lift
+	- Arm
+	- Roller
+	- Minibot deployment
+	- Robot aligner
 
 At competition
 - Capacitor

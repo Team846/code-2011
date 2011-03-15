@@ -11,8 +11,8 @@ LRTRobot11::LRTRobot11()
 //    , positionDrive()
 //    , encoderData()
 //    , shifter()
-//    , lift()
-//    , arm()
+    , lift()
+    , arm()
     , roller()
     , config(Config::GetInstance())
     , prevState(DISABLED)
@@ -69,16 +69,16 @@ void LRTRobot11::MainLoop()
             drive.Output();
         }
 
-//        {
-//            ProfiledSection ps("Lift");
-//            lift.Output();
-//        }
+        {
+            ProfiledSection ps("Lift");
+            lift.Output();
+        }
 
         // Tested successfully 3/10/11 [KV] [BA]
-//        {
-//            ProfiledSection ps("Arm");
-//            arm.Output();
-//        }
+        {
+            ProfiledSection ps("Arm");
+            arm.Output();
+        }
 
 //        {
 //            ProfiledSection ps("Position Drive");

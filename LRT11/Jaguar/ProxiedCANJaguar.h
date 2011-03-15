@@ -11,17 +11,17 @@ public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();
 
-    /*
+#ifdef VIRTUAL
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
     virtual float Get();
     virtual void Disable();
 
     void SetPID(double p, double i, double d);
-    void SetPositionReference(CANJaguar::PositionReference reference);
-    void SetPotentiometerTurns(UINT16 turns);
+    void SetPositionReference(VirtualPot* reference);
+    void ConfigPotentiometerTurns(UINT16 turns);
     CANJaguar::PositionReference GetPositionReference(void);
 
-    void SetControlMode(CANJaguar::ControlMode controlMode);
+    void ChangeControlMode(CANJaguar::ControlMode controlMode);
     CANJaguar::ControlMode GetControlMode();
     void EnableControl(double encoderInitialPosition = 0.0);
     void DisableControl();
@@ -36,7 +36,7 @@ public:
 
     void ConfigNeutralMode(CANJaguar::NeutralMode mode);
     void ResetCache();
-    */
+#endif
 
 protected:
 #ifdef VIRTUAL
@@ -45,7 +45,7 @@ protected:
 //    CANBusController& controller;
 #endif
 
-//    int channel;
+    int channel;
 };
 
 #endif /* PROXIED_CAN_JAGUAR_H_ */

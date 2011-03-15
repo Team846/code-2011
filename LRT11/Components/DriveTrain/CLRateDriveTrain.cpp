@@ -45,8 +45,8 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
 
     if(!usingClosedLoop)
     {
-        SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
-        SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
+//        SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
+//        SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
         return dbsDrive.ComputeArcadeDrive(rawFwd, rawTurn);
     }
 

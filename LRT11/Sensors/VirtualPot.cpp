@@ -1,4 +1,5 @@
 #include "VirtualPot.h"
+#include "../Util/AsynchronousPrinter.h"
 
 VirtualPot::VirtualPot(UINT32 channel, int potTurns, float ftPerTurn,
         float motorMaxSpeedFps, float defaultPosition)
@@ -43,5 +44,6 @@ void VirtualPot::Update(float dutyCycle)
     double rate = maxSpeed * dutyCycle;
     double distTraveled = rate * 1.0 / 50.0; // ticks / s * s = ticks; s = period = 1 / 50 Hz
 
+//    AsynchronousPrinter::Printf("Dist traveled: %.2f, Rate: %.2f, DPT: %.2f\n", distTraveled, rate, distancePerTurn);
     position += distTraveled / distancePerTurn;
 }

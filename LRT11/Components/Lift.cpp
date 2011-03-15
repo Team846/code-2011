@@ -4,7 +4,7 @@
 Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
-    , liftEsc(4)
+    , liftEsc(RobotConfig::CAN_LIFT)
 #ifdef VIRTUAL
     , liftPot(RobotConfig::CAN_LIFT, 10, 1.0, 6.5)
 #endif
@@ -26,7 +26,11 @@ void Lift::Configure()
 {
 //    liftEsc.SetControlMode(CANJaguar::kPosition);
     liftEsc.ChangeControlMode(CANJaguar::kPosition);
+#ifdef VIRTUAL
+    liftEsc.SetPositionReference(&liftPot);
+#else
     liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
+#endif
 
     liftEsc.SetPID(config.Get<double>(prefix + "pGain", 100), config.Get<double>(prefix + "iGain", 0),
             config.Get<double>(prefix + "dGain", 0));
@@ -101,6 +105,7 @@ void Lift::Output()
 #else
     potValue = liftEsc.GetPosition();
 #endif
+    SmartDashboard::Log(potValue, "Lift Pot Value");
 
     switch(state)
     {
@@ -163,6 +168,7 @@ void Lift::Output()
             cycleCount = 1; // will get decremented to 0
         }
 
+        AsynchronousPrinter::Printf("Lift key: %s\n", key.c_str());
         liftEsc.Set(setPoint);
         cycleCount--;
 
@@ -173,7 +179,7 @@ void Lift::Output()
             state = IDLE;
         }
 
-        SmartDashboard::Log(setPoint, "Lift Set Point");
+//        SmartDashboard::Log(setPoint, "Lift Set Point");
         break;
     }
 }

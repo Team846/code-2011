@@ -4,10 +4,10 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     : CANJaguar(channel)
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
+    , channel(channel)
 #else
 //    : controller(CANBusController::GetInstance())
 #endif
-//    , channel(channel)
 {
 
 }
@@ -17,7 +17,7 @@ ProxiedCANJaguar::~ProxiedCANJaguar()
 
 }
 
-/*
+#ifdef VIRTUAL
 void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
     controller.Set(channel, setpoint);
@@ -73,12 +73,12 @@ void ProxiedCANJaguar::ConfigNeutralMode(CANJaguar::NeutralMode mode)
     controller.ConfigNeutralMode(channel, mode);
 }
 
-void ProxiedCANJaguar::SetPositionReference(CANJaguar::PositionReference reference)
+void ProxiedCANJaguar::SetPositionReference(VirtualPot* reference)
 {
     controller.SetPositionReference(channel, reference);
 }
 
-void ProxiedCANJaguar::SetPotentiometerTurns(UINT16 turns)
+void ProxiedCANJaguar::ConfigPotentiometerTurns(UINT16 turns)
 {
     controller.SetPotentiometerTurns(channel, turns);
 }
@@ -88,7 +88,7 @@ CANJaguar::PositionReference ProxiedCANJaguar::GetPositionReference()
     return controller.GetPositionReference(channel);
 }
 
-void ProxiedCANJaguar::SetControlMode(CANJaguar::ControlMode controlMode)
+void ProxiedCANJaguar::ChangeControlMode(CANJaguar::ControlMode controlMode)
 {
     controller.SetControlMode(channel, controlMode);
 }
@@ -112,4 +112,4 @@ void ProxiedCANJaguar::ResetCache()
 {
     controller.ResetCache(channel);
 }
-*/
+#endif

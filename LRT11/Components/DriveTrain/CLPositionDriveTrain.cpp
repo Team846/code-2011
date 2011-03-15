@@ -58,8 +58,8 @@ bool CLPositionDriveTrain::MoveDistanceOutput()
     float turnCorrection = turnError * pGainFwdTurnCorrection;
     drive.ArcadeDrive(correction, turnCorrection);
 
-    SmartDashboard::Log(newError, "CLPosition Error");
-    SmartDashboard::Log(correction, "CLPosition Correction");
+//    SmartDashboard::Log(newError, "CLPosition Error");
+//    SmartDashboard::Log(correction, "CLPosition Correction");
 
     return Util::Abs<float>(error) < fwdDeadband;
 }
@@ -88,8 +88,8 @@ bool CLPositionDriveTrain::TurnAngleOutput()
         drive.ArcadeDrive(fwdCorrection, correction);
     }
 
-    SmartDashboard::Log(newError, "Turning error (position)");
-    SmartDashboard::Log(correction, "Turning correction (position)");
+//    SmartDashboard::Log(newError, "Turning error (position)");
+//    SmartDashboard::Log(correction, "Turning correction (position)");
 
     return Util::Abs<float>(error) < turnDeadband;
 }

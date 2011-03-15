@@ -192,7 +192,7 @@ void Brain::Middle(int numberOfTubes)
         action.lift.position = action.lift.LOW_PEG;
         state = WAIT_FOR_MOVE_LIFT_DOWN2;
         break;
-        
+
     case MOVE_BACK2:
         action.positionTrain.enabled = true;
         action.positionTrain.shouldMoveDistance = true;
@@ -215,19 +215,19 @@ void Brain::Middle(int numberOfTubes)
 
     case WAIT_FOR_FOLLOW_Y:
         TeleopDriveTrain();//Follow the line
-        
+
         //when close to to the pole disable closed loop and enable stall detection
         if(driveEncoders.GetRobotDist() > 20) //TODO Find the val empirically, maybe reduce speed
-        	action.driveTrain.closedLoopEnabled = false;
-        
+            action.driveTrain.usingClosedLoop = false;
+
         if(driveEncoders.GetNormalizedForwardSpeed() < 0.2) //TODO tweak This means we have crashed into the pole
         {
             action.driveTrain.usingClosedLoop = true;
             action.driveTrain.rawForward = 0.0;
             action.driveTrain.rawTurn = 0.0;
-        	state = MOVE_LIFT_UP1;
+            state = MOVE_LIFT_UP1;
         }
-        
+
         break;
 
     case WAIT_FOR_MOVE_LIFT_UP1:
@@ -243,10 +243,10 @@ void Brain::Middle(int numberOfTubes)
         break;
 
     case WAIT_FOR_RELEASE_TUBE1:
-        static int releaseCount = 0;
+        static int releaseCount1 = 0;
 
         // 0.75 second release
-        if(++releaseCount % 37 == 0)
+        if(++releaseCount1 % 37 == 0)
             state = MOVE_LIFT_DOWN1;
         break;
 
@@ -273,20 +273,20 @@ void Brain::Middle(int numberOfTubes)
             state = MOVE_BACK;
         }
         break;
-        
+
     case WAIT_FOR_MOVE_BACK:
         if(action.positionTrain.done)
         {
             action.positionTrain.enabled = false;
             // should move distance is automatically reset
 
-            if (numberOfTubes == 1)
-            	state = IDLE;
+            if(numberOfTubes == 1)
+                state = IDLE;
             else
-            	state = TURN_TO_PICKUP_RINGER;
+                state = TURN_TO_PICKUP_RINGER;
         }
         break;
-        
+
     case WAIT_FOR_TURN_TO_PICKUP_RINGER:
         if(action.positionTrain.done)
         {
@@ -296,7 +296,7 @@ void Brain::Middle(int numberOfTubes)
             state = DRIVE_TO_LINE;
         }
         break;
-        
+
     case WAIT_FOR_DRIVE_TO_LINE:
         if(action.positionTrain.done)
         {
@@ -306,21 +306,21 @@ void Brain::Middle(int numberOfTubes)
             state = FOLLOW_LINE;
         }
         break;
-        
+
 
     case WAIT_FOR_FOLLOW_LINE:
         TeleopDriveTrain();//Follow the line
-        if (driveEncoders.GetRobotDist() > 12)//TODO FIGURE ME OUT!
-        	action.driveTrain.usingClosedLoop = false;
-        if (driveEncoders.GetNormalizedForwardSpeed() < 0.2 )
+        if(driveEncoders.GetRobotDist() > 12) //TODO FIGURE ME OUT!
+            action.driveTrain.usingClosedLoop = false;
+        if(driveEncoders.GetNormalizedForwardSpeed() < 0.2)
         {
-        	state = MOVE_LIFT_UP2;
-        	action.driveTrain.usingClosedLoop = true;
-        	action.driveTrain.rawForward = 0.0;
+            state = MOVE_LIFT_UP2;
+            action.driveTrain.usingClosedLoop = true;
+            action.driveTrain.rawForward = 0.0;
             action.driveTrain.rawTurn = 0.0;
         }
         break;
-        
+
     case WAIT_FOR_MOVE_LIFT_UP2:
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
@@ -332,12 +332,12 @@ void Brain::Middle(int numberOfTubes)
                 state = IDLE; // TODO correct state
         }
         break;
-        
+
     case WAIT_FOR_RELEASE_TUBE2:
-        static int releaseCount = 0;
+        static int releaseCount2 = 0;
 
         // 0.75 second release
-        if(++releaseCount % 37 == 0)
+        if(++releaseCount2 % 37 == 0)
             state = MOVE_LIFT_DOWN2;
         break;
 
@@ -355,14 +355,14 @@ void Brain::Middle(int numberOfTubes)
 
 #define VICTORYDANCE IDLE
     case WAIT_FOR_MOVE_BACK2:
-    	if(action.positionTrain.done)
+        if(action.positionTrain.done)
         {
             action.positionTrain.enabled = false;
             // should move distance is automatically reset
 
             state = VICTORYDANCE;// :P
         }
-    	break;
+        break;
 
     case IDLE:
         //ne faire rien

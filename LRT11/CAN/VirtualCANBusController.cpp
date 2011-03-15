@@ -44,6 +44,25 @@ int VirtualCANBusController::BusIdToIndex(int id)
 void VirtualCANBusController::Set(int id, float val)
 {
     int idx = BusIdToIndex(id);
+
+    // position mode for the lift must be handled differently
+    if((UINT32) id == RobotConfig::CAN_LIFT && liftMode == CANJaguar::kPosition)
+    {
+        if(liftPot == NULL)
+        {
+            AsynchronousPrinter::Printf("Error! Lift pot is null.\n");
+            return;
+        }
+
+        float position = liftPot->GetPosition();
+        float error = val - position;
+
+        AsynchronousPrinter::Printf("Position = %.2f, Val = %.2f, Error = %.2f\n", position, val, error);
+        // val is set to the correction, which is the value that
+        // needs to be sent to the jaguar
+        val = error * liftPGain / 100.0;
+    }
+
     setpoints[idx] = val;
     SmartDashboard::Log(val, jaguarLabels[idx]);
 }

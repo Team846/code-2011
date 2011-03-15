@@ -12,10 +12,10 @@ public:
     const static UINT32 PWM_DRIVE_RIGHT = CHANGEME;
 
 #ifdef LRT_ROBOT_2011
-    const static UINT32 CAN_DRIVE_LEFT_A  = 22;
-    const static UINT32 CAN_DRIVE_LEFT_B  = 23;
     const static UINT32 CAN_DRIVE_RIGHT_A = 20;
     const static UINT32 CAN_DRIVE_RIGHT_B = 21;
+    const static UINT32 CAN_DRIVE_LEFT_A  = 22;
+    const static UINT32 CAN_DRIVE_LEFT_B  = 23;
 #else
     const static UINT32 CAN_DRIVE_LEFT  = 2;
     const static UINT32 CAN_DRIVE_RIGHT = 3;

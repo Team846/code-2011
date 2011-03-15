@@ -28,8 +28,8 @@ private:
 
 //    Shifter shifter;
 
-//    Lift lift;
-//    Arm arm;
+    Lift lift;
+    Arm arm;
 
     Roller roller;
     Config& config;

@@ -5,6 +5,8 @@
 #include "..\Jaguar\SafeCANJaguar.h"
 #include "..\Util\AsynchronousPrinter.h"
 #include "..\Util\DutyCycleSubscriber.h"
+#include "..\Config\RobotConfig.h"
+#include "..\Sensors\VirtualPot.h"
 #include <vector>
 using namespace std;
 
@@ -27,8 +29,16 @@ public:
     }
 
     // blocking jaguar configuration functions
-    void SetPID(int id, double p, double i, double d) {}
-    void SetPositionReference(int id, CANJaguar::PositionReference reference) {}
+    void SetPID(int id, double p, double i, double d)
+    {
+        liftPGain = p;
+    }
+
+    void SetPositionReference(int id, VirtualPot* pot)
+    {
+        liftPot = pot;
+    }
+
     void SetPotentiometerTurns(int id, UINT16 turns) {}
 
     CANJaguar::PositionReference GetPositionReference(int channel)
@@ -36,7 +46,10 @@ public:
         return CANJaguar::kPosRef_None;
     }
 
-    void SetControlMode(int id, CANJaguar::ControlMode controlMode) {}
+    void SetControlMode(int id, CANJaguar::ControlMode controlMode)
+    {
+        liftMode = controlMode;
+    }
 
     CANJaguar::ControlMode GetControlMode(int id)
     {
@@ -46,7 +59,15 @@ public:
     void EnableControl(int id, double encoderInitialPosition = 0.0) {}
 
     // blocking functions with no parameter
-    void DisableControl(int channel) {}
+    void DisableControl(int channel)
+    {
+        if((UINT32) channel == RobotConfig::CAN_LIFT && liftMode == CANJaguar::kPosition)
+        {
+            liftMode = CANJaguar::kPercentVbus;
+            Set(channel, 0);
+            liftMode = CANJaguar::kPosition;
+        }
+    }
 
     float GetOutputCurrent(int channel)
     {
@@ -109,6 +130,10 @@ private:
 
     Task busWriterTask;
     SEM_ID semaphore;
+
+    CANJaguar::ControlMode liftMode;
+    VirtualPot* liftPot;
+    double liftPGain;
 };
 
 #endif
