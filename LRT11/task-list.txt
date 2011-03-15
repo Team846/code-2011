@@ -15,70 +15,71 @@ Tasks after shipping
 / Pot values 0 to 1023
 / Lift/arm pot configuration
 / Difference in speed when spitting
-- Back off after squaring ringer up with lift?
+- Back off after squaring ringer up with lift? -KV
 - TODOs
-- Roller automation
 - Periodic movement of roller inward
 - Line sensing
-- set buttons on ds for auton modes
 
 What to test
+- components
 / Address Mr. G's concerns
 	/ Software deployment - LRT_ROBOT_2011 and enabling one component at a time
 / Set roller gains to the default values in code
 / Get apply/load config working
 / Test difference in speed when spitting
-- Look at current values
-	- Detect a ringer?
-- Roller automation
-	- Set correct button mappings
+/ Look at current values
+	- Detect a ringer
+	
+/ Roller automation
 	/ Test automated routine
-- Switching to CANJaguar (figure out how to do virtual mode)
-- Line sensing
-	- Config values
+/ Switching to CANJaguar (figure out how to do virtual mode)
+/ Line sensing
+	/ Config values
 	- Remove get line position
-- Autonomous detect wall
-- Assign buttons
+- Assign buttons -BA
 
 Task list at 612
-- Service mode
-- Autonomous stall detection
-- Autonomous with hardware
+- Service mode (keep in mind 4 escs on drive) -BA
 - Bring carpet + tape replica
-- Add servo values for 2010
-- LED issue
-- Lift DS soft switch for autonomous
+/ Lift DS soft switch for autonomous
 - End line detection
 - Split detection + choosing a side
 - Fix extra cycle count printing (increased period)
 
 Simulation
-- Confirm button mappings of roller
-- Change lift preset based on high/low row
+- Confirm button mappings of roller -BA
+- Change lift preset based on high/low row -BA
 - Lift aborted flag
-- Abort button
-- Disable control = what value to set? (setpoint array)
-- Set lift pot config value to 0.2
-- Deadband issue
-- Reset more action data values in disabled mode?
-- Autonomous mode (without line sensing)
-- ID integrity
-- Turn off all speed controllers values getting sent
-- Minibot deployment code
-- Lift prevent movement after certain pot value
+- Abort button 
+/ Disable control = what value to set? (setpoint array)
+- Deadband issue -BA (5%)
+- Reset more action data values in disabled mode? -KV
+- Autonomous mode (without line sensing, stall detection) -KV
+/ Turn off all speed controllers values getting sent (virtual mode)
+- Lift prevent movement after certain pot value -KV
 - Components
-	- Drive train
-	- Position drive train
-	- Lift
-	- Arm
-	- Roller
-	- Minibot deployment
-	- Robot aligner
+	- Drive train -KV
+	- Position drive train -KV
+	- Lift (lift pot value 0.2) -KV
+	- Arm -KV
+	- Roller -KV
+	- Minibot deployment -BA
+	- Robot aligner -BA
 
 At competition
 - Capacitor
 - Bring line sensor data
 - Set lift pot config value to 0.2
+- set deployer servo port numbers
+- set deployer ESC ID
+- set lift pot value to 0.2
+- LED issue
+- ensure lift preset values are set and defualted in code
+- verify autonomous settings, gains, including stall detection
+- calibrate line sensing
+- Look at current values
+	- Detect a ringer
+
 
 List of changes
 - Virtual CANBusController
