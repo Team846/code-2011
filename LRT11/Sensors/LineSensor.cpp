@@ -5,11 +5,12 @@
 #include "..\Util\AsynchronousPrinter.h"
 #include <iomanip>
 #include "..\Util\Profiler.h"
+#include "..\Config\RobotConfig.h"
 
-LineSensor::LineSensor(int adcPort, int clockPort, int siPort)
-    : adc(adcPort)
-    , clock(clockPort)
-    , si(siPort)
+LineSensor::LineSensor()
+    : adc(RobotConfig::LINESENSE_ADC)
+    , clock(RobotConfig::LINESENSE_CLOCK)
+    , si(RobotConfig::LINESENSE_SI)
     , lastLinePos(0)
     , firstRun(true)
 {

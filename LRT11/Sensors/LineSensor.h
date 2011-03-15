@@ -8,7 +8,7 @@
 class LineSensor
 {
 public:
-    LineSensor(int adcPort, int clockOut, int siOut);
+    LineSensor();
     virtual ~LineSensor();
 
     bool Read(int exposure_us);

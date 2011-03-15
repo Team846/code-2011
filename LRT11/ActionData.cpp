@@ -49,6 +49,9 @@ ActionData::ActionData()
     // if in roller.ROTATING state, default to rotating upward
     roller.rotateUpward = true;
 
+    deployer.state = deployer.retracted;
+    deployer.alignerReleased = false;
+
     encoderData.shouldCollect = false;
 
     shifter.gear = shifter.LOW_GEAR;
