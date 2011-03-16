@@ -13,6 +13,7 @@ LRTRobot11::LRTRobot11()
 //    , shifter()
     , lift()
     , arm()
+    , miniBotDeployer()
     , roller()
     , config(Config::GetInstance())
     , prevState(DISABLED)
@@ -80,6 +81,10 @@ void LRTRobot11::MainLoop()
             arm.Output();
         }
 
+        {
+            ProfiledSection ps("MinibotDeployer");
+            miniBotDeployer.Output();
+        }
 //        {
 //            ProfiledSection ps("Position Drive");
 //            positionDrive.Output();
@@ -99,6 +104,7 @@ void LRTRobot11::MainLoop()
 //            ProfiledSection ps("Roller");
 //            roller.Output();
 //        }
+
 
         // To add another component output:
         //

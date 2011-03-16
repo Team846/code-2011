@@ -34,6 +34,8 @@ public:
     bool IsDriverTriggerDown();
     bool IsOperatorTriggerDown();
 
+    bool ShouldAbort();
+
     // drive train
     float GetForward();
     float GetTurn();
@@ -45,19 +47,25 @@ public:
     bool ShouldMoveLiftLow();
     bool ShouldMoveLiftMedium();
     bool ShouldMoveLiftHigh();
+    bool ShouldPulseLiftUp();
+    bool ShouldPulseLiftDown();
     bool ShouldManuallyPowerLift();
     float GetLiftPower();
+    bool IsHighRow();
 
     // arm
     bool ShouldMoveArmDown();
     bool ShouldMoveArmUp();
     bool ShouldMoveArmBottomPreset();
     bool ShouldMoveArmTopPreset();
+    bool ShouldGrabGamePiece();
 
     // roller
     bool ShouldRollerSpit();
+    bool ShouldRollerDumbSpit();
     bool ShouldRollerSuck();
-    bool ShouldRollerRotate();
+    bool ShouldRollerRotateUp();
+    bool ShouldRollerRotateDown();
     bool ShouldRollerBeAutomated();
     bool ShouldRollerCommenceAutomation();
     bool GetOperatorThrottle();
@@ -65,6 +73,10 @@ public:
     // shifting
     bool ShouldShiftLow();
     bool ShouldShiftHigh();
+
+    //Minibot deployment
+    bool ShouldDeployLegs();
+    bool ShouldDeployMinibot();
 
     // encoder data collection
     bool ShouldCollectEncoderData();

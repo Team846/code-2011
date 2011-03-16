@@ -70,12 +70,15 @@ private:
 
     // Teleop subroutines
     void TeleopDriveTrain();
+    void FollowLine();
     void TeleopShifter();
 
     void TeleopLift();
     void TeleopArm();
 
     void TeleopRoller();
+
+    void TeleopMinibot();
 
     //Autonomous routines
     void Side();

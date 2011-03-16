@@ -28,8 +28,8 @@ void ProcessedInputs::Configure()
     Config& config = Config::GetInstance();
     string prefix = "ProcessedJoystick.";
 
-    forwardDeadband = config.Get<float>(prefix + "forwardDeadband", 0.15);
-    turnDeadband = config.Get<float>(prefix + "turnDeadband", 0.25);
+    forwardDeadband = config.Get<float>(prefix + "forwardDeadband", 0.05);
+    turnDeadband = config.Get<float>(prefix + "turnDeadband", 0.05);
 }
 
 float ProcessedInputs::GetThrottle()
@@ -52,6 +52,11 @@ bool ProcessedInputs::IsOperatorTriggerDown()
     return operatorStick.IsButtonDown(1);
 }
 
+bool ProcessedInputs::ShouldAbort()
+{
+    return operatorStick.IsButtonDown(5) || driverStick.IsButtonDown(2);
+}
+
 float ProcessedInputs::GetForward()
 {
     return Util::AddDeadband<float>(-driverStick.GetY(), forwardDeadband);
@@ -64,12 +69,12 @@ float ProcessedInputs::GetTurn()
 
 bool ProcessedInputs::ShouldBrakeLeft()
 {
-    return driverStick.IsButtonDown(10);
+    return driverStick.IsButtonDown(9);
 }
 
 bool ProcessedInputs::ShouldBrakeRight()
 {
-    return driverStick.IsButtonDown(9);
+    return driverStick.IsButtonDown(8);
 }
 
 bool ProcessedInputs::ShouldShiftLow()
@@ -107,6 +112,11 @@ float ProcessedInputs::GetLiftPower()
     return 0.5 * -operatorStick.GetY();
 }
 
+bool ProcessedInputs::IsHighRow()
+{
+    return operatorStick.GetThrottle() > 0.5;
+}
+
 bool ProcessedInputs::ShouldMoveArmDown()
 {
     return operatorStick.IsButtonDown(7);
@@ -127,22 +137,31 @@ bool ProcessedInputs::ShouldMoveArmTopPreset()
     return driverStick.IsButtonJustPressed(7);
 }
 
+bool ProcessedInputs::ShouldGrabGamePiece()
+{
+    return IsDriverTriggerDown();
+}
+
 bool ProcessedInputs::ShouldRollerSpit()
 {
     // TODO confirm button mapping
-    return operatorStick.IsButtonDown(8);
+    return operatorStick.IsButtonDown(2);
 }
 
 bool ProcessedInputs::ShouldRollerSuck()
 {
     // TODO confirm button mapping
-    return operatorStick.IsButtonDown(9);
+    return IsOperatorTriggerDown();
 }
 
-bool ProcessedInputs::ShouldRollerRotate()
+bool ProcessedInputs::ShouldRollerRotateUp()
 {
-    // TODO confirm button mapping
-    return operatorStick.IsButtonDown(10);
+    return operatorStick.IsButtonDown(6);
+}
+
+bool ProcessedInputs::ShouldRollerRotateDown()
+{
+    return operatorStick.IsButtonDown(7);
 }
 
 bool ProcessedInputs::ShouldRollerBeAutomated()
@@ -160,6 +179,16 @@ bool ProcessedInputs::ShouldRollerCommenceAutomation()
 bool ProcessedInputs::GetOperatorThrottle()
 {
     return -operatorStick.GetRawAxis(4) > 0.8;
+}
+
+bool ProcessedInputs::ShouldDeployLegs()
+{
+    return operatorStick.IsButtonDown(3);
+}
+
+bool ProcessedInputs::ShouldDeployMinibot()
+{
+    return operatorStick.IsButtonDown(4);
 }
 
 bool ProcessedInputs::ShouldCollectEncoderData()

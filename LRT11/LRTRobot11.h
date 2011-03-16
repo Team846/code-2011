@@ -11,6 +11,7 @@
 #include "Components/Lift.h"
 #include "Components/Arm.h"
 #include "Components/Roller.h"
+#include "Components/MiniBotDeployer.h"
 #include "Config/Config.h"
 
 class LRTRobot11 : public LRTRobotBase
@@ -30,6 +31,7 @@ private:
 
     Lift lift;
     Arm arm;
+    MiniBotDeployer miniBotDeployer;
 
     Roller roller;
     Config& config;

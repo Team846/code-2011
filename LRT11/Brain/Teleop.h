@@ -10,6 +10,8 @@ void Brain::Teleop()
     TeleopArm();
     TeleopRoller();
 
+    TeleopMinibot();
+
     // includes system of movements to release the ringer
     AutomatedRoutines();
 

@@ -8,8 +8,14 @@ void Brain::TeleopArm()
     // statement (see below)
     action.arm.givenCommand = true;
 
-    // determine arm movement with else ifs for interlocks
-    if(inputs.ShouldMoveArmDown())
+    if(inputs.ShouldGrabGamePiece())
+        action.arm.presetTop = false;
+    else
+        action.arm.presetTop = true;
+
+    //disable manual control of the arm
+    //for now because not enough buttons
+    /*if(inputs.ShouldMoveArmDown())
     {
         action.arm.manualMode = true;
         action.arm.manualUp = false;
@@ -31,5 +37,5 @@ void Brain::TeleopArm()
         action.arm.presetTop = false;
     else
         // no command given
-        action.arm.givenCommand = false;
+        action.arm.givenCommand = false;*/
 }

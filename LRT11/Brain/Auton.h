@@ -214,7 +214,7 @@ void Brain::Middle(int numberOfTubes)
         break;
 
     case WAIT_FOR_FOLLOW_Y:
-        TeleopDriveTrain();//Follow the line
+        FollowLine();//Follow the line
 
         //when close to to the pole disable closed loop and enable stall detection
         if(driveEncoders.GetRobotDist() > 20) //TODO Find the val empirically, maybe reduce speed
@@ -309,7 +309,7 @@ void Brain::Middle(int numberOfTubes)
 
 
     case WAIT_FOR_FOLLOW_LINE:
-        TeleopDriveTrain();//Follow the line
+        FollowLine();//Follow the line
         if(driveEncoders.GetRobotDist() > 12) //TODO FIGURE ME OUT!
             action.driveTrain.usingClosedLoop = false;
         if(driveEncoders.GetNormalizedForwardSpeed() < 0.2)

@@ -35,8 +35,8 @@ What to test
 / Switching to CANJaguar (figure out how to do virtual mode)
 / Line sensing
 	/ Config values
-	- Remove get line position
-- Assign buttons -BA
+	- Remove get line position ??? why? 
+/ Assign buttons 
 
 Task list at 612
 - Service mode (keep in mind 4 escs on drive) -BA
@@ -47,12 +47,12 @@ Task list at 612
 - Fix extra cycle count printing (increased period)
 
 Simulation
-- Confirm button mappings of roller -BA
-- Change lift preset based on high/low row -BA
+/ Confirm button mappings of roller -BA
+/ Change lift preset based on high/low row -BA
 - Lift aborted flag
-- Abort button 
+/ Abort button 
 / Disable control = what value to set? (setpoint array)
-- Deadband issue -BA (5%)
+/ Deadband issue -BA (5%)
 - Reset more action data values in disabled mode? -KV
 - Autonomous mode (without line sensing, stall detection) -KV
 / Turn off all speed controllers values getting sent (virtual mode)
@@ -63,8 +63,8 @@ Simulation
 	- Lift (lift pot value 0.2) -KV
 	- Arm -KV
 	- Roller -KV
-	- Minibot deployment -BA
-	- Robot aligner -BA
+	- Minibot deployment -BA (Done not simulated)
+	- Robot aligner -BA (Done not simulated)
 
 At competition
 - Capacitor
@@ -79,6 +79,11 @@ At competition
 - calibrate line sensing
 - Look at current values
 	- Detect a ringer
+- Set gains to 1.5
+- Fix bottom of robot
+- Test cleaned up code
+- test auton, set things such as speeds and other parameters
+- change deadband in config file to 5%
 
 
 List of changes
@@ -157,8 +162,4 @@ Before shipping
 / Change lift power
 / Signal Light
 
-At competition
-- Set gains to 1.5
-- Fix bottom of robot
-- Test cleaned up code
-- test auton, set things such as speeds and other parameters
+
