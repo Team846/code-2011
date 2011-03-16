@@ -4,14 +4,31 @@ void Brain::TeleopArm()
 {
     action.arm.manualMode = false;
 
-    // assume command is given; set to false in last else
-    // statement (see below)
-    action.arm.givenCommand = true;
+    // assume command is not given
+    action.arm.givenCommand = false;
+    static bool isArmDown = true;
 
+    // driver wants the arm down and the roller to rotate
     if(inputs.ShouldGrabGamePiece())
-        action.arm.presetTop = false;
+    {
+        if(!isArmDown)
+        {
+            // only set the down preset once
+            action.arm.givenCommand = true;
+            action.arm.presetTop = false;
+            isArmDown = true;
+        }
+    }
     else
-        action.arm.presetTop = true;
+    {
+        if(isArmDown)
+        {
+            // only set the preset once
+            action.arm.givenCommand = true;
+            action.arm.presetTop = true;
+            isArmDown = false;
+        }
+    }
 
     //disable manual control of the arm
     //for now because not enough buttons

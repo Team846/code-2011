@@ -1,13 +1,12 @@
 #include "Brain.h"
 
-Brain::TeleopMinibot()
+void Brain::TeleopMinibot()
 {
     if(inputs.ShouldDeployLegs())
-        action.deployer.alignerReleased = true;
+        action.deployer.shouldAlignerRelease = true;
 
-    if(inputs.ShouldDeployMinibot())
-        action.deployer.state = action.deployer.deployed;
+    if(isFinale && inputs.ShouldDeployMinibot())
+        action.deployer.shouldDeployMinibot = true;
     else
-        action.deployer.state = action.deployer.retracted;
-
+        action.deployer.shouldDeployMinibot = false;
 }

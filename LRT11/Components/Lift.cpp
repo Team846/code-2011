@@ -129,6 +129,9 @@ void Lift::Output()
 //            liftEsc.ResetCache();
             liftEsc.Set(action.lift.power);
         }
+        else
+            // don't power past the minimum and maximum positions
+            liftEsc.Set(0.0);
 
         state = IDLE;
         break;

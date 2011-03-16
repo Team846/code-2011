@@ -8,4 +8,7 @@ void Brain::Disabled()
 
     action.lift.givenCommand = false;
     action.arm.givenCommand  = false;
+
+    // default to locked aligner
+    action.deployer.shouldAlignerRelease = false;
 }

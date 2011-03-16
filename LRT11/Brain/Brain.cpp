@@ -10,6 +10,7 @@
 #include "TeleopLift.h"
 #include "TeleopArm.h"
 #include "TeleopRoller.h"
+#include "TeleopMinibot.h"
 
 Brain::Brain()
     : config(Config::GetInstance())

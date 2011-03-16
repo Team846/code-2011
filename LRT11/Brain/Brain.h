@@ -66,7 +66,6 @@ private:
 
     // Subroutines used in multiple modes
     void AutomatedRoutines();
-    bool highPeg;
 
     // Teleop subroutines
     void TeleopDriveTrain();

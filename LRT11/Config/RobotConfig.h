@@ -24,10 +24,10 @@ public:
     const static UINT32 CAN_LIFT = 28;
     const static UINT32 CAN_ARM  = 24;
 
-    const static UINT32 CAN_ROLLER_TOP    = 2;
-    const static UINT32 CAN_ROLLER_BOTTOM = 3;
+    const static UINT32 CAN_ROLLER_TOP    = 25;
+    const static UINT32 CAN_ROLLER_BOTTOM = 26;
 
-    const static UINT32 CAN_DEPLOYER = 4;
+    const static UINT32 CAN_DEPLOYER = 27;
 
     // Servos
 
@@ -61,8 +61,9 @@ public:
     const static int LEFT_GEARBOX_SERVO_PORT  = 8;
     const static int RIGHT_GEARBOX_SERVO_PORT = 10;
 #endif
-    const static int RIGHT_ALIGNER_SERVO = 3;
-    const static int LEFT_ALIGNER_SERVO = 4;
+
+    const static int LEFT_ALIGNER_SERVO = 3;
+    const static int RIGHT_ALIGNER_SERVO = 4;
 
     // Line sensor
     const static int LINE_SENSOR_ADC = 3;

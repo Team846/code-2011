@@ -40,26 +40,26 @@ Task list at 612
 / Lift DS soft switch for autonomous
 - End line detection
 - Split detection + choosing a side
-- Fix extra cycle count printing (increased period) -KV
+/ Fix extra cycle count printing (increased period) -KV
 
 Simulation
 / Confirm button mappings of roller -BA
 / Change lift preset based on high/low row -BA
 - Lift aborted flag
-/ Abort button 
+- Abort button 
 / Disable control = what value to set? (setpoint array)
 / Deadband issue -BA (5%)
 - Reset more action data values in disabled mode? -KV
 - Autonomous mode (without line sensing, stall detection) -KV
 / Turn off all speed controllers values getting sent (virtual mode)
-- Lift prevent movement after certain pot value -KV
+/ Lift prevent movement after certain pot value -KV {{TEST}}
 - Components
 	- Drive train -KV
 	- Position drive train -KV
 	- Lift (lift pot value 0.2) -KV
 	- Arm -KV
 	- Roller -KV
-	- Minibot deployment -BA (Done not simulated)
+	- Minibot deployment -BA
 	- Robot aligner -BA (Done not simulated)
 
 At competition

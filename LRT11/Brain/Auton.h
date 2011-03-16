@@ -372,8 +372,6 @@ void Brain::Middle(int numberOfTubes)
 
 void Brain::Side()
 {
-    highPeg = true; //always true a side position
-
     // used for state machine
     static enum
     {

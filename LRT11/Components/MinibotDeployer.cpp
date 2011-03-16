@@ -43,10 +43,12 @@ void MinibotDeployer::Output()
     } state = IDLE;
 
     static int timer = 0;
-    if(action.deployer.shouldDeployMinibot)
+    if(state == IDLE && action.deployer.shouldDeployMinibot)
     {
         timer = 0; // reset timer
         state = ACCELERATING;
+
+        // deployment already commenced
         action.deployer.shouldDeployMinibot = false;
     }
 
@@ -93,7 +95,7 @@ void MinibotDeployer::Output()
         setPoint = 0.0;
 
         // half a second of relaxing
-        if(++timer < 25)
+        if(++timer % 25 == 0)
         {
             state = SECOND_PUSH; // next push to actually deploy the minibot
             timer = 0;
@@ -106,7 +108,7 @@ void MinibotDeployer::Output()
         setPoint = 0.5;
 
         // one second of pushing
-        if(++timer < 50)
+        if(++timer % 50 == 0)
         {
             state = IDLE; // done!
             timer = 0;
