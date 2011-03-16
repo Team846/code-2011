@@ -45,8 +45,8 @@ Task list at 612
 Simulation
 / Confirm button mappings of roller -BA
 / Change lift preset based on high/low row -BA
-- Lift aborted flag
-- Abort button 
+/ Lift aborted flag -KV
+/ Abort button -KV
 / Disable control = what value to set? (setpoint array)
 / Deadband issue -BA (5%)
 - Reset more action data values in disabled mode? -KV
@@ -55,13 +55,13 @@ Simulation
 / Turn off all speed controllers values getting sent (virtual mode)
 / Lift prevent movement after certain pot value -KV
 - Components
-	- Drive train -KV
+	/ Drive train -KV
 	- Position drive train -KV
-	- Lift (lift pot value 0.2) -KV
-	- Arm -KV
+	/ Lift (lift pot value 0.2) -KV
+	/ Arm -KV
 	- Roller -KV
-	- Minibot deployment -BA
-	- Robot aligner -BA
+	/ Minibot deployment -BA
+	/ Robot aligner -BA
 
 At competition
 - Capacitor
