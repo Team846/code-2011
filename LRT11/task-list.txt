@@ -16,12 +16,11 @@ Tasks after shipping
 / Lift/arm pot configuration
 / Difference in speed when spitting
 - Back off after squaring ringer up with lift? -KV
-- TODOs
+- TODOs -KV
 - Periodic movement of roller inward
-- Line sensing
 
 What to test
-- components
+- Components
 / Address Mr. G's concerns
 	/ Software deployment - LRT_ROBOT_2011 and enabling one component at a time
 / Set roller gains to the default values in code
@@ -29,22 +28,19 @@ What to test
 / Test difference in speed when spitting
 / Look at current values
 	- Detect a ringer
-	
 / Roller automation
 	/ Test automated routine
 / Switching to CANJaguar (figure out how to do virtual mode)
 / Line sensing
 	/ Config values
-	- Remove get line position ??? why? 
 / Assign buttons 
 
 Task list at 612
 - Service mode (keep in mind 4 escs on drive) -BA
-- Bring carpet + tape replica
 / Lift DS soft switch for autonomous
 - End line detection
 - Split detection + choosing a side
-- Fix extra cycle count printing (increased period)
+- Fix extra cycle count printing (increased period) -KV
 
 Simulation
 / Confirm button mappings of roller -BA
@@ -70,21 +66,21 @@ At competition
 - Capacitor
 - Bring line sensor data
 - Set lift pot config value to 0.2
-- set deployer servo port numbers
-- set deployer ESC ID
-- set lift pot value to 0.2
+- Set deployer servo port numbers
+- Set deployer ESC ID
+- Set aligner servo values
+- Set lift pot value to 0.2
 - LED issue
-- ensure lift preset values are set and defualted in code
-- verify autonomous settings, gains, including stall detection
-- calibrate line sensing
+- Ensure lift preset values are set and defualted in code
+- Verify autonomous settings, gains, including stall detection
+- Calibrate line sensing
 - Look at current values
 	- Detect a ringer
 - Set gains to 1.5
 - Fix bottom of robot
 - Test cleaned up code
-- test auton, set things such as speeds and other parameters
-- change deadband in config file to 5%
-
+- Test auton, set things such as speeds and other parameters
+- Change deadband in config file to 5%
 
 List of changes
 - Virtual CANBusController

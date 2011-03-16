@@ -1,15 +1,18 @@
 #ifndef LINE_SENSOR_H
 #define LINE_SENSOR_H
-#include "..\Config\Configurable.h"
-#include "..\Config\Config.h"
+
 #include "..\General.h"
 #include "LRTDigitalOutput.h"
+#include "..\Config\Config.h"
+#include "..\Config\Configurable.h"
 
-class LineSensor
+class LineSensor : public Configurable
 {
 public:
     LineSensor();
     virtual ~LineSensor();
+
+    virtual void Configure();
 
     bool Read(int exposure_us);
     void ResetFirstRun();

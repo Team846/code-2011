@@ -47,8 +47,6 @@ public:
     bool ShouldMoveLiftLow();
     bool ShouldMoveLiftMedium();
     bool ShouldMoveLiftHigh();
-    bool ShouldPulseLiftUp();
-    bool ShouldPulseLiftDown();
     bool ShouldManuallyPowerLift();
     float GetLiftPower();
     bool IsHighRow();
@@ -62,7 +60,6 @@ public:
 
     // roller
     bool ShouldRollerSpit();
-    bool ShouldRollerDumbSpit();
     bool ShouldRollerSuck();
     bool ShouldRollerRotateUp();
     bool ShouldRollerRotateDown();

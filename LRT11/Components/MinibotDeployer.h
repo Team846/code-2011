@@ -7,29 +7,28 @@
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
 
-class MiniBotDeployer : public Component
+class MinibotDeployer : public Component
 {
 public:
-    MiniBotDeployer();
-    virtual ~MiniBotDeployer();
+    MinibotDeployer();
+    virtual ~MinibotDeployer();
 
     virtual void Output();
 
 private:
-
-    float left_locked, left_open;
     Config& config;
-    int runCount, deployedCurrent;
-    float lastSetPoint;
+    ProxiedCANJaguar deployerEsc;
 
+    float lockedServoValue;
+    float releasedServoValue;
+
+    int currentThreshold;
 
 #ifdef VIRTUAL
     VirtualLRTServo leftAlignerServo, rightAlignerServo;
 #else
     LRTServo leftAlignerServo, rightAlignerServo;
 #endif
-
-    ProxiedCANJaguar deployerESC;
 };
 
 #endif

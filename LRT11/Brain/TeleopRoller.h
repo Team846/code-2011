@@ -2,13 +2,13 @@
 
 void Brain::TeleopRoller()
 {
-    //driver
-    if(inputs.ShouldGrabGamePiece())
-        action.roller.state = action.roller.SUCKING;
-    else if(inputs.ShouldRollerSuck())
+    if(inputs.ShouldRollerSpit())
+        action.roller.state = action.roller.SPITTING;
+    // grab game piece is a driver-controlled button
+    else if(inputs.ShouldGrabGamePiece() || inputs.ShouldRollerSuck())
         action.roller.state = action.roller.SUCKING;
     // spitting the ringer out (automated)
-    else if(inputs.ShouldRollerSpit())
+    else if(inputs.ShouldRollerBeAutomated())
     {
         static enum
         {

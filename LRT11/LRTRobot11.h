@@ -31,7 +31,7 @@ private:
 
     Lift lift;
     Arm arm;
-    MiniBotDeployer miniBotDeployer;
+    MinibotDeployer miniBotDeployer;
 
     Roller roller;
     Config& config;

@@ -145,7 +145,7 @@ bool ProcessedInputs::ShouldGrabGamePiece()
 bool ProcessedInputs::ShouldRollerSpit()
 {
     // TODO confirm button mapping
-    return operatorStick.IsButtonDown(2);
+    return operatorStick.IsButtonDown(3);
 }
 
 bool ProcessedInputs::ShouldRollerSuck()
@@ -167,13 +167,13 @@ bool ProcessedInputs::ShouldRollerRotateDown()
 bool ProcessedInputs::ShouldRollerBeAutomated()
 {
     // TODO add correct button mapping
-    return operatorStick.IsButtonDown(5);
+    return operatorStick.IsButtonDown(2);
 }
 
 bool ProcessedInputs::ShouldRollerCommenceAutomation()
 {
     // TODO add correct button mapping
-    return operatorStick.IsButtonJustPressed(5);
+    return operatorStick.IsButtonJustPressed(2);
 }
 
 bool ProcessedInputs::GetOperatorThrottle()

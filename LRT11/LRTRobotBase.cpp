@@ -114,7 +114,7 @@ void LRTRobotBase::StartCompetition()
         while(GetFPGATime() < newCycleExpire)
             extraCycles++; // count up extra cycles while waiting
 
-        if(cycleCount++ % 250 == 0)
+        if(cycleCount++ % 350 == 0)
         {
             AsynchronousPrinter::Printf("Extra cycles: %d\n", extraCycles);
             extraCycles = 0;

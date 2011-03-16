@@ -1,22 +1,19 @@
 #include "LineSensor.h"
-#include <string>
-#include "..\Util\Util.h"
-#include <fstream>
-#include "..\Util\AsynchronousPrinter.h"
-#include <iomanip>
-#include "..\Util\Profiler.h"
 #include "..\Config\RobotConfig.h"
+#include "..\Util\Util.h"
+#include "..\Util\AsynchronousPrinter.h"
+#include "..\Util\Profiler.h"
+#include <fstream>
+#include <iomanip>
 
 LineSensor::LineSensor()
-    : adc(RobotConfig::LINESENSE_ADC)
-    , clock(RobotConfig::LINESENSE_CLOCK)
-    , si(RobotConfig::LINESENSE_SI)
+    : adc(RobotConfig::LINE_SENSOR_ADC)
+    , clock(RobotConfig::LINE_SENSOR_CLOCK)
+    , si(RobotConfig::LINE_SENSOR_SI)
     , lastLinePos(0)
     , firstRun(true)
 {
-    const static string prefix = "LineSensor.";
-
-    lineThreshold = 275;
+    Configure(); // get lineThreshold
 
     si.Set(0);
     clock.Set(0);
@@ -27,6 +24,11 @@ LineSensor::LineSensor()
 LineSensor::~LineSensor()
 {
     // nothing
+}
+
+void LineSensor::Configure()
+{
+    lineThreshold = Config::GetInstance().Get<int>("LineSensor.lineThreshold", 275);
 }
 
 void LineSensor::ResetPixelData()

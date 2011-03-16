@@ -67,8 +67,8 @@ public:
 
     struct
     {
-        enum {deployed, retracted} state;
-        bool alignerReleased;
+        bool shouldAlignerRelease;
+        bool shouldDeployMinibot;
     } deployer;
 
     struct

@@ -64,10 +64,10 @@ public:
     const static int RIGHT_ALIGNER_SERVO = 3;
     const static int LEFT_ALIGNER_SERVO = 4;
 
-    //Line sensor
-    const static int LINESENSE_ADC = 3;
-    const static int LINESENSE_CLOCK = 8;
-    const static int LINESENSE_SI = 7;
+    // Line sensor
+    const static int LINE_SENSOR_ADC = 3;
+    const static int LINE_SENSOR_CLOCK = 8;
+    const static int LINE_SENSOR_SI = 7;
 };
 
 #endif
