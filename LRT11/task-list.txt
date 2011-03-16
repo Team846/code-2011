@@ -51,8 +51,9 @@ Simulation
 / Deadband issue -BA (5%)
 - Reset more action data values in disabled mode? -KV
 - Autonomous mode (without line sensing, stall detection) -KV
+	- Autonomous in teleop
 / Turn off all speed controllers values getting sent (virtual mode)
-/ Lift prevent movement after certain pot value -KV {{TEST}}
+/ Lift prevent movement after certain pot value -KV
 - Components
 	- Drive train -KV
 	- Position drive train -KV
@@ -60,7 +61,7 @@ Simulation
 	- Arm -KV
 	- Roller -KV
 	- Minibot deployment -BA
-	- Robot aligner -BA (Done not simulated)
+	- Robot aligner -BA
 
 At competition
 - Capacitor

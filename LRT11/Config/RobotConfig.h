@@ -49,26 +49,24 @@ public:
     // Digital Outputs
     const static UINT32 DIO_BRAKE_LEFT  = CHANGEME;
     const static UINT32 DIO_BRAKE_RIGHT = CHANGEME;
+    const static UINT32 LINE_SENSOR_CLOCK = 8;
+    const static UINT32 LINE_SENSOR_SI = 7;
 
     // Analog Inputs
     const static UINT32 POT_ARM = 3;
+    const static UINT32 LINE_SENSOR_ADC = 3;
 
     // Servo Ports
 #ifdef LRT_ROBOT_2011
-    const static int LEFT_GEARBOX_SERVO_PORT  = 2;
-    const static int RIGHT_GEARBOX_SERVO_PORT = 1;
+    const static UINT32 LEFT_GEARBOX_SERVO_PORT  = 2;
+    const static UINT32 RIGHT_GEARBOX_SERVO_PORT = 1;
 #else
-    const static int LEFT_GEARBOX_SERVO_PORT  = 8;
-    const static int RIGHT_GEARBOX_SERVO_PORT = 10;
+    const static UINT32 LEFT_GEARBOX_SERVO_PORT  = 8;
+    const static UINT32 RIGHT_GEARBOX_SERVO_PORT = 10;
 #endif
 
-    const static int LEFT_ALIGNER_SERVO = 3;
-    const static int RIGHT_ALIGNER_SERVO = 4;
-
-    // Line sensor
-    const static int LINE_SENSOR_ADC = 3;
-    const static int LINE_SENSOR_CLOCK = 8;
-    const static int LINE_SENSOR_SI = 7;
+    const static UINT32 LEFT_ALIGNER_SERVO = 3;
+    const static UINT32 RIGHT_ALIGNER_SERVO = 4;
 };
 
 #endif

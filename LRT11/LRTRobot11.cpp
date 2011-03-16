@@ -70,6 +70,16 @@ void LRTRobot11::MainLoop()
             drive.Output();
         }
 
+//        {
+//            ProfiledSection ps("Position Drive");
+//            positionDrive.Output();
+//        }
+
+//        {
+//            ProfiledSection ps("Servo Shifting");
+//            shifter.Output();
+//        }
+
         {
             ProfiledSection ps("Lift");
             lift.Output();
@@ -81,31 +91,20 @@ void LRTRobot11::MainLoop()
             arm.Output();
         }
 
-        {
-            ProfiledSection ps("MinibotDeployer");
-            minibotDeployer.Output();
-        }
-
-//        {
-//            ProfiledSection ps("Position Drive");
-//            positionDrive.Output();
-//        }
-
-//        {
-//            ProfiledSection ps("Encoder Data Collection");
-//            encoderData.Output();
-//        }
-
-//        {
-//            ProfiledSection ps("Servo Shifting");
-//            shifter.Output();
-//        }
-
 //        {
 //            ProfiledSection ps("Roller");
 //            roller.Output();
 //        }
 
+        {
+            ProfiledSection ps("Minibot Deployer");
+            minibotDeployer.Output();
+        }
+
+//        {
+//            ProfiledSection ps("Encoder Data Collection");
+//            encoderData.Output();
+//        }
 
         // To add another component output:
         //

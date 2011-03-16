@@ -13,10 +13,14 @@ ActionData::ActionData()
 {
     AddToSingletonList();
 
+    // used to abort movements
+    master.abort = false;
+
     driveTrain.rawForward = 0;
     driveTrain.rawTurn = 0;
     driveTrain.brakeLeft = false;
     driveTrain.brakeRight = false;
+    // closed loop should default to on
     driveTrain.usingClosedLoop = true;
 
     positionTrain.shouldMoveDistance = false;
@@ -29,9 +33,10 @@ ActionData::ActionData()
     positionTrain.pivotRight = false;
     positionTrain.done = false;
     positionTrain.enabled = false;
-    positionTrain.closedLoopEnabled = true;
+    // closed loop should default to on
+    positionTrain.usingClosedLoop = true;
 
-    lift.position = lift.STOWED;
+    lift.preset = lift.STOWED;
     lift.highRow = false;
     lift.givenCommand = false;
     lift.manualMode = false;

@@ -38,5 +38,9 @@ void DriveTrain::Output()
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
     robotDrive.SetBrakeRight(action.driveTrain.brakeRight);
 
-    robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);
+    // abort overrides everything; stop if abort button is pushed
+    if(action.master.abort)
+        robotDrive.ArcadeDrive(0.0, 0.0);
+    else
+        robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);
 }

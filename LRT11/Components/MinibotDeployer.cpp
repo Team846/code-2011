@@ -36,6 +36,7 @@ void MinibotDeployer::Output()
     static enum
     {
         IDLE,
+        ABORT,
         ACCELERATING,
         FIRST_PUSH,
         RELAX,
@@ -43,7 +44,7 @@ void MinibotDeployer::Output()
     } state = IDLE;
 
     static int timer = 0;
-    if(state == IDLE && action.deployer.shouldDeployMinibot)
+    if(action.deployer.shouldDeployMinibot)
     {
         timer = 0; // reset timer
         state = ACCELERATING;
@@ -56,11 +57,20 @@ void MinibotDeployer::Output()
     float current = deployerEsc.GetCurrent();
     SmartDashboard::Log(current, "Minibot Deployment Current");
 
+    // abort overrides everything
+    if(action.master.abort)
+        state = ABORT;
+
     float setPoint;
     switch(state)
     {
     case IDLE:
         // no movement
+        setPoint = 0;
+        break;
+
+    case ABORT:
+        // stop movement
         setPoint = 0;
         break;
 

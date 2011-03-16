@@ -6,53 +6,72 @@ void Brain::TeleopArm()
 
     // assume command is not given
     action.arm.givenCommand = false;
-    static bool isArmDown = true;
 
-    // driver wants the arm down and the roller to rotate
-    if(inputs.ShouldGrabGamePiece())
+    static enum
     {
-        if(!isArmDown)
-        {
-            // only set the down preset once
-            action.arm.givenCommand = true;
-            action.arm.presetTop = false;
-            isArmDown = true;
-        }
-    }
-    else
-    {
-        if(isArmDown)
-        {
-            // only set the preset once
-            action.arm.givenCommand = true;
-            action.arm.presetTop = true;
-            isArmDown = false;
-        }
-    }
+        ARM_UP,
+        ARM_DOWN,
+        ARM_STALE
+    } armState = ARM_UP;
 
-    //disable manual control of the arm
-    //for now because not enough buttons
-    /*if(inputs.ShouldMoveArmDown())
+    if(inputs.ShouldMoveArmDown())
     {
+        action.arm.givenCommand = true;
         action.arm.manualMode = true;
         action.arm.manualUp = false;
 
         // set preset flag to false to avoid conflicts
         action.arm.presetTop = false;
+        armState = ARM_STALE; // not sure where the arm is
     }
     else if(inputs.ShouldMoveArmUp())
     {
+        action.arm.givenCommand = true;
         action.arm.manualMode = true;
         action.arm.manualUp = true;
 
         // see comment above
         action.arm.presetTop = false;
+        armState = ARM_STALE; // not sure where the arm is
     }
-    else if(inputs.ShouldMoveArmTopPreset())
-        action.arm.presetTop = true;
-    else if(inputs.ShouldMoveArmBottomPreset())
-        action.arm.presetTop = false;
+    // driver wants the arm down and the roller to rotate
+    else if(inputs.ShouldGrabGamePiece())
+    {
+        // only set the preset once
+        if(armState != ARM_DOWN)
+        {
+            action.arm.givenCommand = true;
+
+            // bottom preset
+            action.arm.presetTop = false;
+            armState = ARM_DOWN;
+        }
+    }
     else
-        // no command given
-        action.arm.givenCommand = false;*/
+    {
+        // only set the preset once
+        if(armState != ARM_UP)
+        {
+            action.arm.givenCommand = true;
+
+            // top preset
+            action.arm.presetTop = true;
+            armState = ARM_UP;
+        }
+    }
+
+    // if the arm failed or aborted at some point, set the
+    // state to stale
+    if(action.arm.doneState == action.arm.FAILURE || action.arm.doneState == action.arm.ABORTED)
+        armState = ARM_STALE; // not sure where the arm is
+
+    // operator preset control currently disabled, as driver
+    // has the ability to move the arm up and down
+//    else if(inputs.ShouldMoveArmTopPreset())
+//        action.arm.presetTop = true;
+//    else if(inputs.ShouldMoveArmBottomPreset())
+//        action.arm.presetTop = false;
+//    else
+//        // no command given
+//        action.arm.givenCommand = false;
 }

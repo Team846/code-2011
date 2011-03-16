@@ -65,6 +65,7 @@ void Lift::Output()
     static enum
     {
         IDLE,
+        ABORT,
         MANUAL,
         PRESET
     } state = IDLE;
@@ -107,6 +108,10 @@ void Lift::Output()
 #endif
     SmartDashboard::Log(potValue, "Lift Pot Value");
 
+    // abort overrides everything
+    if(action.master.abort)
+        state = ABORT;
+
     switch(state)
     {
     case IDLE:
@@ -118,6 +123,15 @@ void Lift::Output()
             action.lift.doneState = action.lift.SUCCESS;
             liftEsc.Set(0.0);
         }
+        break;
+
+    case ABORT:
+        liftEsc.DisableControl();
+
+        if(!positionMode)
+            liftEsc.Set(0.0);
+
+        action.lift.doneState = action.lift.ABORTED;
         break;
 
     case MANUAL:
@@ -146,7 +160,7 @@ void Lift::Output()
         else
             setPoint = config.Get<float>(prefix + "lowRowBottom");
 
-        switch(action.lift.position)
+        switch(action.lift.preset)
         {
         case STOWED:
             break; // no relative position
@@ -161,7 +175,7 @@ void Lift::Output()
             break;
         }
 
-        if(action.lift.position != action.lift.STOWED)
+        if(action.lift.preset != action.lift.STOWED)
             setPoint += config.Get<float>(key); // relative to bottom
 
         // update done flag

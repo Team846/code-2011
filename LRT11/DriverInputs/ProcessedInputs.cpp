@@ -119,12 +119,12 @@ bool ProcessedInputs::IsHighRow()
 
 bool ProcessedInputs::ShouldMoveArmDown()
 {
-    return operatorStick.IsButtonDown(7);
+    return operatorStick.IsButtonDown(12);
 }
 
 bool ProcessedInputs::ShouldMoveArmUp()
 {
-    return operatorStick.IsButtonDown(6);
+    return operatorStick.IsButtonDown(11);
 }
 
 bool ProcessedInputs::ShouldMoveArmBottomPreset()
@@ -144,13 +144,11 @@ bool ProcessedInputs::ShouldGrabGamePiece()
 
 bool ProcessedInputs::ShouldRollerSpit()
 {
-    // TODO confirm button mapping
-    return operatorStick.IsButtonDown(3);
+    return driverStick.IsButtonDown(3);
 }
 
 bool ProcessedInputs::ShouldRollerSuck()
 {
-    // TODO confirm button mapping
     return IsOperatorTriggerDown();
 }
 
@@ -166,13 +164,11 @@ bool ProcessedInputs::ShouldRollerRotateDown()
 
 bool ProcessedInputs::ShouldRollerBeAutomated()
 {
-    // TODO add correct button mapping
     return operatorStick.IsButtonDown(2);
 }
 
 bool ProcessedInputs::ShouldRollerCommenceAutomation()
 {
-    // TODO add correct button mapping
     return operatorStick.IsButtonJustPressed(2);
 }
 
@@ -181,7 +177,7 @@ bool ProcessedInputs::GetOperatorThrottle()
     return -operatorStick.GetRawAxis(4) > 0.8;
 }
 
-bool ProcessedInputs::ShouldDeployLegs()
+bool ProcessedInputs::ShouldDeployAligner()
 {
     return operatorStick.IsButtonDown(3);
 }

@@ -40,6 +40,7 @@ void Arm::Output()
     static enum
     {
         IDLE,
+        ABORT,
         MANUAL,
         PRESET
     } state = IDLE;
@@ -65,9 +66,10 @@ void Arm::Output()
 
     float potValue = armPot.GetAverageValue();
     SmartDashboard::Log(potValue, "Arm Pot Value");
-//    if(state != IDLE)
-//      potValue = liftEsc.GetPosition();
-//        potValue = armPot.GetPosition();
+
+    // abort overrides everything
+    if(action.master.abort)
+        state = ABORT;
 
     switch(state)
     {
@@ -77,6 +79,11 @@ void Arm::Output()
         if(!presetMode)
             // exited from manual mode; done with maneuver
             action.arm.doneState = action.arm.SUCCESS;
+        break;
+
+    case ABORT:
+        armEsc.Set(0.0);
+        action.arm.doneState = action.arm.ABORTED;
         break;
 
     case MANUAL:
@@ -101,7 +108,7 @@ void Arm::Output()
         break;
 
     case PRESET:
-        action.lift.doneState = action.lift.STALE; // not done yet
+        action.arm.doneState = action.arm.STALE; // not done yet
 
         if(action.arm.presetTop)
         {
@@ -109,7 +116,8 @@ void Arm::Output()
                 armEsc.Set(powerUp);
             else
             {
-                action.lift.doneState = action.lift.SUCCESS;
+                action.arm.doneState = action.arm.SUCCESS;
+                armEsc.Set(0.0); // don't go above the max position
                 cycleCount = 1; // will get decremented to 0
             }
         }
@@ -119,7 +127,8 @@ void Arm::Output()
                 armEsc.Set(powerDown);
             else
             {
-                action.lift.doneState = action.lift.SUCCESS;
+                action.arm.doneState = action.arm.SUCCESS;
+                armEsc.Set(0.0); // don't go below the min position
                 cycleCount = 1; // will get decremented to 0
             }
         }
@@ -128,8 +137,8 @@ void Arm::Output()
 
         if(cycleCount == 0)
         {
-            if(action.lift.doneState != action.lift.SUCCESS)
-                action.lift.doneState = action.lift.FAILURE;
+            if(action.arm.doneState != action.arm.SUCCESS)
+                action.arm.doneState = action.arm.FAILURE;
             state = IDLE;
         }
 

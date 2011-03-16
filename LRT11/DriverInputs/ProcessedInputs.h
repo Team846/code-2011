@@ -71,13 +71,14 @@ public:
     bool ShouldShiftLow();
     bool ShouldShiftHigh();
 
-    //Minibot deployment
-    bool ShouldDeployLegs();
+    // minibot deployment
+    bool ShouldDeployAligner();
     bool ShouldDeployMinibot();
 
     // encoder data collection
     bool ShouldCollectEncoderData();
 
+    // config
     bool ShouldLoadConfig();
     bool ShouldSaveConfig();
     bool ShouldApplyConfig();

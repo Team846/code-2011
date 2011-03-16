@@ -12,6 +12,12 @@ public:
     ~ActionData();
     static ActionData& GetInstance();
 
+    // master struct
+    struct
+    {
+        bool abort;
+    } master;
+
     // drive train
     struct
     {
@@ -24,12 +30,15 @@ public:
     {
         bool shouldMoveDistance, shouldTurnAngle;
         bool shouldOutputMoveDistance, shouldOutputTurnAngle;
+
         // moveDistance in inches, turnAngle in degrees
         float moveDistance, turnAngle;
         bool pivotLeft, pivotRight;
+
         bool done;
         bool enabled;
-        bool closedLoopEnabled;
+
+        bool usingClosedLoop;
     } positionTrain;
 
     struct
@@ -37,9 +46,10 @@ public:
         bool givenCommand;
         bool manualMode;
         float power;
+
         bool highRow;
-        enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} position;
-        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORT = 4} doneState;
+        enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} preset;
+        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
     } lift;
 
     struct
@@ -53,7 +63,7 @@ public:
         bool manualMode;
         bool manualUp;
         bool presetTop;
-        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORT = 4} doneState;
+        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
     } arm;
 
     struct

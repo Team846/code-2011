@@ -12,11 +12,12 @@ void Brain::Teleop()
 
     TeleopMinibot();
 
-    // includes system of movements to release the ringer
+    // includes automated routines such as line sensing and
+    // dead-reckoning autonomous mode
     AutomatedRoutines();
 
-    if(isFinale /* && inputs.ShouldDeployMinibot() */)
-    {
-        /* Minibot deployment code */
-    }
+    if(inputs.ShouldAbort())
+        action.master.abort = true;
+    else
+        action.master.abort = false;
 }

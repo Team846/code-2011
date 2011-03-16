@@ -53,6 +53,11 @@ void Roller::RollOpposite(bool rotateUpward)
 
 void Roller::Output()
 {
+    // abort overrides everything
+    if(action.master.abort)
+        // stop moving rollers
+        action.roller.state = action.roller.STOPPED;
+
     switch(action.roller.state)
     {
     case STOPPED:

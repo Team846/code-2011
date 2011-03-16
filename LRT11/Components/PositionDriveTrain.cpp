@@ -26,11 +26,12 @@ PositionDriveTrain::~PositionDriveTrain()
 
 void PositionDriveTrain::Output()
 {
-    // only run position train if enabled
-    if(!action.positionTrain.enabled)
+    // only run position train if enabled and the abort button hasn't
+    // been pressed
+    if(!action.positionTrain.enabled || action.master.abort)
         return;
 
-    positionDrive.SetClosedLoopEnabled(action.positionTrain.closedLoopEnabled);
+    positionDrive.SetClosedLoopEnabled(action.positionTrain.usingClosedLoop);
 
     if(action.positionTrain.shouldMoveDistance)
     {

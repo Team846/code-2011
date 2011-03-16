@@ -8,18 +8,16 @@ void Brain::TeleopLift()
     // statement (see below)
     action.lift.givenCommand = true;
 
-    // peg rows are staggered
+    // determine which presets to use, as peg rows are staggered
     action.lift.highRow = inputs.IsHighRow();
 
     // determine lift movement with else ifs for interlocks
-    if(inputs.ShouldAbort())
-        action.lift.position = action.lift.STOWED;
-    else if(inputs.ShouldMoveLiftLow())
-        action.lift.position = action.lift.LOW_PEG;
+    if(inputs.ShouldMoveLiftLow())
+        action.lift.preset = action.lift.LOW_PEG;
     else if(inputs.ShouldMoveLiftMedium())
-        action.lift.position = action.lift.MED_PEG;
+        action.lift.preset = action.lift.MED_PEG;
     else if(inputs.ShouldMoveLiftHigh())
-        action.lift.position = action.lift.HIGH_PEG;
+        action.lift.preset = action.lift.HIGH_PEG;
     else if(inputs.ShouldManuallyPowerLift())
     {
         action.lift.manualMode = true;

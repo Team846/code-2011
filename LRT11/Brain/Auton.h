@@ -29,7 +29,8 @@ void Brain::Auton()
         break;
     }
 
-    // includes system of movements to release the ringer
+    // includes automated routines such as line sensing and
+    // dead-reckoning autonomous mode
     AutomatedRoutines();
 }
 
@@ -98,7 +99,7 @@ void Brain::Middle(int numberOfTubes)
     case MOVE_LIFT_UP1:
         action.lift.givenCommand = true;
         action.lift.highRow = false;
-        action.lift.position = action.lift.HIGH_PEG;
+        action.lift.preset = action.lift.HIGH_PEG;
         state = WAIT_FOR_MOVE_LIFT_UP1;
         break;
 
@@ -111,7 +112,7 @@ void Brain::Middle(int numberOfTubes)
     case MOVE_LIFT_DOWN1:
         action.lift.givenCommand = true;
         action.lift.highRow = false;
-        action.lift.position = action.lift.LOW_PEG;
+        action.lift.preset = action.lift.LOW_PEG;
         state = WAIT_FOR_MOVE_LIFT_DOWN1;
         break;
 
@@ -176,7 +177,7 @@ void Brain::Middle(int numberOfTubes)
     case MOVE_LIFT_UP2:
         action.lift.givenCommand = true;
         action.lift.highRow = false;
-        action.lift.position = action.lift.HIGH_PEG;
+        action.lift.preset = action.lift.HIGH_PEG;
         state = WAIT_FOR_MOVE_LIFT_UP2;
         break;
 
@@ -189,7 +190,7 @@ void Brain::Middle(int numberOfTubes)
     case MOVE_LIFT_DOWN2:
         action.lift.givenCommand = true;
         action.lift.highRow = false;
-        action.lift.position = action.lift.LOW_PEG;
+        action.lift.preset = action.lift.LOW_PEG;
         state = WAIT_FOR_MOVE_LIFT_DOWN2;
         break;
 
@@ -214,7 +215,7 @@ void Brain::Middle(int numberOfTubes)
         break;
 
     case WAIT_FOR_FOLLOW_Y:
-        FollowLine();//Follow the line
+        AutomatedFollowLine();//Follow the line
 
         //when close to to the pole disable closed loop and enable stall detection
         if(driveEncoders.GetRobotDist() > 20) //TODO Find the val empirically, maybe reduce speed
@@ -237,7 +238,7 @@ void Brain::Middle(int numberOfTubes)
                 state = RELEASE_TUBE1;
             else if(action.lift.doneState == action.lift.FAILURE)
                 state = IDLE; // TODO correct state
-            else if(action.lift.doneState == action.lift.ABORT)
+            else if(action.lift.doneState == action.lift.ABORTED)
                 state = IDLE; // TODO correct state
         }
         break;
@@ -257,7 +258,7 @@ void Brain::Middle(int numberOfTubes)
                 state = TURN_TO_GO_BACK;
             else if(action.lift.doneState == action.lift.FAILURE)
                 state = IDLE; // TODO correct state
-            else if(action.lift.doneState == action.lift.ABORT)
+            else if(action.lift.doneState == action.lift.ABORTED)
                 state = IDLE; // TODO correct state
         }
         break;
@@ -309,7 +310,7 @@ void Brain::Middle(int numberOfTubes)
 
 
     case WAIT_FOR_FOLLOW_LINE:
-        FollowLine();//Follow the line
+        AutomatedFollowLine();//Follow the line
         if(driveEncoders.GetRobotDist() > 12) //TODO FIGURE ME OUT!
             action.driveTrain.usingClosedLoop = false;
         if(driveEncoders.GetNormalizedForwardSpeed() < 0.2)
@@ -328,7 +329,7 @@ void Brain::Middle(int numberOfTubes)
                 state = RELEASE_TUBE2;
             else if(action.lift.doneState == action.lift.FAILURE)
                 state = IDLE; // TODO correct state
-            else if(action.lift.doneState == action.lift.ABORT)
+            else if(action.lift.doneState == action.lift.ABORTED)
                 state = IDLE; // TODO correct state
         }
         break;
@@ -348,7 +349,7 @@ void Brain::Middle(int numberOfTubes)
                 state = MOVE_BACK2;
             else if(action.lift.doneState == action.lift.FAILURE)
                 state = IDLE; // TODO correct state
-            else if(action.lift.doneState == action.lift.ABORT)
+            else if(action.lift.doneState == action.lift.ABORTED)
                 state = IDLE; // TODO correct state
         }
         break;
@@ -412,7 +413,7 @@ void Brain::Side()
     case MOVE_LIFT_UP:
         action.lift.givenCommand = true;
         action.lift.highRow = true; // should change based off position
-        action.lift.position = action.lift.HIGH_PEG;
+        action.lift.preset = action.lift.HIGH_PEG;
 
         state = WAIT_FOR_LIFT;
         break;
@@ -451,7 +452,7 @@ void Brain::Side()
                 state = RELEASE_TUBE;
             else if(action.lift.doneState == action.lift.FAILURE)
                 state = IDLE; // TODO correct state
-            else if(action.lift.doneState == action.lift.ABORT)
+            else if(action.lift.doneState == action.lift.ABORTED)
                 state = IDLE; // TODO correct state
         }
         break;
