@@ -4,8 +4,7 @@
 MinibotDeployer::MinibotDeployer()
     : config(Config::GetInstance())
     , deployerEsc(RobotConfig::CAN_DEPLOYER)
-    , leftAlignerServo(RobotConfig::LEFT_ALIGNER_SERVO)
-    , rightAlignerServo(RobotConfig::RIGHT_ALIGNER_SERVO)
+    , alignerServo(RobotConfig::RIGHT_ALIGNER_SERVO)
 {
     string prefix = "MinibotDeployer.";
     lockedServoValue = config.Get<float>(prefix + "lockedServoValue", 1.0);
@@ -21,17 +20,11 @@ MinibotDeployer::~MinibotDeployer()
 void MinibotDeployer::Output()
 {
     if(action.deployer.shouldAlignerRelease)
-    {
-        // set both servos to release position
-        leftAlignerServo.Set(releasedServoValue);
-        rightAlignerServo.Set(releasedServoValue);
-    }
+        // set servo to release position
+        alignerServo.Set(releasedServoValue);
     else
-    {
-        // set both servos to locked position
-        leftAlignerServo.Set(lockedServoValue);
-        rightAlignerServo.Set(lockedServoValue);
-    }
+        // set servo to locked position
+        alignerServo.Set(lockedServoValue);
 
     static enum
     {

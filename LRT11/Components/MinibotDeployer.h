@@ -25,9 +25,9 @@ private:
     int currentThreshold;
 
 #ifdef VIRTUAL
-    VirtualLRTServo leftAlignerServo, rightAlignerServo;
+    VirtualLRTServo alignerServo;
 #else
-    LRTServo leftAlignerServo, rightAlignerServo;
+    LRTServo alignerServo;
 #endif
 };
 
