@@ -27,6 +27,8 @@ public:
 
     void Stop();
     virtual void Configure();
+    
+    void SetHighGear(bool isHighGear);
 
 private:
     Esc& escLeft, &escRight;
@@ -35,10 +37,12 @@ private:
     Config& config;
     DBSDrive& dbsDrive;
 
-    float pGainTurn;
-    float pGainFwd;
+    float pGainTurnLowGear;
+    float pGainFwdLowGear;
 
-    float maxSpeedReversePower;
+    float pGainTurnHighGear;
+    float pGainFwdHighGear;
+
     float fullBrakingThreshold;
     float driveStraightTurningTolerance;
 
@@ -49,6 +53,8 @@ private:
     bool brakeRight;
 
     bool usingClosedLoop;
+    
+    bool highGear;
 
     const static float FWD_DECAY = 0.5;
     const static float TURN_DECAY = 0.5;
