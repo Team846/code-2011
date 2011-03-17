@@ -54,7 +54,7 @@ public:
 
     struct
     {
-        float forward;
+        float power;
     } demoLift;
 
     struct
@@ -98,7 +98,9 @@ public:
 
     struct
     {
-        bool load, save, apply;
+        bool load;
+        bool save;
+        bool apply;
     } config;
 
 protected:

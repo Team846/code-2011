@@ -57,6 +57,7 @@ void LRTRobotBase::StartCompetition()
         double newCycleExpire = GetFPGATime() + 20000;
         profiler.StartNewCycle();
 
+//        UINT32 packetNumber = m_ds->GetPacketNumber();
 //        GetWatchdog().Feed();
 //        double waitStart = Timer::GetFPGATimestamp();
 //        while(!NextPeriodReady())
@@ -103,7 +104,9 @@ void LRTRobotBase::StartCompetition()
 //                    , runMin, runMax, runMean
 //                    , waitMin, waitMax, waitMean
 //                    , packetsMissedInLastReportPeriod, packetsMissedInLifetime);
+#ifdef USE_DASHBOARD
 //            SmartDashboard::Log(buffer, "Basic Report");
+#endif
 //            packetsMissedInLastReportPeriod = 0;
 //
 //            // minimum/maximum of all cycles

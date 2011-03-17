@@ -40,8 +40,6 @@ void Lift::Configure()
 //    liftEsc.SetPotentiometerTurns(10);
     liftEsc.ConfigPotentiometerTurns(10);
 
-    liftEsc.EnableControl();
-
     Config& config = Config::GetInstance();
 
     // convert from ms into cycles
@@ -50,7 +48,7 @@ void Lift::Configure()
     minPosition = config.Get<float>(prefix + "lowRowBottom");
     maxPosition = minPosition + config.Get<float>(prefix + "highPegRelative");
 
-    potDeadband = config.Get<float>(prefix + "deadband", 0.2);
+    potDeadband = config.Get<float>(prefix + "deadband", 0.1);
 }
 
 void Lift::ConfigureManualMode()
@@ -106,7 +104,10 @@ void Lift::Output()
 #else
     potValue = liftEsc.GetPosition();
 #endif
+
+#ifdef USE_DASHBOARD
     SmartDashboard::Log(potValue, "Lift Pot Value");
+#endif
 
     // abort overrides everything
     if(action.master.abort)
@@ -182,7 +183,7 @@ void Lift::Output()
         if(Util::Abs<float>(potValue - setPoint) < potDeadband)
         {
             action.lift.doneState = action.lift.SUCCESS;
-            cycleCount = 1; // will get decremented to 0
+//            cycleCount = 1; // will get decremented to 0
         }
 
         AsynchronousPrinter::Printf("Lift key: %s\n", key.c_str());
@@ -196,7 +197,9 @@ void Lift::Output()
             state = IDLE;
         }
 
+#ifdef USE_DASHBOARD
 //        SmartDashboard::Log(setPoint, "Lift Set Point");
+#endif
         break;
     }
 }

@@ -132,9 +132,11 @@ int LineSensor::GetLinePosition()
 
 
     // log pixel data for debugging
+#ifdef USE_DASHBOARD
 //    SmartDashboard::Log((int)maxPixel, "Max Line Sensor Pixel Value");
 //    SmartDashboard::Log((int)pixels[maxPixel], "Max Line Sensor Value");
 //    SmartDashboard::Log((int)intensitySum, "Line Sensor Intensity Sum");
+#endif
 
     // 25000 empirically determined to be a cutoff intensity sum
     // for the end of the line in room 612 on 3/12/11 -KV

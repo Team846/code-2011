@@ -65,7 +65,9 @@ void Arm::Output()
     }
 
     float potValue = armPot.GetAverageValue();
+#ifdef USE_DASHBOARD
     SmartDashboard::Log(potValue, "Arm Pot Value");
+#endif
 
     // abort overrides everything
     if(action.master.abort)
@@ -79,6 +81,18 @@ void Arm::Output()
         if(!presetMode)
             // exited from manual mode; done with maneuver
             action.arm.doneState = action.arm.SUCCESS;
+        else
+        {
+            // arm has drifted from preset value
+            if(action.arm.doneState == action.arm.SUCCESS &&
+                    (potValue < maxPosition && action.arm.presetTop) ||
+                    (potValue > minPosition && !action.arm.presetTop))
+            {
+                // reset timer
+                cycleCount = timeoutCycles;
+                state = PRESET; // switch back to preset mode
+            }
+        }
         break;
 
     case ABORT:

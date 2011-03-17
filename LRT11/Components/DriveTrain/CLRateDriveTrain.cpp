@@ -42,8 +42,10 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
 
     if(!usingClosedLoop)
     {
+#ifdef USE_DASHBOARD
 //        SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
 //        SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
+#endif
         return dbsDrive.ComputeArcadeDrive(rawFwd, rawTurn);
     }
 
@@ -72,6 +74,7 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
     float fwdCorrection = fwdError * pGainFwd;
     float newFwd = rawFwd + fwdCorrection;
 
+#ifdef USE_DASHBOARD
     //SmartDashboard::Log(turningRate, "Turning Rate");
 //    SmartDashboard::Log(pGainFwd, "Forward Gain");
 //    SmartDashboard::Log(pGainTurn, "Turn Gain");
@@ -79,6 +82,7 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
 //    SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
 //    SmartDashboard::Log(newFwd, "Forward");
 //    SmartDashboard::Log(newTurn, "Turn");
+#endif
 
     return dbsDrive.ComputeArcadeDrive(newFwd, newTurn);
 }

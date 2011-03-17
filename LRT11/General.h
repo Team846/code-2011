@@ -5,6 +5,7 @@
 
 //#define VIRTUAL
 #define LRT_ROBOT_2011
+//#define USE_DASHBOARD
 
 // viable combinations are LRT_ROBOT_2011, LRT_ROBOT_2011 + VIRTUAL, neither
 #ifdef VIRTUAL

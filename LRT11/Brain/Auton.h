@@ -100,12 +100,12 @@ void Brain::Middle(int numberOfTubes)
     static bool isFirstRinger = true;
     static double startDist = 0.0;
     static int timer = 0;
-    
+
     static enum
     {
-    	CONFIGURE,
-        
-    	DRIVE_TO_Y,
+        CONFIGURE,
+
+        DRIVE_TO_Y,
         FOLLOW_Y,
         MOVE_LIFT_UP,
         RELEASE_TUBE,
@@ -140,8 +140,8 @@ void Brain::Middle(int numberOfTubes)
         isFirstRinger = true;
 
         state = DRIVE_TO_Y;
-    	break;
-    	
+        break;
+
         //Stop a little short (0.65 ft) of the leg of the Y
     case DRIVE_TO_Y:
         // switch to low gear and shift
@@ -159,14 +159,14 @@ void Brain::Middle(int numberOfTubes)
     case MOVE_LIFT_UP:
         action.lift.givenCommand = true;
         action.lift.highRow = isFirstRinger;
-        	
+
         action.lift.preset = action.lift.HIGH_PEG;
-        
+
         state = WAIT_FOR_MOVE_LIFT_UP;
         break;
 
     case RELEASE_TUBE:
-    	action.roller.automated = true;
+        action.roller.automated = true;
         action.roller.commenceAutomation = true;
         state = WAIT_FOR_RELEASE_TUBE;
         break;
@@ -175,7 +175,7 @@ void Brain::Middle(int numberOfTubes)
         action.lift.givenCommand = true;
         action.lift.highRow = false;
         action.lift.preset = action.lift.LOW_PEG;
-        
+
         state = WAIT_FOR_MOVE_LIFT_DOWN;
         break;
 
@@ -222,44 +222,44 @@ void Brain::Middle(int numberOfTubes)
         break;
 
     case DRIVE_TO_LINE:
-    	action.driveTrain.rawForward = 0.8;
-    	action.driveTrain.rawTurn = 0.0;
+        action.driveTrain.rawForward = 0.8;
+        action.driveTrain.rawTurn = 0.0;
 
-    	//move arm down + suck in
-    	action.roller.state = action.roller.SUCKING;
-    	action.arm.presetTop = false;
-    	action.arm.givenCommand = true;
-    	action.arm.manualMode = false;
-    	action.arm.doneState = action.arm.STALE;
-    	
-    	startDist = driveEncoders.GetRobotDist();
+        //move arm down + suck in
+        action.roller.state = action.roller.SUCKING;
+        action.arm.presetTop = false;
+        action.arm.givenCommand = true;
+        action.arm.manualMode = false;
+        action.arm.doneState = action.arm.STALE;
+
+        startDist = driveEncoders.GetRobotDist();
         state = WAIT_FOR_DRIVE_TO_LINE;
         break;
 
     case FOLLOW_LINE:
-    	action.roller.state = action.roller.STOPPED;
-    	action.arm.presetTop = true;
-    	action.arm.givenCommand = true;
-    	action.arm.manualMode = false;
-    	action.arm.doneState = action.arm.STALE;
-    	
+        action.roller.state = action.roller.STOPPED;
+        action.arm.presetTop = true;
+        action.arm.givenCommand = true;
+        action.arm.manualMode = false;
+        action.arm.doneState = action.arm.STALE;
+
         startDist = driveEncoders.GetRobotDist();
         state = WAIT_FOR_FOLLOW_LINE;
         break;
-        
+
     case BACK_OFF:
-    	action.positionTrain.enabled = true;
-    	action.positionTrain.moveDistance = -6;
-    	state = WAIT_FOR_BACK_OFF;
-    	break;
+        action.positionTrain.enabled = true;
+        action.positionTrain.moveDistance = -6;
+        state = WAIT_FOR_BACK_OFF;
+        break;
 
     case WAIT_FOR_DRIVE_TO_Y:
-    	if (driveEncoders.GetRobotDist() > 16.75 * 12)//based on field drawings
-    	{
-    		action.driveTrain.rawForward = 0.0;
-    		action.driveTrain.rawTurn = 0.0;
-    		state = FOLLOW_Y;
-    	}
+        if(driveEncoders.GetRobotDist() > 16.75 * 12) //based on field drawings
+        {
+            action.driveTrain.rawForward = 0.0;
+            action.driveTrain.rawTurn = 0.0;
+            state = FOLLOW_Y;
+        }
         break;
 
     case WAIT_FOR_FOLLOW_Y:
@@ -292,7 +292,7 @@ void Brain::Middle(int numberOfTubes)
         break;
 
     case WAIT_FOR_RELEASE_TUBE:
-    	action.roller.commenceAutomation = false;
+        action.roller.commenceAutomation = false;
 
         // one second of reversing the roller
         if(++timer % 50 == 0)
@@ -309,13 +309,13 @@ void Brain::Middle(int numberOfTubes)
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
-            	if (isFirstRinger)
-            	{
-            		state = TURN_TO_GO_BACK;
-            		isFirstRinger = false;
-            	}
-            	else 
-            		state = BACK_OFF;
+                if(isFirstRinger)
+                {
+                    state = TURN_TO_GO_BACK;
+                    isFirstRinger = false;
+                }
+                else
+                    state = BACK_OFF;
             else if(action.lift.doneState == action.lift.FAILURE)
                 state = IDLE; // TODO correct state
             else if(action.lift.doneState == action.lift.ABORTED)
@@ -359,13 +359,13 @@ void Brain::Middle(int numberOfTubes)
         break;
 
     case WAIT_FOR_DRIVE_TO_LINE:
-    	if (driveEncoders.GetRobotDist() - startDist > 75)
-    	{
-    		action.driveTrain.rawForward = 0.0;
-    		action.driveTrain.rawTurn = 0.0;
-    		
-    		state = FOLLOW_LINE;
-    	}
+        if(driveEncoders.GetRobotDist() - startDist > 75)
+        {
+            action.driveTrain.rawForward = 0.0;
+            action.driveTrain.rawTurn = 0.0;
+
+            state = FOLLOW_LINE;
+        }
         break;
 
 
@@ -381,18 +381,18 @@ void Brain::Middle(int numberOfTubes)
             action.driveTrain.rawTurn = 0.0;
         }
         break;
-	case WAIT_FOR_BACK_OFF:
-		if (action.positionTrain.done)
-		{
-			action.positionTrain.enabled = false;
-			state = IDLE;
-		}
-		break;
-	
-	    case IDLE:
-	        //ne faire rien
-	        break;
-	    }
+    case WAIT_FOR_BACK_OFF:
+        if(action.positionTrain.done)
+        {
+            action.positionTrain.enabled = false;
+            state = IDLE;
+        }
+        break;
+
+    case IDLE:
+        //ne faire rien
+        break;
+    }
 }
 
 void Brain::Side()

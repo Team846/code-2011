@@ -48,7 +48,10 @@ void MinibotDeployer::Output()
 
     // used to detect current spike
     float current = deployerEsc.GetOutputCurrent();
+
+#ifdef USE_DASHBOARD
     SmartDashboard::Log(current, "Minibot Deployment Current");
+#endif
 
     // abort overrides everything
     if(action.master.abort)

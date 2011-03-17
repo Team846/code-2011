@@ -36,16 +36,17 @@ ActionData::ActionData()
     // closed loop should default to on
     positionTrain.usingClosedLoop = true;
 
-    lift.preset = lift.STOWED;
-    lift.highRow = false;
     lift.givenCommand = false;
     lift.manualMode = false;
     lift.power = 0;
+    lift.highRow = false;
+    lift.preset = lift.STOWED;
     lift.doneState = lift.STALE;
 
-    demoLift.forward = 0;
+    demoLift.power = 0;
 
     arm.givenCommand = false;
+    arm.manualMode = false;
     arm.manualUp = false;
     arm.presetTop = false;
     arm.doneState = arm.STALE;
@@ -53,8 +54,11 @@ ActionData::ActionData()
     roller.state = roller.STOPPED;
     // if in roller.ROTATING state, default to rotating upward
     roller.rotateUpward = true;
+    roller.automated = false;
+    roller.commenceAutomation = false;
 
     deployer.shouldAlignerRelease = false;
+    deployer.shouldDeployMinibot = false;
 
     encoderData.shouldCollect = false;
 

@@ -100,7 +100,9 @@ void Brain::AutomatedFollowLine()
 
         // get the line position from the sensor
         int linePosition = lineSensor.GetLinePosition();
+#ifdef USE_DASHBOARD
         SmartDashboard::Log(linePosition, "Line position");
+#endif
 
         if(previousState == DISABLED)
         {
@@ -174,6 +176,8 @@ void Brain::AutomatedFollowLine()
         }
 
         prevLinePosition = linePosition;
+#ifdef USE_DASHBOARD
         SmartDashboard::Log(linePosition, "Calculated Line position");
+#endif
     }
 }

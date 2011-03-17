@@ -101,7 +101,9 @@ void Esc::Set(float speed)
     if(hasPartner)
         partner->Set(speed);
 
+#ifdef USE_DASHBOARD
 //    SmartDashboard::Log(speed, name.c_str());
+#endif
 
     // no current limiting
     ProxiedCANJaguar::Set(Util::Clamp<float>(speed, -1.0, 1.0));

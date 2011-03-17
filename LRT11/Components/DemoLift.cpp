@@ -14,8 +14,10 @@ DemoLift::~DemoLift()
 
 void DemoLift::Output()
 {
-    float forward = action.demoLift.forward;
+    float forward = action.demoLift.power;
     liftEsc.Set(forward);
 
+#ifdef USE_DASHBOARD
 //    SmartDashboard::Log(forward, "Demo Lift Set Point");
+#endif
 }

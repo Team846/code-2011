@@ -58,8 +58,10 @@ bool CLPositionDriveTrain::MoveDistanceOutput()
     float turnCorrection = turnError * pGainFwdTurnCorrection;
     drive.ArcadeDrive(correction, turnCorrection);
 
+#ifdef USE_DASHBOARD
 //    SmartDashboard::Log(newError, "CLPosition Error");
 //    SmartDashboard::Log(correction, "CLPosition Correction");
+#endif
 
     return Util::Abs<float>(error) < fwdDeadband;
 }
@@ -88,8 +90,10 @@ bool CLPositionDriveTrain::TurnAngleOutput()
         drive.ArcadeDrive(fwdCorrection, correction);
     }
 
+#ifdef USE_DASHBOARD
 //    SmartDashboard::Log(newError, "Turning error (position)");
 //    SmartDashboard::Log(correction, "Turning correction (position)");
+#endif
 
     return Util::Abs<float>(error) < turnDeadband;
 }

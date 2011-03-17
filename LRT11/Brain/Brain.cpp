@@ -61,7 +61,7 @@ void Brain::Process(GameState gameState)
         break;
 
     case AUTONOMOUS:
-        Auton();
+//        Auton();
         break;
     }
 
@@ -69,10 +69,12 @@ void Brain::Process(GameState gameState)
     if(gameTimer.Get() > 120)
         gameTimer.Stop();
 
+#ifdef USE_DASHBOARD
     {
         ProfiledSection ps("Dashboard Logging");
         UpdateDashboardValues(gameState);
     }
+#endif
 
     previousState = gameState;
 }

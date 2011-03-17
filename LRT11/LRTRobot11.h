@@ -24,10 +24,10 @@ private:
 //    CANBusController& controller;
 #endif
 
-    DriveTrain drive;
+//    DriveTrain drive;
 //    PositionDriveTrain positionDrive;
 
-    Shifter shifter;
+//    Shifter shifter;
 
 //    Lift lift;
     Arm arm;

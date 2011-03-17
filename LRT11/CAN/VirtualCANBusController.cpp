@@ -64,7 +64,9 @@ void VirtualCANBusController::Set(int id, float val)
     }
 
     setpoints[idx] = val;
+#ifdef USE_DASHBOARD
     SmartDashboard::Log(val, jaguarLabels[idx]);
+#endif
 }
 
 void VirtualCANBusController::SetDutyCycleSubscriber(int channel, DutyCycleSubscriber* subscriber)
