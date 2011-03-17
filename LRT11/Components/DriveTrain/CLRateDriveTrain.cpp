@@ -23,14 +23,9 @@ void CLRateDriveTrain::Configure()
 
     pGainTurnHighGear = config.Get<float>(prefix + "pGainTurnHighGear", 1.5);
     pGainFwdHighGear = config.Get<float>(prefix + "pGainFwdHighGear", 1.5);
-    
+
     pGainTurnLowGear = config.Get<float>(prefix + "pGainTurnLowGear", 1.0);
     pGainFwdLowGear = config.Get<float>(prefix + "pGainFwdLowGear", 1.5);
-
-    fullBrakingThreshold = config.Get<float>(prefix + "fullBrakingThreshold",
-            0.75);
-    driveStraightTurningTolerance = config.Get<float>(prefix
-            + "driveStraightTurningTolerance", 0.15);
 }
 
 DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
@@ -54,7 +49,7 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
 
     float pGainTurn = highGear ? pGainTurnHighGear : pGainTurnLowGear;
     float pGainFwd = highGear ? pGainFwdHighGear : pGainFwdLowGear;
-    		
+
     float turningRate = encoders.GetNormalizedTurningSpeed();
 
     // eliminate spurrious measurements above mag |1|
@@ -123,5 +118,5 @@ void CLRateDriveTrain::SetClosedLoopEnabled(bool enabled)
 
 void CLRateDriveTrain::SetHighGear(bool isHighGear)
 {
-	highGear = isHighGear;
+    highGear = isHighGear;
 }

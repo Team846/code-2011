@@ -27,7 +27,7 @@ public:
 
     void Stop();
     virtual void Configure();
-    
+
     void SetHighGear(bool isHighGear);
 
 private:
@@ -43,9 +43,6 @@ private:
     float pGainTurnHighGear;
     float pGainFwdHighGear;
 
-    float fullBrakingThreshold;
-    float driveStraightTurningTolerance;
-
     RunningSum fwdRunningError;
     RunningSum turnRunningError;
 
@@ -53,7 +50,7 @@ private:
     bool brakeRight;
 
     bool usingClosedLoop;
-    
+
     bool highGear;
 
     const static float FWD_DECAY = 0.5;
