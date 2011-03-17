@@ -2,7 +2,7 @@
 
 void Brain::Auton()
 {
-    // TODO remove return statement
+    // TODO remove return statement after auton is legitimate
     return;
 
     // robot starts at either a side or the middle
