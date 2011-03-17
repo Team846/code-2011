@@ -10,10 +10,10 @@ LRTRobot11::LRTRobot11()
     , drive()
 //    , positionDrive()
 //    , encoderData()
-//    , shifter()
-    , lift()
+    , shifter()
+//    , lift()
     , arm()
-    , minibotDeployer()
+//    , minibotDeployer()
     , roller()
     , config(Config::GetInstance())
     , prevState(DISABLED)
@@ -59,6 +59,8 @@ void LRTRobot11::MainLoop()
 //    if(prevState != gameState)
 //        controller.ResetCache();
 
+//    SmartDashboard::Log(armPot.GetAverageValue(), "Arm Pot Value");
+
     if(gameState != DISABLED)
     {
 //    LRTDigitalOutput::SetDelay((int)(50 * 100 * Util::Rescale<float>(ds.GetAnalogIn(1), 0, 5, 0, 1)));
@@ -75,15 +77,15 @@ void LRTRobot11::MainLoop()
 //            positionDrive.Output();
 //        }
 
-//        {
-//            ProfiledSection ps("Servo Shifting");
-//            shifter.Output();
-//        }
-
         {
-            ProfiledSection ps("Lift");
-            lift.Output();
+            ProfiledSection ps("Servo Shifting");
+            shifter.Output();
         }
+
+//        {
+//          ProfiledSection ps("Lift");
+//          lift.Output();
+//        }
 
         // Tested successfully 3/10/11 [KV] [BA]
         {
@@ -96,10 +98,10 @@ void LRTRobot11::MainLoop()
 //            roller.Output();
 //        }
 
-        {
-            ProfiledSection ps("Minibot Deployer");
-            minibotDeployer.Output();
-        }
+//        {
+//            ProfiledSection ps("Minibot Deployer");
+//            minibotDeployer.Output();
+//        }
 
 //        {
 //            ProfiledSection ps("Encoder Data Collection");

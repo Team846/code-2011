@@ -27,17 +27,19 @@ private:
     DriveTrain drive;
 //    PositionDriveTrain positionDrive;
 
-//    Shifter shifter;
+    Shifter shifter;
 
-    Lift lift;
+//    Lift lift;
     Arm arm;
-    MinibotDeployer minibotDeployer;
+//    MinibotDeployer minibotDeployer;
 
     Roller roller;
     Config& config;
 
     GameState prevState;
     GameState DetermineState();
+
+//    AnalogChannel armPot;
 
 public:
     LRTRobot11();

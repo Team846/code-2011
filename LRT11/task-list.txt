@@ -72,7 +72,7 @@ At competition
 - Set aligner servo values
 - Set lift pot value to 0.2
 - LED issue
-- Ensure lift preset values are set and defualted in code
+- Ensure lift preset values are set and defaulted in code
 - Verify autonomous settings, gains, including stall detection
 - Calibrate line sensing
 - Look at current values

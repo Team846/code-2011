@@ -116,8 +116,8 @@ private:
     static void BusWriterTaskRunner();
     void BusWriterTask();
 
-    const static int kMinJaguarId = 20;
-    const static int kMaxJaguarId = 28;
+    const static int kMinJaguarId = 1;
+    const static int kMaxJaguarId = 10;
     const static int kNumJaguars = kMaxJaguarId - kMinJaguarId + 1;
 
     char jaguarLabels[kNumJaguars][30];

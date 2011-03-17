@@ -33,7 +33,8 @@ void DriveTrain::Output()
     left.UpdateOutput();
     right.UpdateOutput();
 
-    robotDrive.SetClosedLoopEnabled(action.driveTrain.usingClosedLoop);
+//    robotDrive.SetClosedLoopEnabled(action.driveTrain.usingClosedLoop);
+    robotDrive.SetClosedLoopEnabled(false);
 
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
     robotDrive.SetBrakeRight(action.driveTrain.brakeRight);

@@ -19,12 +19,12 @@ CLRateDriveTrain::CLRateDriveTrain(Esc& escLeft, Esc& escRight,
 
 void CLRateDriveTrain::Configure()
 {
-    const static string prefix = "ClosedLoopDriveTrain.";
+    const static string prefix = "CLRateDriveTrain.";
 
     pGainTurnHighGear = config.Get<float>(prefix + "pGainTurnHighGear", 1.5);
     pGainFwdHighGear = config.Get<float>(prefix + "pGainFwdHighGear", 1.5);
 
-    pGainTurnLowGear = config.Get<float>(prefix + "pGainTurnLowGear", 1.0);
+    pGainTurnLowGear = config.Get<float>(prefix + "pGainTurnLowGear", 1.5);
     pGainFwdLowGear = config.Get<float>(prefix + "pGainFwdLowGear", 1.5);
 }
 

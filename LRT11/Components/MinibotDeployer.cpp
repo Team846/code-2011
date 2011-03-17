@@ -4,7 +4,7 @@
 MinibotDeployer::MinibotDeployer()
     : config(Config::GetInstance())
     , deployerEsc(RobotConfig::CAN_DEPLOYER)
-    , alignerServo(RobotConfig::RIGHT_ALIGNER_SERVO)
+    , alignerServo(RobotConfig::ALIGNER_SERVO)
 {
     string prefix = "MinibotDeployer.";
     lockedServoValue = config.Get<float>(prefix + "lockedServoValue", 1.0);
@@ -47,7 +47,7 @@ void MinibotDeployer::Output()
     }
 
     // used to detect current spike
-    float current = deployerEsc.GetCurrent();
+    float current = deployerEsc.GetOutputCurrent();
     SmartDashboard::Log(current, "Minibot Deployment Current");
 
     // abort overrides everything

@@ -12,22 +12,22 @@ public:
     const static UINT32 PWM_DRIVE_RIGHT = CHANGEME;
 
 #ifdef LRT_ROBOT_2011
-    const static UINT32 CAN_DRIVE_RIGHT_A = 20;
-    const static UINT32 CAN_DRIVE_RIGHT_B = 21;
-    const static UINT32 CAN_DRIVE_LEFT_A  = 22;
-    const static UINT32 CAN_DRIVE_LEFT_B  = 23;
+    const static UINT32 CAN_DRIVE_RIGHT_A = 10;
+    const static UINT32 CAN_DRIVE_RIGHT_B = 1;
+    const static UINT32 CAN_DRIVE_LEFT_A  = 2;
+    const static UINT32 CAN_DRIVE_LEFT_B  = 3;
 #else
     const static UINT32 CAN_DRIVE_LEFT  = 2;
     const static UINT32 CAN_DRIVE_RIGHT = 3;
 #endif
 
-    const static UINT32 CAN_LIFT = 28;
-    const static UINT32 CAN_ARM  = 24;
+    const static UINT32 CAN_LIFT = 8;
+    const static UINT32 CAN_ARM  = 4;
 
-    const static UINT32 CAN_ROLLER_TOP    = 25;
-    const static UINT32 CAN_ROLLER_BOTTOM = 26;
+    const static UINT32 CAN_ROLLER_TOP    = 7;
+    const static UINT32 CAN_ROLLER_BOTTOM = 5;
 
-    const static UINT32 CAN_DEPLOYER = 27;
+    const static UINT32 CAN_DEPLOYER = 6;
 
     // Servos
 
@@ -65,8 +65,7 @@ public:
     const static UINT32 RIGHT_GEARBOX_SERVO_PORT = 10;
 #endif
 
-    const static UINT32 LEFT_ALIGNER_SERVO = 3;
-    const static UINT32 RIGHT_ALIGNER_SERVO = 4;
+    const static UINT32 ALIGNER_SERVO = 3;
 };
 
 #endif
