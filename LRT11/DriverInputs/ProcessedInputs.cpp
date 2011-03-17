@@ -69,22 +69,17 @@ float ProcessedInputs::GetTurn()
 
 bool ProcessedInputs::ShouldBrakeLeft()
 {
-    return driverStick.IsButtonDown(9);
+    return driverStick.IsButtonDown(10);
 }
 
 bool ProcessedInputs::ShouldBrakeRight()
 {
-    return driverStick.IsButtonDown(8);
+    return driverStick.IsButtonDown(9);
 }
 
 bool ProcessedInputs::ShouldShiftLow()
 {
-    return driverStick.IsButtonJustPressed(3);
-}
-
-bool ProcessedInputs::ShouldShiftHigh()
-{
-    return driverStick.IsButtonJustPressed(4);
+    return driverStick.IsButtonDown(8);
 }
 
 bool ProcessedInputs::ShouldMoveLiftLow()
