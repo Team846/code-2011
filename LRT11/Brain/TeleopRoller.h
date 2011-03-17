@@ -8,7 +8,7 @@ void Brain::TeleopRoller()
     else if(inputs.ShouldGrabGamePiece() || inputs.ShouldRollerSuck())
         action.roller.state = action.roller.SUCKING;
     // spitting the ringer out (automated)
-    else if(inputs.ShouldRollerBeAutomated())
+    else if(inputs.ShouldRollerBeAutomated() || action.roller.automated)
     {
         static enum
         {
@@ -19,7 +19,7 @@ void Brain::TeleopRoller()
         static int rotateCycle = 0, spitCycle = 0;
 
         // begin, or set the state, only when the button is just pressed
-        if(inputs.ShouldRollerCommenceAutomation())
+        if(inputs.ShouldRollerCommenceAutomation() || action.roller.commenceAutomation)
         {
             state = ROTATING;
             rotateCycle = 0;
@@ -32,7 +32,7 @@ void Brain::TeleopRoller()
             action.roller.rotateUpward = false;
             action.roller.state = action.roller.ROTATING;
 
-            // rotate for half a second
+            // rotate for one tenth a second
             if(++rotateCycle % 5 == 0)
                 state = SPITTING;
             break;
@@ -44,11 +44,13 @@ void Brain::TeleopRoller()
             break;
         }
     }
+    // rotate roller upward
     else if(inputs.ShouldRollerRotateUp())
     {
         action.roller.rotateUpward = true;
         action.roller.state = action.roller.ROTATING;
     }
+    // rotate roller downaward
     else if(inputs.ShouldRollerRotateDown())
     {
         action.roller.rotateUpward = false;

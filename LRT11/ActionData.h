@@ -73,6 +73,10 @@ public:
         // true to rotate upward, false to rotate downward;
         // only active in ROTATING state
         bool rotateUpward;
+
+        // used to automate roller spitting (rotate + reverse roller)
+        bool automated;
+        bool commenceAutomation;
     } roller;
 
     struct
@@ -91,11 +95,6 @@ public:
         enum {LOW_GEAR = 1, HIGH_GEAR = 2} gear;
         bool force;
     } shifter;
-
-    struct
-    {
-        bool releaseRinger;
-    } automation;
 
     struct
     {

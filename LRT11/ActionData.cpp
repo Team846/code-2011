@@ -61,8 +61,6 @@ ActionData::ActionData()
     shifter.gear = shifter.LOW_GEAR;
     shifter.force = false;
 
-    automation.releaseRinger = false;
-
     config.load = false;
     config.save = false;
     config.apply = false;

@@ -3,6 +3,7 @@
 void Brain::AutomatedRoutines()
 {
     // used for state machine
+    /* old routine
     static enum
     {
         IDLE,
@@ -81,6 +82,7 @@ void Brain::AutomatedRoutines()
         // TODO abort
         break;
     }
+    */
 }
 
 void Brain::AutomatedFollowLine()
