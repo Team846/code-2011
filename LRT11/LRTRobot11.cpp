@@ -10,10 +10,11 @@ LRTRobot11::LRTRobot11()
     , drive()
 //    , positionDrive()
 //    , encoderData()
-//    , shifter()
-//    , lift()
+    , shifter()
+    , lift()
 //    , arm()
-//    , roller()
+    , roller()
+//    , minibot()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -70,10 +71,10 @@ void LRTRobot11::MainLoop()
 //            positionDrive.Output();
 //        }
 
-//        {
-//            ProfiledSection ps("Lift");
-//            lift.Output();
-//        }
+        {
+            ProfiledSection ps("Lift");
+            lift.Output();
+        }
 
         // Tested successfully 3/10/11 [KV] [BA]
 //        {
@@ -86,14 +87,19 @@ void LRTRobot11::MainLoop()
 //            encoderData.Output();
 //        }
 
+        {
+            ProfiledSection ps("Servo Shifting");
+            shifter.Output();
+        }
+
+        {
+            ProfiledSection ps("Roller");
+            roller.Output();
+        }
+
 //        {
-//            ProfiledSection ps("Servo Shifting");
-//            shifter.Output();
-//        }
-//
-//        {
-//            ProfiledSection ps("Roller");
-//            roller.Output();
+//            ProfiledSection ps("Minibot Deployment");
+//            minibot.Output();
 //        }
 
         // To add another component output:

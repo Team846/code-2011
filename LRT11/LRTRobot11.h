@@ -27,13 +27,13 @@ private:
     DriveTrain drive;
 //    PositionDriveTrain positionDrive;
 
-//    Shifter shifter;
+    Shifter shifter;
 
-//    Lift lift;
+    Lift lift;
 //    Arm arm;
-//    MinibotDeployer minibotDeployer;
+    Roller roller;
 
-//    Roller roller;
+//    MinibotDeployer minibot;
     Config& config;
 
     GameState prevState;
