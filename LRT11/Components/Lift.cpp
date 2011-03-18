@@ -297,5 +297,5 @@ void Lift::Output()
 
 double Lift::getPotVal()
 {
-	return liftEsc.GetPosition();
+    return liftEsc.GetPosition();
 }

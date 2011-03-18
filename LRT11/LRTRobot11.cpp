@@ -76,7 +76,6 @@ void LRTRobot11::MainLoop()
             lift.Output();
         }
 
-        // Tested successfully 3/10/11 [KV] [BA]
         {
             ProfiledSection ps("Arm");
             arm.Output();

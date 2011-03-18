@@ -267,5 +267,5 @@ void Arm::Output()
 
 int Arm::getPotVal()
 {
-	return armPot.GetValue();
+    return armPot.GetValue();
 }
