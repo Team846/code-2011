@@ -33,7 +33,7 @@ private:
     Arm arm;
     Roller roller;
 
-//    MinibotDeployer minibotDeployer;
+    MinibotDeployer minibotDeployer;
     Config& config;
 
     GameState prevState;

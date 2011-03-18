@@ -15,20 +15,20 @@ void Brain::TeleopMinibot()
 
     // only deploy minibot in the finale; let operator push
     // button down while waiting
-    if(isFinale)
+//    if(isFinale)
+//    {
+    if(inputs.ShouldDeployMinibot())
     {
-        if(inputs.ShouldDeployMinibot())
+        // only reactivate minibot deployment if button
+        // is pressed again
+        if(!deployButtonJustPressed)
         {
-            // only reactivate minibot deployment if button
-            // is pressed again
-            if(!deployButtonJustPressed)
-            {
-                action.deployer.shouldDeployMinibot = true;
-                deployButtonJustPressed = true;
-            }
+            action.deployer.shouldDeployMinibot = true;
+            deployButtonJustPressed = true;
         }
-        else
-            // operator let button go; reset just pressed flag
-            deployButtonJustPressed = false;
     }
+    else
+        // operator let button go; reset just pressed flag
+        deployButtonJustPressed = false;
+//    }
 }

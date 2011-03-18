@@ -14,7 +14,7 @@ LRTRobot11::LRTRobot11()
     , lift()
     , arm()
     , roller()
-//    , minibotDeployer()
+    , minibotDeployer()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -97,10 +97,10 @@ void LRTRobot11::MainLoop()
             roller.Output();
         }
 
-//        {
-//            ProfiledSection ps("Minibot Deployment");
-//            minibotDeployer.Output();
-//        }
+        {
+            ProfiledSection ps("Minibot Deployment");
+            minibotDeployer.Output();
+        }
 
         // To add another component output:
         //
