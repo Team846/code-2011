@@ -46,12 +46,6 @@ void MinibotDeployer::Output()
         action.deployer.shouldDeployMinibot = false;
     }
 
-    // used to detect current spike
-    float current = deployerEsc.GetOutputCurrent();
-
-#ifdef USE_DASHBOARD
-    SmartDashboard::Log(current, "Minibot Deployment Current");
-#endif
 
     // abort overrides everything
     if(action.master.abort)
@@ -86,6 +80,13 @@ void MinibotDeployer::Output()
     case FIRST_PUSH:
         // full power
         setPoint = 0.5;
+
+        // used to detect current spike
+        float current = deployerEsc.GetOutputCurrent();
+
+#ifdef USE_DASHBOARD
+        SmartDashboard::Log(current, "Minibot Deployment Current");
+#endif
 
         // wait until a current spike or 1 second timeout
         if(current > currentThreshold || ++timer % 50 == 0)

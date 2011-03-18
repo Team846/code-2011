@@ -85,14 +85,14 @@ void Esc::Stop()
         Set(0.0);
         return;
     }
-//    double error = 0.0 - RobotSpeed;
-//    static float k = 1. / 2;
-//    errorRunning *= k;
-//    errorRunning += error;
-//    if (error < 0.01)
-//      Set(0.0);
-//
-//    Set(errorRunning * pGain * (1 - k));
+    double error = 0.0 - RobotSpeed;
+    static float k = 1. / 2;
+    errorRunning *= k;
+    errorRunning += error;
+//    if(error < 0.01)
+//        Set(0.0);
+
+    Set(errorRunning * pGain * (1 - k));
     ApplyBrakes(8);
 }
 
