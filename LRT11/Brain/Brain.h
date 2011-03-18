@@ -56,6 +56,7 @@ private:
     bool leftSide;
 
     bool isFinale;
+    bool hasMoved;
 
     // Mode-specific methods
     void Common();

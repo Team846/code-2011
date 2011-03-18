@@ -40,12 +40,13 @@ void Brain::TeleopRoller()
             action.lift.manualMode = true;
             action.lift.power = -0.4;
 
-            // two seconds
-            if(++timer % 50 == 0)
-            {
-                state = STOPPING;
-                timer = 0; // reset timer
-            }
+            // keep going until the button is released
+            // one and a half seconds
+//            if(++timer % 50 == 0)
+//            {
+//                state = STOPPING;
+//                timer = 0; // reset timer
+//            }
             break;
 
         case STOPPING:

@@ -28,6 +28,7 @@ Brain::Brain()
     , firstReading(true)
     , leftSide(false)
     , isFinale(false)
+    , hasMoved(false)
 {
     // first reading is bogus; throw it out 3/12/11 -KV
     lineSensor.GetLinePosition();

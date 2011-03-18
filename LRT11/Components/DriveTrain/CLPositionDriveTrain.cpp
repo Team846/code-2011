@@ -56,6 +56,9 @@ bool CLPositionDriveTrain::MoveDistanceOutput()
 
     float turnError = moveDistanceInfo.delta - encoders.GetTurnTicks();
     float turnCorrection = turnError * pGainFwdTurnCorrection;
+
+    AsynchronousPrinter::Printf("E: %.2f, C: %.2f, TE: %.2f, TC: %.2f\n", error,
+            correction, turnError, turnCorrection);
     drive.ArcadeDrive(correction, turnCorrection);
 
 #ifdef USE_DASHBOARD

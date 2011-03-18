@@ -28,12 +28,12 @@ void Brain::TeleopLift()
         action.lift.givenCommand = false;
 
     // if preset mode
-    if(action.lift.givenCommand && !action.lift.manualMode)
-    {
-        // do not run lift up unless arm is at top preset
-        if(!action.arm.presetTop ||
-                action.arm.doneState != action.arm.SUCCESS)
-            // setting givenCommand to false disables lift
-            action.lift.givenCommand = false;
-    }
+//    if(action.lift.givenCommand && !action.lift.manualMode)
+//    {
+//        // do not run lift up unless arm is at top preset
+//        if(!action.arm.presetTop ||
+//                action.arm.doneState != action.arm.SUCCESS)
+//            // setting givenCommand to false disables lift
+//            action.lift.givenCommand = false;
+//    }
 }

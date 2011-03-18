@@ -35,6 +35,7 @@ void PositionDriveTrain::Output()
 
     if(action.positionTrain.shouldMoveDistance)
     {
+        AsynchronousPrinter::Printf("Moving inches\n");
         positionDrive.MoveInches(action.positionTrain.moveDistance);
         action.positionTrain.shouldMoveDistance = false;
 
@@ -55,8 +56,11 @@ void PositionDriveTrain::Output()
     }
 
     if(action.positionTrain.shouldOutputMoveDistance)
+    {
         // output and store whether movement is done
         action.positionTrain.done = positionDrive.MoveDistanceOutput();
+        AsynchronousPrinter::Printf("Outputting move distance\n");
+    }
     else if(action.positionTrain.shouldOutputTurnAngle)
         // output and store whether movement is done
         action.positionTrain.done = positionDrive.TurnAngleOutput();

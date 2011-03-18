@@ -11,4 +11,6 @@ void Brain::Disabled()
 
     // default to locked aligner
     action.deployer.shouldAlignerRelease = false;
+
+    hasMoved = false;
 }
