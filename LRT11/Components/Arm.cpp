@@ -264,3 +264,8 @@ void Arm::Output()
 //    SmartDashboard::Log(armEsc.GetPosition(), "Arm Position");
 }
 */
+
+int Arm::getPotVal()
+{
+	return armPot.GetValue();
+}

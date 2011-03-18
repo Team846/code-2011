@@ -29,7 +29,6 @@ private:
 
     enum {MANUAL = 1, PRESET = 2} prevMode;
     float potDeadband;
-
     bool positionMode;
 
 public:
@@ -40,6 +39,7 @@ public:
     void ConfigureManualMode();
 
     virtual void Output();
+    double getPotVal();
 };
 
 #endif
