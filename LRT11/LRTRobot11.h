@@ -24,16 +24,16 @@ private:
 //    CANBusController& controller;
 #endif
 
-//    DriveTrain drive;
+    DriveTrain drive;
 //    PositionDriveTrain positionDrive;
 
 //    Shifter shifter;
 
 //    Lift lift;
-    Arm arm;
+//    Arm arm;
 //    MinibotDeployer minibotDeployer;
 
-    Roller roller;
+//    Roller roller;
     Config& config;
 
     GameState prevState;

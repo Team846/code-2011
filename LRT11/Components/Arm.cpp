@@ -85,8 +85,8 @@ void Arm::Output()
         {
             // arm has drifted from preset value
             if(action.arm.doneState == action.arm.SUCCESS &&
-                    (potValue < maxPosition && action.arm.presetTop) ||
-                    (potValue > minPosition && !action.arm.presetTop))
+                    ((potValue < maxPosition && action.arm.presetTop) ||
+                            (potValue > minPosition && !action.arm.presetTop)))
             {
                 // reset timer
                 cycleCount = timeoutCycles;

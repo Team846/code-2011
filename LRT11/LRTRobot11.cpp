@@ -7,13 +7,13 @@ LRTRobot11::LRTRobot11()
 #else
 //    , controller(CANBusController::GetInstance())
 #endif
-//    , drive()
+    , drive()
 //    , positionDrive()
 //    , encoderData()
 //    , shifter()
 //    , lift()
-    , arm()
-    , roller()
+//    , arm()
+//    , roller()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -60,10 +60,10 @@ void LRTRobot11::MainLoop()
     if(gameState != DISABLED)
     {
         // components to output only when enabled
-//        {
-//            ProfiledSection ps("Drive Train");
-//            drive.Output();
-//        }
+        {
+            ProfiledSection ps("Drive Train");
+            drive.Output();
+        }
 
 //        {
 //            ProfiledSection ps("Position Drive");
@@ -76,10 +76,10 @@ void LRTRobot11::MainLoop()
 //        }
 
         // Tested successfully 3/10/11 [KV] [BA]
-        {
-            ProfiledSection ps("Arm");
-            arm.Output();
-        }
+//        {
+//            ProfiledSection ps("Arm");
+//            arm.Output();
+//        }
 
 //        {
 //            ProfiledSection ps("Encoder Data Collection");
