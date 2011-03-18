@@ -10,7 +10,8 @@
 class LRTEncoder : public Encoder
 {
 private:
-    Encoder useless;
+//  static int count = 0;
+//    Encoder useless;
 
 public:
     LRTEncoder(UINT8 sourceA, UINT8 sourceB);

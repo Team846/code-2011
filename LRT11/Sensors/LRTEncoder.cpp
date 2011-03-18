@@ -2,7 +2,7 @@
 
 LRTEncoder::LRTEncoder(UINT8 sourceA, UINT8 sourceB)
     : Encoder(sourceA, sourceB, false, CounterBase::k1X)
-    , useless(sourceA, sourceB, false, CounterBase::k1X)
+//    , useless(15 + count, , false, CounterBase::k1X)
 {
 
 }

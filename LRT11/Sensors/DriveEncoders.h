@@ -19,6 +19,7 @@ private:
     VirtualLRTEncoder encoderRight;
 #else
     LRTEncoder encoderLeft;
+    LRTEncoder uselessEncoder;
     LRTEncoder encoderRight;
 #endif
 

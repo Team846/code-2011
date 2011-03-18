@@ -12,6 +12,7 @@ DriveEncoders& DriveEncoders::GetInstance()
 DriveEncoders::DriveEncoders()
     : encoderLeft(RobotConfig::DIO_ENCODER_LEFT_A,
             RobotConfig::DIO_ENCODER_LEFT_B)
+    , uselessEncoder(1, 2)
     , encoderRight(RobotConfig::DIO_ENCODER_RIGHT_A,
             RobotConfig::DIO_ENCODER_RIGHT_B)
 {
