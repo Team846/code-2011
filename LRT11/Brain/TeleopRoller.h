@@ -13,10 +13,8 @@ void Brain::TeleopRoller()
         static enum
         {
 //            ROTATING,
-            SPITTING,
             MOVING_LIFT_DOWN,
-            STOPPING
-        } state = SPITTING;
+        } state = MOVING_LIFT_DOWN;
 
         static int timer = 0;
 
@@ -24,33 +22,19 @@ void Brain::TeleopRoller()
         if(inputs.ShouldRollerCommenceAutomation() || action.roller.commenceAutomation)
         {
             timer = 0;
-            state = SPITTING;
+            state = MOVING_LIFT_DOWN;
         }
 
         switch(state)
         {
-        case SPITTING:
-            action.roller.state = action.roller.SPITTING;
-            state = MOVING_LIFT_DOWN;
-
-            break;
-
         case MOVING_LIFT_DOWN:
             action.lift.givenCommand = true;
             action.lift.manualMode = true;
             action.lift.power = -0.4;
 
-            // keep going until the button is released
-            // one and a half seconds
-//            if(++timer % 50 == 0)
-//            {
-//                state = STOPPING;
-//                timer = 0; // reset timer
-//            }
-            break;
-
-        case STOPPING:
-            action.roller.state = action.roller.STOPPED;
+            // keep moving down for one tenth of a second
+            if(++timer > 20)
+                action.roller.state = action.roller.SPITTING;
             break;
         }
     }
