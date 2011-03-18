@@ -12,9 +12,9 @@ LRTRobot11::LRTRobot11()
 //    , encoderData()
     , shifter()
     , lift()
-//    , arm()
+    , arm()
     , roller()
-//    , minibot()
+//    , minibotDeployer()
     , config(Config::GetInstance())
     , prevState(DISABLED)
 {
@@ -77,10 +77,10 @@ void LRTRobot11::MainLoop()
         }
 
         // Tested successfully 3/10/11 [KV] [BA]
-//        {
-//            ProfiledSection ps("Arm");
-//            arm.Output();
-//        }
+        {
+            ProfiledSection ps("Arm");
+            arm.Output();
+        }
 
 //        {
 //            ProfiledSection ps("Encoder Data Collection");
@@ -99,7 +99,7 @@ void LRTRobot11::MainLoop()
 
 //        {
 //            ProfiledSection ps("Minibot Deployment");
-//            minibot.Output();
+//            minibotDeployer.Output();
 //        }
 
         // To add another component output:

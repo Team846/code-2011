@@ -6,7 +6,8 @@ Roller::Roller()
     , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
     , prefix("Roller.")
 {
-
+    topRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+    bottomRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 }
 
 Roller::~Roller()

@@ -30,10 +30,10 @@ private:
     Shifter shifter;
 
     Lift lift;
-//    Arm arm;
+    Arm arm;
     Roller roller;
 
-//    MinibotDeployer minibot;
+//    MinibotDeployer minibotDeployer;
     Config& config;
 
     GameState prevState;

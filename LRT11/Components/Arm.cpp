@@ -16,7 +16,7 @@ Arm::Arm()
     , cycleCount(0)
     , presetMode(true)
 {
-    armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+    armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 }
 
 Arm::~Arm()
