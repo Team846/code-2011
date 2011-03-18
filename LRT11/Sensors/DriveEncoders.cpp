@@ -39,16 +39,16 @@ double DriveEncoders::GetForwardSpeed()
 double DriveEncoders::GetNormalizedForwardSpeed()
 {
     return Util::Clamp<double>(GetForwardSpeed() / MAX_ENCODER_RATE, -1.0, 1.0);
-}	
+}
 
 double DriveEncoders::GetNormalizedLowGearForwardSpeed()
 {
-	return GetNormalizedForwardSpeed() * LOW_GEAR_MULTIPLIER;
+    return GetNormalizedForwardSpeed() * LOW_GEAR_MULTIPLIER;
 }
 
 double DriveEncoders::GetNormalizedLowGearTurningSpeed()
 {
-	return GetNormalizedTurningSpeed() * LOW_GEAR_MULTIPLIER;
+    return GetNormalizedTurningSpeed() * LOW_GEAR_MULTIPLIER;
 }
 
 double DriveEncoders::GetTurningSpeed()

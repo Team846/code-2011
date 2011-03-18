@@ -84,7 +84,7 @@ bool ProcessedInputs::ShouldShiftLow()
 
 bool ProcessedInputs::ShouldShiftThird()
 {
-	return driverStick.IsButtonDown(7);
+    return driverStick.IsButtonDown(7);
 }
 
 bool ProcessedInputs::ShouldMoveLiftLow()

@@ -52,7 +52,7 @@ private:
     bool usingClosedLoop;
 
     bool highGear;
-    
+
     const static float FWD_DECAY = 0.5;
     const static float TURN_DECAY = 0.5;
 };

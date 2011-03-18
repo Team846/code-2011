@@ -7,8 +7,8 @@ MinibotDeployer::MinibotDeployer()
     , alignerServo(RobotConfig::ALIGNER_SERVO)
 {
     string prefix = "MinibotDeployer.";
-    lockedServoValue = config.Get<float>(prefix + "lockedServoValue", 1.0);
-    releasedServoValue = config.Get<float>(prefix + "releasedServoValue", 0.0);
+    lockedServoValue = config.Get<float>(prefix + "lockedServoValue", 0.5);
+    releasedServoValue = config.Get<float>(prefix + "releasedServoValue", 1.0);
     currentThreshold = config.Get<int>(prefix + "currentThreshold", 15);
 }
 

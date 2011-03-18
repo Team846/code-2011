@@ -36,7 +36,7 @@ public:
 
     // extrapolate max low gear speed
     const static float LOW_GEAR_MULTIPLIER = 16.3 / 6.4;
-    
+
     const static float WHEEL_DIAMETER = 8.0; // in
     const static float PI = 3.14159;
 

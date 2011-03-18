@@ -12,7 +12,7 @@ void Brain::TeleopDriveTrain()
 
     action.driveTrain.brakeLeft  = inputs.ShouldBrakeLeft();
     action.driveTrain.brakeRight = inputs.ShouldBrakeRight();
-    
+
     action.driveTrain.thirdGear  = inputs.ShouldShiftThird();
-    
+
 }
