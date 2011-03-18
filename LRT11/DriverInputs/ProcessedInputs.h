@@ -69,7 +69,8 @@ public:
 
     // shifting
     bool ShouldShiftLow();
-
+    bool ShouldShiftThird();
+    
     // minibot deployment
     bool ShouldDeployAligner();
     bool ShouldDeployMinibot();

@@ -49,12 +49,12 @@ public:
     // Digital Outputs
     const static UINT32 DIO_BRAKE_LEFT  = CHANGEME;
     const static UINT32 DIO_BRAKE_RIGHT = CHANGEME;
-    const static UINT32 LINE_SENSOR_CLOCK = 8;
-    const static UINT32 LINE_SENSOR_SI = 7;
+    const static UINT32 LINE_SENSOR_CLOCK = 5;
+    const static UINT32 LINE_SENSOR_SI = 4;
 
     // Analog Inputs
     const static UINT32 POT_ARM = 3;
-    const static UINT32 LINE_SENSOR_ADC = 3;
+    const static UINT32 LINE_SENSOR_ADC = 6;
 
     // Servo Ports
 #ifdef LRT_ROBOT_2011

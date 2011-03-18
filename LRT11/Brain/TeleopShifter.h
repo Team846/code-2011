@@ -10,7 +10,7 @@ void Brain::TeleopShifter()
     action.shifter.force = false;
 
     // always high gear unless shift low button is pushed down
-    if(inputs.ShouldShiftLow())
+    if(inputs.ShouldShiftLow() || inputs.ShouldShiftThird())
     {
         // only force shift the first time
         if(!forceShiftedLow)

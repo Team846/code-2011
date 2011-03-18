@@ -20,6 +20,7 @@ ActionData::ActionData()
     driveTrain.rawTurn = 0;
     driveTrain.brakeLeft = false;
     driveTrain.brakeRight = false;
+    driveTrain.thirdGear = false;
     // closed loop should default to on
     driveTrain.usingClosedLoop = true;
 

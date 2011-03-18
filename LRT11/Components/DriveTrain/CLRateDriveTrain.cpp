@@ -52,7 +52,8 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
     float pGainTurn = highGear ? pGainTurnHighGear : pGainTurnLowGear;
     float pGainFwd = highGear ? pGainFwdHighGear : pGainFwdLowGear;
 
-    float turningRate = encoders.GetNormalizedTurningSpeed();
+    float turningRate = highGear ? encoders.GetNormalizedTurningSpeed()
+			: encoders.GetNormalizedLowGearTurningSpeed();
 
     // eliminate spurrious measurements above mag |1|
     // values over mag |1| will cause the closed loop to slow down
@@ -66,7 +67,8 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
     float newTurn = rawTurn + turningCorrection;
 
     // normalized forward speed
-    float robotSpeed = encoders.GetNormalizedForwardSpeed();
+    float robotSpeed = highGear ? encoders.GetNormalizedForwardSpeed()
+			: encoders.GetNormalizedLowGearForwardSpeed();
 
     float fwdError = rawFwd - robotSpeed;
     fwdError = fwdRunningError.UpdateSum(fwdError);

@@ -34,11 +34,16 @@ public:
 //    const static double kTicksPerFullTurn   = 6725. / 6;
     const static double TICKS_PER_FULL_TURN   = 1350.0;
 
+    // extrapolate max low gear speed
+    const static float LOW_GEAR_MULTIPLIER = 16.3 / 6.4;
+    
     const static float WHEEL_DIAMETER = 8.0; // in
     const static float PI = 3.14159;
 
     double GetForwardSpeed();
     double GetNormalizedForwardSpeed();
+    double GetNormalizedLowGearForwardSpeed();
+    double GetNormalizedLowGearTurningSpeed();
     double GetTurningSpeed();
     double GetNormalizedTurningSpeed();
     double GetRobotDist();

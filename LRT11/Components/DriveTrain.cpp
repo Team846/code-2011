@@ -33,8 +33,8 @@ void DriveTrain::Output()
     left.UpdateOutput();
     right.UpdateOutput();
 
-//    robotDrive.SetClosedLoopEnabled(action.driveTrain.usingClosedLoop);
-    robotDrive.SetClosedLoopEnabled(false);
+    robotDrive.SetClosedLoopEnabled(action.driveTrain.usingClosedLoop);
+//    robotDrive.SetClosedLoopEnabled(false);
 
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
     robotDrive.SetBrakeRight(action.driveTrain.brakeRight);
@@ -44,6 +44,8 @@ void DriveTrain::Output()
     // abort overrides everything; stop if abort button is pushed
     if(action.master.abort)
         robotDrive.ArcadeDrive(0.0, 0.0);
+    else if (action.driveTrain.thirdGear)
+        robotDrive.ArcadeDrive(action.driveTrain.rawForward / 2.0, action.driveTrain.rawTurn / 2.0);
     else
         robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);
 }

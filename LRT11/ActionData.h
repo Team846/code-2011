@@ -24,6 +24,7 @@ public:
         float rawForward, rawTurn;
         bool brakeLeft, brakeRight;
         bool usingClosedLoop;
+        bool thirdGear;
     } driveTrain;
 
     struct
