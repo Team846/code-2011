@@ -74,6 +74,7 @@ private:
 
     //Autonomous routines
     void Side();
+    void EncoderAuton();
     void Middle(int numberOfTubes);
 
     // SmartDashboard updating
