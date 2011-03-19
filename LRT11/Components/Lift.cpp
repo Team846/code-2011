@@ -68,7 +68,8 @@ void Lift::Output()
         IDLE,
         ABORT,
         MANUAL,
-        PRESET
+        PRESET,
+        PULSING
     } state = IDLE;
 
     if(action.lift.givenCommand)
@@ -138,6 +139,22 @@ void Lift::Output()
         action.lift.doneState = action.lift.ABORTED;
         break;
 
+    case PULSING:
+        if(positionMode)
+        {
+            // configure jaguar for voltage mode
+            ConfigureManualMode();
+            positionMode = false;
+        }
+
+        AsynchronousPrinter::Printf("Pulsing lift down\n");
+        if(potValue >= minPosition)
+        {
+            liftEsc.ResetCache();
+            liftEsc.Set(-0.2);
+        }
+        break;
+
     case MANUAL:
         action.lift.doneState = action.lift.STALE; // not done yet
 
@@ -196,7 +213,12 @@ void Lift::Output()
         {
             if(action.lift.doneState != action.lift.SUCCESS)
                 action.lift.doneState = action.lift.FAILURE;
-            state = IDLE;
+
+            if(action.lift.preset == action.lift.LOW_PEG &&
+                    action.lift.doneState == action.lift.SUCCESS)
+                state = PULSING;
+            else
+                state = IDLE;
         }
 
 #ifdef USE_DASHBOARD

@@ -82,22 +82,22 @@ void Arm::Output()
         if(!presetMode)
             // exited from manual mode; done with maneuver
             action.arm.doneState = action.arm.SUCCESS;
-        else
-        {
+//        else
+//        {
 //            AsynchronousPrinter::Printf("Maintaining arm position.\n");
-
-            // arm has drifted from preset value
-            if(action.arm.doneState == action.arm.SUCCESS &&
-                    ((potValue < maxPosition && action.arm.presetTop) ||
-                            (potValue > minPosition && !action.arm.presetTop)))
-            {
+//
+//            // arm has drifted from preset value
+//            if(action.arm.doneState == action.arm.SUCCESS &&
+//                    ((potValue < maxPosition && action.arm.presetTop) ||
+//                            (potValue > minPosition && !action.arm.presetTop)))
+//            {
 //                AsynchronousPrinter::Printf("Arm position inside if.\n");
-
-                // reset timer
-                cycleCount = timeoutCycles;
-                state = PRESET; // switch back to preset mode
-            }
-        }
+//
+//                // reset timer
+//                cycleCount = timeoutCycles;
+//                state = PRESET; // switch back to preset mode
+//            }
+//        }
         break;
 
     case ABORT:
