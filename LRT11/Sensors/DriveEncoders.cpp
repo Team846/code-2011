@@ -85,8 +85,7 @@ double DriveEncoders::GetTurnAngle()
 
 double DriveEncoders::GetLeftWheelDist()
 {
-    // ( pulses / second ) / ( pulses / revolution )
-    // * ( circumference / revolution ) = centimeter distance
+    // pusles / ( pulses / revolution ) * distancen / revolution = inch distance
     return encoderLeft.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
 }
 

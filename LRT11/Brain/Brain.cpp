@@ -29,6 +29,7 @@ Brain::Brain()
     , leftSide(false)
     , isFinale(false)
     , hasMoved(false)
+    , wasDisabled(true)
 {
     // first reading is bogus; throw it out 3/12/11 -KV
     lineSensor.GetLinePosition();
@@ -44,6 +45,9 @@ void Brain::Process(GameState gameState)
     // start game timer when transitioning to teleop mode
     if(previousState != TELEOPERATED && gameState == TELEOPERATED)
         gameTimer.Start();
+
+    if(previousState != DISABLED)
+        wasDisabled = false;
 
     Common();
 

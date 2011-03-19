@@ -13,4 +13,5 @@ void Brain::Disabled()
     action.deployer.shouldAlignerRelease = false;
 
     hasMoved = false;
+    wasDisabled = true;
 }
