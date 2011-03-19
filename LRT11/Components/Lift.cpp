@@ -147,11 +147,10 @@ void Lift::Output()
             positionMode = false;
         }
 
-        AsynchronousPrinter::Printf("Pulsing lift down\n");
         if(potValue >= minPosition)
         {
             liftEsc.ResetCache();
-            liftEsc.Set(-0.2);
+            liftEsc.Set(-0.1);
         }
         break;
 
