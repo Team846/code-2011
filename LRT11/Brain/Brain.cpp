@@ -41,12 +41,9 @@ Brain::~Brain()
 
 void Brain::Process(GameState gameState)
 {
-    // start game timer if transitioning from autonomous to teleop
-    if(previousState != gameState)
-    {
-        if(previousState == AUTONOMOUS && gameState == TELEOPERATED)
-            gameTimer.Start();
-    }
+    // start game timer when transitioning to teleop mode
+    if(previousState != TELEOPERATED && gameState == TELEOPERATED)
+        gameTimer.Start();
 
     Common();
 
@@ -67,8 +64,12 @@ void Brain::Process(GameState gameState)
     }
 
     // match is over
-    if(gameTimer.Get() > 120)
-        gameTimer.Stop();
+    if(gameState == TELEOPERATED)
+    {
+        LCD::UpdateGameTime(gameTimer.Get());
+        if(gameTimer.Get() > 120)
+            gameTimer.Stop();
+    }
 
 #ifdef USE_DASHBOARD
     {
@@ -108,11 +109,14 @@ void Brain::UpdateDashboardValues(GameState gameState)
     SmartDashboard::Log((float)gameTimer.Get(), "Game Timer");
 
     // can only deploy minibot with 10 seconds remaining
-    if(gameTimer.Get() > 110)
+    if(gameState == TELEOPERATED)
     {
-        isFinale = true;
-        SmartDashboard::Log(true, "Can Deploy Minibot?");
+        if(gameTimer.Get() > 110)
+        {
+            isFinale = true;
+            SmartDashboard::Log(true, "Can Deploy Minibot?");
+        }
+        else
+            SmartDashboard::Log(false, "Can Deploy Minibot?");
     }
-    else
-        SmartDashboard::Log(false, "Can Deploy Minibot?");
 }

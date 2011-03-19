@@ -7,8 +7,8 @@ LRTRobot11::LRTRobot11()
 #else
 //    , controller(CANBusController::GetInstance())
 #endif
-    , drive()
-//    , positionDrive()
+//    , drive()
+    , positionDrive()
 //    , encoderData()
     , shifter()
     , lift()
@@ -16,6 +16,7 @@ LRTRobot11::LRTRobot11()
     , roller()
     , minibotDeployer()
     , config(Config::GetInstance())
+    , ds(*DriverStation::GetInstance())
     , prevState(DISABLED)
 {
 
@@ -55,27 +56,34 @@ void LRTRobot11::MainLoop()
         config.Output();
     }
 
+    ProxiedCANJaguar::SetGameState(gameState);
+
 //    if(prevState != gameState)
 //        controller.ResetCache();
 
     if(gameState != DISABLED)
     {
         // components to output only when enabled
+
+        if(ds.GetDigitalIn(1))
         {
-            ProfiledSection ps("Drive Train");
-            drive.Output();
+//            ProfiledSection ps("Drive Train");
+//            drive.Output();
         }
 
-//        {
-//            ProfiledSection ps("Position Drive");
-//            positionDrive.Output();
-//        }
+        if(ds.GetDigitalIn(2))
+        {
+            ProfiledSection ps("Position Drive");
+            positionDrive.Output();
+        }
 
+        if(ds.GetDigitalIn(3))
         {
             ProfiledSection ps("Lift");
             lift.Output();
         }
 
+        if(ds.GetDigitalIn(4))
         {
             ProfiledSection ps("Arm");
             arm.Output();
@@ -86,16 +94,19 @@ void LRTRobot11::MainLoop()
 //            encoderData.Output();
 //        }
 
+        if(ds.GetDigitalIn(5))
         {
             ProfiledSection ps("Servo Shifting");
             shifter.Output();
         }
 
+        if(ds.GetDigitalIn(6))
         {
             ProfiledSection ps("Roller");
             roller.Output();
         }
 
+        if(ds.GetDigitalIn(7))
         {
             ProfiledSection ps("Minibot Deployment");
             minibotDeployer.Output();

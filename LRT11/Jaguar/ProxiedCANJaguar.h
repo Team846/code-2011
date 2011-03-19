@@ -7,12 +7,19 @@
 
 class ProxiedCANJaguar : public CANJaguar
 {
+private:
+    float lastSetpoint;
+    int channel;
+
+    GameState lastState;
+    static GameState gameState;
+
 public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();
 
-#ifdef VIRTUAL
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
+#ifdef VIRTUAL
     virtual float Get();
     virtual void Disable();
 
@@ -36,6 +43,9 @@ public:
 
     void ConfigNeutralMode(CANJaguar::NeutralMode mode);
     void ResetCache();
+#else
+    static void SetGameState(GameState state);
+    void ResetCache();
 #endif
 
 protected:
@@ -44,8 +54,6 @@ protected:
 #else
 //    CANBusController& controller;
 #endif
-
-    int channel;
 };
 
 #endif /* PROXIED_CAN_JAGUAR_H_ */

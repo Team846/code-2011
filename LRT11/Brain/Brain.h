@@ -11,13 +11,6 @@
 #include "..\Sensors\LRTEncoder.h"
 #include "..\Sensors\LineSensor.h"
 
-typedef enum GameState
-{
-    DISABLED,
-    AUTONOMOUS,
-    TELEOPERATED
-};
-
 class Brain
 {
 public:

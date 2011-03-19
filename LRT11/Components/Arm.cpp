@@ -15,6 +15,7 @@ Arm::Arm()
 #endif
     , cycleCount(0)
     , presetMode(true)
+    , pulseCount(0)
 {
     armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 }
@@ -83,11 +84,15 @@ void Arm::Output()
             action.arm.doneState = action.arm.SUCCESS;
         else
         {
+//            AsynchronousPrinter::Printf("Maintaining arm position.\n");
+
             // arm has drifted from preset value
             if(action.arm.doneState == action.arm.SUCCESS &&
                     ((potValue < maxPosition && action.arm.presetTop) ||
                             (potValue > minPosition && !action.arm.presetTop)))
             {
+//                AsynchronousPrinter::Printf("Arm position inside if.\n");
+
                 // reset timer
                 cycleCount = timeoutCycles;
                 state = PRESET; // switch back to preset mode
@@ -127,7 +132,16 @@ void Arm::Output()
         if(action.arm.presetTop)
         {
             if(potValue < maxPosition)
+            {
                 armEsc.Set(powerUp);
+
+                // make roller suck while moving up to keep
+                // game piece in
+                if(++pulseCount % 2 == 0)
+                    action.roller.state = action.roller.SUCKING;
+                else
+                    action.roller.state = action.roller.STOPPED;
+            }
             else
             {
                 action.arm.doneState = action.arm.SUCCESS;

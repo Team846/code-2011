@@ -7,6 +7,15 @@
 | C: Date completed  |
 ======================
 
+To test
+/ Disable/Enable components
+/ Caching
+/ Arm suck in
+/ Minibot timer
+- Lift presets (high row, low row)
+- Check maintain lift position
+- Autonomous
+
 Tasks after shipping
 / Autonomous routine
 	/ Release ringer

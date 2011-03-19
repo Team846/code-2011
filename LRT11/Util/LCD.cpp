@@ -6,6 +6,7 @@
 #include <Synchronized.h>
 
 LCD* LCD::instance = NULL;
+double LCD::gameTime = -1.0;
 
 LCD::LCD() :
     loadArray("\\|/-")
@@ -112,7 +113,12 @@ void LCD::UpdateHeartbeat(bool isServiceMode)
         mode = "Service Mode";
 
     char heartbeat = loadArray[(loops / 12) % 4];
-    Print(kHeartbeatLine, "%c %s", heartbeat, mode.c_str());
+    Print(kHeartbeatLine, "%c %s %.2f", heartbeat, mode.c_str(), gameTime);
 
     loops++;
+}
+
+void LCD::UpdateGameTime(double time)
+{
+    gameTime = time;
 }

@@ -28,8 +28,7 @@ void CLPositionDriveTrain::Configure()
 
 void CLPositionDriveTrain::MoveInches(float inches)
 {
-    float cm = inches * 2.54;
-    moveDistanceInfo.target = encoders.GetRobotDist() + cm;
+    moveDistanceInfo.target = encoders.GetRobotDist() + inches;
     moveDistanceInfo.delta = encoders.GetTurnTicks();
     moveDistanceInfo.hasCommand = true;
 }
@@ -48,18 +47,23 @@ bool CLPositionDriveTrain::MoveDistanceOutput()
     if(!moveDistanceInfo.hasCommand)
         return true;
 
+//    drive.SetClosedLoopEnabled(true);
+//    drive.SetHighGear(false);
+
     float error = (moveDistanceInfo.target - encoders.GetRobotDist());
-    float newError = forwardRunningError.UpdateSum(error);
+//    float newError = forwardRunningError.UpdateSum(error);
 
     // arcade drive assumes inputs are within [-1,1] interval
-    float correction = Util::Clamp<float>(newError * pGainFwd, -1, 1);
+    // limit max speed to 50%
+    float correction = Util::Clamp<float>(error * pGainFwd, -0.1, 0.1);
 
     float turnError = moveDistanceInfo.delta - encoders.GetTurnTicks();
     float turnCorrection = turnError * pGainFwdTurnCorrection;
 
     AsynchronousPrinter::Printf("E: %.2f, C: %.2f, TE: %.2f, TC: %.2f\n", error,
             correction, turnError, turnCorrection);
-    drive.ArcadeDrive(correction, turnCorrection);
+//    drive.ArcadeDrive(correction, turnCorrection);
+    drive.ArcadeDrive(0.1, 0);
 
 #ifdef USE_DASHBOARD
 //    SmartDashboard::Log(newError, "CLPosition Error");

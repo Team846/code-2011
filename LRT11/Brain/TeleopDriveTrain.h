@@ -7,9 +7,6 @@ void Brain::TeleopDriveTrain()
     action.driveTrain.usingClosedLoop = false;
 #endif
 
-    action.driveTrain.rawForward = inputs.GetForward();
-    action.driveTrain.rawTurn    = inputs.GetTurn();
-
 //    action.shifter.gear = action.shifter.LOW_GEAR;
 //    action.positionTrain.enabled = true;
 //
@@ -17,9 +14,16 @@ void Brain::TeleopDriveTrain()
 //    {
 //        AsynchronousPrinter::Printf("Has Moved\n");
 //        action.positionTrain.shouldMoveDistance = true;
-//        action.positionTrain.moveDistance = 12.0; // inches
+//        action.positionTrain.moveDistance = 24.0; // inches
 //        hasMoved = true;
 //    }
+
+    action.driveTrain.rawForward = 0.1;
+    action.driveTrain.rawTurn = 0.0;
+    return;
+
+    action.driveTrain.rawForward = inputs.GetForward();
+    action.driveTrain.rawTurn    = inputs.GetTurn();
 
     action.driveTrain.brakeLeft  = inputs.ShouldBrakeLeft();
     action.driveTrain.brakeRight = inputs.ShouldBrakeRight();

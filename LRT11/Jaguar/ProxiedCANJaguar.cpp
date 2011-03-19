@@ -1,11 +1,14 @@
 #include "ProxiedCANJaguar.h"
 
+GameState ProxiedCANJaguar::gameState = DISABLED;
+
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     : CANJaguar(channel)
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
     , channel(channel)
 #else
+    , lastState(DISABLED)
 //    : controller(CANBusController::GetInstance())
 #endif
 {
@@ -111,5 +114,26 @@ void ProxiedCANJaguar::DisableControl()
 void ProxiedCANJaguar::ResetCache()
 {
     controller.ResetCache(channel);
+}
+#else
+void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
+{
+    // send the value if there is a setpoint or game state change
+    if(setpoint != lastSetpoint || lastState != gameState)
+        CANJaguar::Set(setpoint);
+
+    lastSetpoint = setpoint;
+    lastState = gameState;
+}
+
+void ProxiedCANJaguar::SetGameState(GameState state)
+{
+    gameState = state;
+}
+
+void ProxiedCANJaguar::ResetCache()
+{
+    // bogus value to reset cache
+    lastSetpoint = -1.0e6;
 }
 #endif

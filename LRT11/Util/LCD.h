@@ -37,13 +37,14 @@ public:
     void ScrollLCD(int x, int y);
     void UpdateHeartbeat(bool isServiceMode);
 
+    static void UpdateGameTime(double time);
+
 protected:
     LCD();
 
 private:
     static LCD* instance;
-    DISALLOW_COPY_AND_ASSIGN(LCD)
-    ;
+    DISALLOW_COPY_AND_ASSIGN(LCD);
 
     int curLineIndex;
     int curColumnIndex;
@@ -59,6 +60,8 @@ private:
     char* textBuffer;
     char* outputBuffer;
     SEM_ID textBufferSemaphore;
+
+    static double gameTime;
 };
 
 #endif //LRT_DRIVER_STATION_LCD_H_

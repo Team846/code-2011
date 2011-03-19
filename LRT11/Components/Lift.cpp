@@ -46,7 +46,10 @@ void Lift::Configure()
     timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 
     minPosition = config.Get<float>(prefix + "lowRowBottom");
-    maxPosition = minPosition + config.Get<float>(prefix + "highPegRelative");
+
+    // bottom of high row + high peg relative is the highest position
+    maxPosition = config.Get<float>(prefix + "highRowBottom", 1.77)
+            + config.Get<float>(prefix + "highPegRelative");
 
     potDeadband = config.Get<float>(prefix + "deadband", 0.1);
 }
@@ -141,7 +144,7 @@ void Lift::Output()
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
         {
-//            liftEsc.ResetCache();
+            liftEsc.ResetCache();
             liftEsc.Set(action.lift.power);
         }
         else
@@ -186,7 +189,6 @@ void Lift::Output()
 //            cycleCount = 1; // will get decremented to 0
         }
 
-        AsynchronousPrinter::Printf("Lift key: %s\n", key.c_str());
         liftEsc.Set(setPoint);
         cycleCount--;
 

@@ -115,7 +115,7 @@ float ProcessedInputs::GetLiftPower()
 
 bool ProcessedInputs::IsHighRow()
 {
-    return operatorStick.GetThrottle() > 0.5;
+    return operatorStick.GetThrottle() > 0.8;
 }
 
 bool ProcessedInputs::ShouldMoveArmDown()

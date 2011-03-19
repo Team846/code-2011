@@ -24,8 +24,8 @@ private:
 //    CANBusController& controller;
 #endif
 
-    DriveTrain drive;
-//    PositionDriveTrain positionDrive;
+//    DriveTrain drive;
+    PositionDriveTrain positionDrive;
 
     Shifter shifter;
 
@@ -35,6 +35,8 @@ private:
 
     MinibotDeployer minibotDeployer;
     Config& config;
+
+    DriverStation& ds;
 
     GameState prevState;
     GameState DetermineState();

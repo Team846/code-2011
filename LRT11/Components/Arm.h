@@ -28,6 +28,8 @@ private:
     enum {BOTTOM = 1, TOP = 2};
     bool presetMode;
 
+    int pulseCount;
+
 public:
     Arm();
     virtual ~Arm();
