@@ -18,9 +18,9 @@ void Brain::TeleopDriveTrain()
 //        hasMoved = true;
 //    }
 
-    action.driveTrain.rawForward = 0.1;
-    action.driveTrain.rawTurn = 0.0;
-    return;
+//    action.driveTrain.rawForward = 0.1;
+//    action.driveTrain.rawTurn = 0.0;
+//    return;
 
     action.driveTrain.rawForward = inputs.GetForward();
     action.driveTrain.rawTurn    = inputs.GetTurn();

@@ -7,8 +7,8 @@ LRTRobot11::LRTRobot11()
 #else
 //    , controller(CANBusController::GetInstance())
 #endif
-//    , drive()
-    , positionDrive()
+    , drive()
+//    , positionDrive()
 //    , encoderData()
     , shifter()
     , lift()
@@ -67,14 +67,14 @@ void LRTRobot11::MainLoop()
 
         if(ds.GetDigitalIn(1))
         {
-//            ProfiledSection ps("Drive Train");
-//            drive.Output();
+            ProfiledSection ps("Drive Train");
+            drive.Output();
         }
 
         if(ds.GetDigitalIn(2))
         {
-            ProfiledSection ps("Position Drive");
-            positionDrive.Output();
+//            ProfiledSection ps("Position Drive");
+//            positionDrive.Output();
         }
 
         if(ds.GetDigitalIn(3))

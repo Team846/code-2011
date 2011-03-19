@@ -24,8 +24,8 @@ private:
 //    CANBusController& controller;
 #endif
 
-//    DriveTrain drive;
-    PositionDriveTrain positionDrive;
+    DriveTrain drive;
+//    PositionDriveTrain positionDrive;
 
     Shifter shifter;
 

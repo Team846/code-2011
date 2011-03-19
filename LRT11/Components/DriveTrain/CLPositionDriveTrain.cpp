@@ -47,8 +47,8 @@ bool CLPositionDriveTrain::MoveDistanceOutput()
     if(!moveDistanceInfo.hasCommand)
         return true;
 
-//    drive.SetClosedLoopEnabled(true);
-//    drive.SetHighGear(false);
+    drive.SetClosedLoopEnabled(true);
+    drive.SetHighGear(false);
 
     float error = (moveDistanceInfo.target - encoders.GetRobotDist());
 //    float newError = forwardRunningError.UpdateSum(error);
