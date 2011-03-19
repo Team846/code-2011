@@ -59,7 +59,7 @@ void Brain::Process(GameState gameState)
         break;
 
     case AUTONOMOUS:
-//        Auton();
+        Auton();
         break;
     }
 

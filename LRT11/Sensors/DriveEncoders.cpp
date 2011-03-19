@@ -43,7 +43,7 @@ double DriveEncoders::GetNormalizedForwardSpeed()
 
 double DriveEncoders::GetNormalizedLowGearForwardSpeed()
 {
-    return GetNormalizedForwardSpeed() * LOW_GEAR_MULTIPLIER;
+    return Util::Clamp<double>(GetNormalizedForwardSpeed() * LOW_GEAR_MULTIPLIER, -1.0, 1.0);
 }
 
 double DriveEncoders::GetNormalizedLowGearTurningSpeed()
