@@ -75,7 +75,7 @@ void Brain::EncoderAuton()
 
     case DRIVE:
         action.driveTrain.usingClosedLoop = false;
-        action.driveTrain.rawForward = 0.5;
+        action.driveTrain.rawForward = 1.0;
         action.driveTrain.rawTurn = 0.0;
 
         state = WAIT_FOR_DRIVE;

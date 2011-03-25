@@ -133,9 +133,9 @@ int LineSensor::GetLinePosition()
 
     // log pixel data for debugging
 #ifdef USE_DASHBOARD
-//    SmartDashboard::Log((int)maxPixel, "Max Line Sensor Pixel Value");
-//    SmartDashboard::Log((int)pixels[maxPixel], "Max Line Sensor Value");
-//    SmartDashboard::Log((int)intensitySum, "Line Sensor Intensity Sum");
+    SmartDashboard::Log((int)maxPixel, "Max Line Sensor Pixel Value");
+    SmartDashboard::Log((int)pixels[maxPixel], "Max Line Sensor Value");
+    SmartDashboard::Log((int)intensitySum, "Line Sensor Intensity Sum");
 #endif
 
     // 25000 empirically determined to be a cutoff intensity sum
@@ -150,20 +150,20 @@ int LineSensor::GetLinePosition()
         // similar to a center of gravity calculation
         linePosition = weightedSum / intensitySum;
 
-//    static int cycleCount = 0;
-//    if(cycleCount++ % 25 == 0)   // update every quarter second
-//    {
-//        ofstream out("/lineout.csv", ios::app);
-//
-//        for(int i = START_PIXEL; i < NUM_PIXELS; i += 2)
-//        {
-//            pixelValue = pixels[i];
-//            out << setw(3) << pixelValue << ",";
-//        }
-//
-//        out << endl;
-//        out.close();
-//    }
+    static int cycleCount = 0;
+    if(cycleCount++ % 25 == 0)   // update every quarter second
+    {
+        ofstream out("/lineout.csv", ios::app);
+
+        for(int i = START_PIXEL; i < NUM_PIXELS; i += 2)
+        {
+            pixelValue = pixels[i];
+            out << setw(3) << pixelValue << ",";
+        }
+
+        out << endl;
+        out.close();
+    }
 
 #undef START_PIXEL
 
