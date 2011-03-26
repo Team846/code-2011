@@ -25,11 +25,8 @@ ProcessedInputs& ProcessedInputs::GetInstance()
 
 void ProcessedInputs::Configure()
 {
-    Config& config = Config::GetInstance();
-    string prefix = "ProcessedJoystick.";
-
-    forwardDeadband = config.Get<float>(prefix + "forwardDeadband", 0.05);
-    turnDeadband = config.Get<float>(prefix + "turnDeadband", 0.05);
+//    Config& config = Config::GetInstance();
+//    string prefix = "ProcessedJoystick.";
 }
 
 float ProcessedInputs::GetThrottle()
@@ -59,12 +56,16 @@ bool ProcessedInputs::ShouldAbort()
 
 float ProcessedInputs::GetForward()
 {
-    return Util::AddDeadband<float>(-driverStick.GetY(), forwardDeadband);
+    return -driverStick.GetY();
 }
 
 float ProcessedInputs::GetTurn()
 {
-    return Util::AddDeadband<float>(-driverStick.GetRawAxis(3), turnDeadband);
+    if(Util::Abs<float>(driverStick.GetRawAxis(3)) < 1e-6)
+        return 0.0;
+
+    float turn = -driverStick.GetRawAxis(3);
+    return Util::Sign<float>(turn) * Util::Rescale<float>(Util::Abs<float>(turn), 0, 1, 0.15, 1);
 }
 
 bool ProcessedInputs::ShouldBrakeLeft()
@@ -104,7 +105,7 @@ bool ProcessedInputs::ShouldMoveLiftHigh()
 
 bool ProcessedInputs::ShouldManuallyPowerLift()
 {
-    return Util::Abs<float>(Util::AddDeadband<float>(-operatorStick.GetY(), forwardDeadband)) > 0;
+    return -operatorStick.GetY() > 0;
 }
 
 float ProcessedInputs::GetLiftPower()

@@ -3,8 +3,8 @@
 
 #include "WPILib.h"
 
-#define VIRTUAL
-#define LRT_ROBOT_2011
+//#define VIRTUAL
+//#define LRT_ROBOT_2011
 #define USE_DASHBOARD
 
 typedef enum GameState
