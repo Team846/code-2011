@@ -6,6 +6,7 @@
 #include "..\Jaguar\Esc.h"
 #include "..\Sensors\DriveEncoders.h"
 #include "DriveTrain\CLRateDriveTrain.h"
+#include "DriveTrain\CLPositionDriveTrain.h"
 #include "DriveTrain\DBSDrive.h"
 
 class DriveTrain : public Component
@@ -15,6 +16,7 @@ private:
     Esc left, right;
     DBSDrive dbsDrive;
     CLRateDriveTrain robotDrive;
+    CLPositionDriveTrain positionDrive;
 
 public:
     DriveTrain();

@@ -24,18 +24,18 @@ ActionData::ActionData()
     // closed loop should default to on
     driveTrain.usingClosedLoop = true;
 
-    positionTrain.shouldMoveDistance = false;
-    positionTrain.shouldTurnAngle = false;
-    positionTrain.shouldOutputMoveDistance = false;
-    positionTrain.shouldOutputTurnAngle = false;
-    positionTrain.moveDistance = 0;
-    positionTrain.turnAngle = 0;
-    positionTrain.pivotLeft = false;
-    positionTrain.pivotRight = false;
-    positionTrain.done = false;
-    positionTrain.enabled = false;
-    // closed loop should default to on
-    positionTrain.usingClosedLoop = true;
+//    positionTrain.shouldMoveDistance = false;
+//    positionTrain.shouldTurnAngle = false;
+//    positionTrain.shouldOutputMoveDistance = false;
+//    positionTrain.shouldOutputTurnAngle = false;
+//    positionTrain.moveDistance = 0;
+//    positionTrain.turnAngle = 0;
+//    positionTrain.pivotLeft = false;
+//    positionTrain.pivotRight = false;
+//    positionTrain.done = false;
+//    positionTrain.enabled = false;
+//    // closed loop should default to on
+//    positionTrain.usingClosedLoop = true;
 
     lift.givenCommand = false;
     lift.manualMode = false;

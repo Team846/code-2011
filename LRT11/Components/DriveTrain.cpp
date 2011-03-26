@@ -14,6 +14,7 @@ DriveTrain::DriveTrain()
 #endif
     , dbsDrive(left, right, false)
     , robotDrive(left, right, encoders, dbsDrive)
+    , positionDrive(robotDrive)
 {
 
 }
@@ -25,27 +26,43 @@ DriveTrain::~DriveTrain()
 
 void DriveTrain::Output()
 {
-    // rate train (normal joystick driving) and position train
-    // can't run simultaneously
-    if(action.positionTrain.enabled)
-        return;
-
+	//code common to both position and speed modes
     left.UpdateOutput();
     right.UpdateOutput();
-
     robotDrive.SetClosedLoopEnabled(action.driveTrain.usingClosedLoop);
-//    robotDrive.SetClosedLoopEnabled(false);
-
+    
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
     robotDrive.SetBrakeRight(action.driveTrain.brakeRight);
-
+    
     robotDrive.SetHighGear(action.shifter.gear == action.shifter.HIGH_GEAR);
-
-    // abort overrides everything; stop if abort button is pushed
-    if(action.master.abort)
-        robotDrive.ArcadeDrive(0.0, 0.0);
-    else if(action.driveTrain.thirdGear)
-        robotDrive.ArcadeDrive(action.driveTrain.rawForward / 2.0, action.driveTrain.rawTurn / 2.0);
+    
+    if (action.driveTrain.resetFwd)
+    	positionDrive.ResetFwd();
+    if (action.driveTrain.resetTurn)
+    	positionDrive.ResetTurn();
+    
+    action.driveTrain.resetFwd = false;
+    action.driveTrain.resetTurn = true;
+    
+    // rate train (normal joystick driving) and position train
+    // can't run simultaneously
+    if(action.driveTrain.mode == action.driveTrain.POSITION)
+    {
+    	action.driveTrain.done = positionDrive.Output
+    		(action.driveTrain.distanceSetPoint, 
+			action.driveTrain.bearingSetPoint);
+    }
     else
-        robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);
+    {
+	    // abort overrides everything; stop if abort button is pushed
+	    if(action.master.abort)
+	        robotDrive.ArcadeDrive(0.0, 0.0);
+	    else if(action.driveTrain.thirdGear)
+	        robotDrive.ArcadeDrive(action.driveTrain.rawForward / 2.0, action.driveTrain.rawTurn / 2.0);
+	    else
+	        robotDrive.ArcadeDrive(action.driveTrain.rawForward, action.driveTrain.rawTurn);
+    }
+
+
+
 }

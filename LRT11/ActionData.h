@@ -25,22 +25,19 @@ public:
         bool brakeLeft, brakeRight;
         bool usingClosedLoop;
         bool thirdGear;
-    } driveTrain;
-
-    struct
-    {
-        bool shouldMoveDistance, shouldTurnAngle;
-        bool shouldOutputMoveDistance, shouldOutputTurnAngle;
-
-        // moveDistance in inches, turnAngle in degrees
-        float moveDistance, turnAngle;
-        bool pivotLeft, pivotRight;
-
+        
+        enum 
+        {
+        	SPEED,
+        	POSITION
+        } mode;
+        
         bool done;
-        bool enabled;
-
-        bool usingClosedLoop;
-    } positionTrain;
+        float bearingSetPoint, distanceSetPoint; // inches, degrees
+        bool resetTurn;
+        bool resetFwd;
+        
+    } driveTrain;
 
     struct
     {

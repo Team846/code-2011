@@ -89,8 +89,6 @@ void Esc::Stop()
     static float k = 1. / 2;
     errorRunning *= k;
     errorRunning += error;
-//    if(error < 0.01)
-//        Set(0.0);
 
     Set(errorRunning * pGain * (1 - k));
     ApplyBrakes(8);
