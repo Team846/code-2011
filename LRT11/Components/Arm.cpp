@@ -31,6 +31,7 @@ void Arm::Configure()
     maxPosition = config.Get<float>(prefix + "maxPosition", 530);
 
     powerUp = config.Get<float>(prefix + "powerUp", 0.30);
+    powerRetainUp = config.Get<float>(prefix + "powerRetainUp", 0.10);
     powerDown = config.Get<float>(prefix + "powerDown", -0.15);
 
     timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
@@ -43,7 +44,8 @@ void Arm::Output()
         IDLE,
         ABORT,
         MANUAL,
-        PRESET
+        PRESET,
+        MAINTAINING
     } state = IDLE;
 
     if(action.arm.givenCommand)
@@ -167,9 +169,20 @@ void Arm::Output()
         {
             if(action.arm.doneState != action.arm.SUCCESS)
                 action.arm.doneState = action.arm.FAILURE;
-            state = IDLE;
+
+            if(action.arm.presetTop)
+                state = MAINTAINING;
+            else
+                state = IDLE;
         }
 
+        break;
+    case MAINTAINING:
+        action.arm.doneState = action.arm.SUCCESS;
+        if(potValue < maxPosition - ARM_POWER_BACK_UP_THRESHOLD)
+            armEsc.Set(powerUp);
+        else
+            armEsc.Set(powerRetainUp);
         break;
     }
 }

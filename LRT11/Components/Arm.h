@@ -20,7 +20,7 @@ private:
 #endif
 
     float maxPosition, minPosition;
-    float powerUp, powerDown;
+    float powerUp, powerRetainUp, powerDown;
 
     int timeoutCycles;
     int cycleCount;
@@ -30,6 +30,7 @@ private:
 
     int pulseCount;
 
+    const static float ARM_POWER_BACK_UP_THRESHOLD = 10;
 public:
     Arm();
     virtual ~Arm();

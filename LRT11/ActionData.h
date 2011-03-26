@@ -25,18 +25,18 @@ public:
         bool brakeLeft, brakeRight;
         bool usingClosedLoop;
         bool thirdGear;
-        
-        enum 
+
+        enum
         {
-        	SPEED,
-        	POSITION
+            SPEED,
+            POSITION
         } mode;
-        
+
         bool done;
         float bearingSetPoint, distanceSetPoint; // inches, degrees
         bool resetTurn;
         bool resetFwd;
-        
+
     } driveTrain;
 
     struct

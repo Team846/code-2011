@@ -11,7 +11,7 @@
 class CLPositionDriveTrain : public Configurable
 {
 public:
-    CLPositionDriveTrain(CLRateDriveTrain &train);
+    CLPositionDriveTrain(CLRateDriveTrain& train);
 
     virtual void Configure();
 
@@ -19,7 +19,7 @@ public:
     void ResetFwd();
     void ResetTurn();
 private:
-    CLRateDriveTrain &drive;
+    CLRateDriveTrain& drive;
     DriveEncoders& encoders;
 
     float pGainFwd;
@@ -29,7 +29,7 @@ private:
 
     float fwdDeadband;
     float turnDeadband;
-    
+
     float zeroDistance, zeroBearing;
 };
 
