@@ -3,7 +3,7 @@
 
 #include "WPILib.h"
 
-//#define VIRTUAL
+#define VIRTUAL
 #define LRT_ROBOT_2011
 #define USE_DASHBOARD
 

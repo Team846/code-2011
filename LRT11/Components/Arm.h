@@ -36,7 +36,6 @@ public:
 
     virtual void Configure();
     virtual void Output();
-    int getPotVal();
 };
 
 #endif

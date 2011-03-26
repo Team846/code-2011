@@ -56,7 +56,9 @@ void LRTRobot11::MainLoop()
         config.Output();
     }
 
+#ifndef VIRTUAL
     ProxiedCANJaguar::SetGameState(gameState);
+#endif
 
 //    if(prevState != gameState)
 //        controller.ResetCache();

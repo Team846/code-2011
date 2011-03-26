@@ -39,7 +39,6 @@ public:
     void ConfigureManualMode();
 
     virtual void Output();
-    double getPotVal();
 };
 
 #endif

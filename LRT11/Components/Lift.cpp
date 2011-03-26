@@ -317,8 +317,3 @@ void Lift::Output()
     }
 }
 */
-
-double Lift::getPotVal()
-{
-    return liftEsc.GetPosition();
-}
