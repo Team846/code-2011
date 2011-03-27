@@ -17,6 +17,7 @@ LRTRobot11::LRTRobot11()
     , minibotDeployer()
     , config(Config::GetInstance())
     , ds(*DriverStation::GetInstance())
+    , switchLED(6)
     , prevState(DISABLED)
 {
 

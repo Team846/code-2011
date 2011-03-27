@@ -6,6 +6,7 @@
 #include "..\Config\Config.h"
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Util\Util.h"
+#include "..\Jaguar\LRTCANJaguar.h"
 
 class Roller : public Component, public Configurable
 {

@@ -4,7 +4,7 @@
 #include "General.h"
 #include "LRTRobotBase.h"
 #include "Brain/Brain.h"
-#include "Components/DriveTrain.h"
+#include "Components/ModifiedDriveTrain.h"
 #include "Components/EncoderDataCollection.h"
 #include "Components/Shifter.h"
 #include "Components/PositionDriveTrain.h"
@@ -24,7 +24,7 @@ private:
 //    CANBusController& controller;
 #endif
 
-    DriveTrain drive;
+    ModifiedDriveTrain drive;
 //    PositionDriveTrain positionDrive;
 
     Shifter shifter;
@@ -37,6 +37,8 @@ private:
     Config& config;
 
     DriverStation& ds;
+
+    DigitalOutput switchLED;
 
     GameState prevState;
     GameState DetermineState();

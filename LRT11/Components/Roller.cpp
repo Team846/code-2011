@@ -2,8 +2,10 @@
 #include "..\Config\RobotConfig.h"
 
 Roller::Roller()
-    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port numbers later
-    , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
+//    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port numbers later
+//    , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
+    : topRoller(2)
+    , bottomRoller(3)
     , prefix("Roller.")
 {
     topRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
@@ -17,6 +19,14 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
+//    float totalCurrent;
+    {
+//        ProfiledSection ps("Get Roller Currents");
+//        totalCurrent = topRoller.GetOutputCurrent() + bottomRoller.GetOutputCurrent();
+    }
+
+//    AsynchronousPrinter::Printf("Total current: %.2f\n", totalCurrent);
+
     // observe currents
 #ifdef USE_DASHBOARD
 //    SmartDashboard::Log(topRoller.GetOutputCurrent(), "Top Current");
@@ -42,16 +52,38 @@ void Roller::Stop()
 void Roller::RollOpposite(bool rotateUpward)
 {
     // set duty cycles based on rotation direction
-    if(rotateUpward)
+    static int cycleCount = 0;
+
+    if(++cycleCount < 10)
     {
-        topRoller.Set(dutyCycleRotatingIn);
-        bottomRoller.Set(dutyCycleRotatingOut);
+        if(rotateUpward)
+        {
+            topRoller.Set(dutyCycleRotatingIn);
+            bottomRoller.Set(dutyCycleRotatingOut);
+        }
+        else
+        {
+            topRoller.Set(dutyCycleRotatingOut);
+            bottomRoller.Set(dutyCycleRotatingIn);
+        }
     }
+//    else if(++cycleCount < 60)
+//    {
+//        topRoller.Set(0);
+//        bottomRoller.Set(0);
+//    }
+    else if(++cycleCount < 15)
+    {
+        topRoller.Set(dutyCycleSucking);
+        bottomRoller.Set(dutyCycleSucking);
+    }
+//    else if(++cycleCount < 115)
+//    {
+//        topRoller.Set(0);
+//        bottomRoller.Set(0);
+//    }
     else
-    {
-        topRoller.Set(dutyCycleRotatingOut);
-        bottomRoller.Set(dutyCycleRotatingIn);
-    }
+        cycleCount = 0;
 }
 
 void Roller::Output()
