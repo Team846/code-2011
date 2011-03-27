@@ -55,8 +55,8 @@ DriveOutput DBSDrive::ComputeArcadeDrive(float forward, float turn)
     {
         out.left = -turn;
         out.right = +turn;
-        leftDrive.SetCoast();
-        rightDrive.SetCoast();
+        leftDrive.SetBrakeOff();
+        rightDrive.SetBrakeOff();
     }
     else // Use DitherBraking
     {
@@ -99,12 +99,12 @@ DriveOutput DBSDrive::ComputeArcadeDrive(float forward, float turn)
             if(inboardSide == LEFT)
             {
                 out.left = 0;
-                leftDrive.ApplyBrakes(brakeAmt);
+                leftDrive.SetBrake(brakeAmt);
             }
             else
             {
                 out.right = 0;
-                rightDrive.ApplyBrakes(brakeAmt);
+                rightDrive.SetBrake(brakeAmt);
             }
         }
     }

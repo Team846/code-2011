@@ -39,6 +39,7 @@ Esc::Esc(int channel, LRTEncoder& encoder, string name)
     , encoder(encoder)
     , name(name)
     , index(0)
+    , stoppingIntegrator(0)
     , errorRunning(0)
 {
 }
@@ -55,6 +56,7 @@ Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
     , encoder(encoder)
     , name(name + "A")
     , index(0)
+    , stoppingIntegrator(0)
     , errorRunning(0)
 {
 }
@@ -81,17 +83,24 @@ void Esc::Stop()
     float RobotSpeed = GetNormalizedSpeed();
     if(Util::Abs<double>(RobotSpeed) > 0.3)
     {
-        ApplyBrakes(8);
+        SetBrake(8);
         Set(0.0);
         return;
     }
     double error = 0.0 - RobotSpeed;
-    static float k = 1. / 2;
-    errorRunning *= k;
-    errorRunning += error;
+//    static float k = 1. / 2;
+//    errorRunning *= k;
+//    errorRunning += error;
 
-    Set(errorRunning * pGain * (1 - k));
-    ApplyBrakes(8);
+    double correction = pGain * stoppingIntegrator.UpdateSum(error);
+
+
+//    if(error < 0.01)
+//        Set(0.0);
+
+//    Set(errorRunning * pGain * (1 - k));
+    Set(correction);
+    SetBrake(8);
 }
 
 void Esc::Set(float speed)
@@ -108,18 +117,18 @@ void Esc::Set(float speed)
 //    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));
 }
 
-void Esc::UpdateOutput()
+void Esc::ApplyBrakes()
 {
     if(hasPartner)
-        partner->UpdateOutput();
+        partner->ApplyBrakes();
 
-    CANJaguarBrake::UpdateOutput();
+    CANJaguarBrake::ApplyBrakes();
 }
 
-void Esc::ApplyBrakes(int brakeAmount)
+void Esc::SetBrake(int brakeAmount)
 {
     if(hasPartner)
-        partner->ApplyBrakes(brakeAmount);
+        partner->SetBrake(brakeAmount);
 
-    CANJaguarBrake::ApplyBrakes(brakeAmount);
+    CANJaguarBrake::SetBrake(brakeAmount);
 }

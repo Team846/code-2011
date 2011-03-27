@@ -3,6 +3,7 @@
 
 #include "..\General.h"
 
+// used to switch from digital (PWM) to CAN braking -KV 3/25/11
 class Brake
 {
 public:
@@ -12,9 +13,9 @@ public:
     {
     }
 
-    virtual void ApplyBrakes(int brakeAmount) = 0;
-    virtual void BrakeFull() = 0;
-    virtual void SetCoast() = 0;
+    virtual void SetBrake(int brakeAmount) = 0;
+    virtual void SetBrakeMax() = 0;
+    virtual void SetBrakeOff() = 0;
 };
 
 #endif /* BRAKE_H_ */

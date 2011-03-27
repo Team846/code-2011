@@ -7,24 +7,26 @@ CANJaguarBrake::CANJaguarBrake(ProxiedCANJaguar& jaggie)
 {
 }
 
-void CANJaguarBrake::ApplyBrakes(int brakeAmount)
+void CANJaguarBrake::SetBrake(int brakeAmount)
 {
     amount = Util::Clamp<int>(brakeAmount, 0, 8);
 }
 
-void CANJaguarBrake::UpdateOutput()
+// does nothing if setpoint is non-zero
+void CANJaguarBrake::ApplyBrakes()
 {
     // 1-byte bitfields corresponding to value. See below for calculation.
     static const UINT8 ditherPattern[] = {0x00, 0x01, 0x11, 0x25, 0x55, 0xD5, 0xEE, 0xFE, 0xFF};
 
-    ++cycleCount;
-    if(cycleCount >= 8)
+    // cycleCount ranges from 0 to 8
+    if(++cycleCount >= 8)
         cycleCount = 0;
 
-    if(ditherPattern[amount] & (1 << cycleCount))
-        jaguar.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
-    else
-        jaguar.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+    // select the cycleCount-th bit from the dither pattern; see below
+    bool shouldBrakeThisCycle = ditherPattern[amount] & (1 << cycleCount);
+
+    // ConfigNeutralMode sets whether the jaguar should brake or coast
+    jaguar.ConfigNeutralMode(shouldBrakeThisCycle ? CANJaguar::kNeutralMode_Brake : CANJaguar::kNeutralMode_Coast);
 }
 
 /*

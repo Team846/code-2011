@@ -9,10 +9,10 @@ ProxiedCANJaguarWithBrake::ProxiedCANJaguarWithBrake(UINT8 channel)
 
 void ProxiedCANJaguarWithBrake::ApplyBrakes(int brakeAmount)
 {
-    brake.ApplyBrakes(brakeAmount);
+    brake.SetBrake(brakeAmount);
 }
 
 void ProxiedCANJaguarWithBrake::UpdateOutput()
 {
-    brake.UpdateOutput();
+    brake.ApplyBrakes();
 }

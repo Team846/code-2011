@@ -13,7 +13,7 @@ DriveEncoders::DriveEncoders()
     : encoderLeft(RobotConfig::DIO_ENCODER_LEFT_A,
             RobotConfig::DIO_ENCODER_LEFT_B)
 #ifndef VIRTUAL
-    , uselessEncoder(1, 2)
+    , uselessEncoder(3, 6)
 #endif
     , encoderRight(RobotConfig::DIO_ENCODER_RIGHT_A,
             RobotConfig::DIO_ENCODER_RIGHT_B)

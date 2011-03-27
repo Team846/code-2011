@@ -15,19 +15,25 @@ class CANJaguarBrake : public Brake
 
 public:
     CANJaguarBrake(ProxiedCANJaguar& jaggie);
-    virtual void ApplyBrakes(int brakeAmount);   // between 0 and 8
 
-    virtual void BrakeFull()
+    // [0, 8]; 0 is no braking and 8 is max braking
+    virtual void SetBrake(int brakeAmount);
+
+    // does nothing if setpoint is non-zero
+    // applies brake based on call to SetBrake
+    virtual void ApplyBrakes();
+
+    // braking is dependent on speed; higher speeds will result in
+    // more dramatic braking. speed is not considered in this method
+    virtual void SetBrakeMax()
     {
-        ApplyBrakes(8);
+        SetBrake(8);
     }
 
-    virtual void SetCoast()
+    virtual void SetBrakeOff()
     {
-        ApplyBrakes(0);
+        SetBrake(0);
     }
-
-    virtual void UpdateOutput();
 };
 
 #endif /* CAN_JAGUAR_BRAKE_H_ */

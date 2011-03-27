@@ -8,6 +8,7 @@
 #include "..\Config\Configurable.h"
 #include "..\Util\AsynchronousPrinter.h"
 #include "..\Sensors\DriveEncoders.h"
+#include "..\Util\RunningSum.h"
 #include <string>
 using namespace std;
 
@@ -26,12 +27,13 @@ public:
     void Stop();
     virtual void Set(float speed);
 
-    void UpdateOutput();
-    void ApplyBrakes(int brakeAmount);
+    void ApplyBrakes();
+    void SetBrake(int brakeAmount);
 
 private:
     bool hasPartner;
     Esc* partner;
+
 
     class CurrentLimiter
     {
@@ -68,6 +70,7 @@ private:
     int index;
 
     const static int kArraySize = 4;
+    RunningSum stoppingIntegrator;
     float errorRunning;
     float errors[kArraySize];
 };

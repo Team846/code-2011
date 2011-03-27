@@ -27,8 +27,9 @@ DriveTrain::~DriveTrain()
 void DriveTrain::Output()
 {
     //code common to both position and speed modes
-    left.UpdateOutput();
-    right.UpdateOutput();
+    left.ApplyBrakes();
+    right.ApplyBrakes();
+
     robotDrive.SetClosedLoopEnabled(action.driveTrain.usingClosedLoop);
 
     robotDrive.SetBrakeLeft(action.driveTrain.brakeLeft);
