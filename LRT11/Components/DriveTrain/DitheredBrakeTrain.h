@@ -8,11 +8,14 @@
 
 typedef struct
 {
-    float leftDC;
-    float rightDC;
+    float dutyCycle;
+    float brakingDutyCycle;
+} ESCCommand;
 
-    float leftBrakeDC;
-    float rightBrakeDC;
+typedef struct
+{
+    ESCCommand leftCommand;
+    ESCCommand rightCommand;
 } DriveCommand;
 
 class DitheredBrakeTrain : public Configurable
@@ -29,6 +32,7 @@ public:
 
     virtual void Configure();
     DriveCommand Drive(float forwardInput, float turnInput);
+    ESCCommand CalculateBrakeAndDutyCycle(float input, float speed);
 };
 
 #endif
