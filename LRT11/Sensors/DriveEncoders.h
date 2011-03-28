@@ -29,12 +29,21 @@ public:
     static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
 
+#ifdef LRT_ROBOT_2011
     const static float PULSES_PER_REVOLUTION = 100.0; // pulses per wheel revolution [BA]
-//    const static float kMaxEncoderRate      = 1411.96;
+
     const static float MAX_ENCODER_RATE      = 1400.0;
-    const static double MAX_TURNING_RATE     = 2800.0;
-//    const static double kTicksPerFullTurn   = 6725. / 6;
-    const static double TICKS_PER_FULL_TURN   = 1350.0;
+    const static float MAX_TURNING_RATE     = 2800.0;
+
+    const static float TICKS_PER_FULL_TURN   = 1350.0;
+#else
+    const static float PULSES_PER_REVOLUTION = 187.5; // pulses per wheel revolution [BA]
+
+    const static float MAX_ENCODER_RATE      = 1412.0;
+    const static float MAX_TURNING_RATE      = 448.3;
+
+    const static float TICKS_PER_FULL_TURN   = 1121.0;
+#endif
 
     // extrapolate max low gear speed
     const static float LOW_GEAR_MULTIPLIER = 16.3 / 6.4;

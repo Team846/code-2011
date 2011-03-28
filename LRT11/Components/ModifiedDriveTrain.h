@@ -4,13 +4,13 @@
 #include "..\General.h"
 #include "Component.h"
 #include "..\Config\RobotConfig.h"
-#include "DriveTrain\DitheredBrakeTrain.h"
+#include "DriveTrain\CLRateTrain.h"
 #include "..\Jaguar\Esc.h"
 
 class ModifiedDriveTrain : public Component
 {
 private:
-    DitheredBrakeTrain ditheredBrakeTrain;
+    CLRateTrain closedRateTrain;
     Esc leftESC, rightESC;
 
 public:

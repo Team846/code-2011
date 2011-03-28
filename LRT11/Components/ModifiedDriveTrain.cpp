@@ -2,7 +2,7 @@
 
 ModifiedDriveTrain::ModifiedDriveTrain()
     : Component()
-    , ditheredBrakeTrain()
+    , closedRateTrain()
 #ifdef LRT_ROBOT_2011
     , leftESC(RobotConfig::CAN_DRIVE_LEFT_A, RobotConfig::CAN_DRIVE_LEFT_B,
             DriveEncoders::GetInstance().GetLeftEncoder(), "left")
@@ -26,7 +26,7 @@ void ModifiedDriveTrain::Output()
 {
     // calculate left duty cycle, right duty cycle, left brake, and
     // right brake based off of joystick inputs
-    DriveCommand drive = ditheredBrakeTrain.Drive(action.driveTrain.rawForward,
+    DriveCommand drive = closedRateTrain.Drive(action.driveTrain.rawForward,
             action.driveTrain.rawTurn);
 
     // leftDC and rightDC are set to 0 if there is a need to brake;

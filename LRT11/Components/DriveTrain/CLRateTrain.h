@@ -1,5 +1,5 @@
-#ifndef CLOSED_LOOP_DRIVE_TRAIN_H_
-#define CLOSED_LOOP_DRIVE_TRAIN_H_
+#ifndef CL_RATE_TRAIN_H_
+#define CL_RATE_TRAIN_H_
 
 #include "..\..\General.h"
 #include "..\..\Sensors\DriveEncoders.h"
@@ -7,16 +7,16 @@
 #include "..\..\Config\Configurable.h"
 #include "..\..\Jaguar\Esc.h"
 #include "..\..\Util\RunningSum.h"
-#include "DriveMethod.h"
-#include "DBSDrive.h"
+#include "DitheredBrakeTrain.h"
 
-class CLRateDriveTrain : public DriveMethod, public Configurable
+class CLRateTrain : public DitheredBrakeTrain
 {
 public:
-    CLRateDriveTrain(Esc& escLeft, Esc& escRight, DriveEncoders& encoders,
-            DBSDrive& dbsDrive);
+    CLRateTrain();
 
-    virtual DriveOutput ComputeArcadeDrive(float rawFwd, float rawTurn);
+    virtual void Configure();
+    DriveCommand Drive(float rawFwd, float rawTurn);
+
     void PivotLeft(float rightSpeed);
     void PivotRight(float leftSpeed);
 
@@ -24,18 +24,15 @@ public:
     void SetBrakeRight(bool brakeRight);
 
     void SetClosedLoopEnabled(bool enabled);
-
-    void Stop();
-    virtual void Configure();
-
     void SetHighGear(bool isHighGear);
 
+    void Stop();
+
 private:
-    Esc& escLeft, &escRight;
+//    Esc& escLeft, &escRight;
     DriveEncoders& encoders;
 
     Config& config;
-    DBSDrive& dbsDrive;
 
     float pGainTurnLowGear;
     float pGainFwdLowGear;
@@ -54,7 +51,7 @@ private:
     bool highGear;
 
     const static float FWD_DECAY = 0.5;
-    const static float TURN_DECAY = 0.5;
+    const static float TURN_DECAY = 0.87; // (1/2)^(1/5) =~ 0.87
 };
 
 #endif

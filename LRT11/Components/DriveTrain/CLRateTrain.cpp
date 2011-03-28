@@ -1,13 +1,11 @@
-#include "CLRateDriveTrain.h"
+#include "CLRateTrain.h"
 
-CLRateDriveTrain::CLRateDriveTrain(Esc& escLeft, Esc& escRight,
-        DriveEncoders& encoders, DBSDrive& dbsDrive)
-    : DriveMethod(escLeft, escRight)
-    , escLeft(escLeft)
-    , escRight(escRight)
-    , encoders(encoders)
+CLRateTrain::CLRateTrain()
+//    : DriveMethod(escLeft, escRight)
+//    , escLeft(escLeft)
+//    , escRight(escRight)
+    : encoders(DriveEncoders::GetInstance())
     , config(Config::GetInstance())
-    , dbsDrive(dbsDrive)
     , fwdRunningError(FWD_DECAY)
     , turnRunningError(TURN_DECAY)
     , brakeLeft(false)
@@ -17,8 +15,11 @@ CLRateDriveTrain::CLRateDriveTrain(Esc& escLeft, Esc& escRight,
 {
 }
 
-void CLRateDriveTrain::Configure()
+void CLRateTrain::Configure()
 {
+    // confiure parent class
+    DitheredBrakeTrain::Configure();
+
     const static string prefix = "CLRateDriveTrain.";
 
     pGainTurnHighGear = config.Get<float>(prefix + "pGainTurnHighGear", 1.5);
@@ -28,8 +29,7 @@ void CLRateDriveTrain::Configure()
     pGainFwdLowGear = config.Get<float>(prefix + "pGainFwdLowGear", 1.5);
 }
 
-DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
-        float rawTurn)
+DriveCommand CLRateTrain::Drive(float rawFwd, float rawTurn)
 {
     if(brakeLeft && brakeRight)
         Stop();
@@ -37,8 +37,9 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
         PivotLeft(rawFwd);
     else if(brakeRight)
         PivotRight(rawFwd);
-    if(brakeLeft || brakeRight)
-        return NO_OUTPUT;
+    // TODO FIX
+//    if(brakeLeft || brakeRight)
+//        return;
 
     if(!usingClosedLoop)
     {
@@ -46,7 +47,7 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
 //        SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
 //        SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
 #endif
-        return dbsDrive.ComputeArcadeDrive(rawFwd, rawTurn);
+        return DitheredBrakeTrain::Drive(rawFwd, rawTurn);
     }
 
     float pGainTurn = highGear ? pGainTurnHighGear : pGainTurnLowGear;
@@ -77,52 +78,52 @@ DriveOutput CLRateDriveTrain::ComputeArcadeDrive(float rawFwd,
     float newFwd = rawFwd + fwdCorrection;
 
 #ifdef USE_DASHBOARD
-    //SmartDashboard::Log(turningRate, "Turning Rate");
-//    SmartDashboard::Log(pGainFwd, "Forward Gain");
-//    SmartDashboard::Log(pGainTurn, "Turn Gain");
+//    SmartDashboard::Log(turningRate, "Turning Rate");
+    SmartDashboard::Log(pGainFwd, "Forward Gain");
+    SmartDashboard::Log(pGainTurn, "Turn Gain");
 //    SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
 //    SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
 //    SmartDashboard::Log(newFwd, "Forward");
 //    SmartDashboard::Log(newTurn, "Turn");
 #endif
 
-    return dbsDrive.ComputeArcadeDrive(newFwd, newTurn);
+    return DitheredBrakeTrain::Drive(newFwd, newTurn);
 }
 
-void CLRateDriveTrain::PivotLeft(float rightSpeed)
+void CLRateTrain::PivotLeft(float rightSpeed)
 {
-    escLeft.Stop();
-    escRight.Set(rightSpeed);
+//    escLeft.Stop();
+//    escRight.Set(rightSpeed);
 }
 
-void CLRateDriveTrain::PivotRight(float leftSpeed)
+void CLRateTrain::PivotRight(float leftSpeed)
 {
-    escRight.Stop();
-    escLeft.Set(leftSpeed);
+//    escRight.Stop();
+//    escLeft.Set(leftSpeed);
 }
 
-void CLRateDriveTrain::SetBrakeLeft(bool brakeLeft)
+void CLRateTrain::SetBrakeLeft(bool brakeLeft)
 {
     this->brakeLeft = brakeLeft;
 }
 
-void CLRateDriveTrain::SetBrakeRight(bool brakeRight)
+void CLRateTrain::SetBrakeRight(bool brakeRight)
 {
     this->brakeRight = brakeRight;
 }
 
-void CLRateDriveTrain::Stop()
+void CLRateTrain::Stop()
 {
-    escRight.Stop();
-    escLeft.Stop();
+//    escRight.Stop();
+//    escLeft.Stop();
 }
 
-void CLRateDriveTrain::SetClosedLoopEnabled(bool enabled)
+void CLRateTrain::SetClosedLoopEnabled(bool enabled)
 {
     usingClosedLoop = enabled;
 }
 
-void CLRateDriveTrain::SetHighGear(bool isHighGear)
+void CLRateTrain::SetHighGear(bool isHighGear)
 {
     highGear = isHighGear;
 }
