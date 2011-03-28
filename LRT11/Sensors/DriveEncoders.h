@@ -22,7 +22,7 @@ private:
     LRTEncoder uselessEncoder;
     LRTEncoder encoderRight;
 #endif
-    
+
     bool isHighGear;
 
 public:
@@ -50,7 +50,7 @@ public:
 
     const static float WHEEL_DIAMETER = 4.0; // in
     const static float PI = 3.14159;
-    
+
     void SetHighGear(bool isHighGear);
 
     double GetForwardSpeed();

@@ -66,7 +66,7 @@ void Shifter::Output()
         rightServo.Set(rightLowGearServoVal);
         encoders.SetHighGear(false);
         break;
-        
+
     case HIGH_GEAR:
         leftServo.Set(leftHighGearServoVal);
         rightServo.Set(rightHighGearServoVal);
