@@ -22,6 +22,8 @@ private:
     LRTEncoder uselessEncoder;
     LRTEncoder encoderRight;
 #endif
+    
+    bool isHighGear;
 
 public:
     static DriveEncoders& GetInstance();
@@ -39,13 +41,17 @@ public:
 
     const static float WHEEL_DIAMETER = 4.0; // in
     const static float PI = 3.14159;
+    
+    void SetHighGear(bool isHighGear);
 
     double GetForwardSpeed();
     double GetNormalizedForwardSpeed();
+    double GetNormalizedForwardMotorSpeed();
     double GetNormalizedLowGearForwardSpeed();
     double GetNormalizedLowGearTurningSpeed();
     double GetTurningSpeed();
     double GetNormalizedTurningSpeed();
+    double GetNormalizedMotorTurningSpeed();
     double GetRobotDist();
     double GetTurnTicks();
     double GetTurnRevolutions();
@@ -54,8 +60,10 @@ public:
     double GetRightWheelDist();
     double GetLeftSpeed();
     double GetNormalizedLeftSpeed();
+    double GetNormalizedLeftMotorSpeed();
     double GetRightSpeed();
     double GetNormalizedRightSpeed();
+    double GetNormalizedRightMotorSpeed();
 
 #ifdef VIRTUAL
     VirtualLRTEncoder& GetLeftEncoder();

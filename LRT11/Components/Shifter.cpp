@@ -64,10 +64,13 @@ void Shifter::Output()
     case LOW_GEAR:
         leftServo.Set(leftLowGearServoVal);
         rightServo.Set(rightLowGearServoVal);
+        encoders.SetHighGear(false);
         break;
+        
     case HIGH_GEAR:
         leftServo.Set(leftHighGearServoVal);
         rightServo.Set(rightHighGearServoVal);
+        encoders.SetHighGear(true);
         break;
     }
 
