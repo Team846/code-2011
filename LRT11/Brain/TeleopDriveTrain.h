@@ -6,7 +6,24 @@ void Brain::TeleopDriveTrain()
     // can't use closed loop with a virtual massless system
     action.driveTrain.usingClosedLoop = false;
 #endif
+    if (ds.GetDigitalIn(8))
+    {
+    	if (wasDisabled)
+    	{
+        action.driveTrain.mode = action.driveTrain.DISTANCE;
+        action.driveTrain.distance.givenCommand = true;
 
+        action.driveTrain.distance.distanceSetPoint = 10.0 * 12; // 6 feet
+        action.driveTrain.distance.distanceDutyCycle = 0.5;
+    	}
+        if(action.driveTrain.distance.done)
+        {
+        	action.driveTrain.mode = action.driveTrain.SPEED;
+        	action.driveTrain.rate.rawForward 	= 0.0;
+        	action.driveTrain.rate.rawTurn 		= 0.0;
+        }
+    	
+    }
 //    action.shifter.gear = action.shifter.LOW_GEAR;
 //    action.positionTrain.enabled = true;
 //
