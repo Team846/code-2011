@@ -40,27 +40,27 @@ void Brain::TeleopDriveTrain()
         IDLE
     } state = SET_COMMAND;
 
+    if(wasDisabled)
+        state = SET_COMMAND;
+
     static int timer = 0;
 
     AsynchronousPrinter::Printf("state:%d\n", (int) state);
     switch(state)
     {
     case SET_COMMAND:
-        action.driveTrain.mode = action.driveTrain.POSITION;
-        action.driveTrain.position.givenCommand = true;
+        action.driveTrain.mode = action.driveTrain.DISTANCE;
+        action.driveTrain.distance.givenCommand = true;
 
-        action.driveTrain.position.shouldMoveDistance = true;
-        action.driveTrain.position.distanceSetPoint = 6.0 * 12; // 6 feet
-        action.driveTrain.position.maxFwdSpeed = 0.3;
+        action.driveTrain.distance.distanceSetPoint = 6.0 * 12; // 6 feet
+        action.driveTrain.distance.distanceDutyCycle = 0.5;
 
-        timer = 0;
         state = DRIVE_FORWARD;
         break;
 
     case DRIVE_FORWARD:
-        if(++timer > 50 * 5)
+        if(action.driveTrain.distance.done)
         {
-            wait = 50;
             timer = 0;
             state = STALL_DETECTION;
         }
@@ -70,13 +70,13 @@ void Brain::TeleopDriveTrain()
         action.driveTrain.mode = action.driveTrain.SPEED;
         action.driveTrain.rate.usingClosedLoop = false;
 
-        action.driveTrain.rate.rawForward = 0.3;
+        action.driveTrain.rate.rawForward = 0.2;
         action.driveTrain.rate.rawTurn = 0.0;
 
         if(++timer > 25)
         {
             if(driveEncoders.GetNormalizedForwardSpeed()
-                    < 0.1)
+                    < 0.05)
             {
                 wait = 50;
                 action.driveTrain.rate.rawForward = 0.0;
