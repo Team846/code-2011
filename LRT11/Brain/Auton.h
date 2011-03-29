@@ -43,6 +43,133 @@ void Brain::Auton()
 
 void Brain::EncoderAuton()
 {
+    static enum
+    {
+        SET_COMMAND,
+        DRIVE_FORWARD,
+        STALL_DETECTION,
+        SET_SECOND_COMMAND,
+        STEP_BACK,
+        SET_THIRD_COMMAND,
+        DRIVE_BACK,
+        TURN_AROUND,
+        IDLE
+    } state = SET_COMMAND;
+
+    static int timer = 0;
+
+    if(wasDisabled)
+    {
+        timer = 0;
+        state = SET_COMMAND;
+    }
+
+    switch(state)
+    {
+    case SET_COMMAND:
+        action.driveTrain.mode = action.driveTrain.DISTANCE;
+        action.driveTrain.distance.givenCommand = true;
+
+        action.driveTrain.distance.distanceSetPoint = 6.0 * 12; // 6 feet
+        action.driveTrain.distance.distanceDutyCycle = 0.5;
+
+        action.driveTrain.distance.done = false;
+        state = DRIVE_FORWARD;
+        break;
+
+    case DRIVE_FORWARD:
+        if(action.driveTrain.distance.done)
+        {
+            timer = 0;
+            state = STALL_DETECTION;
+        }
+        break;
+
+    case STALL_DETECTION:
+        action.driveTrain.mode = action.driveTrain.RATE;
+        action.driveTrain.rate.usingClosedLoop = false;
+
+        action.driveTrain.rate.rawForward = 0.2;
+        action.driveTrain.rate.rawTurn = 0.0;
+
+        if(++timer > 25)
+        {
+            if(driveEncoders.GetNormalizedForwardSpeed()
+                    < 0.05)
+                state = SET_SECOND_COMMAND;
+        }
+        break;
+
+    case SET_SECOND_COMMAND:
+        action.driveTrain.rate.usingClosedLoop = true;
+        action.driveTrain.rate.rawForward = 0.0;
+        action.driveTrain.rate.rawTurn = 0.0;
+
+        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.position.givenCommand = true;
+
+        action.driveTrain.position.shouldMoveDistance = true;
+        action.driveTrain.position.shouldTurnAngle = false;
+
+        action.driveTrain.position.distanceSetPoint = -6.0; // 6 inches back
+        action.driveTrain.position.turnSetPoint = 0.0;
+
+        action.driveTrain.position.maxFwdSpeed = 0.15;
+        action.driveTrain.position.maxTurnSpeed = 1.0;
+
+        timer = 0;
+        state = STEP_BACK;
+        break;
+
+    case STEP_BACK:
+        // wait one second for driving to finish
+        if(++timer > 50)
+            state = SET_THIRD_COMMAND;
+        break;
+
+    case SET_THIRD_COMMAND:
+        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.position.givenCommand = true;
+
+        action.driveTrain.position.shouldMoveDistance = true;
+        action.driveTrain.position.shouldTurnAngle = false;
+
+        action.driveTrain.position.distanceSetPoint = -6.0 * 12; // 6 feet back
+        action.driveTrain.position.turnSetPoint = 0.0;
+
+        action.driveTrain.position.maxFwdSpeed = 0.3;
+        action.driveTrain.position.maxTurnSpeed = 1.0;
+
+        timer = 0;
+        state = DRIVE_BACK;
+        break;
+
+    case DRIVE_BACK:
+        if(++timer > 150)
+            state = TURN_AROUND;
+        break;
+
+    case TURN_AROUND:
+        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.position.givenCommand = true;
+
+        action.driveTrain.position.shouldMoveDistance = false;
+        action.driveTrain.position.shouldTurnAngle = true;
+
+        action.driveTrain.position.distanceSetPoint = 0.0;
+        action.driveTrain.position.turnSetPoint = 180.0; // 180 degrees
+
+        action.driveTrain.position.maxFwdSpeed = 1.0;
+        action.driveTrain.position.maxTurnSpeed = 1.0;
+
+        state = IDLE;
+        break;
+
+    case IDLE:
+        // wait for turning to complete and do nothing
+        break;
+    }
+
 //    static enum
 //    {
 //        CONFIGURE,
