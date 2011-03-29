@@ -18,8 +18,8 @@ void Brain::TeleopDriveTrain()
 //        hasMoved = true;
 //    }
 
-//    action.driveTrain.rawForward = 0.1;
-//    action.driveTrain.rawTurn = 0.0;
+//    action.driveTrain.speed.rawForward = 0.1;
+//    action.driveTrain.speed.rawTurn = 0.0;
 //    return;
     
     static int wait = 0;
@@ -46,20 +46,20 @@ void Brain::TeleopDriveTrain()
     switch(state)
     {
     case SET_ZERO_POINT:
-    	action.driveTrain.resetFwd = true;
-    	action.driveTrain.resetTurn = true;
+    	action.driveTrain.position.resetFwd = true;
+    	action.driveTrain.position.resetTurn = true;
     	
     	action.driveTrain.mode = action.driveTrain.POSITION;
-    	action.driveTrain.distanceSetPoint = 6.0 * 12;
-    	action.driveTrain.bearingSetPoint  = 0.0;
+    	action.driveTrain.position.distanceSetPoint = 6.0 * 12;
+    	action.driveTrain.position.bearingSetPoint  = 0.0;
     	
     	timer = 0;
     	state = DRIVE_FORWARD;
     	break;
     	
     case DRIVE_FORWARD:
-    	action.driveTrain.resetFwd = false;
-    	action.driveTrain.resetTurn = false;
+    	action.driveTrain.position.resetFwd = false;
+    	action.driveTrain.position.resetTurn = false;
     	
     	if(++timer > 50 * 5)
     	{
@@ -71,10 +71,10 @@ void Brain::TeleopDriveTrain()
     	
     case STALL_DETECTION:
     	action.driveTrain.mode = action.driveTrain.SPEED;
-    	action.driveTrain.usingClosedLoop = false;
+    	action.driveTrain.speed.usingClosedLoop = false;
     	
-    	action.driveTrain.rawForward = 0.2;
-    	action.driveTrain.rawTurn = 0.0;
+    	action.driveTrain.speed.rawForward = 0.2;
+    	action.driveTrain.speed.rawTurn = 0.0;
     	
     	if(++timer > 50)
     	{
@@ -82,35 +82,35 @@ void Brain::TeleopDriveTrain()
     				< 0.1)
     		{
     			wait = 50;
-    			action.driveTrain.rawForward = 0.0;
-    			action.driveTrain.rawTurn = 0.0;
+    			action.driveTrain.speed.rawForward = 0.0;
+    			action.driveTrain.speed.rawTurn = 0.0;
     			state = SET_SECOND_ZERO_POINT;
     		}
     	}
     	break;
     	
     case SET_SECOND_ZERO_POINT:
-    	action.driveTrain.usingClosedLoop = true;
+    	action.driveTrain.speed.usingClosedLoop = true;
     	action.driveTrain.mode = action.driveTrain.POSITION;
 
-    	action.driveTrain.rawForward = 0.0;
-    	action.driveTrain.rawTurn = 0.0;
+    	action.driveTrain.speed.rawForward = 0.0;
+    	action.driveTrain.speed.rawTurn = 0.0;
 
-    	action.driveTrain.resetFwd = true;
-    	action.driveTrain.resetTurn = true;
+    	action.driveTrain.position.resetFwd = true;
+    	action.driveTrain.position.resetTurn = true;
     	
-    	action.driveTrain.distanceSetPoint  = -6.0;
-    	action.driveTrain.bearingSetPoint 	= 0.0;
+    	action.driveTrain.distance.distanceSetPoint  = -6.0;
+    	action.driveTrain.distance.bearingSetPoint 	= 0.0;
     	
     	timer = 0;
     	state = DRIVE_BACK;
     	break;
     	
     case DRIVE_BACK:
-    	action.driveTrain.resetFwd = false;
-    	action.driveTrain.resetTurn = false;
+    	action.driveTrain.position.resetFwd = false;
+    	action.driveTrain.position.resetTurn = false;
     	
-    	action.driveTrain.maxFwdSpeed = 0.15;
+    	action.driveTrain.position.maxFwdSpeed = 0.15;
 
     	// wait one second for driving to finish
     	if(++timer > 50)
@@ -133,14 +133,14 @@ void Brain::TeleopDriveTrain()
 //    static bool first = true;
 //    if (first || cycleCount == -1)
 //    {
-//    	action.driveTrain.resetFwd  = true;
-//    	action.driveTrain.resetTurn = true;
+//    	action.driveTrain.position.resetFwd  = true;
+//    	action.driveTrain.position.resetTurn = true;
 //    	first = false;
 //    }
 //    
 //    action.driveTrain.mode = action.driveTrain.POSITION;
-//    action.driveTrain.distanceSetPoint 	= 6*12.0;
-//    action.driveTrain.bearingSetPoint 	= 0.0;
+//    action.driveTrain.position.distanceSetPoint 	= 6*12.0;
+//    action.driveTrain.position.bearingSetPoint 	= 0.0;
 //
 //    
 //    
@@ -163,22 +163,22 @@ void Brain::TeleopDriveTrain()
 //    			action.driveTrain.rawForward = 0.0;
 //    			action.driveTrain.rawTurn = 0.0;
 //    			
-//    			action.driveTrain.resetFwd = true;
-//    			action.driveTrain.resetTurn = true;
+//    			action.driveTrain.position.resetFwd = true;
+//    			action.driveTrain.position.resetTurn = true;
 //    			
-//    			action.driveTrain.distanceSetPoint  = -2*12.0;
-//    			action.driveTrain.bearingSetPoint 	= 0.0;
+//    			action.driveTrain.position.distanceSetPoint  = -2*12.0;
+//    			action.driveTrain.position.bearingSetPoint 	= 0.0;
 //    			cycleCount = -1;
 //    		}
 //    	}
 //    }
 
-//    action.driveTrain.rawForward = inputs.GetForward();
-//    action.driveTrain.rawTurn    = inputs.GetTurn();
+//    action.driveTrain.speed.rawForward = inputs.GetForward();
+//    action.driveTrain.speed.rawTurn    = inputs.GetTurn();
 //
-//    action.driveTrain.brakeLeft  = inputs.ShouldBrakeLeft();
-//    action.driveTrain.brakeRight = inputs.ShouldBrakeRight();
+//    action.driveTrain.speed.brakeLeft  = inputs.ShouldBrakeLeft();
+//    action.driveTrain.speed.brakeRight = inputs.ShouldBrakeRight();
 
-//    action.driveTrain.thirdGear  = inputs.ShouldShiftThird();
+//    action.driveTrain.speed.thirdGear  = inputs.ShouldShiftThird();
 
 }

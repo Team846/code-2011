@@ -23,21 +23,22 @@ ModifiedDriveTrain::~ModifiedDriveTrain()
 
 }
 
+//TODO add braking
 void ModifiedDriveTrain::Output()
 {
 	DriveCommand drive;
-	if (action.driveTrain.resetFwd)
+	if (action.driveTrain.position.resetFwd)
 	{
-		action.driveTrain.resetFwd = false;
-		closedLoopPositionTrain.ResetFwd();
+		action.driveTrain.position.resetFwd = false;
+		closedLoopPositionTrain.position.ResetFwd();
 	}
-	if (action.driveTrain.resetTurn)
+	if (action.driveTrain.position.resetTurn)
 	{
-		action.driveTrain.resetTurn = false;
+		action.driveTrain.position.resetTurn = false;
 		closedLoopPositionTrain.ResetTurn();
 	}
 	
-	if (action.driveTrain.givenCommand)
+	if (action.driveTrain.distance.givenCommand)
 	{
 		action.driveTrain.givenCommand = false;
 	}
@@ -47,23 +48,23 @@ void ModifiedDriveTrain::Output()
 	switch (action.driveTrain.mode)
 	{
 		case action.driveTrain.SPEED:
-			drive = closedRateTrain.Drive(action.driveTrain.rawForward,
-	            action.driveTrain.rawTurn);
+			drive = closedRateTrain.Drive(action.driveTrain.speed.rawForward,
+	            action.driveTrain.speed.rawTurn);
 			break;
 		
 		case POSITION:
 			drive = closedLoopPositionTrain.Drive( 
-					action.driveTrain.distanceSetPoint
-					, action.driveTrain.bearingSetPoint
-					, action.driveTrain.maxFwdSpeed
-					, action.driveTrain.maxTurnSpeed
-					, action.driveTrain.stop);
+					action.driveTrain.position.distanceSetPoint
+					, action.driveTrain.position.bearingSetPoint
+					, action.driveTrain.position.maxFwdSpeed
+					, action.driveTrain.position.maxTurnSpeed
+					, action.driveTrain.position.stop);
 			break;
 			
 		case DISTANCE:
 			CLPositionCommand command = 
-				closedLoopPositionTrain.DriveAtLeastDistance(action.driveTrain.distanceDutyCycle);
-			action.driveTrain.done = command.isDone;
+				closedLoopPositionTrain.DriveAtLeastDistance(action.driveTrain.distance.distanceDutyCycle);
+			action.driveTrain.distance.done = command.isDone;
 			drive = command.drive;
 			break;
 	} 
