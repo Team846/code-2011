@@ -5,13 +5,22 @@
 #include "Component.h"
 #include "..\Config\RobotConfig.h"
 #include "DriveTrain\CLRateTrain.h"
+#include "DriveTrain\CLPositionDriveTrain.h"
 #include "..\Jaguar\Esc.h"
 
 class ModifiedDriveTrain : public Component
 {
 private:
     CLRateTrain closedRateTrain;
+    CLPositionDriveTrain closedLoopPositionTrain;
     Esc leftESC, rightESC;
+    
+    enum
+    {
+        SPEED,
+        POSITION,
+        DISTANCE
+    } 
 
 public:
     ModifiedDriveTrain();

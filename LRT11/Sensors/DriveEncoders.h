@@ -36,6 +36,7 @@ public:
     const static float MAX_TURNING_RATE     = 2800.0;
 
     const static float TICKS_PER_FULL_TURN   = 1350.0;
+    const static float WHEEL_DIAMETER = 4.0; // in
 #else
     const static float PULSES_PER_REVOLUTION = 187.5; // pulses per wheel revolution [BA]
 
@@ -43,12 +44,12 @@ public:
     const static float MAX_TURNING_RATE      = 448.3;
 
     const static float TICKS_PER_FULL_TURN   = 1121.0;
+    const static float WHEEL_DIAMETER = 8.0; // in
 #endif
 
     // extrapolate max low gear speed
     const static float LOW_GEAR_MULTIPLIER = 16.3 / 6.4;
 
-    const static float WHEEL_DIAMETER = 4.0; // in
     const static float PI = 3.14159;
 
     void SetHighGear(bool isHighGear);

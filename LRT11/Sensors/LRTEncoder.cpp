@@ -1,7 +1,8 @@
 #include "LRTEncoder.h"
 
-LRTEncoder::LRTEncoder(UINT8 sourceA, UINT8 sourceB)
+LRTEncoder::LRTEncoder(UINT8 sourceA, UINT8 sourceB, float trim)
     : Encoder(sourceA, sourceB, false, CounterBase::k1X)
+    , trim(trim)
 //    , useless(15 + count, , false, CounterBase::k1X)
 {
 
@@ -20,4 +21,9 @@ double LRTEncoder::GetRate()
     if(rate != rate) // test if rate is NaN because NaN != NaN
         return 0.0;
     return rate;
+}
+
+INT32 LRTEncoder::Get()
+{
+	return Encoder::Get()*trim;
 }

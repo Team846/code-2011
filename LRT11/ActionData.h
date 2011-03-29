@@ -21,21 +21,40 @@ public:
     // drive train
     struct
     {
-        float rawForward, rawTurn;
-        bool brakeLeft, brakeRight;
-        bool usingClosedLoop;
-        bool thirdGear;
-
         enum
         {
             SPEED,
-            POSITION
+            POSITION,
+            DISTANCE
         } mode;
 
-        bool done;
-        float bearingSetPoint, distanceSetPoint; // inches, degrees
-        bool resetTurn;
-        bool resetFwd;
+        struct 
+    	{
+	        float rawForward, rawTurn;
+	        bool brakeLeft, brakeRight;
+	        bool usingClosedLoop;
+	        bool thirdGear;
+    	} speed;
+
+    	struct 
+    	{
+	        bool done;
+	        float bearingSetPoint, distanceSetPoint; // inches, degrees
+	        float maxFwdSpeed, maxTurnSpeed;
+    		
+	        bool resetTurn;
+	        bool resetFwd;
+	        bool stop;
+    	} position;
+        
+    	struct 
+    	{
+	        bool done;
+	        bool givenCommand;
+	        
+	        float distanceDutyCycle;
+	        float distanceSetPoint;
+    	}distance;
 
     } driveTrain;
 

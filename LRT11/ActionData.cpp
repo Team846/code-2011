@@ -16,13 +16,28 @@ ActionData::ActionData()
     // used to abort movements
     master.abort = false;
 
-    driveTrain.rawForward = 0;
-    driveTrain.rawTurn = 0;
-    driveTrain.brakeLeft = false;
-    driveTrain.brakeRight = false;
-    driveTrain.thirdGear = false;
+    driveTrain.mode = driveTrain.SPEED;
+    
+    driveTrain.speed.rawForward = 0;
+    driveTrain.speed.rawTurn = 0;
+    driveTrain.speed.brakeLeft = false;
+    driveTrain.speed.brakeRight = false;
+    driveTrain.speed.thirdGear = false;
     // closed loop should default to on
-    driveTrain.usingClosedLoop = true;
+    driveTrain.speed.usingClosedLoop = true;
+    
+    driveTrain.position.maxTurnSpeed = 1.0;
+    driveTrain.position.maxFwdSpeed = 0.3;
+    driveTrain.position.maxFwdSpeed = 0.3;
+    driveTrain.position.maxFwdSpeed = 0.3;
+    driveTrain.position.maxFwdSpeed = 0.3;
+    driveTrain.position.done = false;
+    
+    driveTrain.distance.givenCommand = false;
+    driveTrain.distance.distanceDutyCycle = 0.0;
+    driveTrain.distance.distanceSetPoint = 0.0;
+    driveTrain.distance.done = false;
+    
 
 //    positionTrain.shouldMoveDistance = false;
 //    positionTrain.shouldTurnAngle = false;
