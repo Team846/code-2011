@@ -3,11 +3,11 @@
 void Brain::Disabled()
 {
     // reset action data values
-    action.driveTrain.rawForward = 0;
-    action.driveTrain.rawTurn    = 0;
-    
-    action.driveTrain.resetFwd = true;
-    action.driveTrain.resetTurn = true;
+    action.driveTrain.rate.rawForward = 0;
+    action.driveTrain.rate.rawTurn    = 0;
+
+    action.driveTrain.position.givenCommand = false;
+    action.driveTrain.distance.givenCommand = false;
 
     action.lift.givenCommand = false;
     action.arm.givenCommand  = false;

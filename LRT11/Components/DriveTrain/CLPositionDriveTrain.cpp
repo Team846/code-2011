@@ -4,6 +4,19 @@ CLPositionDriveTrain::CLPositionDriveTrain(CLRateTrain& train)
     : drive(train)
     , encoders(DriveEncoders::GetInstance())
 {
+    // set default values for all structs
+    movePositionInfo.target = 0.0;
+    movePositionInfo.initialBearing = 0.0;
+    movePositionInfo.hasCommand = false;
+
+    turnAngleInfo.target = 0.0;
+    turnAngleInfo.initialDistance = 0.0;
+    turnAngleInfo.hasCommand = false;
+
+    moveDistanceInfo.target = 0.0;
+    moveDistanceInfo.initialBearing = 0.0;
+    moveDistanceInfo.goingForward = true;
+    moveDistanceInfo.hasCommand = false;
 }
 
 void CLPositionDriveTrain::Configure()
@@ -20,95 +33,86 @@ void CLPositionDriveTrain::Configure()
     turnDeadband = config.Get<float>(prefix + "turnDeadband", 0.05);
 }
 
-DriveCommand CLPositionDriveTrain::Drive(float fwdSetPoint, float turnSetpoint, bool stop)
+DriveCommand CLPositionDriveTrain::Drive(float maxFwdSpeed, float maxTurnSpeed)
 {
-    bool done;
-
-    if(fabs(fwdSetPoint) < 1e-2)
-        fwdSetPoint = 0.0;
-    if(fabs(turnSetpoint) < 1e-2)
-        turnSetpoint = 0.0;
-
+    bool done = true; // assume no command, so the drive train is done
     float fwdCorrection = 0.0, turnCorrection = 0.0;
-    if(turnSetpoint == 0.0 && fwdSetPoint == 0.0)
-    {
-        //don't do anything
-    }
-    else if(turnSetpoint == 0.0) // no turning
-    {
-        float currentDist = encoders.GetRobotDist() - zeroDistance;
-        float error = fwdSetPoint - currentDist;
-        fwdCorrection = error * pGainFwd; //allow robot to run at max speed
 
-        float turnError = zeroBearing - encoders.GetTurnTicks();
+    if(moveDistanceInfo.hasCommand)
+    {
+        float error = moveDistanceInfo.target - encoders.GetRobotDist();
+        fwdCorrection = error * pGainFwd;
+
+        float turnError = moveDistanceInfo.initialBearing - encoders.GetTurnTicks();
         turnCorrection = turnError * pGainFwdTurnCorrection;
         done = fabs(error) < fwdDeadband;
     }
-
-    //turn with no fwd motion, not sure it works with pivots
-    else if(fwdSetPoint == 0.0)
+    else if(turnAngleInfo.hasCommand)
     {
-        float currentBearing = encoders.GetTurnAngle() - zeroBearing;
-        float error = turnSetpoint - currentBearing;
+        float error = turnAngleInfo.target - encoders.GetTurnTicks();
         turnCorrection = error * pGainTurn;
 
-        float fwdError = zeroDistance - encoders.GetRobotDist();
+        float fwdError = turnAngleInfo.initialDistance - encoders.GetRobotDist();
         fwdCorrection = pGainTurnFwdCorrection * fwdError;
-
         done = fabs(error) < turnDeadband;
     }
-    
-    return drive.Drive(fwdCorrection , turnCorrection);
+
+    fwdCorrection = Util::Min<float>(fwdCorrection, maxFwdSpeed);
+    turnCorrection = Util::Min<float>(turnCorrection, maxTurnSpeed);
+
+    return drive.Drive(fwdCorrection, turnCorrection);
 }
 
 CLPositionCommand CLPositionDriveTrain::DriveAtLeastDistance(float dutyCycle)
 {
-	CLPositionCommand outputs; 
-	
-	dutyCycle = fabs(dutyCycle);//duty cycle is always >=0
-	
-	float fwdCorrection = 0, turnCorrection = 0;
-	if (moveDistanceInfo.isSetUp)
-	{
-		//turn correction
+    CLPositionCommand command;
+    dutyCycle = fabs(dutyCycle); // duty cycle is always >= 0
+
+    float fwdCorrection = 0, turnCorrection = 0;
+
+    if(moveDistanceInfo.hasCommand)
+    {
         float turnError = moveDistanceInfo.initialBearing - encoders.GetTurnTicks();
         turnCorrection = turnError * pGainFwdTurnCorrection;
-        
-        //fwd pos
-        if (moveDistanceInfo.goingForward)
-        	fwdCorrection = dutyCycle;
+
+        if(moveDistanceInfo.goingForward)
+            fwdCorrection = dutyCycle;
         else
-        	fwdCorrection = -dutyCycle;
-        
+            fwdCorrection = -dutyCycle;
+
         float error = moveDistanceInfo.target - encoders.GetRobotDist();
-    	if (moveDistanceInfo.goingForward)
-    		outputs.isDone = error <= 0;
-    	else
-    		outputs.isDone = error >= 0;
-	}
-	outputs.drive = drive.Drive(fwdCorrection, turnCorrection);
-	return outputs;
+        if(moveDistanceInfo.goingForward)
+            command.done = error <= 0;
+        else
+            command.done = error >= 0;
+    }
+
+    command.drive = drive.Drive(fwdCorrection, turnCorrection);
+    return command;
 }
 
-void CLPositionDriveTrain::ResetFwd()
+void CLPositionDriveTrain::SetMovePosition(float distance_in)
 {
-    zeroDistance = encoders.GetRobotDist();
+    movePositionInfo.target = encoders.GetRobotDist() + distance_in;
+    movePositionInfo.initialBearing = encoders.GetTurnTicks();
+    movePositionInfo.hasCommand = true;
 }
 
-void CLPositionDriveTrain::ResetTurn()
+void CLPositionDriveTrain::SetTurnAngle(float angle_dg)
 {
-	// TODO Fix
-    zeroBearing = encoders.GetTurnTicks();
+    turnAngleInfo.target = encoders.GetTurnTicks() + angle_dg / 360.0 * DriveEncoders::TICKS_PER_FULL_TURN;
+    turnAngleInfo.initialDistance = encoders.GetRobotDist();
+    turnAngleInfo.hasCommand = true;
 }
 
-
-
-void CLPositionDriveTrain::MoveInches(float inches)
+void CLPositionDriveTrain::SetMoveDistance(float distance_in)
 {
-    moveDistanceInfo.target 		= encoders.GetRobotDist() + inches;
+    moveDistanceInfo.target = encoders.GetRobotDist() + distance_in;
     moveDistanceInfo.initialBearing = encoders.GetTurnTicks();
-    moveDistanceInfo.goingForward   = inches > 0;
+    moveDistanceInfo.goingForward = distance_in > 0;
+    moveDistanceInfo.hasCommand = true;
 }
+
 /*
 
 void CLPositionDriveTrain::TurnAngle(float angle, bool pivotLeft, bool pivotRight)

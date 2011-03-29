@@ -46,8 +46,8 @@ void Shifter::Output()
     }
 
     bool forceShift = cycleCounter > 0;
-    float leftSetpoint = action.driveTrain.rawForward - action.driveTrain.rawTurn;
-    float rightSetpoint = action.driveTrain.rawForward + action.driveTrain.rawTurn;
+    float leftSetpoint = action.driveTrain.rate.rawForward - action.driveTrain.rate.rawTurn;
+    float rightSetpoint = action.driveTrain.rate.rawForward + action.driveTrain.rate.rawTurn;
 
     if(Util::Abs<float>(leftSetpoint) > leftSetpointDeadband || forceShift)
         leftServo.SetEnabled(true);

@@ -9,10 +9,11 @@
 #include "CLRateTrain.h"
 #include "DitheredBrakeTrain.h"
 
-typedef struct {
-	DriveCommand drive;
-	bool isDone;
-}CLPositionCommand;
+typedef struct
+{
+    DriveCommand drive;
+    bool done;
+} CLPositionCommand;
 
 class CLPositionDriveTrain : public Configurable
 {
@@ -21,32 +22,50 @@ public:
 
     virtual void Configure();
 
-    DriveCommand Drive(float fwdSetPoint, float turnSetpoint, bool stop);
-    CLPositionCommand DriveAtLeastDistance(float fwdSetPoint);
-    
-    void ResetFwd();
-    void ResetTurn();
-    
+    DriveCommand Drive(float maxFwdSpeed, float maxTurnSpeed);
+    CLPositionCommand DriveAtLeastDistance(float dutyCycle);
+
+    // position drive
+    void SetMovePosition(float distance_in);
+    void SetTurnAngle(float angle_dg);
+
+    // distance drive
+    void SetMoveDistance(float distance_in);
+
 private:
     CLRateTrain& drive;
     DriveEncoders& encoders;
 
     float pGainFwd;
     float pGainFwdTurnCorrection;
+
     float pGainTurn;
     float pGainTurnFwdCorrection;
 
     float fwdDeadband;
     float turnDeadband;
 
-    float zeroDistance, zeroBearing;
-    
-    struct {
-    	float target;
-    	float initialBearing;
-    	bool isSetUp;
-    	bool goingForward;
-    }moveDistanceInfo;
+    struct
+    {
+        float target;
+        float initialBearing;
+        bool hasCommand;
+    } movePositionInfo;
+
+    struct
+    {
+        float target;
+        float initialDistance;
+        bool hasCommand;
+    } turnAngleInfo;
+
+    struct
+    {
+        float target;
+        float initialBearing;
+        bool goingForward;
+        bool hasCommand;
+    } moveDistanceInfo;
 };
 
 #endif

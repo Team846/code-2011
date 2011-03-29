@@ -12,15 +12,15 @@ class ModifiedDriveTrain : public Component
 {
 private:
     CLRateTrain closedRateTrain;
-    CLPositionDriveTrain closedLoopPositionTrain;
+    CLPositionDriveTrain closedPositionTrain;
     Esc leftESC, rightESC;
-    
+
     enum
     {
         SPEED,
         POSITION,
         DISTANCE
-    } 
+    };
 
 public:
     ModifiedDriveTrain();

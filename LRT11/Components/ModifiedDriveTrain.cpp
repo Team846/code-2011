@@ -3,7 +3,7 @@
 ModifiedDriveTrain::ModifiedDriveTrain()
     : Component()
     , closedRateTrain()
-    , closedLoopPositionTrain(closedRateTrain)
+    , closedPositionTrain(closedRateTrain)
 #ifdef LRT_ROBOT_2011
     , leftESC(RobotConfig::CAN_DRIVE_LEFT_A, RobotConfig::CAN_DRIVE_LEFT_B,
             DriveEncoders::GetInstance().GetLeftEncoder(), "left")
@@ -23,52 +23,48 @@ ModifiedDriveTrain::~ModifiedDriveTrain()
 
 }
 
-//TODO add braking
 void ModifiedDriveTrain::Output()
 {
-	DriveCommand drive;
-	if (action.driveTrain.position.resetFwd)
-	{
-		action.driveTrain.position.resetFwd = false;
-		closedLoopPositionTrain.position.ResetFwd();
-	}
-	if (action.driveTrain.position.resetTurn)
-	{
-		action.driveTrain.position.resetTurn = false;
-		closedLoopPositionTrain.ResetTurn();
-	}
-	
-	if (action.driveTrain.distance.givenCommand)
-	{
-		action.driveTrain.givenCommand = false;
-	}
-	
+    DriveCommand drive;
+
     // calculate left duty cycle, right duty cycle, left brake, and
-    // right brake based off of joystick inputs
-	switch (action.driveTrain.mode)
-	{
-		case action.driveTrain.SPEED:
-			drive = closedRateTrain.Drive(action.driveTrain.speed.rawForward,
-	            action.driveTrain.speed.rawTurn);
-			break;
-		
-		case POSITION:
-			drive = closedLoopPositionTrain.Drive( 
-					action.driveTrain.position.distanceSetPoint
-					, action.driveTrain.position.bearingSetPoint
-					, action.driveTrain.position.maxFwdSpeed
-					, action.driveTrain.position.maxTurnSpeed
-					, action.driveTrain.position.stop);
-			break;
-			
-		case DISTANCE:
-			CLPositionCommand command = 
-				closedLoopPositionTrain.DriveAtLeastDistance(action.driveTrain.distance.distanceDutyCycle);
-			action.driveTrain.distance.done = command.isDone;
-			drive = command.drive;
-			break;
-	} 
-	
+    // right brake based off of joystick inputs and mode
+    switch(action.driveTrain.mode)
+    {
+    case SPEED:
+        drive = closedRateTrain.Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn);
+        break;
+
+    case POSITION:
+        if(action.driveTrain.position.givenCommand)
+        {
+            if(action.driveTrain.position.shouldMoveDistance)
+                closedPositionTrain.SetMoveDistance(action.driveTrain.position.distanceSetPoint);
+            else if(action.driveTrain.position.shouldTurnAngle)
+                closedPositionTrain.SetTurnAngle(action.driveTrain.position.turnSetPoint);
+
+            action.driveTrain.position.givenCommand = false;
+        }
+
+        drive = closedPositionTrain.Drive(action.driveTrain.position.maxFwdSpeed,
+                action.driveTrain.position.maxTurnSpeed);
+        break;
+
+    case DISTANCE:
+        if(action.driveTrain.distance.givenCommand)
+        {
+            closedPositionTrain.SetMoveDistance(action.driveTrain.distance.distanceSetPoint);
+            action.driveTrain.distance.givenCommand = false;
+        }
+
+        CLPositionCommand command =
+            closedPositionTrain.DriveAtLeastDistance(action.driveTrain.distance.distanceDutyCycle);
+        action.driveTrain.distance.done = command.done;
+
+        drive = command.drive;
+        break;
+    }
+
     // leftDC and rightDC are set to 0 if there is a need to brake;
     // see DitheredBrakeTrain's Drive method
     leftESC.Set(drive.leftCommand.dutyCycle);

@@ -28,33 +28,34 @@ public:
             DISTANCE
         } mode;
 
-        struct 
-    	{
-	        float rawForward, rawTurn;
-	        bool brakeLeft, brakeRight;
-	        bool usingClosedLoop;
-	        bool thirdGear;
-    	} speed;
+        struct
+        {
+            float rawForward, rawTurn;
+            bool brakeLeft, brakeRight;
+            bool usingClosedLoop;
+            bool thirdGear;
+        } rate;
 
-    	struct 
-    	{
-	        bool done;
-	        float bearingSetPoint, distanceSetPoint; // inches, degrees
-	        float maxFwdSpeed, maxTurnSpeed;
-    		
-	        bool resetTurn;
-	        bool resetFwd;
-	        bool stop;
-    	} position;
-        
-    	struct 
-    	{
-	        bool done;
-	        bool givenCommand;
-	        
-	        float distanceDutyCycle;
-	        float distanceSetPoint;
-    	}distance;
+        struct
+        {
+            bool givenCommand;
+            bool shouldMoveDistance, shouldTurnAngle;
+
+            float distanceSetPoint, turnSetPoint; // inches, degrees
+            float maxFwdSpeed, maxTurnSpeed;
+
+            bool done;
+        } position;
+
+        struct
+        {
+            bool givenCommand;
+
+            float distanceDutyCycle;
+            float distanceSetPoint;
+
+            bool done;
+        } distance;
 
     } driveTrain;
 
