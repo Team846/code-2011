@@ -6,24 +6,33 @@ void Brain::TeleopDriveTrain()
     // can't use closed loop with a virtual massless system
     action.driveTrain.usingClosedLoop = false;
 #endif
-    if (ds.GetDigitalIn(8))
-    {
-    	if (wasDisabled)
-    	{
-        action.driveTrain.mode = action.driveTrain.DISTANCE;
-        action.driveTrain.distance.givenCommand = true;
 
-        action.driveTrain.distance.distanceSetPoint = 10.0 * 12; // 6 feet
-        action.driveTrain.distance.distanceDutyCycle = 0.5;
-    	}
+    // used for calibration
+    if(ds.GetDigitalIn(8))
+    {
+        if(wasDisabled)
+        {
+            action.driveTrain.mode = action.driveTrain.POSITION;
+            action.driveTrain.position.givenCommand = true;
+
+            action.driveTrain.position.shouldMoveDistance = true;
+            action.driveTrain.position.shouldTurnAngle = false;
+
+            action.driveTrain.position.distanceSetPoint = 10.0 * 12; // 10 feet forward
+            action.driveTrain.position.turnSetPoint = 0.0;
+
+            action.driveTrain.position.maxFwdSpeed = 0.3;
+            action.driveTrain.position.maxTurnSpeed = 1.0;
+        }
+
         if(action.driveTrain.distance.done)
         {
-        	action.driveTrain.mode = action.driveTrain.SPEED;
-        	action.driveTrain.rate.rawForward 	= 0.0;
-        	action.driveTrain.rate.rawTurn 		= 0.0;
+            action.driveTrain.mode = action.driveTrain.RATE;
+            action.driveTrain.rate.rawForward = 0.0;
+            action.driveTrain.rate.rawTurn = 0.0;
         }
-    	
     }
+
 //    action.shifter.gear = action.shifter.LOW_GEAR;
 //    action.positionTrain.enabled = true;
 //
@@ -39,30 +48,27 @@ void Brain::TeleopDriveTrain()
 //    action.driveTrain.rawTurn = 0.0;
 //    return;
 
-    static int wait = 0;
-
-    if(wait != 0)
-    {
-        wait--;
-        return;
-    }
-
     static enum
     {
         SET_COMMAND,
         DRIVE_FORWARD,
         STALL_DETECTION,
         SET_SECOND_COMMAND,
+        STEP_BACK,
+        SET_THIRD_COMMAND,
         DRIVE_BACK,
+        TURN_AROUND,
         IDLE
     } state = SET_COMMAND;
 
-    if(wasDisabled)
-        state = SET_COMMAND;
-
     static int timer = 0;
 
-    AsynchronousPrinter::Printf("state:%d\n", (int) state);
+    if(wasDisabled)
+    {
+        timer = 0;
+        state = SET_COMMAND;
+    }
+
     switch(state)
     {
     case SET_COMMAND:
@@ -72,6 +78,7 @@ void Brain::TeleopDriveTrain()
         action.driveTrain.distance.distanceSetPoint = 6.0 * 12; // 6 feet
         action.driveTrain.distance.distanceDutyCycle = 0.5;
 
+        action.driveTrain.distance.done = false;
         state = DRIVE_FORWARD;
         break;
 
@@ -84,7 +91,7 @@ void Brain::TeleopDriveTrain()
         break;
 
     case STALL_DETECTION:
-        action.driveTrain.mode = action.driveTrain.SPEED;
+        action.driveTrain.mode = action.driveTrain.RATE;
         action.driveTrain.rate.usingClosedLoop = false;
 
         action.driveTrain.rate.rawForward = 0.2;
@@ -94,12 +101,7 @@ void Brain::TeleopDriveTrain()
         {
             if(driveEncoders.GetNormalizedForwardSpeed()
                     < 0.05)
-            {
-                wait = 50;
-                action.driveTrain.rate.rawForward = 0.0;
-                action.driveTrain.rate.rawTurn = 0.0;
                 state = SET_SECOND_COMMAND;
-            }
         }
         break;
 
@@ -112,21 +114,64 @@ void Brain::TeleopDriveTrain()
         action.driveTrain.position.givenCommand = true;
 
         action.driveTrain.position.shouldMoveDistance = true;
+        action.driveTrain.position.shouldTurnAngle = false;
+
         action.driveTrain.position.distanceSetPoint = -6.0; // 6 inches back
+        action.driveTrain.position.turnSetPoint = 0.0;
 
         action.driveTrain.position.maxFwdSpeed = 0.15;
+        action.driveTrain.position.maxTurnSpeed = 1.0;
+
+        timer = 0;
+        state = STEP_BACK;
+        break;
+
+    case STEP_BACK:
+        // wait one second for driving to finish
+        if(++timer > 50)
+            state = SET_THIRD_COMMAND;
+        break;
+
+    case SET_THIRD_COMMAND:
+        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.position.givenCommand = true;
+
+        action.driveTrain.position.shouldMoveDistance = true;
+        action.driveTrain.position.shouldTurnAngle = false;
+
+        action.driveTrain.position.distanceSetPoint = -6.0 * 12; // 6 feet back
+        action.driveTrain.position.turnSetPoint = 0.0;
+
+        action.driveTrain.position.maxFwdSpeed = 0.3;
+        action.driveTrain.position.maxTurnSpeed = 1.0;
 
         timer = 0;
         state = DRIVE_BACK;
         break;
 
     case DRIVE_BACK:
-        // wait one second for driving to finish
-        if(++timer > 50)
-            state = IDLE;
+        if(++timer > 150)
+            state = TURN_AROUND;
+        break;
+
+    case TURN_AROUND:
+        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.position.givenCommand = true;
+
+        action.driveTrain.position.shouldMoveDistance = false;
+        action.driveTrain.position.shouldTurnAngle = true;
+
+        action.driveTrain.position.distanceSetPoint = 0.0;
+        action.driveTrain.position.turnSetPoint = 180.0; // 180 degrees
+
+        action.driveTrain.position.maxFwdSpeed = 1.0;
+        action.driveTrain.position.maxTurnSpeed = 1.0;
+
+        state = IDLE;
         break;
 
     case IDLE:
+        // wait for turning to complete and do nothing
         break;
     }
 //
@@ -182,6 +227,7 @@ void Brain::TeleopDriveTrain()
 //      }
 //    }
 
+//    action.driveTrain.mode = action.driveTrain.RATE;
 //    action.driveTrain.rawForward = inputs.GetForward();
 //    action.driveTrain.rawTurn    = inputs.GetTurn();
 //

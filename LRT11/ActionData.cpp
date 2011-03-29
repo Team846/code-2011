@@ -16,7 +16,7 @@ ActionData::ActionData()
     // used to abort movements
     master.abort = false;
 
-    driveTrain.mode = driveTrain.SPEED;
+    driveTrain.mode = driveTrain.RATE;
 
     driveTrain.rate.rawForward = 0;
     driveTrain.rate.rawTurn = 0;

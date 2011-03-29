@@ -85,7 +85,7 @@ double DriveEncoders::GetRobotDist()
     return (GetLeftWheelDist() + GetRightWheelDist()) / 2;
 }
 
-double DriveEncoders::GetTurnTicks()
+int DriveEncoders::GetTurnTicks()
 {
     // CCW is positive, CW is negative
     return encoderRight.Get() - encoderLeft.Get();

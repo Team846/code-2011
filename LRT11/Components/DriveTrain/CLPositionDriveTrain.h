@@ -48,13 +48,13 @@ private:
     struct
     {
         float target;
-        float initialBearing;
+        int initialBearing;
         bool hasCommand;
     } movePositionInfo;
 
     struct
     {
-        float target;
+        int target;
         float initialDistance;
         bool hasCommand;
     } turnAngleInfo;
@@ -62,7 +62,7 @@ private:
     struct
     {
         float target;
-        float initialBearing;
+        int initialBearing;
         bool goingForward;
         bool hasCommand;
     } moveDistanceInfo;

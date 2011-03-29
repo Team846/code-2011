@@ -23,7 +23,7 @@ public:
     {
         enum
         {
-            SPEED,
+            RATE,
             POSITION,
             DISTANCE
         } mode;

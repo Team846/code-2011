@@ -39,11 +39,19 @@ void ModifiedDriveTrain::Output()
         if(action.driveTrain.position.givenCommand)
         {
             if(action.driveTrain.position.shouldMoveDistance)
-                closedPositionTrain.SetMoveDistance(action.driveTrain.position.distanceSetPoint);
+            {
+                AsynchronousPrinter::Printf("Move distance command");
+                closedPositionTrain.SetMovePosition(action.driveTrain.position.distanceSetPoint);
+            }
             else if(action.driveTrain.position.shouldTurnAngle)
+            {
+                AsynchronousPrinter::Printf("Turn angle command");
                 closedPositionTrain.SetTurnAngle(action.driveTrain.position.turnSetPoint);
+            }
 
             action.driveTrain.position.givenCommand = false;
+            action.driveTrain.position.shouldMoveDistance = false;
+            action.driveTrain.position.shouldTurnAngle = false;
         }
 
         drive = closedPositionTrain.Drive(action.driveTrain.position.maxFwdSpeed,
