@@ -177,12 +177,15 @@ void Arm::Output()
         }
 
         break;
+
     case MAINTAINING:
         action.arm.doneState = action.arm.SUCCESS;
-        if(potValue < maxPosition - ARM_POWER_BACK_UP_THRESHOLD)
+
+        if(potValue < maxPosition - ARM_UP_THRESHOLD)
             armEsc.Set(powerUp);
         else
             armEsc.Set(powerRetainUp);
+
         break;
     }
 }

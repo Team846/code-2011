@@ -30,7 +30,8 @@ private:
 
     int pulseCount;
 
-    const static float ARM_POWER_BACK_UP_THRESHOLD = 10;
+    const static float ARM_UP_THRESHOLD = 10;
+
 public:
     Arm();
     virtual ~Arm();
