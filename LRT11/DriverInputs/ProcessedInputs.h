@@ -68,7 +68,7 @@ public:
     bool GetOperatorThrottle();
 
     // shifting
-    bool ShouldShiftLow();
+    bool ShouldShiftHigh();
     bool ShouldShiftThird();
 
     // minibot deployment

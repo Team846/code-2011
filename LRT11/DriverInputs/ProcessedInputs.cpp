@@ -78,7 +78,7 @@ bool ProcessedInputs::ShouldBrakeRight()
     return driverStick.IsButtonDown(9);
 }
 
-bool ProcessedInputs::ShouldShiftLow()
+bool ProcessedInputs::ShouldShiftHigh()
 {
     return driverStick.IsButtonDown(8);
 }

@@ -1,10 +1,10 @@
-1) arm
-	a) setpoints
-	b) holding up (vertical)
-	c) keeping it down
-2)	practice field lift setup
-3) drive tuning
-4) auton 
-	a) dead reckoning
-	b) line sensing
+1) Arm
+	a) Setpoints
+	b) Holding up (vertical)
+	c) Keeping it down
+2) Practice field lift setup
+3) Drive tuning
+4) Auton 
+	a) Dead reckoning
+	b) Line sensing
 	

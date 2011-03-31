@@ -54,34 +54,22 @@ void Roller::RollOpposite(bool rotateUpward)
     // set duty cycles based on rotation direction
     static int cycleCount = 0;
 
-    if(++cycleCount < 10)
+    if(rotateUpward)
     {
-        if(rotateUpward)
-        {
-            topRoller.Set(dutyCycleRotatingIn);
-            bottomRoller.Set(dutyCycleRotatingOut);
-        }
-        else
-        {
-            topRoller.Set(dutyCycleRotatingOut);
-            bottomRoller.Set(dutyCycleRotatingIn);
-        }
+        topRoller.Set(dutyCycleRotatingIn);
+        bottomRoller.Set(dutyCycleRotatingOut);
     }
-//    else if(++cycleCount < 60)
-//    {
-//        topRoller.Set(0);
-//        bottomRoller.Set(0);
-//    }
+    // pulse rotate and suck when rotating downward
+    else if(++cycleCount < 10)
+    {
+        topRoller.Set(dutyCycleRotatingOut);
+        bottomRoller.Set(dutyCycleRotatingIn);
+    }
     else if(++cycleCount < 15)
     {
         topRoller.Set(dutyCycleSucking);
         bottomRoller.Set(dutyCycleSucking);
     }
-//    else if(++cycleCount < 115)
-//    {
-//        topRoller.Set(0);
-//        bottomRoller.Set(0);
-//    }
     else
         cycleCount = 0;
 }

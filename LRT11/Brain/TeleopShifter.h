@@ -9,23 +9,8 @@ void Brain::TeleopShifter()
     // assume no force shift
     action.shifter.force = false;
 
-    // always high gear unless shift low button is pushed down
-    if(inputs.ShouldShiftLow() || inputs.ShouldShiftThird())
-    {
-        // only force shift the first time
-        if(!forceShiftedLow)
-        {
-            action.shifter.gear = action.shifter.LOW_GEAR;
-            action.shifter.force = true;
-            forceShiftedLow = true;
-        }
-
-        // shifted to low gear; set high gear flag to false
-        forceShiftedHigh = false;
-    }
-//    else if(inputs.ShouldShiftHigh())
-//        action.shifter.gear = action.shifter.HIGH_GEAR;
-    else
+    // always low gear unless shift high button is pushed down
+    if(inputs.ShouldShiftHigh())
     {
         // only force shift the first time
         if(!forceShiftedHigh)
@@ -37,5 +22,18 @@ void Brain::TeleopShifter()
 
         // shifted to high gear; set low gear flag to false
         forceShiftedLow = false;
+    }
+    else
+    {
+        // only force shift the first time
+        if(!forceShiftedLow)
+        {
+            action.shifter.gear = action.shifter.LOW_GEAR;
+            action.shifter.force = true;
+            forceShiftedLow = true;
+        }
+
+        // shifted to low gear; set high gear flag to false
+        forceShiftedHigh = false;
     }
 }
