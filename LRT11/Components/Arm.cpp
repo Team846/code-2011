@@ -44,78 +44,102 @@ void Arm::Output()
 #ifdef USE_DASHBOARD
     SmartDashboard::Log(potValue, "Arm Pot Value");
 #endif
-	
+
+
+    if(oldState != action.arm.action)
+        cycleCount = timeoutCycles;
+
     if(action.master.abort)
-    {
-    	armEsc.Set(0.0);
-    	action.arm.action = action.arm.IDLE;
-    	action.arm.doneState = action.arm.ABORTED;
-    	return; //do not allow normal processing
-    }
-    
-	if (oldState != action.arm.action)
-		cycleCount = timeoutCycles;
-	
-	switch (action.arm.action)
-	{
-	case PRESETTOP:
-        if(potValue >= maxPosition)
+        action.arm.doneState = action.arm.ABORTED;
+    else // do not allow normal processing in case of an abort
+        switch(action.arm.action)
         {
-        	action.arm.doneState = action.arm.SUCCESS;
-			armEsc.Set(powerRetainUp);
-            cycleCount = 1; // will get decremented to 0
-        }
-        else
-        {
-        	action.arm.doneState = action.arm.STALE;
-            armEsc.Set(powerUp);
-
-            // make roller suck while moving up to keep
-            // game piece in
-            if(++pulseCount % 2 == 0)
-                action.roller.state = action.roller.SUCKING;
+        case PRESETTOP:
+            if(potValue >= maxPosition)
+            {
+                action.arm.doneState = action.arm.SUCCESS;
+                armEsc.Set(powerRetainUp);
+                cycleCount = 1; // will get decremented to 0
+            }
             else
-                action.roller.state = action.roller.STOPPED;
-        }
-		break;
+            {
+                action.arm.doneState = action.arm.STALE;
+                armEsc.Set(powerUp);
 
-	case PRESETBOTTOM:
-		if (potValue < minPosition)
-		{
-			action.arm.doneState = action.arm.SUCCESS;
-            armEsc.Set(0.0); // don't go below the min position
-            cycleCount = 1; // will get decremented to 0
-		}
-		else 
-		{
-            armEsc.Set(powerDown);
-			action.arm.doneState = action.arm.STALE;
-		}
-		break;
-	case MANUALUP:
+                // make roller suck while moving up to keep
+                // game piece in
+                if(++pulseCount % 2 == 0)
+                    action.roller.state = action.roller.SUCKING;
+                else
+                    action.roller.state = action.roller.STOPPED;
+            }
+            oldState = PRESETTOP;
+            break;
+
+        case PRESETBOTTOM:
+            if(potValue < minPosition)
+            {
+                action.arm.doneState = action.arm.SUCCESS;
+                armEsc.Set(0.0); // don't go below the min position
+                cycleCount = 1; // will get decremented to 0
+            }
+            else
+            {
+                if(cycleCount <= 0)  //abort movement
+                {
+                    action.arm.action = action.arm.IDLE;
+                    action.arm.doneState = action.arm.ABORTED;
+                    armEsc.Set(0.0);
+                }
+                else
+                {
+                    armEsc.Set(powerDown);
+                    action.arm.doneState = action.arm.STALE;
+                }
+            }
+            oldState = PRESETBOTTOM;
+            break;
+
+        case MANUALUP:
             if(potValue < maxPosition)
                 armEsc.Set(powerUp);
             else
                 armEsc.Set(0.0);
-		action.arm.doneState = action.arm.STALE;
-        action.arm.action = IDLE;
-		break;
-	case MANUALDOWN:
-		if(potValue > minPosition)
-            armEsc.Set(powerDown);
-        else
+            action.arm.doneState = action.arm.STALE;
+            action.arm.action = action.arm.IDLE;
+            oldState = MANUALUP;
+            break;
+
+        case MANUALDOWN:
+            if(potValue > minPosition)
+                armEsc.Set(powerDown);
+            else
+                armEsc.Set(0.0);
+            action.arm.doneState = action.arm.STALE;
+            action.arm.action = action.arm.IDLE;
+            oldState = MANUALDOWN;
+            break;
+
+        case IDLE:
+            action.arm.doneState = action.arm.SUCCESS;
             armEsc.Set(0.0);
-		action.arm.doneState = action.arm.STALE;
-        action.arm.action = IDLE;
-		break;
-	case IDLE:
-		action.arm.doneState = action.arm.SUCCESS;
-		armEsc.Set(0.0);
-	}
-	oldState = action.arm.action;
-	
-	////////////////////////////////////////////////
-//	static enum
+            oldState = IDLE;
+            break;
+        }
+
+    cycleCount--;
+    if(action.arm.doneState == action.arm.SUCCESS)
+        cycleCount = timeoutCycles;
+
+    if(action.arm.doneState == action.arm.ABORTED)
+    {
+        armEsc.Set(0.0);
+        action.arm.action = action.arm.IDLE;
+        action.arm.doneState = action.arm.ABORTED;
+    }
+}
+////////////////////////////////////////////////
+//  static enum
 //    {
 //        IDLE,
 //        ABORT,

@@ -18,15 +18,15 @@ private:
 #else
     AnalogChannel armPot;
 #endif
-    
-    enum 
-	{
-		PRESETTOP,
-		PRESETBOTTOM,
-		MANUALUP,
-		MANUALDOWN,
-		IDLE
-	} oldState;
+
+    enum
+    {
+        PRESETTOP,
+        PRESETBOTTOM,
+        MANUALUP,
+        MANUALDOWN,
+        IDLE
+    } oldState;
 
     float maxPosition, minPosition;
     float powerUp, powerRetainUp, powerDown;
