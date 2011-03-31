@@ -77,6 +77,15 @@ public:
 
     struct
     {
+    	enum 
+    	{
+    		PRESETTOP,
+    		PRESETBOTTOM,
+    		MANUALUP,
+    		MANUALDOWN,
+    		IDLE
+    	} action;
+    	
         bool givenCommand;
         bool manualMode;
         bool manualUp;

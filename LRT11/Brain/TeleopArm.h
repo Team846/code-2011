@@ -15,50 +15,20 @@ void Brain::TeleopArm()
     } armState = ARM_UP;
 
     if(inputs.ShouldMoveArmDown())
-    {
-        action.arm.givenCommand = true;
-        action.arm.manualMode = true;
-        action.arm.manualUp = false;
-
-        // set preset flag to false to avoid conflicts
-        action.arm.presetTop = false;
-        armState = ARM_STALE; // not sure where the arm is
-    }
+    	action.arm.action = action.arm.PRESETBOTTOM;
     else if(inputs.ShouldMoveArmUp())
-    {
-        action.arm.givenCommand = true;
-        action.arm.manualMode = true;
-        action.arm.manualUp = true;
+    	action.arm.action = action.arm.PRESETBOTTOM;
 
-        // see comment above
-        action.arm.presetTop = false;
-        armState = ARM_STALE; // not sure where the arm is
-    }
     // driver wants the arm down and the roller to rotate
     else if(inputs.ShouldGrabGamePiece())
     {
-        // only set the preset once
+        //don't force the arm to keep going down if has reached that point
         if(armState != ARM_DOWN)
-        {
-            action.arm.givenCommand = true;
-
-            // bottom preset
-            action.arm.presetTop = false;
-            armState = ARM_DOWN;
-        }
+            action.arm.action = action.arm.PRESETBOTTOM;
     }
+    //default case
     else
-    {
-        // only set the preset once
-        if(armState != ARM_UP)
-        {
-            action.arm.givenCommand = true;
-
-            // top preset
-            action.arm.presetTop = true;
-            armState = ARM_UP;
-        }
-    }
+    	action.arm.action = action.arm.PRESETTOP;
 
     // if the arm failed or aborted at some point, set the
     // state to stale

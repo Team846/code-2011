@@ -39,51 +39,128 @@ void Arm::Configure()
 
 void Arm::Output()
 {
-    static enum
-    {
-        IDLE,
-        ABORT,
-        MANUAL,
-        PRESET,
-        MAINTAINING
-    } state = IDLE;
-
-    if(action.arm.givenCommand)
-    {
-        if(action.arm.manualMode)
-        {
-            presetMode = false;
-            state = MANUAL;
-        }
-        else
-        {
-            cycleCount = timeoutCycles;
-            presetMode = true;
-
-            state = PRESET;
-        }
-
-        action.arm.givenCommand = false; // command has been processed
-        action.arm.manualMode = false;
-    }
-
     float potValue = armPot.GetAverageValue();
+
 #ifdef USE_DASHBOARD
     SmartDashboard::Log(potValue, "Arm Pot Value");
 #endif
-
-    // abort overrides everything
+	
     if(action.master.abort)
-        state = ABORT;
-
-    switch(state)
     {
-    case IDLE:
-        armEsc.Set(0.0);
+    	armEsc.Set(0.0);
+    	action.arm.action = action.arm.IDLE;
+    	action.arm.doneState = action.arm.ABORTED;
+    	return; //do not allow normal processing
+    }
+    
+	if (oldState != action.arm.action)
+		cycleCount = timeoutCycles;
+	
+	switch (action.arm.action)
+	{
+	case PRESETTOP:
+        if(potValue >= maxPosition)
+        {
+        	action.arm.doneState = action.arm.SUCCESS;
+			armEsc.Set(powerRetainUp);
+            cycleCount = 1; // will get decremented to 0
+        }
+        else
+        {
+        	action.arm.doneState = action.arm.STALE;
+            armEsc.Set(powerUp);
 
-        if(!presetMode)
-            // exited from manual mode; done with maneuver
-            action.arm.doneState = action.arm.SUCCESS;
+            // make roller suck while moving up to keep
+            // game piece in
+            if(++pulseCount % 2 == 0)
+                action.roller.state = action.roller.SUCKING;
+            else
+                action.roller.state = action.roller.STOPPED;
+        }
+		break;
+
+	case PRESETBOTTOM:
+		if (potValue < minPosition)
+		{
+			action.arm.doneState = action.arm.SUCCESS;
+            armEsc.Set(0.0); // don't go below the min position
+            cycleCount = 1; // will get decremented to 0
+		}
+		else 
+		{
+            armEsc.Set(powerDown);
+			action.arm.doneState = action.arm.STALE;
+		}
+		break;
+	case MANUALUP:
+            if(potValue < maxPosition)
+                armEsc.Set(powerUp);
+            else
+                armEsc.Set(0.0);
+		action.arm.doneState = action.arm.STALE;
+        action.arm.action = IDLE;
+		break;
+	case MANUALDOWN:
+		if(potValue > minPosition)
+            armEsc.Set(powerDown);
+        else
+            armEsc.Set(0.0);
+		action.arm.doneState = action.arm.STALE;
+        action.arm.action = IDLE;
+		break;
+	case IDLE:
+		action.arm.doneState = action.arm.SUCCESS;
+		armEsc.Set(0.0);
+	}
+	oldState = action.arm.action;
+	
+	////////////////////////////////////////////////
+//	static enum
+//    {
+//        IDLE,
+//        ABORT,
+//        MANUAL,
+//        PRESET,
+//        MAINTAINING
+//    } state = IDLE;
+//
+//    if(action.arm.givenCommand)
+//    {
+//        if(action.arm.manualMode)
+//        {
+//            presetMode = false;
+//            state = MANUAL;
+//            state = MANUAL;
+//        }
+//        else
+//        {
+//            cycleCount = timeoutCycles;
+//            presetMode = true;
+//
+//            state = PRESET;
+//        }
+//
+//        action.arm.givenCommand = false; // command has been processed
+//        action.arm.manualMode = false;
+//    }
+//
+//    float potValue = armPot.GetAverageValue();
+//#ifdef USE_DASHBOARD
+//    SmartDashboard::Log(potValue, "Arm Pot Value");
+//#endif
+//
+//    // abort overrides everything
+//    if(action.master.abort)
+//        state = ABORT;
+//
+//    switch(state)
+//    {
+//    case IDLE:
+//        armEsc.Set(0.0);
+//
+//        if(!presetMode)
+//            // exited from manual mode; done with maneuver
+//            action.arm.doneState = action.arm.SUCCESS;
 //        else
 //        {
 //            AsynchronousPrinter::Printf("Maintaining arm position.\n");
@@ -100,95 +177,96 @@ void Arm::Output()
 //                state = PRESET; // switch back to preset mode
 //            }
 //        }
-        break;
+//        break;
+//
+//    case ABORT:
+//        armEsc.Set(0.0);
+//        action.arm.doneState = action.arm.ABORTED;
+//        break;
+//
+//    case MANUAL:
+//        action.arm.doneState = action.arm.STALE; // not done yet
+//
+//        if(action.arm.manualUp)
+//        {
+//            if(potValue < maxPosition)
+//                armEsc.Set(powerUp);
+//            else
+//                armEsc.Set(0.0);
+//        }
+//        else
+//        {
+//            if(potValue > minPosition)
+//                armEsc.Set(powerDown);
+//            else
+//                armEsc.Set(0.0);
+//        }
+//
+//        state = IDLE;
+//        break;
+//
+//    case PRESET:
+//        action.arm.doneState = action.arm.STALE; // not done yet
+//
+//        if(action.arm.presetTop)
+//        {
+//            if(potValue < maxPosition)
+//            {
+//                armEsc.Set(powerUp);
+//
+//                // make roller suck while moving up to keep
+//                // game piece in
+//                if(++pulseCount % 2 == 0)
+//                    action.roller.state = action.roller.SUCKING;
+//                else
+//                    action.roller.state = action.roller.STOPPED;
+//            }
+//            else
+//            {
+//                action.arm.doneState = action.arm.SUCCESS;
+//                armEsc.Set(0.0); // don't go above the max position
+//                cycleCount = 1; // will get decremented to 0
+//            }
+//        }
+//        else
+//        {
+//            if(potValue > minPosition)
+//                armEsc.Set(powerDown);
+//            else
+//            {
+//                action.arm.doneState = action.arm.SUCCESS;
+//                armEsc.Set(0.0); // don't go below the min position
+//                cycleCount = 1; // will get decremented to 0
+//            }
+//        }
+//
+//        cycleCount--;
+//
+//        if(cycleCount == 0)
+//        {
+//            if(action.arm.doneState != action.arm.SUCCESS)
+//                action.arm.doneState = action.arm.FAILURE;
+//
+//            if(action.arm.presetTop)
+//                state = MAINTAINING;
+//            else
+//                state = IDLE;
+//        }
+//
+//        break;
+//
+//    case MAINTAINING:
+//        action.arm.doneState = action.arm.SUCCESS;
+//
+//        if(potValue < maxPosition - ARM_UP_THRESHOLD)
+//            armEsc.Set(powerUp);
+//        else
+//            armEsc.Set(powerRetainUp);
+//
+//        break;
+//    }
+//}
 
-    case ABORT:
-        armEsc.Set(0.0);
-        action.arm.doneState = action.arm.ABORTED;
-        break;
-
-    case MANUAL:
-        action.arm.doneState = action.arm.STALE; // not done yet
-
-        if(action.arm.manualUp)
-        {
-            if(potValue < maxPosition)
-                armEsc.Set(powerUp);
-            else
-                armEsc.Set(0.0);
-        }
-        else
-        {
-            if(potValue > minPosition)
-                armEsc.Set(powerDown);
-            else
-                armEsc.Set(0.0);
-        }
-
-        state = IDLE;
-        break;
-
-    case PRESET:
-        action.arm.doneState = action.arm.STALE; // not done yet
-
-        if(action.arm.presetTop)
-        {
-            if(potValue < maxPosition)
-            {
-                armEsc.Set(powerUp);
-
-                // make roller suck while moving up to keep
-                // game piece in
-                if(++pulseCount % 2 == 0)
-                    action.roller.state = action.roller.SUCKING;
-                else
-                    action.roller.state = action.roller.STOPPED;
-            }
-            else
-            {
-                action.arm.doneState = action.arm.SUCCESS;
-                armEsc.Set(0.0); // don't go above the max position
-                cycleCount = 1; // will get decremented to 0
-            }
-        }
-        else
-        {
-            if(potValue > minPosition)
-                armEsc.Set(powerDown);
-            else
-            {
-                action.arm.doneState = action.arm.SUCCESS;
-                armEsc.Set(0.0); // don't go below the min position
-                cycleCount = 1; // will get decremented to 0
-            }
-        }
-
-        cycleCount--;
-
-        if(cycleCount == 0)
-        {
-            if(action.arm.doneState != action.arm.SUCCESS)
-                action.arm.doneState = action.arm.FAILURE;
-
-            if(action.arm.presetTop)
-                state = MAINTAINING;
-            else
-                state = IDLE;
-        }
-
-        break;
-
-    case MAINTAINING:
-        action.arm.doneState = action.arm.SUCCESS;
-
-        if(potValue < maxPosition - ARM_UP_THRESHOLD)
-            armEsc.Set(powerUp);
-        else
-            armEsc.Set(powerRetainUp);
-
-        break;
-    }
-}
 
 /*
 void Arm::Output()
