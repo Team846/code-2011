@@ -62,10 +62,7 @@ ActionData::ActionData()
 
     demoLift.power = 0;
 
-    arm.givenCommand = false;
-    arm.manualMode = false;
-    arm.manualUp = false;
-    arm.presetTop = false;
+    arm.state = arm.IDLE;
     arm.doneState = arm.STALE;
 
     roller.state = roller.STOPPED;

@@ -4,7 +4,7 @@ void Brain::TeleopDriveTrain()
 {
 #ifdef VIRTUAL
     // can't use closed loop with a virtual massless system
-    action.driveTrain.usingClosedLoop = false;
+    state.driveTrain.usingClosedLoop = false;
 #endif
 
     // used for calibration

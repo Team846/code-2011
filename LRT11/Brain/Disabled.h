@@ -10,7 +10,6 @@ void Brain::Disabled()
     action.driveTrain.distance.givenCommand = false;
 
     action.lift.givenCommand = false;
-    action.arm.givenCommand  = false;
 
     // default to locked aligner
     action.deployer.shouldAlignerRelease = false;

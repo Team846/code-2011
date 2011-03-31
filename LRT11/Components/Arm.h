@@ -21,12 +21,10 @@ private:
 
     enum
     {
-        PRESETTOP,
-        PRESETBOTTOM,
-        MANUALUP,
-        MANUALDOWN,
-        IDLE
-    } oldState;
+        IDLE = 1, PRESET_BOTTOM = 2, PRESET_TOP = 3, MANUAL_DOWN = 4,
+        MANUAL_UP = 5
+    } state;
+    int oldState;
 
     float maxPosition, minPosition;
     float powerUp, powerRetainUp, powerDown;

@@ -77,19 +77,11 @@ public:
 
     struct
     {
-        /*typedef */enum //armState
+        enum
         {
-            PRESETTOP,
-            PRESETBOTTOM,
-            MANUALUP,
-            MANUALDOWN,
-            IDLE
-        } action;
-
-        bool givenCommand;
-        bool manualMode;
-        bool manualUp;
-        bool presetTop;
+            IDLE = 1, PRESET_BOTTOM = 2, PRESET_TOP = 3, MANUAL_DOWN = 4,
+            MANUAL_UP = 5
+        } state;
         enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
     } arm;
 
