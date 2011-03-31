@@ -14,9 +14,12 @@ Redo arm positions - 360, 750 - DONE
 	a) Dead reckoning
 	b) Line sensing	
 	
+- Low gear in autonomous
+- Shifting
+- Faster gripper
+- Lift presets
 / Rotating ringer
 - Lift down position
-- Shifting
 - After lift moves down, do rest of the autonomous
 / Remove printing
 - Turn tuning

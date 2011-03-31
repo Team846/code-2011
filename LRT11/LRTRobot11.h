@@ -37,8 +37,7 @@ private:
     Config& config;
 
     DriverStation& ds;
-
-    DigitalOutput switchLED;
+//    DigitalOutput switchLED;
 
     GameState prevState;
     GameState DetermineState();

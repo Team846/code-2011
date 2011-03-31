@@ -84,6 +84,10 @@ void Brain::EncoderAuton()
         // arm should stay in top position
         action.arm.state = action.arm.PRESET_TOP;
 
+        // low gear driving
+        action.shifter.gear = action.shifter.LOW_GEAR;
+        action.shifter.force = true;
+
         state = DRIVE_FORWARD;
         break;
 
