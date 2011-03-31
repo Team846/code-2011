@@ -26,7 +26,7 @@ ProcessedInputs& ProcessedInputs::GetInstance()
 void ProcessedInputs::Configure()
 {
 //    Config& config = Config::GetInstance();
-//    string prefix = "ProcessedJoystick.";
+//    string prefix = "ProcessedInputs.";
 }
 
 float ProcessedInputs::GetThrottle()
@@ -65,7 +65,7 @@ float ProcessedInputs::GetTurn()
         return 0.0;
 
     float turn = -driverStick.GetRawAxis(3);
-    return Util::Sign<float>(turn) * Util::Rescale<float>(Util::Abs<float>(turn), 0, 1, 0.15, 1);
+    return Util::Sign<float>(turn) * Util::Rescale<float>(Util::Abs<float>(turn), 0, 1, 0.0, 1);
 }
 
 bool ProcessedInputs::ShouldBrakeLeft()

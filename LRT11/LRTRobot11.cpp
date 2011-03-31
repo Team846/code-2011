@@ -64,64 +64,64 @@ void LRTRobot11::MainLoop()
 //    if(prevState != gameState)
 //        controller.ResetCache();
 
-    if(gameState != DISABLED)
+//    if(gameState != DISABLED)
+//    {
+    // components to output only when enabled
+
+    if(ds.GetDigitalIn(1))
     {
-        // components to output only when enabled
+        ProfiledSection ps("Drive Train");
+        drive.Output();
+    }
 
-        if(ds.GetDigitalIn(1))
-        {
-            ProfiledSection ps("Drive Train");
-            drive.Output();
-        }
-
-        if(ds.GetDigitalIn(2))
-        {
+    if(ds.GetDigitalIn(2))
+    {
 //            ProfiledSection ps("Position Drive");
 //            positionDrive.Output();
-        }
+    }
 
-        if(ds.GetDigitalIn(3))
-        {
-            ProfiledSection ps("Lift");
-            lift.Output();
-        }
+    if(ds.GetDigitalIn(3))
+    {
+        ProfiledSection ps("Lift");
+        lift.Output();
+    }
 
-        if(ds.GetDigitalIn(4))
-        {
-            ProfiledSection ps("Arm");
-            arm.Output();
-        }
+    if(ds.GetDigitalIn(4))
+    {
+        ProfiledSection ps("Arm");
+        arm.Output();
+    }
 
 //        {
 //            ProfiledSection ps("Encoder Data Collection");
 //            encoderData.Output();
 //        }
 
-        if(ds.GetDigitalIn(5))
-        {
-            ProfiledSection ps("Servo Shifting");
-            shifter.Output();
-        }
-
-        if(ds.GetDigitalIn(6))
-        {
-            ProfiledSection ps("Roller");
-            roller.Output();
-        }
-
-        if(ds.GetDigitalIn(7))
-        {
-            ProfiledSection ps("Minibot Deployment");
-            minibotDeployer.Output();
-        }
-
-        // To add another component output:
-        //
-        // {
-        //      ProfiledSection ps("Descriptive Phrase");
-        //      component.Output();
-        // }
+    if(ds.GetDigitalIn(5))
+    {
+        ProfiledSection ps("Servo Shifting");
+        shifter.Output();
     }
+
+    if(ds.GetDigitalIn(6))
+    {
+        ProfiledSection ps("Roller");
+        roller.Output();
+    }
+
+    if(ds.GetDigitalIn(7))
+    {
+        ProfiledSection ps("Minibot Deployment");
+        minibotDeployer.Output();
+    }
+
+    // To add another component output:
+    //
+    // {
+    //      ProfiledSection ps("Descriptive Phrase");
+    //      component.Output();
+    // }
+//    }
 
     prevState = gameState;
 }

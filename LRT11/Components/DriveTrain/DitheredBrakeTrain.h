@@ -24,7 +24,7 @@ private:
     LRTEncoder& leftEncoder;
     LRTEncoder& rightEncoder;
 
-    float brakeGain;
+//    float brakeGain;
 
 public:
     DitheredBrakeTrain();

@@ -1,3 +1,8 @@
+Redo aligner servo position
+High gear and low gear gains (forward + turn)
+Turn deadband
+Redo lift positions
+Redo arm positions
 1) Arm
 	a) Setpoints
 	b) Holding up (vertical)

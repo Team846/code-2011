@@ -15,12 +15,12 @@ DitheredBrakeTrain::~DitheredBrakeTrain()
 
 void DitheredBrakeTrain::Configure()
 {
-    Config& config = Config::GetInstance();
-    string prefix = "DitheredBrakeDrive.";
+//    Config& config = Config::GetInstance();
+//    string prefix = "DitheredBrakeDrive.";
 
     // proportional constant used to determine amount of braking
     // brake gain * ( joystick input - robot speed ) = desired braking
-    brakeGain = config.Get<float>(prefix + "brakeGain", 1.0);
+//    brakeGain = config.Get<float>(prefix + "brakeGain", 1.0);
 }
 //
 //DriveCommand DitheredBrakeTrain::Drive(float forwardInput, float turnInput)
