@@ -1,4 +1,4 @@
-Redo aligner servo position
+Redo aligner servo position - DONE
 High gear and low gear gains (forward + turn)
 Turn deadband
 Redo lift positions

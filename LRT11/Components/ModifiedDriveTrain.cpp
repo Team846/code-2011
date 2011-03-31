@@ -27,6 +27,9 @@ void ModifiedDriveTrain::Output()
 {
     DriveCommand drive;
 
+    closedRateTrain.SetHighGear(action.shifter.gear == action.shifter.HIGH_GEAR);
+    closedRateTrain.SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);
+
     // calculate left duty cycle, right duty cycle, left brake, and
     // right brake based off of joystick inputs and mode
     switch(action.driveTrain.mode)
