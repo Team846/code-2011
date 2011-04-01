@@ -63,7 +63,7 @@ void Roller::RollOpposite(bool rotateUpward)
         topRoller.Set(dutyCycleRotatingOut);
         bottomRoller.Set(dutyCycleRotatingIn);
     }
-    else if(++cycleCount < 15)
+    else if(++cycleCount < 20)
     {
         topRoller.Set(dutyCycleSucking);
         bottomRoller.Set(dutyCycleSucking);

@@ -135,7 +135,7 @@ int LineSensor::GetLinePosition()
 #ifdef USE_DASHBOARD
 //    SmartDashboard::Log((int)maxPixel, "Max Line Sensor Pixel Value");
 //    SmartDashboard::Log((int)pixels[maxPixel], "Max Line Sensor Value");
-//    SmartDashboard::Log((int)intensitySum, "Line Sensor Intensity Sum");
+    SmartDashboard::Log((int)intensitySum, "Line Sensor Intensity Sum");
 #endif
 
     // 25000 empirically determined to be a cutoff intensity sum
@@ -168,7 +168,7 @@ int LineSensor::GetLinePosition()
 #undef START_PIXEL
 
 #ifdef USE_DASHBOARD
-//    SmartDashboard::Log(linePosition, "Line Position");
+    SmartDashboard::Log(linePosition, "Line Position");
 #endif
 
     return linePosition;

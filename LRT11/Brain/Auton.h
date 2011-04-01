@@ -78,7 +78,7 @@ void Brain::EncoderAuton()
         action.driveTrain.distance.givenCommand = true;
 
         action.driveTrain.distance.distanceSetPoint = 15.0 * 12; // 15 feet
-        action.driveTrain.distance.distanceDutyCycle = 0.5;
+        action.driveTrain.distance.distanceDutyCycle = 0.8;
 
         action.driveTrain.distance.done = false;
         // arm should stay in top position
@@ -132,7 +132,7 @@ void Brain::EncoderAuton()
         action.driveTrain.position.distanceSetPoint = -3.0; // 3 inches back
         action.driveTrain.position.turnSetPoint = 0.0;
 
-        action.driveTrain.position.maxFwdSpeed = 0.15;
+        action.driveTrain.position.maxFwdSpeed = 0.2;
         action.driveTrain.position.maxTurnSpeed = 1.0;
 
         timer = 0;
@@ -209,7 +209,7 @@ void Brain::EncoderAuton()
 //        AsynchronousPrinter::Printf("Move lift down\n");
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
-        action.lift.highRow = inputs.IsHighRow();
+        action.lift.highRow = DriverStation::GetInstance()->GetDigitalIn(2);
 
         action.lift.preset = action.lift.LOW_PEG;
         action.lift.manualMode = false;
@@ -239,7 +239,7 @@ void Brain::EncoderAuton()
         action.driveTrain.position.distanceSetPoint = -14.5 * 12; // 14.5 feet back
         action.driveTrain.position.turnSetPoint = 0.0;
 
-        action.driveTrain.position.maxFwdSpeed = 0.5;
+        action.driveTrain.position.maxFwdSpeed = 0.8;
         action.driveTrain.position.maxTurnSpeed = 1.0;
 
         timer = 0;

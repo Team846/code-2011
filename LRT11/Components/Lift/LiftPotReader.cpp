@@ -8,6 +8,7 @@ LiftPotReader::LiftPotReader()
     , liftPotVal(5) // default to the middle
 {
     readSemaphore = semBCreate(SEM_Q_PRIORITY, SEM_EMPTY);
+    readerTask.Start();
 }
 
 LiftPotReader::~LiftPotReader()

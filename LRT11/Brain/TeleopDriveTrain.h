@@ -10,20 +10,22 @@ void Brain::TeleopDriveTrain()
     // used for calibration
     if(ds.GetDigitalIn(8))
     {
-        if(wasDisabled)
-        {
-            action.driveTrain.mode = action.driveTrain.POSITION;
-            action.driveTrain.position.givenCommand = true;
-
-            action.driveTrain.position.shouldMoveDistance = true;
-            action.driveTrain.position.shouldTurnAngle = false;
-
-            action.driveTrain.position.distanceSetPoint = 15.0 * 12; // 15 feet forward
-            action.driveTrain.position.turnSetPoint = 0.0;
-
-            action.driveTrain.position.maxFwdSpeed = 0.3;
-            action.driveTrain.position.maxTurnSpeed = 1.0;
-        }
+//        lineSensor.GetLinePosition();
+        AutomatedFollowLine();
+//        if(wasDisabled)
+//        {
+//            action.driveTrain.mode = action.driveTrain.POSITION;
+//            action.driveTrain.position.givenCommand = true;
+//
+//            action.driveTrain.position.shouldMoveDistance = true;
+//            action.driveTrain.position.shouldTurnAngle = false;
+//
+//            action.driveTrain.position.distanceSetPoint = 15.0 * 12; // 15 feet forward
+//            action.driveTrain.position.turnSetPoint = 0.0;
+//
+//            action.driveTrain.position.maxFwdSpeed = 0.3;
+//            action.driveTrain.position.maxTurnSpeed = 1.0;
+//        }
 
 //        if(action.driveTrain.distance.done)
 //        {
