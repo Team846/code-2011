@@ -50,6 +50,13 @@ void Brain::EncoderAuton()
         STALL_DETECTION,
         SET_SECOND_COMMAND,
         STEP_BACK,
+        MOVE_LIFT_UP,
+        WAIT_FOR_MOVE_LIFT_UP,
+        ROTATE_ROLLER,
+        RELEASE_ROLLER,
+        WAIT_FOR_RELEASE_ROLLER,
+        MOVE_LIFT_DOWN,
+        WAIT_FOR_MOVE_LIFT_DOWN,
         SET_THIRD_COMMAND,
         DRIVE_BACK,
         TURN_AROUND,
@@ -74,6 +81,9 @@ void Brain::EncoderAuton()
         action.driveTrain.distance.distanceDutyCycle = 0.5;
 
         action.driveTrain.distance.done = false;
+        // arm should stay in top position
+        action.arm.state = action.arm.PRESET_TOP;
+
         state = DRIVE_FORWARD;
         break;
 
@@ -128,7 +138,91 @@ void Brain::EncoderAuton()
     case STEP_BACK:
         // wait one second for driving to finish
         if(++timer > 50)
-            state = SET_THIRD_COMMAND;
+            state = MOVE_LIFT_UP;
+        break;
+
+    case MOVE_LIFT_UP:
+        AsynchronousPrinter::Printf("Moving lift up\n");
+        action.lift.givenCommand = true;
+        // depends on if the robot is in the middle or on the side
+        action.lift.highRow = inputs.IsHighRow();
+
+        action.lift.preset = action.lift.HIGH_PEG;
+        action.lift.manualMode = false;
+        state = WAIT_FOR_MOVE_LIFT_UP;
+        break;
+
+    case WAIT_FOR_MOVE_LIFT_UP:
+        AsynchronousPrinter::Printf("Waiting for move lift up\n");
+        if(action.lift.doneState != action.lift.STALE) // message is available
+        {
+            if(action.lift.doneState == action.lift.SUCCESS)
+                state = ROTATE_ROLLER;
+//            else if(action.lift.doneState == action.lift.FAILURE)
+//            {
+//                AsynchronousPrinter::Printf("Failure\n");
+//                state = IDLE;
+//            }
+            else
+                state = IDLE;
+            timer = 0; // reset timer
+        }
+        break;
+
+    case ROTATE_ROLLER:
+        AsynchronousPrinter::Printf("Rotate roller\n");
+        action.roller.rotateUpward = false;
+        action.roller.state = action.roller.ROTATING;
+
+        if(++timer >= 75)
+            state = RELEASE_ROLLER;
+        break;
+
+    case RELEASE_ROLLER:
+        AsynchronousPrinter::Printf("Release roller\n");
+        action.roller.automated = true;
+        action.roller.commenceAutomation = true;
+        state = WAIT_FOR_RELEASE_ROLLER;
+        timer = 0;
+        break;
+
+    case WAIT_FOR_RELEASE_ROLLER:
+        AsynchronousPrinter::Printf("Wait for release roller\n");
+        action.roller.commenceAutomation = false;
+
+        // one and a half seconds of reversing the roller
+        if(++timer >= 75)
+        {
+            // stop automating; stop rollers
+            action.roller.automated = false;
+            state = MOVE_LIFT_DOWN;
+
+            timer = 0; // reset timer
+        }
+        break;
+
+    case MOVE_LIFT_DOWN:
+        AsynchronousPrinter::Printf("Move lift down\n");
+        action.lift.givenCommand = true;
+        // depends on if the robot is in the middle or on the side
+        action.lift.highRow = inputs.IsHighRow();
+
+        action.lift.preset = action.lift.LOW_PEG;
+        action.lift.manualMode = false;
+        state = WAIT_FOR_MOVE_LIFT_DOWN;
+        break;
+
+    case WAIT_FOR_MOVE_LIFT_DOWN:
+        AsynchronousPrinter::Printf("Wait for move lift down\n");
+        if(action.lift.doneState != action.lift.STALE) // message is available
+        {
+            if(action.lift.doneState == action.lift.SUCCESS)
+                state = SET_THIRD_COMMAND;
+//                state = IDLE;
+            else
+                state = IDLE;
+            timer = 0; // reset timer
+        }
         break;
 
     case SET_THIRD_COMMAND:
@@ -138,10 +232,10 @@ void Brain::EncoderAuton()
         action.driveTrain.position.shouldMoveDistance = true;
         action.driveTrain.position.shouldTurnAngle = false;
 
-        action.driveTrain.position.distanceSetPoint = -6.0 * 12; // 6 feet back
+        action.driveTrain.position.distanceSetPoint = -2.0 * 12; // 6 feet back
         action.driveTrain.position.turnSetPoint = 0.0;
 
-        action.driveTrain.position.maxFwdSpeed = 0.3;
+        action.driveTrain.position.maxFwdSpeed = 0.5;
         action.driveTrain.position.maxTurnSpeed = 1.0;
 
         timer = 0;
@@ -170,6 +264,7 @@ void Brain::EncoderAuton()
         break;
 
     case IDLE:
+        AsynchronousPrinter::Printf("Idle\n");
         // wait for turning to complete and do nothing
         break;
     }

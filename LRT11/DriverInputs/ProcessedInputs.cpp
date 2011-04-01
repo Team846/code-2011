@@ -64,10 +64,7 @@ float ProcessedInputs::GetTurn()
     if(Util::Abs<float>(driverStick.GetRawAxis(3)) < 1e-6)
         return 0.0;
 
-    float turn = -driverStick.GetRawAxis(3);
-//    float turnScaled = Util::Sign<float>(turn) * turn * turn;
-//    return Util::Sign<float>(turn) * Util::Rescale<float>(Util::Abs<float>(turn), 0, 1, 0.0, 1);
-    return 0.3 * turn;
+    return -driverStick.GetRawAxis(3);
 }
 
 bool ProcessedInputs::ShouldBrakeLeft()

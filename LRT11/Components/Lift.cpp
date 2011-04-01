@@ -51,7 +51,7 @@ void Lift::Configure()
     maxPosition = config.Get<float>(prefix + "highRowBottom", 1.77)
             + config.Get<float>(prefix + "highPegRelative");
 
-    potDeadband = config.Get<float>(prefix + "deadband", 0.1);
+    potDeadband = config.Get<float>(prefix + "deadband", 0.4);
 }
 
 void Lift::ConfigureManualMode()
@@ -198,13 +198,16 @@ void Lift::Output()
         if(action.lift.preset != action.lift.STOWED)
             setPoint += config.Get<float>(key); // relative to bottom
 
+        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setPoint));
         // update done flag
         if(Util::Abs<float>(potValue - setPoint) < potDeadband)
         {
+            AsynchronousPrinter::Printf("Updating done flag");
             action.lift.doneState = action.lift.SUCCESS;
 //            cycleCount = 1; // will get decremented to 0
         }
 
+        SmartDashboard::Log(setPoint, "Lift Set Point");
         liftEsc.Set(setPoint);
         cycleCount--;
 

@@ -35,7 +35,11 @@ void ModifiedDriveTrain::Output()
     switch(action.driveTrain.mode)
     {
     case SPEED:
-        drive = closedRateTrain.Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn);
+        if(action.driveTrain.rate.thirdGear)
+            // scale raw turn to a max of 0.3
+            drive = closedRateTrain.Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn * 0.3);
+        else
+            drive = closedRateTrain.Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn);
         break;
 
     case POSITION:

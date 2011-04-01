@@ -14,11 +14,16 @@ Redo arm positions - 360, 750 - DONE
 	a) Dead reckoning
 	b) Line sensing	
 	
-- Fix turning (third gear)
-- Arm up tuning
+- Rotating ringer
+- Lift down position
+- Shifting
+/ Fix turning (third gear)
+/ Keep arm up in autonomous
+/ Change starting mode of autonomous (2 places)
+- After lift moves down, do rest of the autonomous
+/ Arm up tuning
 - Turn tuning
-- Aligner testing
+/ Aligner testing
 - Minibot deployment
 - Game timer
-- Autonomous mode
-	- Remove trim
+/ Remove trim
