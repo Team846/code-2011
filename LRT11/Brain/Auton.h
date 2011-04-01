@@ -70,7 +70,7 @@ void Brain::EncoderAuton()
         action.driveTrain.mode = action.driveTrain.DISTANCE;
         action.driveTrain.distance.givenCommand = true;
 
-        action.driveTrain.distance.distanceSetPoint = 6.0 * 12; // 6 feet
+        action.driveTrain.distance.distanceSetPoint = 15.0 * 12; // 15 feet
         action.driveTrain.distance.distanceDutyCycle = 0.5;
 
         action.driveTrain.distance.done = false;
@@ -92,9 +92,13 @@ void Brain::EncoderAuton()
         action.driveTrain.rate.rawForward = 0.2;
         action.driveTrain.rate.rawTurn = 0.0;
 
-        if(++timer > 25)
+        // robot has speed up enough to start stall detection
+        if(driveEncoders.GetNormalizedLowGearForwardSpeed() > 0.1)
+            timer = 51; // greater than 50; see if statement below
+
+        if(++timer > 50)
         {
-            if(driveEncoders.GetNormalizedForwardSpeed()
+            if(driveEncoders.GetNormalizedLowGearForwardSpeed()
                     < 0.05)
                 state = SET_SECOND_COMMAND;
         }

@@ -1,7 +1,8 @@
 Redo aligner servo position - DONE
 High gear and low gear gains (forward + turn)
 Turn deadband
-Redo lift positions - 1.87, 5.02, 8.32
+Redo lift positions - 1.87, 5.02, 8.3
+							4.0	  7.52
 Redo arm positions - 360, 750 - DONE
 1) Arm
 	a) Setpoints - DONE
@@ -11,5 +12,13 @@ Redo arm positions - 360, 750 - DONE
 3) Drive tuning
 4) Auton 
 	a) Dead reckoning
-	b) Line sensing
+	b) Line sensing	
 	
+- Fix turning (third gear)
+- Arm up tuning
+- Turn tuning
+- Aligner testing
+- Minibot deployment
+- Game timer
+- Autonomous mode
+	- Remove trim

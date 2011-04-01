@@ -33,7 +33,7 @@ public:
     const static float PULSES_PER_REVOLUTION = 100.0; // pulses per wheel revolution [BA]
 
     const static float MAX_ENCODER_RATE      = 1400.0;
-    const static float MAX_TURNING_RATE     = 2800.0;
+    const static float MAX_TURNING_RATE     = 2800.0 * 180.0 / 165.0;
 
     const static float TICKS_PER_FULL_TURN   = 1350.0;
     const static float WHEEL_DIAMETER = 4.0; // in

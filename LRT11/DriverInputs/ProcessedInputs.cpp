@@ -65,7 +65,9 @@ float ProcessedInputs::GetTurn()
         return 0.0;
 
     float turn = -driverStick.GetRawAxis(3);
-    return Util::Sign<float>(turn) * Util::Rescale<float>(Util::Abs<float>(turn), 0, 1, 0.0, 1);
+//    float turnScaled = Util::Sign<float>(turn) * turn * turn;
+//    return Util::Sign<float>(turn) * Util::Rescale<float>(Util::Abs<float>(turn), 0, 1, 0.0, 1);
+    return 0.3 * turn;
 }
 
 bool ProcessedInputs::ShouldBrakeLeft()

@@ -18,7 +18,7 @@ void Brain::TeleopDriveTrain()
             action.driveTrain.position.shouldMoveDistance = true;
             action.driveTrain.position.shouldTurnAngle = false;
 
-            action.driveTrain.position.distanceSetPoint = 10.0 * 12; // 10 feet forward
+            action.driveTrain.position.distanceSetPoint = 15.0 * 12; // 15 feet forward
             action.driveTrain.position.turnSetPoint = 0.0;
 
             action.driveTrain.position.maxFwdSpeed = 0.3;
