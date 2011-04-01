@@ -36,7 +36,7 @@ float ProcessedInputs::GetThrottle()
 
 bool ProcessedInputs::IsServiceMode()
 {
-    return GetThrottle() > 0.8;
+    return GetThrottle() > 0.5;
 }
 
 bool ProcessedInputs::IsDriverTriggerDown()
@@ -115,7 +115,7 @@ float ProcessedInputs::GetLiftPower()
 
 bool ProcessedInputs::IsHighRow()
 {
-    return operatorStick.GetThrottle() > 0.8;
+    return -operatorStick.GetRawAxis(4) > 0.5;
 }
 
 bool ProcessedInputs::ShouldMoveArmDown()
@@ -175,7 +175,7 @@ bool ProcessedInputs::ShouldRollerCommenceAutomation()
 
 bool ProcessedInputs::GetOperatorThrottle()
 {
-    return -operatorStick.GetRawAxis(4) > 0.8;
+    return -operatorStick.GetRawAxis(4) > 0.5;
 }
 
 bool ProcessedInputs::ShouldDeployAligner()

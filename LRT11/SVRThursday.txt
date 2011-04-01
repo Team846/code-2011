@@ -14,6 +14,7 @@ Redo arm positions - 360, 750 - DONE
 	a) Dead reckoning
 	b) Line sensing	
 	
+- CAN deployer
 - Low gear in autonomous
 / Shifting
 - Faster gripper

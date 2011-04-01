@@ -45,11 +45,13 @@ void Lift::Configure()
     // convert from ms into cycles
     timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 
-    minPosition = config.Get<float>(prefix + "lowRowBottom");
+    // bottom of low row is the lowest position
+    minPosition = config.Get<float>(prefix + "lowRowReference", 1.17)
+            + config.Get<float>(prefix + "lowRowLowPegRelative", 0.7);
 
     // bottom of high row + high peg relative is the highest position
-    maxPosition = config.Get<float>(prefix + "highRowBottom", 1.77)
-            + config.Get<float>(prefix + "highPegRelative");
+    maxPosition = config.Get<float>(prefix + "highRowReference", 1.87)
+            + config.Get<float>(prefix + "highPegRelative", 6.5);
 
     potDeadband = config.Get<float>(prefix + "deadband", 0.4);
 }
@@ -181,16 +183,21 @@ void Lift::Output()
 
         float setPoint;
         if(action.lift.highRow)
-            setPoint = config.Get<float>(prefix + "highRowBottom");
+            setPoint = config.Get<float>(prefix + "highRowReference");
         else
-            setPoint = config.Get<float>(prefix + "lowRowBottom");
+            setPoint = config.Get<float>(prefix + "lowRowReference");
 
         switch(action.lift.preset)
         {
         case STOWED:
             break; // no relative position
         case LOW_PEG:
-            key += "lowPegRelative";
+            // low peg relative position is different for high
+            // and low row
+            if(action.lift.highRow)
+                key += "highRowLowPegRelative";
+            else
+                key += "lowRowLowPegRelative";
             break;
         case MED_PEG:
             key += "mediumPegRelative";

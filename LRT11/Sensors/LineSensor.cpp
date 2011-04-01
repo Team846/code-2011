@@ -133,8 +133,8 @@ int LineSensor::GetLinePosition()
 
     // log pixel data for debugging
 #ifdef USE_DASHBOARD
-    SmartDashboard::Log((int)maxPixel, "Max Line Sensor Pixel Value");
-    SmartDashboard::Log((int)pixels[maxPixel], "Max Line Sensor Value");
+//    SmartDashboard::Log((int)maxPixel, "Max Line Sensor Pixel Value");
+//    SmartDashboard::Log((int)pixels[maxPixel], "Max Line Sensor Value");
     SmartDashboard::Log((int)intensitySum, "Line Sensor Intensity Sum");
 #endif
 
@@ -166,6 +166,10 @@ int LineSensor::GetLinePosition()
     }
 
 #undef START_PIXEL
+
+#ifdef USE_DASHBOARD
+    SmartDashboard::Log(linePosition, "Line Position");
+#endif
 
     return linePosition;
 }
