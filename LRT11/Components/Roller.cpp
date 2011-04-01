@@ -2,10 +2,8 @@
 #include "..\Config\RobotConfig.h"
 
 Roller::Roller()
-//    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port numbers later
-//    , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
-    : topRoller(2)
-    , bottomRoller(3)
+    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port numbers later
+    , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
     , prefix("Roller.")
 {
     topRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);

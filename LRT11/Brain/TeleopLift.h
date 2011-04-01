@@ -21,7 +21,6 @@ void Brain::TeleopLift()
     else if(inputs.ShouldManuallyPowerLift())
     {
         action.lift.manualMode = true;
-        AsynchronousPrinter::Printf("Lift power: %.2f\n", inputs.GetLiftPower());
         action.lift.power = inputs.GetLiftPower();
     }
     else

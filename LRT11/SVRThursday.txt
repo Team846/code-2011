@@ -1,10 +1,10 @@
-Redo aligner servo position 0 DONE!
+Redo aligner servo position - DONE
 High gear and low gear gains (forward + turn)
 Turn deadband
 Redo lift positions - 1.87, 5.02, 8.32
-Redo arm positions - 360, 750
+Redo arm positions - 360, 750 - DONE
 1) Arm
-	a) Setpoints
+	a) Setpoints - DONE
 	b) Holding up (vertical)
 	c) Keeping it down
 2) Practice field lift setup
