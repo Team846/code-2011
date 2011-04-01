@@ -149,7 +149,7 @@ void Brain::EncoderAuton()
 //        AsynchronousPrinter::Printf("Moving lift up\n");
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
-        action.lift.highRow = inputs.IsHighRow();
+        action.lift.highRow = DriverStation::GetInstance()->GetDigitalIn(2);
 
         action.lift.preset = action.lift.HIGH_PEG;
         action.lift.manualMode = false;

@@ -14,18 +14,21 @@ Redo arm positions - 360, 750 - DONE
 	a) Dead reckoning
 	b) Line sensing	
 	
+- Make arm go up with more power
+- Test lift + read from driverstation
+- Make autonomous faster
+- Faster gripper speed
 - CAN deployer
-- Low gear in autonomous
-/ Shifting
-- Faster gripper
-- Lift presets
-/ Rotating ringer
 - Lift down position
-- After lift moves down, do rest of the autonomous
-/ Remove printing
 - Turn tuning
 - Minibot deployment
 	- Game timer
+/ After lift moves down, do rest of the autonomous
+/ Low gear in autonomous
+/ Shifting
+/ Lift presets
+/ Rotating ringer
+/ Remove printing
 / Fix turning (third gear)
 / Keep arm up in autonomous
 / Change starting mode of autonomous (2 places)

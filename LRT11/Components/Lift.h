@@ -5,6 +5,7 @@
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
 #include "..\Sensors\VirtualPot.h"
+#include "Lift\LiftPotReader.h"
 
 class Lift : public Component, public Configurable
 {
@@ -16,6 +17,7 @@ private:
     VirtualPot liftPot;
 #endif
 
+    LiftPotReader& potReader;
     const static float inchesToTurns = 1.0 / 12.0;
 
     int timeoutCycles;
