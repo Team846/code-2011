@@ -129,7 +129,7 @@ void Brain::EncoderAuton()
         action.driveTrain.position.shouldMoveDistance = true;
         action.driveTrain.position.shouldTurnAngle = false;
 
-        action.driveTrain.position.distanceSetPoint = -6.0; // 6 inches back
+        action.driveTrain.position.distanceSetPoint = -3.0; // 2 inches back
         action.driveTrain.position.turnSetPoint = 0.0;
 
         action.driveTrain.position.maxFwdSpeed = 0.15;
@@ -194,8 +194,8 @@ void Brain::EncoderAuton()
 //        AsynchronousPrinter::Printf("Wait for release roller\n");
         action.roller.commenceAutomation = false;
 
-        // one and a half seconds of reversing the roller
-        if(++timer >= 75)
+        // half second of reversing the roller
+        if(++timer >= 25)
         {
             // stop automating; stop rollers
             action.roller.automated = false;
