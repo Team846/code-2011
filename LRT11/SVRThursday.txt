@@ -1,7 +1,7 @@
 Redo aligner servo position 0 DONE!
 High gear and low gear gains (forward + turn)
 Turn deadband
-Redo lift positions
+Redo lift positions - 1.87, 5.02, 8.32
 Redo arm positions - 360, 750
 1) Arm
 	a) Setpoints
