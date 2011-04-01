@@ -104,7 +104,7 @@ bool ProcessedInputs::ShouldMoveLiftHigh()
 
 bool ProcessedInputs::ShouldManuallyPowerLift()
 {
-    return Util::Abs<float>(-operatorStick.GetY()) > 0;
+    return Util::Abs<float>(-operatorStick.GetY()) > 0.1;
 }
 
 float ProcessedInputs::GetLiftPower()

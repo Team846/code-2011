@@ -142,7 +142,7 @@ void Brain::EncoderAuton()
         break;
 
     case MOVE_LIFT_UP:
-        AsynchronousPrinter::Printf("Moving lift up\n");
+//        AsynchronousPrinter::Printf("Moving lift up\n");
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
         action.lift.highRow = inputs.IsHighRow();
@@ -153,7 +153,7 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_MOVE_LIFT_UP:
-        AsynchronousPrinter::Printf("Waiting for move lift up\n");
+//        AsynchronousPrinter::Printf("Waiting for move lift up\n");
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
@@ -170,7 +170,7 @@ void Brain::EncoderAuton()
         break;
 
     case ROTATE_ROLLER:
-        AsynchronousPrinter::Printf("Rotate roller\n");
+//        AsynchronousPrinter::Printf("Rotate roller\n");
         action.roller.rotateUpward = false;
         action.roller.state = action.roller.ROTATING;
 
@@ -179,7 +179,7 @@ void Brain::EncoderAuton()
         break;
 
     case RELEASE_ROLLER:
-        AsynchronousPrinter::Printf("Release roller\n");
+//        AsynchronousPrinter::Printf("Release roller\n");
         action.roller.automated = true;
         action.roller.commenceAutomation = true;
         state = WAIT_FOR_RELEASE_ROLLER;
@@ -187,7 +187,7 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_RELEASE_ROLLER:
-        AsynchronousPrinter::Printf("Wait for release roller\n");
+//        AsynchronousPrinter::Printf("Wait for release roller\n");
         action.roller.commenceAutomation = false;
 
         // one and a half seconds of reversing the roller
@@ -202,7 +202,7 @@ void Brain::EncoderAuton()
         break;
 
     case MOVE_LIFT_DOWN:
-        AsynchronousPrinter::Printf("Move lift down\n");
+//        AsynchronousPrinter::Printf("Move lift down\n");
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
         action.lift.highRow = inputs.IsHighRow();
@@ -213,7 +213,7 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_MOVE_LIFT_DOWN:
-        AsynchronousPrinter::Printf("Wait for move lift down\n");
+//        AsynchronousPrinter::Printf("Wait for move lift down\n");
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
@@ -232,7 +232,7 @@ void Brain::EncoderAuton()
         action.driveTrain.position.shouldMoveDistance = true;
         action.driveTrain.position.shouldTurnAngle = false;
 
-        action.driveTrain.position.distanceSetPoint = -2.0 * 12; // 6 feet back
+        action.driveTrain.position.distanceSetPoint = -14.5 * 12; // 14.5 feet back
         action.driveTrain.position.turnSetPoint = 0.0;
 
         action.driveTrain.position.maxFwdSpeed = 0.5;
@@ -264,7 +264,7 @@ void Brain::EncoderAuton()
         break;
 
     case IDLE:
-        AsynchronousPrinter::Printf("Idle\n");
+//        AsynchronousPrinter::Printf("Idle\n");
         // wait for turning to complete and do nothing
         break;
     }

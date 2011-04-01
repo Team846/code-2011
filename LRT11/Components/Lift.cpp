@@ -120,6 +120,7 @@ void Lift::Output()
     switch(state)
     {
     case IDLE:
+//        AsynchronousPrinter::Printf("Idle\n");
         liftEsc.DisableControl();
 
         if(!positionMode)
@@ -131,6 +132,7 @@ void Lift::Output()
         break;
 
     case ABORT:
+//        AsynchronousPrinter::Printf("Abort\n");
         liftEsc.DisableControl();
 
         if(!positionMode)
@@ -140,6 +142,7 @@ void Lift::Output()
         break;
 
     case PULSING:
+//        AsynchronousPrinter::Printf("Pulsing\n");
         if(positionMode)
         {
             // configure jaguar for voltage mode
@@ -155,6 +158,7 @@ void Lift::Output()
         break;
 
     case MANUAL:
+//        AsynchronousPrinter::Printf("Manual\n");
         action.lift.doneState = action.lift.STALE; // not done yet
 
         if((action.lift.power > 0 && potValue < maxPosition) ||
@@ -171,6 +175,7 @@ void Lift::Output()
         break;
 
     case PRESET:
+//        AsynchronousPrinter::Printf("Preset\n");
         action.lift.doneState = action.lift.STALE; // not done yet
         string key = prefix;
 
@@ -198,11 +203,11 @@ void Lift::Output()
         if(action.lift.preset != action.lift.STOWED)
             setPoint += config.Get<float>(key); // relative to bottom
 
-        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setPoint));
+//        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setPoint));
         // update done flag
         if(Util::Abs<float>(potValue - setPoint) < potDeadband)
         {
-            AsynchronousPrinter::Printf("Updating done flag");
+//            AsynchronousPrinter::Printf("Updating done flag");
             action.lift.doneState = action.lift.SUCCESS;
 //            cycleCount = 1; // will get decremented to 0
         }
