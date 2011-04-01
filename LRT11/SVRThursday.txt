@@ -15,7 +15,7 @@ Redo arm positions - 360, 750 - DONE
 	b) Line sensing	
 	
 - Low gear in autonomous
-- Shifting
+/ Shifting
 - Faster gripper
 - Lift presets
 / Rotating ringer

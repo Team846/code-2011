@@ -34,10 +34,10 @@ void Shifter::Output()
 //    SmartDashboard::Log(rightServo.Get(), "Right servo position");
 #endif
 
-    DriverStation& station = *DriverStation::GetInstance();
-    leftServo.Set(station.GetAnalogIn(1));
+//    DriverStation& station = *DriverStation::GetInstance();
+//    leftServo.Set(station.GetAnalogIn(1));
 //    rightServo.Set(station.GetAnalogIn(2));
-    return;
+//    return;
 
     if(action.shifter.force && !cycleCounter)
     {
