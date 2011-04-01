@@ -129,7 +129,7 @@ void Brain::EncoderAuton()
         action.driveTrain.position.shouldMoveDistance = true;
         action.driveTrain.position.shouldTurnAngle = false;
 
-        action.driveTrain.position.distanceSetPoint = -3.0; // 2 inches back
+        action.driveTrain.position.distanceSetPoint = -3.0; // 3 inches back
         action.driveTrain.position.turnSetPoint = 0.0;
 
         action.driveTrain.position.maxFwdSpeed = 0.15;
