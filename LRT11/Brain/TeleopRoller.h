@@ -50,6 +50,7 @@ void Brain::TeleopRoller()
         action.roller.rotateUpward = false;
         action.roller.state = action.roller.ROTATING;
     }
+    // spit out ringer onto the peg
     else
         action.roller.state = action.roller.STOPPED;
 }

@@ -2,87 +2,50 @@
 
 void Brain::AutomatedRoutines()
 {
-    // used for state machine
-    /* old routine
-    static enum
+	// setup for new release method using the arm
+	if (inputs.ShouldCommenceMoveArmToMiddle())
+    	action.automatedRoutine.ringer = action.automatedRoutine.ARM_MIDDLE_POSITON;
+    else if (inputs.ShouldCommenceReleaseRingerWithArm())
+    	action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+    else if (inputs.ShouldCommenceMoveArmUpAndLiftDown())
     {
-        IDLE,
-        ROTATING_RINGER,
-        START_SPITTING,
-        MOVE_LIFT_UP,
-        MOVE_LIFT_DOWN,
-        WAIT_FOR_LIFT,
-        END_SPITTING,
-        ABORT
-    } state = IDLE;
-
-    switch(state)
-    {
-    case IDLE:
-        if(action.automation.releaseRinger)
-            state = ROTATING_RINGER;
-        break;
-
-    case ROTATING_RINGER:
-        static int rotateCount = 0;
-        action.roller.rotateUpward = false;
-        action.roller.state = action.roller.ROTATING;
-
-        // one second of rotating
-        if(++rotateCount % 50 == 0)
-        {
-            state = START_SPITTING;
-            action.roller.state = action.roller.STOPPED;
-        }
-        break;
-
-    case START_SPITTING:
-        action.roller.state = action.roller.SPITTING;
-        state = MOVE_LIFT_UP;
-        break;
-
-    case MOVE_LIFT_UP:
-        // configuration for moving to a preset
-        action.lift.givenCommand = true;
-        action.lift.preset = action.lift.HIGH_PEG;
-        action.lift.highRow = false; // should change based off position
-
-        state = WAIT_FOR_LIFT;
-        break;
-
-    case MOVE_LIFT_DOWN:
-        // configuration for moving to a preset
-        action.lift.givenCommand = true;
-        action.lift.preset = action.lift.STOWED;
-        action.lift.highRow = false; // should change based off position
-
-        state = WAIT_FOR_LIFT;
-        break;
-
-    case WAIT_FOR_LIFT:
-        // wait until lift is done
-        if(action.lift.doneState != action.lift.STALE) // message is available
-        {
-            if(action.lift.doneState == action.lift.SUCCESS)
-                state = END_SPITTING;
-            else if(action.lift.doneState == action.lift.FAILURE)
-                state = ABORT; // TODO correct state
-            else if(action.lift.doneState == action.lift.ABORTED)
-                state = ABORT; // TODO correct state
-        }
-        break;
-
-    case END_SPITTING:
-        action.roller.state = action.roller.STOPPED;
-        action.automation.releaseRinger = false;
-        state = IDLE; // wait for next command
-        break;
-
-    case ABORT:
-        // TODO abort
-        break;
+    	action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
+    	
+    	// since the lift waits for the arm you have to make sure 
+    	// it does not think that the arm is already done
+    	action.arm.doneState = action.arm.STALE;
     }
-    */
+	
+	// if aborted make sure we terminate the automated routine
+    if (inputs.ShouldAbort())
+    	action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
+	
+    // execution for new release method using the arm
+	if (action.automatedRoutine.ringer == action.automatedRoutine.ARM_MIDDLE_POSITON)
+		action.arm.state = action.arm.PRESET_MIDDLE;
+    else if (action.automatedRoutine.ringer == action.automatedRoutine.DROP_RINGER)
+    {
+    	action.arm.state = action.arm.PRESET_BOTTOM;
+    	action.roller.state = action.roller.SPITTING;
+    }
+    else if (action.automatedRoutine.ringer == action.automatedRoutine.ARM_UP)
+    {
+    	action.arm.state = action.arm.PRESET_TOP;
+    	if (action.arm.doneState == action.arm.SUCCESS)
+    	{
+    		AsynchronousPrinter::Printf("arm done\n");
+    		action.automatedRoutine.ringer = action.automatedRoutine.LIFT_DOWN;
+    		
+    		action.lift.givenCommand = true;
+    		action.lift.preset = action.lift.LOW_PEG;
+    		action.lift.doneState = action.lift.STALE;
+    	}
+    }
+    else if (action.automatedRoutine.ringer == action.automatedRoutine.LIFT_DOWN)
+    {
+    	if (action.lift.doneState == action.lift.SUCCESS)
+    		action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
+    }
 }
 
 void Brain::AutomatedFollowLine()

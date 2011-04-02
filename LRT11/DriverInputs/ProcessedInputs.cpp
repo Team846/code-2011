@@ -178,6 +178,26 @@ bool ProcessedInputs::GetOperatorThrottle()
     return -operatorStick.GetRawAxis(4) > 0.5;
 }
 
+bool ProcessedInputs::ShouldCommenceMoveArmToMiddle()
+{
+	return driverStick.IsButtonJustPressed(7);
+}
+
+bool ProcessedInputs::ShouldCommenceReleaseRingerWithArm()
+{
+	return driverStick.IsButtonJustPressed(6);
+}
+
+bool ProcessedInputs::ShouldCommenceMoveArmUpAndLiftDown()
+{
+	return driverStick.IsButtonJustPressed(5);
+}
+
+bool ProcessedInputs::EndDropRingerAutomation()
+{
+	return driverStick.IsButtonJustPressed(0);
+}
+
 bool ProcessedInputs::ShouldDeployAligner()
 {
     return operatorStick.IsButtonDown(3);

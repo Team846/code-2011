@@ -66,7 +66,13 @@ public:
     bool ShouldRollerBeAutomated();
     bool ShouldRollerCommenceAutomation();
     bool GetOperatorThrottle();
-
+    
+    // automated ringer deployment with arm controls
+    bool ShouldCommenceMoveArmToMiddle();
+    bool ShouldCommenceReleaseRingerWithArm();
+    bool ShouldCommenceMoveArmUpAndLiftDown();
+    bool EndDropRingerAutomation();
+    
     // shifting
     bool ShouldShiftHigh();
     bool ShouldShiftThird();

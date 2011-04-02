@@ -12,10 +12,8 @@ void Brain::Teleop()
 
     TeleopMinibot();
 
-    // includes automated routines such as line sensing and
-    // dead-reckoning autonomous mode
-//    AutomatedRoutines();
-
+    AutomatedRoutines();
+    
     if(inputs.ShouldAbort())
         action.master.abort = true;
     else

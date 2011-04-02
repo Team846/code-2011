@@ -2,6 +2,9 @@
 
 void Brain::TeleopArm()
 {
+	//handle ringer automation controls in here for now
+//	if (action.ringerReleaseAutomation == action.)
+	
     // default to the arm at the top state
 //    action.arm.state = action.arm.PRESET_TOP;
     action.arm.state = action.arm.PRESET_TOP;
@@ -13,7 +16,7 @@ void Brain::TeleopArm()
     // driver wants the arm down and the roller to rotate
     else if(inputs.ShouldGrabGamePiece())
         action.arm.state = action.arm.PRESET_BOTTOM;
-
+    
     if(wasDisabled)
         // must set to IDLE to register state change
         action.arm.state = action.arm.IDLE;

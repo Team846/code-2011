@@ -31,9 +31,13 @@ Arm::~Arm()
 
 void Arm::Configure()
 {
+#warning "plug in numbers for deadband and midpos"
     minPosition = config.Get<float>(prefix + "minPosition", 280);
+    midPosition = config.Get<float>(prefix + "midPosition", 621);
     maxPosition = config.Get<float>(prefix + "maxPosition", 530);
-
+    
+    midPositionDeadband = config.Get<float>(prefix + "midPositionDeadband", 10);
+    
     powerUp = config.Get<float>(prefix + "powerUp", 0.30);
     powerRetainUp = config.Get<float>(prefix + "powerRetainUp", 0.10);
     powerDown = config.Get<float>(prefix + "powerDown", -0.15);
@@ -63,6 +67,8 @@ void Arm::Output()
     switch(action.arm.state)
     {
     case PRESET_TOP:
+    	action.arm.doneState = action.arm.STALE;
+    	
         // don't merely switch to the IDLE state, as the caller will likely
         // set the state each time through the loop
         if(--cycleCount < 0)
@@ -95,6 +101,7 @@ void Arm::Output()
         break;
 
     case PRESET_BOTTOM:
+    	action.arm.doneState = action.arm.STALE;
         if(--cycleCount < 0)
         {
             action.arm.doneState = action.arm.FAILURE;
@@ -117,6 +124,30 @@ void Arm::Output()
         }
         break;
 
+    case PRESET_MIDDLE:
+		action.arm.doneState = action.arm.STALE;
+		
+		// timeout
+		if(--cycleCount < 0)
+	    {
+	        action.arm.doneState = action.arm.FAILURE;
+	        armEsc.Set(0.0);
+	        break; // timeout overrides everything
+	    }
+		
+    	if (potValue > midPosition + midPositionDeadband)
+    		armEsc.Set(powerDown/2);
+    	else if (potValue < midPosition - midPositionDeadband)
+    		armEsc.Set(powerRetainUp);
+    	else
+    	{
+    		// prevent cycle count from becoming < 0
+    		cycleCount = 100;
+    		action.arm.doneState = action.arm.SUCCESS;
+    		armEsc.Set(0.0);
+    	}
+    	break;
+    	
     case MANUAL_UP:
         if(potValue < maxPosition)
             armEsc.Set(powerUp);
