@@ -115,12 +115,12 @@ void Brain::AutomatedFollowLine()
                 // go slower when trying to redetect line
                 action.driveTrain.rate.rawForward = 0.2;
 
-                // if the last value to the right of the center, use 128
-                if(prevLinePosition > 66)
-                    linePosition = 128;
-                // otherwise use the low value, 4 (see rescaling below)
+                // if the last value to the right of the center, use 80
+                if(prevLinePosition > 50)
+                    linePosition = 80;
+                // otherwise use the low value, 20 (see rescaling below)
                 else
-                    linePosition = 4;
+                    linePosition = 20;
             }
             else if(linePosition == LineSensor::END_OF_LINE)
             {
@@ -130,7 +130,7 @@ void Brain::AutomatedFollowLine()
             }
 
             // first 4 pixels are sometimes bogus; they are cut out
-            action.driveTrain.rate.rawTurn = -0.1 * Util::Rescale(linePosition, 4, 128, -1, 1);
+            action.driveTrain.rate.rawTurn = -0.1 * Util::Rescale(linePosition, 20, 80, -1, 1);
             break;
 
         case DONE:

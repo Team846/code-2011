@@ -117,7 +117,7 @@ ESCCommand DitheredBrakeTrain::CalculateBrakeAndDutyCycle(float input, float spe
     }
 
     // speed >= 0 at this point
-    if(input > speed) // trying to go faster
+    if(input >= speed) // trying to go faster
     {
         command.dutyCycle = input;
         command.brakingDutyCycle = 0.0;

@@ -74,11 +74,12 @@ void Brain::EncoderAuton()
     switch(state)
     {
     case SET_COMMAND:
+        AsynchronousPrinter::Printf("Setting command\n");
         action.driveTrain.mode = action.driveTrain.DISTANCE;
         action.driveTrain.distance.givenCommand = true;
 
         action.driveTrain.distance.distanceSetPoint = 15.0 * 12; // 15 feet
-        action.driveTrain.distance.distanceDutyCycle = 0.5;
+        action.driveTrain.distance.distanceDutyCycle = 0.8;
 
         action.driveTrain.distance.done = false;
         // arm should stay in top position
@@ -88,15 +89,11 @@ void Brain::EncoderAuton()
         action.shifter.gear = action.shifter.LOW_GEAR;
         action.shifter.force = true;
 
-        timer = 0;
         state = DRIVE_FORWARD;
         break;
 
     case DRIVE_FORWARD:
-        // after half a second, accelerate to 80% duty cycle
-        if(++timer > 25)
-            action.driveTrain.distance.distanceDutyCycle = 0.8;
-
+        AsynchronousPrinter::Printf("Drive forward\n");
         if(action.driveTrain.distance.done)
         {
             timer = 0;
@@ -105,6 +102,7 @@ void Brain::EncoderAuton()
         break;
 
     case STALL_DETECTION:
+        AsynchronousPrinter::Printf("Stall detection\n");
         action.driveTrain.mode = action.driveTrain.RATE;
         action.driveTrain.rate.usingClosedLoop = false;
 
@@ -124,6 +122,7 @@ void Brain::EncoderAuton()
         break;
 
     case SET_SECOND_COMMAND:
+        AsynchronousPrinter::Printf("Set second command\n");
         action.driveTrain.rate.usingClosedLoop = true;
         action.driveTrain.rate.rawForward = 0.0;
         action.driveTrain.rate.rawTurn = 0.0;
@@ -145,12 +144,14 @@ void Brain::EncoderAuton()
         break;
 
     case STEP_BACK:
+        AsynchronousPrinter::Printf("Step back\n");
         // wait one second for driving to finish
         if(++timer > 50)
             state = MOVE_LIFT_UP;
         break;
 
     case MOVE_LIFT_UP:
+        AsynchronousPrinter::Printf("Move lift up\n");
 //        AsynchronousPrinter::Printf("Moving lift up\n");
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
@@ -162,7 +163,7 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_MOVE_LIFT_UP:
-//        AsynchronousPrinter::Printf("Waiting for move lift up\n");
+        AsynchronousPrinter::Printf("Wait for move lift up\n");
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
@@ -179,7 +180,7 @@ void Brain::EncoderAuton()
         break;
 
     case ROTATE_ROLLER:
-//        AsynchronousPrinter::Printf("Rotate roller\n");
+        AsynchronousPrinter::Printf("Rotate roller\n");
         action.roller.rotateUpward = false;
         action.roller.state = action.roller.ROTATING;
 
@@ -188,7 +189,7 @@ void Brain::EncoderAuton()
         break;
 
     case RELEASE_ROLLER:
-//        AsynchronousPrinter::Printf("Release roller\n");
+        AsynchronousPrinter::Printf("Release roller\n");
         action.roller.automated = true;
         action.roller.commenceAutomation = true;
         state = WAIT_FOR_RELEASE_ROLLER;
@@ -196,7 +197,7 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_RELEASE_ROLLER:
-//        AsynchronousPrinter::Printf("Wait for release roller\n");
+        AsynchronousPrinter::Printf("Wait for release roller\n");
         action.roller.commenceAutomation = false;
 
         // half second of reversing the roller
@@ -211,7 +212,7 @@ void Brain::EncoderAuton()
         break;
 
     case MOVE_LIFT_DOWN:
-//        AsynchronousPrinter::Printf("Move lift down\n");
+        AsynchronousPrinter::Printf("Move lift down\n");
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
         action.lift.highRow = DriverStation::GetInstance()->GetDigitalIn(2);
@@ -222,7 +223,7 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_MOVE_LIFT_DOWN:
-//        AsynchronousPrinter::Printf("Wait for move lift down\n");
+        AsynchronousPrinter::Printf("Wait for move lift down\n");
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
@@ -235,6 +236,7 @@ void Brain::EncoderAuton()
         break;
 
     case SET_THIRD_COMMAND:
+        AsynchronousPrinter::Printf("Set third command\n");
         action.driveTrain.mode = action.driveTrain.POSITION;
         action.driveTrain.position.givenCommand = true;
 
@@ -252,11 +254,13 @@ void Brain::EncoderAuton()
         break;
 
     case DRIVE_BACK:
+        AsynchronousPrinter::Printf("Drive back\n");
         if(++timer > 150)
             state = TURN_AROUND;
         break;
 
     case TURN_AROUND:
+        AsynchronousPrinter::Printf("Turn around\n");
         action.driveTrain.mode = action.driveTrain.POSITION;
         action.driveTrain.position.givenCommand = true;
 
@@ -273,7 +277,7 @@ void Brain::EncoderAuton()
         break;
 
     case IDLE:
-//        AsynchronousPrinter::Printf("Idle\n");
+        AsynchronousPrinter::Printf("Idle\n");
         // wait for turning to complete and do nothing
         break;
     }
