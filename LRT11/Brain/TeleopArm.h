@@ -2,9 +2,6 @@
 
 void Brain::TeleopArm()
 {
-	//handle ringer automation controls in here for now
-//	if (action.ringerReleaseAutomation == action.)
-	
     // default to the arm at the top state
 //    action.arm.state = action.arm.PRESET_TOP;
     action.arm.state = action.arm.PRESET_TOP;

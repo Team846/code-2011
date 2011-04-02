@@ -37,6 +37,7 @@ void Arm::Configure()
     maxPosition = config.Get<float>(prefix + "maxPosition", 530);
     
     midPositionDeadband = config.Get<float>(prefix + "midPositionDeadband", 10);
+    midPGain = config.Get<float>(prefix + "MidPGain");
     
     powerUp = config.Get<float>(prefix + "powerUp", 0.30);
     powerRetainUp = config.Get<float>(prefix + "powerRetainUp", 0.10);
@@ -127,18 +128,24 @@ void Arm::Output()
     case PRESET_MIDDLE:
 		action.arm.doneState = action.arm.STALE;
 		
-		// timeout
-		if(--cycleCount < 0)
-	    {
-	        action.arm.doneState = action.arm.FAILURE;
-	        armEsc.Set(0.0);
-	        break; // timeout overrides everything
-	    }
+		// no timeout for now
+//		if(--cycleCount < 0)
+//	    {
+//	        action.arm.doneState = action.arm.FAILURE;
+//	        armEsc.Set(0.0);
+//	        break; // timeout overrides everything
+//	    }
+//		float error = potValue - midPosition;
+//		float correction = error * midPGain;
+//		if (Util::Abs<float>(error) < midPositionDeadband)
+//			armEsc.Set(0.0);
+//		else
+//			armEsc.Set(correction);
 		
     	if (potValue > midPosition + midPositionDeadband)
     		armEsc.Set(powerDown/2);
     	else if (potValue < midPosition - midPositionDeadband)
-    		armEsc.Set(powerRetainUp);
+    		armEsc.Set(powerUp/2);
     	else
     	{
     		// prevent cycle count from becoming < 0

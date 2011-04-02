@@ -23,12 +23,6 @@ void Brain::TeleopLift()
         action.lift.manualMode = true;
         action.lift.power = inputs.GetLiftPower();
     }
-    else if (!inputs.ShouldCommenceMoveArmUpAndLiftDown() &&
-    		action.automatedRoutine.DROP_RINGER)
-    {
-    	if (action.arm.doneState == action.arm.SUCCESS)
-    		action.lift.preset = action.lift.LOW_PEG;
-    }
     else
         // no command given
         action.lift.givenCommand = false;

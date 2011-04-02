@@ -165,7 +165,7 @@ Finished tasks
 Before shipping
 / Fuses OK?
 	- Arm/lift (Put in lift fuse!)
-- Calibrate jaguars
+/ Calibrate jaguars (not required for CAN bus)
 / Encoder wire
 / Lift testing
 / Change lift power

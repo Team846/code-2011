@@ -84,7 +84,7 @@ bool ProcessedInputs::ShouldShiftHigh()
 
 bool ProcessedInputs::ShouldShiftThird()
 {
-    return driverStick.IsButtonDown(7);
+    return driverStick.IsButtonDown(9);
 }
 
 bool ProcessedInputs::ShouldMoveLiftLow()
@@ -120,11 +120,13 @@ bool ProcessedInputs::IsHighRow()
 
 bool ProcessedInputs::ShouldMoveArmDown()
 {
+	return false;
     return operatorStick.IsButtonDown(12);
 }
 
 bool ProcessedInputs::ShouldMoveArmUp()
 {
+	return false;
     return operatorStick.IsButtonDown(11);
 }
 
@@ -150,7 +152,7 @@ bool ProcessedInputs::ShouldRollerSpit()
 
 bool ProcessedInputs::ShouldRollerSuck()
 {
-    return IsOperatorTriggerDown();
+    return IsOperatorTriggerDown() || driverStick.IsButtonDown(5);
 }
 
 bool ProcessedInputs::ShouldRollerRotateUp()
@@ -180,17 +182,17 @@ bool ProcessedInputs::GetOperatorThrottle()
 
 bool ProcessedInputs::ShouldCommenceMoveArmToMiddle()
 {
-	return driverStick.IsButtonJustPressed(7);
+	return driverStick.IsButtonJustPressed(10);
 }
 
 bool ProcessedInputs::ShouldCommenceReleaseRingerWithArm()
 {
-	return driverStick.IsButtonJustPressed(6);
+	return operatorStick.IsButtonJustPressed(12);
 }
 
 bool ProcessedInputs::ShouldCommenceMoveArmUpAndLiftDown()
 {
-	return driverStick.IsButtonJustPressed(5);
+	return operatorStick.IsButtonJustPressed(11);
 }
 
 bool ProcessedInputs::EndDropRingerAutomation()
