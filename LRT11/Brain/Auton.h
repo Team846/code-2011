@@ -78,7 +78,7 @@ void Brain::EncoderAuton()
         action.driveTrain.distance.givenCommand = true;
 
         action.driveTrain.distance.distanceSetPoint = 15.0 * 12; // 15 feet
-        action.driveTrain.distance.distanceDutyCycle = 0.8;
+        action.driveTrain.distance.distanceDutyCycle = 0.5;
 
         action.driveTrain.distance.done = false;
         // arm should stay in top position
@@ -88,10 +88,15 @@ void Brain::EncoderAuton()
         action.shifter.gear = action.shifter.LOW_GEAR;
         action.shifter.force = true;
 
+        timer = 0;
         state = DRIVE_FORWARD;
         break;
 
     case DRIVE_FORWARD:
+        // after half a second, accelerate to 80% duty cycle
+        if(++timer > 25)
+            action.driveTrain.distance.distanceDutyCycle = 0.8;
+
         if(action.driveTrain.distance.done)
         {
             timer = 0;
