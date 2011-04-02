@@ -13,7 +13,7 @@ void Brain::Teleop()
     TeleopMinibot();
 
     AutomatedRoutines();
-    
+
     if(inputs.ShouldAbort())
         action.master.abort = true;
     else

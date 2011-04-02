@@ -61,7 +61,7 @@ AsynchronousFileLogger::~AsynchronousFileLogger()
 
 void AsynchronousFileLogger::PrinterTaskRunner()
 {
-	AsynchronousFileLogger::GetInstance().PrinterTask();
+    AsynchronousFileLogger::GetInstance().PrinterTask();
 }
 void AsynchronousFileLogger::PrinterTask()
 {

@@ -17,7 +17,7 @@ public:
     void ResumePrinterTask();
 
 protected:
-	AsynchronousFileLogger();
+    AsynchronousFileLogger();
     DISALLOW_COPY_AND_ASSIGN(AsynchronousFileLogger);
 
 private:

@@ -97,17 +97,17 @@ public:
         bool automated;
         bool commenceAutomation;
     } roller;
-    
-    struct 
+
+    struct
     {
-    	enum
-	    {
-	    	ARM_MIDDLE_POSITON,
-	    	DROP_RINGER,
-	    	ARM_UP,
-	    	LIFT_DOWN,
-	    	IDLE
-	    } ringer;
+        enum
+        {
+            ARM_MIDDLE_POSITON,
+            DROP_RINGER,
+            ARM_UP,
+            LIFT_DOWN,
+            IDLE
+        } ringer;
     } automatedRoutine;
 
     struct

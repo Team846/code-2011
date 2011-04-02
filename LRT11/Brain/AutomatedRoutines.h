@@ -2,49 +2,49 @@
 
 void Brain::AutomatedRoutines()
 {
-	// setup for new release method using the arm
-	if (inputs.ShouldCommenceMoveArmToMiddle())
-    	action.automatedRoutine.ringer = action.automatedRoutine.ARM_MIDDLE_POSITON;
-    else if (inputs.ShouldCommenceReleaseRingerWithArm())
-    	action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
-    else if (inputs.ShouldCommenceMoveArmUpAndLiftDown())
+    // setup for new release method using the arm
+    if(inputs.ShouldCommenceMoveArmToMiddle())
+        action.automatedRoutine.ringer = action.automatedRoutine.ARM_MIDDLE_POSITON;
+    else if(inputs.ShouldCommenceReleaseRingerWithArm())
+        action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+    else if(inputs.ShouldCommenceMoveArmUpAndLiftDown())
     {
-    	action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
-    	
-    	// since the lift waits for the arm you have to make sure 
-    	// it does not think that the arm is already done
-    	action.arm.doneState = action.arm.STALE;
+        action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
+
+        // since the lift waits for the arm you have to make sure
+        // it does not think that the arm is already done
+        action.arm.doneState = action.arm.STALE;
     }
-	
-	// if aborted make sure we terminate the automated routine
-    if (inputs.ShouldAbort())
-    	action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
-	
+
+    // if aborted make sure we terminate the automated routine
+    if(inputs.ShouldAbort())
+        action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
+
     // execution for new release method using the arm
-	if (action.automatedRoutine.ringer == action.automatedRoutine.ARM_MIDDLE_POSITON)
-		action.arm.state = action.arm.PRESET_MIDDLE;
-    else if (action.automatedRoutine.ringer == action.automatedRoutine.DROP_RINGER)
+    if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_MIDDLE_POSITON)
+        action.arm.state = action.arm.PRESET_MIDDLE;
+    else if(action.automatedRoutine.ringer == action.automatedRoutine.DROP_RINGER)
     {
-    	action.arm.state = action.arm.PRESET_BOTTOM;
-    	action.roller.state = action.roller.SPITTING;
+        action.arm.state = action.arm.PRESET_BOTTOM;
+        action.roller.state = action.roller.SPITTING;
     }
-    else if (action.automatedRoutine.ringer == action.automatedRoutine.ARM_UP)
+    else if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_UP)
     {
-    	action.arm.state = action.arm.PRESET_TOP;
-    	if (action.arm.doneState == action.arm.SUCCESS)
-    	{
-    		AsynchronousPrinter::Printf("arm done\n");
-    		action.automatedRoutine.ringer = action.automatedRoutine.LIFT_DOWN;
-    		
-    		action.lift.givenCommand = true;
-    		action.lift.preset = action.lift.LOW_PEG;
-    		action.lift.doneState = action.lift.STALE;
-    	}
+        action.arm.state = action.arm.PRESET_TOP;
+        if(action.arm.doneState == action.arm.SUCCESS)
+        {
+            AsynchronousPrinter::Printf("arm done\n");
+            action.automatedRoutine.ringer = action.automatedRoutine.LIFT_DOWN;
+
+            action.lift.givenCommand = true;
+            action.lift.preset = action.lift.LOW_PEG;
+            action.lift.doneState = action.lift.STALE;
+        }
     }
-    else if (action.automatedRoutine.ringer == action.automatedRoutine.LIFT_DOWN)
+    else if(action.automatedRoutine.ringer == action.automatedRoutine.LIFT_DOWN)
     {
-    	if (action.lift.doneState == action.lift.SUCCESS)
-    		action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
+        if(action.lift.doneState == action.lift.SUCCESS)
+            action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
     }
 }
 

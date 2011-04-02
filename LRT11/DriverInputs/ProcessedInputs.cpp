@@ -120,13 +120,13 @@ bool ProcessedInputs::IsHighRow()
 
 bool ProcessedInputs::ShouldMoveArmDown()
 {
-	return false;
+    return false;
     return operatorStick.IsButtonDown(12);
 }
 
 bool ProcessedInputs::ShouldMoveArmUp()
 {
-	return false;
+    return false;
     return operatorStick.IsButtonDown(11);
 }
 
@@ -182,22 +182,22 @@ bool ProcessedInputs::GetOperatorThrottle()
 
 bool ProcessedInputs::ShouldCommenceMoveArmToMiddle()
 {
-	return driverStick.IsButtonJustPressed(10);
+    return driverStick.IsButtonJustPressed(10);
 }
 
 bool ProcessedInputs::ShouldCommenceReleaseRingerWithArm()
 {
-	return operatorStick.IsButtonJustPressed(12);
+    return operatorStick.IsButtonJustPressed(12);
 }
 
 bool ProcessedInputs::ShouldCommenceMoveArmUpAndLiftDown()
 {
-	return operatorStick.IsButtonJustPressed(11);
+    return operatorStick.IsButtonJustPressed(11);
 }
 
 bool ProcessedInputs::EndDropRingerAutomation()
 {
-	return driverStick.IsButtonJustPressed(0);
+    return driverStick.IsButtonJustPressed(0);
 }
 
 bool ProcessedInputs::ShouldDeployAligner()
