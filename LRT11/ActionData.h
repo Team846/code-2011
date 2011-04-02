@@ -133,6 +133,8 @@ public:
         bool save;
         bool apply;
     } config;
+    
+    bool wasDisabled;
 
 protected:
     ActionData();

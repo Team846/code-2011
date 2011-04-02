@@ -29,6 +29,8 @@ public:
 
     void ApplyBrakes();
     void SetBrake(int brakeAmount);
+    
+    void ResetCache();
 
 private:
     bool hasPartner;

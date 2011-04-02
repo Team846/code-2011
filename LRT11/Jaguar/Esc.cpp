@@ -117,6 +117,13 @@ void Esc::Set(float speed)
 //    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));
 }
 
+void Esc::ResetCache()
+{
+	ProxiedCANJaguar::ResetCache();
+	if (hasPartner)
+		partner->ResetCache();
+}
+
 void Esc::ApplyBrakes()
 {
     if(hasPartner)
