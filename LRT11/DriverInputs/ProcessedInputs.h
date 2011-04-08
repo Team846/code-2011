@@ -19,7 +19,7 @@ private:
     float GetThrottle();
 
     DebouncedJoystick driverStick, operatorStick;
-
+    
 protected:
     ProcessedInputs();
     DISALLOW_COPY_AND_ASSIGN(ProcessedInputs);
@@ -88,7 +88,7 @@ public:
     bool ShouldLoadConfig();
     bool ShouldSaveConfig();
     bool ShouldApplyConfig();
-
+    
     void UpdateDebouncing();
 };
 

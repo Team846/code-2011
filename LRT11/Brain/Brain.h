@@ -79,6 +79,9 @@ private:
     void EncoderAuton();
     void Middle(int numberOfTubes);
 
+    // used for debugging
+    bool PauseOnDS_input(int softKeyNum);
+    
     // SmartDashboard updating
     void UpdateDashboardValues(GameState gameState);
 };

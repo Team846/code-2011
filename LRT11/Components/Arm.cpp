@@ -31,7 +31,6 @@ Arm::~Arm()
 
 void Arm::Configure()
 {
-#warning "plug in numbers for deadband and midpos"
     minPosition = config.Get<float>(prefix + "minPosition", 280);
     midPosition = config.Get<float>(prefix + "midPosition", 621);
     maxPosition = config.Get<float>(prefix + "maxPosition", 530);
