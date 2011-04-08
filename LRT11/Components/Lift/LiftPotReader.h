@@ -27,7 +27,7 @@ public:
     void StartReading();
     double GetPotValue();
 
-    static void StartReaderTask();
+    static int StartReaderTask(); //must match FUNCPTR as a task entry point. -dg
     void ReaderTask();
 };
 

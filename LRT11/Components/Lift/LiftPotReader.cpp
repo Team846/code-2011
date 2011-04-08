@@ -39,9 +39,11 @@ double LiftPotReader::GetPotValue()
     return liftPotVal;
 }
 
-void LiftPotReader::StartReaderTask()
+// Entry point for task.
+int LiftPotReader::StartReaderTask()
 {
     LiftPotReader::GetInstance().ReaderTask();
+    return 0;
 }
 
 void LiftPotReader::ReaderTask()
