@@ -43,9 +43,9 @@ void Brain::Auton()
 
 void Brain::EncoderAuton()
 {
-	char *stateName = "unknown state";
-	
-    static enum
+    char* stateName = "unknown state";
+
+    typedef enum
     {
         SET_COMMAND,
         DRIVE_FORWARD,
@@ -63,8 +63,10 @@ void Brain::EncoderAuton()
         DRIVE_BACK,
         TURN_AROUND,
         IDLE,
-    } state = SET_COMMAND;
-    
+    } AutonState;
+    static AutonState state = SET_COMMAND;
+
+
     static int timer = 0;
 
     if(wasDisabled)
@@ -77,7 +79,7 @@ void Brain::EncoderAuton()
     switch(state)
     {
     case SET_COMMAND:
-    	stateName = "SET_COMMAND";
+        stateName = "SET_COMMAND";
 //        AsynchronousPrinter::Printf("Setting command\n");
         action.driveTrain.mode = action.driveTrain.DISTANCE;
         action.driveTrain.distance.givenCommand = true;
@@ -97,7 +99,7 @@ void Brain::EncoderAuton()
         break;
 
     case DRIVE_FORWARD:
-    	stateName = "DRIVE_FORWARD";
+        stateName = "DRIVE_FORWARD";
 //        AsynchronousPrinter::Printf("Drive forward\n");
         if(action.driveTrain.distance.done)
         {
@@ -107,7 +109,7 @@ void Brain::EncoderAuton()
         break;
 
     case STALL_DETECTION:
-    	stateName = "STALL_DETECTION";
+        stateName = "STALL_DETECTION";
 //        AsynchronousPrinter::Printf("Stall detection\n");
         action.driveTrain.mode = action.driveTrain.RATE;
         action.driveTrain.rate.usingClosedLoop = false;
@@ -123,12 +125,12 @@ void Brain::EncoderAuton()
         {
             if(driveEncoders.GetNormalizedLowGearForwardSpeed()
                     < 0.05)
-            	advanceState = true;
+                advanceState = true;
         }
         break;
 
     case SET_SECOND_COMMAND:
-    	stateName = "SET_SECOND_COMMAND";
+        stateName = "SET_SECOND_COMMAND";
 //        AsynchronousPrinter::Printf("Set second command\n");
         action.driveTrain.rate.usingClosedLoop = true;
         action.driveTrain.rate.rawForward = 0.0;
@@ -151,15 +153,15 @@ void Brain::EncoderAuton()
         break;
 
     case STEP_BACK:
-    	stateName = "STEP_BACK";
+        stateName = "STEP_BACK";
 //        AsynchronousPrinter::Printf("Step back\n");
         // wait one second for driving to finish
         if(++timer > 50)
-        	advanceState = true;
+            advanceState = true;
         break;
 
     case MOVE_LIFT_UP:
-    	stateName = "MOVE_LIFT_UP";
+        stateName = "MOVE_LIFT_UP";
 //        AsynchronousPrinter::Printf("Move lift up\n");
 //        AsynchronousPrinter::Printf("Moving lift up\n");
         action.lift.givenCommand = true;
@@ -172,12 +174,12 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_MOVE_LIFT_UP:
-    	stateName = "WAIT_FOR_MOVE_LIFT_UP";
+        stateName = "WAIT_FOR_MOVE_LIFT_UP";
 //        AsynchronousPrinter::Printf("Wait for move lift up\n");
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
-            	advanceState = true;
+                advanceState = true;
             else // lift operation failed; abort
                 state = IDLE;
             timer = 0; // reset timer
@@ -185,17 +187,17 @@ void Brain::EncoderAuton()
         break;
 
     case ROTATE_ROLLER:
-    	stateName = "ROTATE_ROLLER";
+        stateName = "ROTATE_ROLLER";
 //        AsynchronousPrinter::Printf("Rotate roller\n");
         action.roller.rotateUpward = false;
         action.roller.state = action.roller.ROTATING;
 
         if(++timer >= 75)
-        	advanceState = true;
+            advanceState = true;
         break;
 
     case RELEASE_ROLLER:
-    	stateName = "RELEASE_ROLLER";
+        stateName = "RELEASE_ROLLER";
 //        AsynchronousPrinter::Printf("Release roller\n");
         action.roller.automated = true;
         action.roller.commenceAutomation = true;
@@ -204,7 +206,7 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_RELEASE_ROLLER:
-    	stateName = "WAIT_FOR_RELEASE_ROLLER";
+        stateName = "WAIT_FOR_RELEASE_ROLLER";
 //        AsynchronousPrinter::Printf("Wait for release roller\n");
         action.roller.commenceAutomation = false;
 
@@ -220,7 +222,7 @@ void Brain::EncoderAuton()
         break;
 
     case MOVE_LIFT_DOWN:
-    	stateName = "MOVE_LIFT_DOWN";
+        stateName = "MOVE_LIFT_DOWN";
 //        AsynchronousPrinter::Printf("Move lift down\n");
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
@@ -232,12 +234,12 @@ void Brain::EncoderAuton()
         break;
 
     case WAIT_FOR_MOVE_LIFT_DOWN:
-    	stateName = "WAIT_FOR_MOVE_LIFT_DOWN";
+        stateName = "WAIT_FOR_MOVE_LIFT_DOWN";
 //        AsynchronousPrinter::Printf("Wait for move lift down\n");
         if(action.lift.doneState != action.lift.STALE) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
-            	advanceState = true;
+                advanceState = true;
             else // lift operation failed; abort
                 state = IDLE;
             timer = 0; // reset timer
@@ -245,7 +247,7 @@ void Brain::EncoderAuton()
         break;
 
     case SET_THIRD_COMMAND:
-    	stateName = "SET_THIRD_COMMAND";
+        stateName = "SET_THIRD_COMMAND";
 //        AsynchronousPrinter::Printf("Set third command\n");
         action.driveTrain.mode = action.driveTrain.POSITION;
         action.driveTrain.position.givenCommand = true;
@@ -264,14 +266,14 @@ void Brain::EncoderAuton()
         break;
 
     case DRIVE_BACK:
-    	stateName = "DRIVE_BACK";
+        stateName = "DRIVE_BACK";
 //        AsynchronousPrinter::Printf("Drive back\n");
         if(++timer > 150)
-        	advanceState = true;
+            advanceState = true;
         break;
 
     case TURN_AROUND:
-    	stateName = "TURN_AROUND";
+        stateName = "TURN_AROUND";
 //        AsynchronousPrinter::Printf("Turn around\n");
         action.driveTrain.mode = action.driveTrain.POSITION;
         action.driveTrain.position.givenCommand = true;
@@ -289,30 +291,30 @@ void Brain::EncoderAuton()
         break;
 
     case IDLE:
-    	stateName = "IDLE";
+        stateName = "IDLE";
 //        AsynchronousPrinter::Printf("Idle\n");
         // wait for turning to complete and do nothing
         break;
-        
+
     default: //state not handled
-    	stateName = "Default";
-    	break;
+        stateName = "Default";
+        break;
     }
-    
-    if (advanceState)
+
+    if(advanceState)
     {
-    	AsynchronousPrinter::Printf("Finished %s\n", stateName);
+        AsynchronousPrinter::Printf("Finished %s\n", stateName);
 #warning "Change ds button we are looking in"
 
 //#define PAUSE_AUTON
 #ifdef PAUSE_AUTON
-    	// waits until key is released 
-    	if ( PauseOnDS_input(8) )
-    		state++;
-#else 
-		state++;
-#endif 
-    	
+        // waits until key is released
+        if(PauseOnDS_input(8))
+            state++;
+#else
+        state = (AutonState)((int) state + 1);
+#endif
+
     }
 
 //    static enum
@@ -459,13 +461,13 @@ void Brain::EncoderAuton()
 // always true if pausing not enabled (PAUSE_AUTON not defined)
 bool Brain::PauseOnDS_input(int softKeyNum)
 {
-	bool keyReleased = false;
+    bool keyReleased = false;
 
-	static bool wasPressed = false;
-	bool isPressed = ds.GetDigitalIn(8);
-	if (wasPressed && !isPressed)
-		keyReleased = true;
-	wasPressed = isPressed;
-	
-	return keyReleased;
+    static bool wasPressed = false;
+    bool isPressed = ds.GetDigitalIn(8);
+    if(wasPressed && !isPressed)
+        keyReleased = true;
+    wasPressed = isPressed;
+
+    return keyReleased;
 }

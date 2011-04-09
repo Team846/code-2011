@@ -81,7 +81,7 @@ private:
 
     // used for debugging
     bool PauseOnDS_input(int softKeyNum);
-    
+
     // SmartDashboard updating
     void UpdateDashboardValues(GameState gameState);
 };

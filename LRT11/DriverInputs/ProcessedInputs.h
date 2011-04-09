@@ -19,7 +19,7 @@ private:
     float GetThrottle();
 
     DebouncedJoystick driverStick, operatorStick;
-    
+
 protected:
     ProcessedInputs();
     DISALLOW_COPY_AND_ASSIGN(ProcessedInputs);
@@ -70,6 +70,12 @@ public:
     // automated ringer deployment with arm controls
     bool ShouldCommenceMoveArmToMiddle();
     bool ShouldCommenceReleaseRingerWithArm();
+
+    //3 routines is because of a workaround to the current way roller+lift automation is handled. The changes required to handle it properly may break things so it will be postponed until after champs.
+    bool ShouldCommenceReleaseRingerWithLift();
+    bool ShouldReleaseRingerWithLift();
+    bool ShouldTerminateReleaseRingerWithLift();
+
     bool ShouldCommenceMoveArmUpAndLiftDown();
     bool EndDropRingerAutomation();
 
@@ -88,7 +94,7 @@ public:
     bool ShouldLoadConfig();
     bool ShouldSaveConfig();
     bool ShouldApplyConfig();
-    
+
     void UpdateDebouncing();
 };
 

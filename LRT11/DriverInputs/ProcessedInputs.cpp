@@ -190,6 +190,21 @@ bool ProcessedInputs::ShouldCommenceReleaseRingerWithArm()
     return operatorStick.IsButtonJustPressed(12);
 }
 
+bool ProcessedInputs::ShouldReleaseRingerWithLift()
+{
+    return operatorStick.IsButtonDown(12);
+}
+
+bool ProcessedInputs::ShouldCommenceReleaseRingerWithLift()
+{
+    return operatorStick.IsButtonJustPressed(12);
+}
+
+bool ProcessedInputs::ShouldTerminateReleaseRingerWithLift()
+{
+    return operatorStick.IsButtonJustReleased(12);
+}
+
 bool ProcessedInputs::ShouldCommenceMoveArmUpAndLiftDown()
 {
     return operatorStick.IsButtonJustPressed(11);

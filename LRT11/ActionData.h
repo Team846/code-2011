@@ -103,7 +103,9 @@ public:
         enum
         {
             ARM_MIDDLE_POSITON,
+            COMMENCE_DROP_RINGER,
             DROP_RINGER,
+            TERMINATE_DROP_RINGER,
             ARM_UP,
             LIFT_DOWN,
             IDLE
@@ -133,7 +135,7 @@ public:
         bool save;
         bool apply;
     } config;
-    
+
     bool wasDisabled;
 
 protected:

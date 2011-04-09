@@ -39,7 +39,7 @@ ActionData::ActionData()
     driveTrain.distance.distanceDutyCycle = 0.0;
     driveTrain.distance.distanceSetPoint = 0.0;
     driveTrain.distance.done = false;
-    
+
     wasDisabled = true;
 
 //    positionTrain.shouldMoveDistance = false;

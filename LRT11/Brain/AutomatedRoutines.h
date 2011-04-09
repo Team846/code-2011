@@ -1,12 +1,23 @@
 #include "Brain.h"
 
+#define LIFT_RELEASE
+
 void Brain::AutomatedRoutines()
 {
     // setup for new release method using the arm
     if(inputs.ShouldCommenceMoveArmToMiddle())
         action.automatedRoutine.ringer = action.automatedRoutine.ARM_MIDDLE_POSITON;
+#ifdef LIFT_RELEASE
+    else if(inputs.ShouldCommenceReleaseRingerWithLift())
+        action.automatedRoutine.ringer = action.automatedRoutine.COMMENCE_DROP_RINGER;
+    else if(inputs.ShouldReleaseRingerWithLift())
+        action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+    else if(inputs.ShouldTerminateReleaseRingerWithLift())
+        action.automatedRoutine.ringer = action.automatedRoutine.TERMINATE_DROP_RINGER;
+#else
     else if(inputs.ShouldCommenceReleaseRingerWithArm())
         action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+#endif
     else if(inputs.ShouldCommenceMoveArmUpAndLiftDown())
     {
         action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
@@ -23,11 +34,35 @@ void Brain::AutomatedRoutines()
     // execution for new release method using the arm
     if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_MIDDLE_POSITON)
         action.arm.state = action.arm.PRESET_MIDDLE;
+
+
+#ifdef LIFT_RELEASE
+    else if(action.automatedRoutine.ringer == action.automatedRoutine.COMMENCE_DROP_RINGER)
+    {
+        action.roller.commenceAutomation = true;
+        action.roller.automated = true;
+    }
+#endif
     else if(action.automatedRoutine.ringer == action.automatedRoutine.DROP_RINGER)
     {
+#ifdef LIFT_RELEASE
+        action.roller.commenceAutomation = false;
+        action.roller.automated = true;
+#else
         action.arm.state = action.arm.PRESET_BOTTOM;
         action.roller.state = action.roller.SPITTING;
+#endif
     }
+#ifdef LIFT_RELEASE
+    else if(action.automatedRoutine.ringer == action.automatedRoutine.TERMINATE_DROP_RINGER)
+    {
+        action.roller.automated = false;
+        //automatically put the arm up and lift down
+        action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
+    }
+#endif
+
+
     else if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_UP)
     {
         action.arm.state = action.arm.PRESET_TOP;

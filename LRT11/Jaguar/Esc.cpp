@@ -119,9 +119,9 @@ void Esc::Set(float speed)
 
 void Esc::ResetCache()
 {
-	ProxiedCANJaguar::ResetCache();
-	if (hasPartner)
-		partner->ResetCache();
+    ProxiedCANJaguar::ResetCache();
+    if(hasPartner)
+        partner->ResetCache();
 }
 
 void Esc::ApplyBrakes()

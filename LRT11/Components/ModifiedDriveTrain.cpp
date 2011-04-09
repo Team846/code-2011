@@ -97,10 +97,10 @@ void ModifiedDriveTrain::Output()
     // non-zero parameter
     leftESC.ApplyBrakes();
     rightESC.ApplyBrakes();
-    
-    if (action.wasDisabled)
+
+    if(action.wasDisabled)
     {
-    	leftESC.ResetCache();
-    	rightESC.ResetCache();
+        leftESC.ResetCache();
+        rightESC.ResetCache();
     }
 }
