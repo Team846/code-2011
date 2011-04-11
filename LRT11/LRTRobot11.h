@@ -13,6 +13,8 @@
 #include "Components/Roller.h"
 #include "Components/MiniBotDeployer.h"
 #include "Config/Config.h"
+#include "wdLib.h"
+#include "sysLib.h"
 
 class LRTRobot11 : public LRTRobotBase
 {
@@ -44,6 +46,7 @@ private:
 
 //    AnalogChannel armPot;
 
+    WDOG_ID mainLoopWatchDog;
 public:
     LRTRobot11();
     virtual ~LRTRobot11();

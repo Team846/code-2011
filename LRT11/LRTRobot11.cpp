@@ -20,7 +20,7 @@ LRTRobot11::LRTRobot11()
 //    , switchLED(6)
     , prevState(DISABLED)
 {
-
+    mainLoopWatchDog = wdCreate();
 }
 
 LRTRobot11::~LRTRobot11()
@@ -42,8 +42,17 @@ void LRTRobot11::RobotInit()
     AsynchronousPrinter::Printf(build);
 }
 
+static int outputstuffs(...)
+{
+    AsynchronousPrinter::Printf("main execution > 20ms\n");
+    return 0;
+}
 void LRTRobot11::MainLoop()
 {
+
+    // setup a watchdog to warn us if our loop takes too long
+    // sysClkRateGet returns the number of ticks per cycle at the current clock rate.
+    wdStart(mainLoopWatchDog, sysClkRateGet() / 50, outputstuffs, 0);
     GameState gameState = DetermineState();
 
     {
@@ -124,6 +133,9 @@ void LRTRobot11::MainLoop()
     }
 
     prevState = gameState;
+
+    //if we finish in time cancel the watchdog's error message
+    wdCancel(mainLoopWatchDog);
 }
 
 GameState LRTRobot11::DetermineState()
