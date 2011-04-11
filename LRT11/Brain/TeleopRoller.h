@@ -19,8 +19,10 @@ void Brain::TeleopRoller()
         static int timer = 0;
 
         // begin, or set the state, only when the button is just pressed
+        // or from autonomous when action.roller.commenceAutomation == true
         if(inputs.ShouldRollerCommenceAutomation() || action.roller.commenceAutomation)
         {
+        	action.roller.commenceAutomation = false;
             timer = 0;
             state = MOVING_LIFT_DOWN;
         }

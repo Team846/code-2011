@@ -33,7 +33,7 @@ public:
     const static float PULSES_PER_REVOLUTION = 100.0; // pulses per wheel revolution [BA]
 
     const static float MAX_ENCODER_RATE      = 1400.0;
-    const static float MAX_TURNING_RATE     = 2800.0;
+    const static float MAX_TURNING_RATE      = 2800.0;
 
     // 15 degrees short at SVR -KV 3/31/11
     const static float TICKS_PER_FULL_TURN   = 1350.0 * 180.0 / 165.0;
@@ -45,7 +45,7 @@ public:
     const static float MAX_TURNING_RATE      = 448.3;
 
     const static float TICKS_PER_FULL_TURN   = 997.0; // measured 3/28/11 at room 612 -KV
-    const static float WHEEL_DIAMETER = 8.0; // in
+    const static float WHEEL_DIAMETER 		 = 8.0; // in
 #endif
 
     // extrapolate max low gear speed

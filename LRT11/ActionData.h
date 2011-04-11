@@ -65,9 +65,9 @@ public:
         bool manualMode;
         float power;
 
-        bool highRow;
+        bool highColumn;
         enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} preset;
-        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
+        enum {IN_PROGRESS = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
     } lift;
 
     struct
@@ -82,7 +82,7 @@ public:
             IDLE = 1, PRESET_BOTTOM = 2, PRESET_TOP = 3,
             PRESET_MIDDLE = 4,  MANUAL_DOWN = 5, MANUAL_UP = 6
         } state;
-        enum {STALE = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
+        enum {IN_PROGRESS = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
     } arm;
 
     struct

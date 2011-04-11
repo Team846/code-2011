@@ -51,7 +51,7 @@ private:
     bool isFinale;
     bool hasMoved;
 
-    bool wasDisabled;
+    bool wasDisabledLastCycle;
 
     // Mode-specific methods
     void Common();

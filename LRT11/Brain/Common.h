@@ -2,7 +2,7 @@
 
 void Brain::Common()
 {
-    action.wasDisabled = wasDisabled;
+    action.wasDisabled = wasDisabledLastCycle;
 
     inputs.UpdateDebouncing();
     config.UpdateAssignableDials();

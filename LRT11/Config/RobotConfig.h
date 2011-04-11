@@ -24,9 +24,14 @@ public:
     const static UINT32 CAN_LIFT = 8;
     const static UINT32 CAN_ARM  = 4;
 
+#ifdef LRT_ROBOT_2011
     const static UINT32 CAN_ROLLER_TOP    = 7;
     const static UINT32 CAN_ROLLER_BOTTOM = 5;
-
+#else
+    const static UINT32 CAN_ROLLER_TOP    = 3;
+    const static UINT32 CAN_ROLLER_BOTTOM = 2;
+#endif
+    
     const static UINT32 CAN_DEPLOYER = 6;
 
     // Servos

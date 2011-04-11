@@ -164,7 +164,7 @@ void Lift::Output()
 
     case MANUAL:
 //        AsynchronousPrinter::Printf("Manual\n");
-        action.lift.doneState = action.lift.STALE; // not done yet
+        action.lift.doneState = action.lift.IN_PROGRESS; // not done yet
 
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
@@ -181,11 +181,11 @@ void Lift::Output()
 
     case PRESET:
 //        AsynchronousPrinter::Printf("Preset\n");
-        action.lift.doneState = action.lift.STALE; // not done yet
+        action.lift.doneState = action.lift.IN_PROGRESS; // not done yet
         string key = prefix;
 
         float setPoint;
-        if(action.lift.highRow)
+        if(action.lift.highColumn)
             setPoint = config.Get<float>(prefix + "highRowReference");
         else
             setPoint = config.Get<float>(prefix + "lowRowReference");
@@ -197,7 +197,7 @@ void Lift::Output()
         case LOW_PEG:
             // low peg relative position is different for high
             // and low row
-            if(action.lift.highRow)
+            if(action.lift.highColumn)
                 key += "highRowLowPegRelative";
             else
                 key += "lowRowLowPegRelative";

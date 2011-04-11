@@ -29,7 +29,7 @@ Brain::Brain()
     , leftSide(false)
     , isFinale(false)
     , hasMoved(false)
-    , wasDisabled(true)
+    , wasDisabledLastCycle(true)
 {
     // first reading is bogus; throw it out 3/12/11 -KV
     lineSensor.GetLinePosition();
@@ -47,7 +47,7 @@ void Brain::Process(GameState gameState)
         gameTimer.Start();
 
     if(previousState != DISABLED)
-        wasDisabled = false;
+        wasDisabledLastCycle = false;
 
     Common();
 
@@ -59,7 +59,8 @@ void Brain::Process(GameState gameState)
         break;
 
     case TELEOPERATED:
-        Teleop();
+	    Auton();
+//        Teleop();
         break;
 
     case AUTONOMOUS:

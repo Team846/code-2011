@@ -43,48 +43,90 @@ void Brain::Auton()
 
 void Brain::EncoderAuton()
 {
-    char* stateName = "unknown state";
+	static int e = 0;
+	if (++e %10 == 1)
+	{
+		for (int i = 1; i <= 8; i++)
+			AsynchronousPrinter::Printf("%d ", ds.GetDigitalIn(i));
+		AsynchronousPrinter::Printf("\n");
+	}
+//	if (!PauseOnDS_input(8))
+//		AsynchronousPrinter::Printf("Switch\n" );
+	return;
+    
+	static char* stateName = "unknown state";
 
-    typedef enum
+    enum
     {
-        SET_COMMAND,
         DRIVE_FORWARD,
+        WAIT_FOR_DRIVE_FORWARD,
         STALL_DETECTION,
-        SET_SECOND_COMMAND,
         STEP_BACK,
+        WAIT_FOR_STEP_BACK,
         MOVE_LIFT_UP,
         WAIT_FOR_MOVE_LIFT_UP,
         ROTATE_ROLLER,
-        RELEASE_ROLLER,
-        WAIT_FOR_RELEASE_ROLLER,
-        MOVE_LIFT_DOWN,
+        RELEASE_GAMEPIECE_START,
+        RELEASE_GAMEPIECE,
+        MOVE_LIFT_DOWN_START,
         WAIT_FOR_MOVE_LIFT_DOWN,
-        SET_THIRD_COMMAND,
+        SETUP_DRIVE_BACK,
         DRIVE_BACK,
         TURN_AROUND,
         IDLE,
-    } AutonState;
-    static AutonState state = SET_COMMAND;
-
-
+    };
+    static int state = DRIVE_FORWARD;
+    
     static int timer = 0;
+    static int wait  = 0;
 
-    if(wasDisabled)
+    if(wasDisabledLastCycle)
     {
         timer = 0;
-        state = SET_COMMAND;
+        wait  = 0;
+        state = DRIVE_FORWARD;
     }
 
-    bool advanceState = false;
+    static bool advanceState = false;
+    static bool canPause 	 = true;
+
+    if (wait > 0)
+    {
+    	wait--;
+    	AsynchronousPrinter::Printf("waiting\n");
+    	return;
+    }
+    
+    if (advanceState)
+    {
+#warning "Change ds button we are looking in"
+#define PAUSE_AUTON
+#ifdef PAUSE_AUTON
+    	// waits until key is released
+        if(canPause && PauseOnDS_input(8))
+        {
+        	AsynchronousPrinter::Printf("Pausing\n", stateName);
+        	return;
+        }
+#endif
+        AsynchronousPrinter::Printf("Finished %s\n", stateName);
+        state++;
+        canPause = true;
+        advanceState = false;
+        timer = 0;
+    }
+
+#define PRINTSTATE() AsynchronousPrinter::Printf("Entering %s\n", stateName)
     switch(state)
     {
-    case SET_COMMAND:
-        stateName = "SET_COMMAND";
-//        AsynchronousPrinter::Printf("Setting command\n");
+    case DRIVE_FORWARD: // move drive to a location; move arm up; shift to low gear
+        stateName = "DRIVE_FORWARD";
+        PRINTSTATE();
         action.driveTrain.mode = action.driveTrain.DISTANCE;
         action.driveTrain.distance.givenCommand = true;
 
         action.driveTrain.distance.distanceSetPoint = 15.0 * 12; // 15 feet
+//        action.driveTrain.distance.distanceSetPoint = 1.0 * 12; // 15 feet
         action.driveTrain.distance.distanceDutyCycle = 0.8;
 
         action.driveTrain.distance.done = false;
@@ -96,45 +138,50 @@ void Brain::EncoderAuton()
         action.shifter.force = true;
 
         advanceState = true;
+        canPause = false;
         break;
 
-    case DRIVE_FORWARD:
-        stateName = "DRIVE_FORWARD";
-//        AsynchronousPrinter::Printf("Drive forward\n");
+    case WAIT_FOR_DRIVE_FORWARD: //detects when we have driven our distance
+        stateName = "WAIT_FOR_DRIVE_FORWARD";
+        PRINTSTATE();
         if(action.driveTrain.distance.done)
         {
-            timer = 0;
-            advanceState = true;
+        	advanceState = true;
+        	action.driveTrain.mode = action.driveTrain.RATE;
+	        action.driveTrain.rate.rawForward = 0.0;
+	        action.driveTrain.rate.rawTurn = 0.0;
         }
         break;
 
-    case STALL_DETECTION:
+    case STALL_DETECTION: 
+    	// turns off closed loop and tells the drive to move at a speed 
+    	// looks if speed is below a threshold to detect a stall
+    	
         stateName = "STALL_DETECTION";
-//        AsynchronousPrinter::Printf("Stall detection\n");
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         action.driveTrain.mode = action.driveTrain.RATE;
         action.driveTrain.rate.usingClosedLoop = false;
 
         action.driveTrain.rate.rawForward = 0.2;
         action.driveTrain.rate.rawTurn = 0.0;
 
-        // robot has speed up enough to start stall detection
+        // Wait until robot has accelerated
         if(driveEncoders.GetNormalizedLowGearForwardSpeed() > 0.1)
-            timer = 51; // greater than 50; see if statement below
+            timer = 51; // bypass the timer below
 
-        if(++timer > 50)
+        if(++timer > 50 && 
+        		driveEncoders.GetNormalizedLowGearForwardSpeed() < 0.05)
         {
-            if(driveEncoders.GetNormalizedLowGearForwardSpeed()
-                    < 0.05)
-                advanceState = true;
+	        action.driveTrain.rate.usingClosedLoop = true;
+	        action.driveTrain.rate.rawForward = 0.0;
+	        action.driveTrain.rate.rawTurn = 0.0;
+        	advanceState = true;
         }
         break;
 
-    case SET_SECOND_COMMAND:
-        stateName = "SET_SECOND_COMMAND";
-//        AsynchronousPrinter::Printf("Set second command\n");
-        action.driveTrain.rate.usingClosedLoop = true;
-        action.driveTrain.rate.rawForward = 0.0;
-        action.driveTrain.rate.rawTurn = 0.0;
+    case STEP_BACK:
+        stateName = "STEP_BACK";
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
 
         action.driveTrain.mode = action.driveTrain.POSITION;
         action.driveTrain.position.givenCommand = true;
@@ -148,85 +195,80 @@ void Brain::EncoderAuton()
         action.driveTrain.position.maxFwdSpeed = 0.2;
         action.driveTrain.position.maxTurnSpeed = 1.0;
 
-        timer = 0;
+        wait = 50; //give us 1s to move back
         advanceState = true;
         break;
 
-    case STEP_BACK:
-        stateName = "STEP_BACK";
-//        AsynchronousPrinter::Printf("Step back\n");
-        // wait one second for driving to finish
-        if(++timer > 50)
-            advanceState = true;
-        break;
-
     case MOVE_LIFT_UP:
+#ifndef LRT_ROBOT_2011
+	    state = SETUP_DRIVE_BACK; //skip to driving back
+	    AsynchronousPrinter::Printf("skipping lift operations\n");
+	    break;
+#endif
         stateName = "MOVE_LIFT_UP";
-//        AsynchronousPrinter::Printf("Move lift up\n");
-//        AsynchronousPrinter::Printf("Moving lift up\n");
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         action.lift.givenCommand = true;
-        // depends on if the robot is in the middle or on the side
-        action.lift.highRow = DriverStation::GetInstance()->GetDigitalIn(2);
+        // read from the driverstation if it is a low/high peg.
+        action.lift.highColumn = ds.GetDigitalIn(2);
 
         action.lift.preset = action.lift.HIGH_PEG;
         action.lift.manualMode = false;
         advanceState = true;
+        
         break;
 
     case WAIT_FOR_MOVE_LIFT_UP:
         stateName = "WAIT_FOR_MOVE_LIFT_UP";
-//        AsynchronousPrinter::Printf("Wait for move lift up\n");
-        if(action.lift.doneState != action.lift.STALE) // message is available
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
+        if(action.lift.doneState != action.lift.IN_PROGRESS) // message is available
         {
             if(action.lift.doneState == action.lift.SUCCESS)
                 advanceState = true;
             else // lift operation failed; abort
                 state = IDLE;
-            timer = 0; // reset timer
         }
         break;
 
     case ROTATE_ROLLER:
         stateName = "ROTATE_ROLLER";
-//        AsynchronousPrinter::Printf("Rotate roller\n");
-        action.roller.rotateUpward = false;
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
+        action.roller.rotateUpward = false; //go down
         action.roller.state = action.roller.ROTATING;
 
         if(++timer >= 75)
             advanceState = true;
         break;
 
-    case RELEASE_ROLLER:
-        stateName = "RELEASE_ROLLER";
-//        AsynchronousPrinter::Printf("Release roller\n");
+    case RELEASE_GAMEPIECE_START:
+        // automated roller routine starts moving the lift down and spits the gamepiece out
+        stateName = "RELEASE_GAMEPIECE_START";
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         action.roller.automated = true;
         action.roller.commenceAutomation = true;
         advanceState = true;
-        timer = 0;
+        
+        canPause = false; // pausing will cause the lift to keep moving down
         break;
 
-    case WAIT_FOR_RELEASE_ROLLER:
-        stateName = "WAIT_FOR_RELEASE_ROLLER";
-//        AsynchronousPrinter::Printf("Wait for release roller\n");
-        action.roller.commenceAutomation = false;
-
-        // half second of reversing the roller
+    case RELEASE_GAMEPIECE:
+        stateName = "RELEASE_GAMEPIECE";
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
+        
+        // release gamepiece for 1/2 seconds
         if(++timer >= 25)
         {
             // stop automating; stop rollers
             action.roller.automated = false;
             advanceState = true;
-
-            timer = 0; // reset timer
         }
         break;
 
-    case MOVE_LIFT_DOWN:
-        stateName = "MOVE_LIFT_DOWN";
-//        AsynchronousPrinter::Printf("Move lift down\n");
+    case MOVE_LIFT_DOWN_START:
+        stateName = "MOVE_LIFT_DOWN_START";
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         action.lift.givenCommand = true;
         // depends on if the robot is in the middle or on the side
-        action.lift.highRow = DriverStation::GetInstance()->GetDigitalIn(2);
+        action.lift.highColumn = ds.GetDigitalIn(2);
 
         action.lift.preset = action.lift.LOW_PEG;
         action.lift.manualMode = false;
@@ -235,20 +277,19 @@ void Brain::EncoderAuton()
 
     case WAIT_FOR_MOVE_LIFT_DOWN:
         stateName = "WAIT_FOR_MOVE_LIFT_DOWN";
-//        AsynchronousPrinter::Printf("Wait for move lift down\n");
-        if(action.lift.doneState != action.lift.STALE) // message is available
-        {
-            if(action.lift.doneState == action.lift.SUCCESS)
-                advanceState = true;
-            else // lift operation failed; abort
-                state = IDLE;
-            timer = 0; // reset timer
-        }
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
+        
+        if(action.lift.doneState == action.lift.SUCCESS)
+            advanceState = true;
+        else if (action.lift.doneState == action.lift.FAILURE ||
+        		 action.lift.doneState == action.lift.ABORTED)
+            state = IDLE; // abort auton routine
+
         break;
 
-    case SET_THIRD_COMMAND:
-        stateName = "SET_THIRD_COMMAND";
-//        AsynchronousPrinter::Printf("Set third command\n");
+    case SETUP_DRIVE_BACK:
+        stateName = "SETUP_DRIVE_BACK";
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         action.driveTrain.mode = action.driveTrain.POSITION;
         action.driveTrain.position.givenCommand = true;
 
@@ -261,20 +302,19 @@ void Brain::EncoderAuton()
         action.driveTrain.position.maxFwdSpeed = 0.8;
         action.driveTrain.position.maxTurnSpeed = 1.0;
 
-        timer = 0;
         advanceState = true;
         break;
 
     case DRIVE_BACK:
         stateName = "DRIVE_BACK";
-//        AsynchronousPrinter::Printf("Drive back\n");
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         if(++timer > 150)
             advanceState = true;
         break;
 
     case TURN_AROUND:
         stateName = "TURN_AROUND";
-//        AsynchronousPrinter::Printf("Turn around\n");
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         action.driveTrain.mode = action.driveTrain.POSITION;
         action.driveTrain.position.givenCommand = true;
 
@@ -292,7 +332,7 @@ void Brain::EncoderAuton()
 
     case IDLE:
         stateName = "IDLE";
-//        AsynchronousPrinter::Printf("Idle\n");
+//        AsynchronousPrinter::Printf("entering %s\n", stateName);
         // wait for turning to complete and do nothing
         break;
 
@@ -300,174 +340,19 @@ void Brain::EncoderAuton()
         stateName = "Default";
         break;
     }
-
-    if(advanceState)
-    {
-        AsynchronousPrinter::Printf("Finished %s\n", stateName);
-#warning "Change ds button we are looking in"
-
-//#define PAUSE_AUTON
-#ifdef PAUSE_AUTON
-        // waits until key is released
-        if(PauseOnDS_input(8))
-            state++;
-#else
-        state = (AutonState)((int) state + 1);
-#endif
-
-    }
-
-//    static enum
-//    {
-//        CONFIGURE,
-//        DRIVE,
-//        WAIT_FOR_DRIVE,
-//        BACK_UP,
-//        WAIT_FOR_BACK_UP,
-//        MOVE_LIFT_UP,
-//        WAIT_FOR_MOVE_LIFT_UP,
-//        ROTATE_ROLLER,
-//        RELEASE_ROLLER,
-//        WAIT_FOR_RELEASE_ROLLER,
-//        DONE
-//    } state = CONFIGURE;
-//
-//    static int counter = 0;
-//    static float targetDistance = 0;
-//
-//    if(wasDisabled)
-//        state = CONFIGURE;
-//
-//    switch(state)
-//    {
-//    case CONFIGURE:
-//        action.shifter.gear = action.shifter.LOW_GEAR;
-//        action.shifter.force = true;
-//
-//        state = DRIVE;
-//        break;
-//
-//    case DRIVE:
-//        action.driveTrain.usingClosedLoop = false;
-//        action.driveTrain.rawForward = 1.0;
-//        action.driveTrain.rawTurn = 0.0;
-//
-//        state = WAIT_FOR_DRIVE;
-//        counter = 0;
-//        break;
-//
-//    case WAIT_FOR_DRIVE:
-//        // after 1s
-//        if(++counter > 25)
-//        {
-//            if(driveEncoders.GetNormalizedLowGearForwardSpeed()
-//                    < action.driveTrain.rawForward - 0.2)
-//            {
-//                action.driveTrain.rawForward = 0.0;
-//                action.driveTrain.rawTurn = 0.0;
-//                state = BACK_UP;
-//            }
-//        }
-//        break;
-//
-//    case BACK_UP:
-//        action.driveTrain.rawForward = -0.2;
-//        action.driveTrain.rawTurn = 0.0;
-//
-//        targetDistance = driveEncoders.GetRobotDist() - 8; // inches
-//        counter = 0;
-//        state = WAIT_FOR_BACK_UP;
-//        break;
-//
-//    case WAIT_FOR_BACK_UP:
-//        AsynchronousPrinter::Printf("Moving Back; D: %.2f, TD: %.2f, E: %.2f\n",
-//                driveEncoders.GetRobotDist(), targetDistance,
-//                driveEncoders.GetRobotDist() - targetDistance);
-//        if(driveEncoders.GetRobotDist() < targetDistance)
-//        {
-//            action.driveTrain.rawForward = 0.0;
-//            action.driveTrain.rawTurn = 0.0;
-//            action.driveTrain.usingClosedLoop = true;
-//            counter = 0;
-//            state = MOVE_LIFT_UP;
-//        }
-//        break;
-//
-//
-//    case MOVE_LIFT_UP:
-//        action.lift.givenCommand = true;
-//        if(ds.GetDigitalIn(8))
-//            action.lift.highRow = true; // going from the side
-//        else
-//            action.lift.highRow = false; // going from the side
-//
-//        action.lift.preset = action.lift.HIGH_PEG;
-//        action.lift.manualMode = false;
-//        state = WAIT_FOR_MOVE_LIFT_UP;
-//        break;
-//
-//    case WAIT_FOR_MOVE_LIFT_UP:
-//        if(action.lift.doneState != action.lift.STALE) // message is available
-//        {
-//            if(action.lift.doneState == action.lift.SUCCESS)
-//            {
-//                state = ROTATE_ROLLER;
-//                AsynchronousPrinter::Printf("Entering done!\n");
-//            }
-//            else
-//                state = DONE;
-//            counter = 0; // reset timer
-//        }
-//        break;
-//
-//    case ROTATE_ROLLER:
-//        action.roller.rotateUpward = false;
-//        action.roller.state = action.roller.ROTATING;
-//
-//        if(++counter >= 25)
-//            state = RELEASE_ROLLER;
-//        break;
-//
-//    case RELEASE_ROLLER:
-//        action.roller.automated = true;
-//        action.roller.commenceAutomation = true;
-//        state = WAIT_FOR_RELEASE_ROLLER;
-//        counter = 0;
-//        break;
-//
-//    case WAIT_FOR_RELEASE_ROLLER:
-//        AsynchronousPrinter::Printf("Waiting for release roller\n");
-//        action.roller.commenceAutomation = false;
-//
-//        // one second of reversing the roller
-//        if(++counter >= 75)
-//        {
-//            // stop automating; stop rollers
-//            action.roller.automated = false;
-//            state = DONE;
-//
-//            counter = 0; // reset timer
-//        }
-//        break;
-//
-//    case DONE:
-//        // do nothing
-//        break;
-//
-//    }
 }
 
-// returns true if the ds input has been released
-// always true if pausing not enabled (PAUSE_AUTON not defined)
+// returns false if the ds input has been released
+// otherwise returns true
 bool Brain::PauseOnDS_input(int softKeyNum)
 {
     bool keyReleased = false;
 
     static bool wasPressed = false;
-    bool isPressed = ds.GetDigitalIn(8);
+    bool isPressed = ds.GetDigitalIn(softKeyNum);
     if(wasPressed && !isPressed)
         keyReleased = true;
     wasPressed = isPressed;
 
-    return keyReleased;
+    return !keyReleased;
 }

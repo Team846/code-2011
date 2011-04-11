@@ -1,6 +1,6 @@
 #include "Brain.h"
 
-#define LIFT_RELEASE
+//#define LIFT_RELEASE
 
 void Brain::AutomatedRoutines()
 {
@@ -24,7 +24,7 @@ void Brain::AutomatedRoutines()
 
         // since the lift waits for the arm you have to make sure
         // it does not think that the arm is already done
-        action.arm.doneState = action.arm.STALE;
+        action.arm.doneState = action.arm.IN_PROGRESS;
     }
 
     // if aborted make sure we terminate the automated routine
@@ -46,7 +46,6 @@ void Brain::AutomatedRoutines()
     else if(action.automatedRoutine.ringer == action.automatedRoutine.DROP_RINGER)
     {
 #ifdef LIFT_RELEASE
-        action.roller.commenceAutomation = false;
         action.roller.automated = true;
 #else
         action.arm.state = action.arm.PRESET_BOTTOM;
@@ -73,7 +72,7 @@ void Brain::AutomatedRoutines()
 
             action.lift.givenCommand = true;
             action.lift.preset = action.lift.LOW_PEG;
-            action.lift.doneState = action.lift.STALE;
+            action.lift.doneState = action.lift.IN_PROGRESS;
         }
     }
     else if(action.automatedRoutine.ringer == action.automatedRoutine.LIFT_DOWN)

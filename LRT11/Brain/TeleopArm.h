@@ -14,7 +14,7 @@ void Brain::TeleopArm()
     else if(inputs.ShouldGrabGamePiece())
         action.arm.state = action.arm.PRESET_BOTTOM;
 
-    if(wasDisabled)
+    if(wasDisabledLastCycle)
         // must set to IDLE to register state change
         action.arm.state = action.arm.IDLE;
 

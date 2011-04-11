@@ -67,7 +67,7 @@ void Arm::Output()
     switch(action.arm.state)
     {
     case PRESET_TOP:
-        action.arm.doneState = action.arm.STALE;
+        action.arm.doneState = action.arm.IN_PROGRESS;
 
         // don't merely switch to the IDLE state, as the caller will likely
         // set the state each time through the loop
@@ -88,7 +88,7 @@ void Arm::Output()
         }
         else
         {
-            action.arm.doneState = action.arm.STALE;
+            action.arm.doneState = action.arm.IN_PROGRESS;
             armEsc.Set(powerUp);
 
             // make roller suck while moving up to keep
@@ -101,7 +101,7 @@ void Arm::Output()
         break;
 
     case PRESET_BOTTOM:
-        action.arm.doneState = action.arm.STALE;
+        action.arm.doneState = action.arm.IN_PROGRESS;
         if(--cycleCount < 0)
         {
             action.arm.doneState = action.arm.FAILURE;
@@ -119,13 +119,13 @@ void Arm::Output()
         }
         else
         {
-            action.arm.doneState = action.arm.STALE;
+            action.arm.doneState = action.arm.IN_PROGRESS;
             armEsc.Set(powerDown);
         }
         break;
 
     case PRESET_MIDDLE:
-        action.arm.doneState = action.arm.STALE;
+        action.arm.doneState = action.arm.IN_PROGRESS;
 
         // no timeout for now
 //      if(--cycleCount < 0)
@@ -160,7 +160,7 @@ void Arm::Output()
         else
             armEsc.Set(0.0);
 
-        action.arm.doneState = action.arm.STALE;
+        action.arm.doneState = action.arm.IN_PROGRESS;
         // operator must hold button to stay in manual mode
         action.arm.state = action.arm.IDLE;
         break;
@@ -171,7 +171,7 @@ void Arm::Output()
         else
             armEsc.Set(0.0);
 
-        action.arm.doneState = action.arm.STALE;
+        action.arm.doneState = action.arm.IN_PROGRESS;
         // operator must hold button to stay in manual mode
         action.arm.state = action.arm.IDLE;
         break;

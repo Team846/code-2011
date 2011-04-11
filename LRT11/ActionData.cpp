@@ -58,14 +58,14 @@ ActionData::ActionData()
     lift.givenCommand = false;
     lift.manualMode = false;
     lift.power = 0;
-    lift.highRow = false;
+    lift.highColumn = false;
     lift.preset = lift.STOWED;
-    lift.doneState = lift.STALE;
+    lift.doneState = lift.IN_PROGRESS;
 
     demoLift.power = 0;
 
     arm.state = arm.IDLE;
-    arm.doneState = arm.STALE;
+    arm.doneState = arm.IN_PROGRESS;
 
     roller.state = roller.STOPPED;
     // if in roller.ROTATING state, default to rotating upward
