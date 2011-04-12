@@ -45,7 +45,7 @@ public:
     const static float MAX_TURNING_RATE      = 448.3;
 
     const static float TICKS_PER_FULL_TURN   = 997.0; // measured 3/28/11 at room 612 -KV
-    const static float WHEEL_DIAMETER 		 = 8.0; // in
+    const static float WHEEL_DIAMETER        = 8.0; // in
 #endif
 
     // extrapolate max low gear speed

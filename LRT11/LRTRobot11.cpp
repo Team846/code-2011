@@ -47,6 +47,7 @@ static int outputstuffs(...)
     AsynchronousPrinter::Printf("main execution > 20ms\n");
     return 0;
 }
+
 void LRTRobot11::MainLoop()
 {
 
@@ -134,7 +135,7 @@ void LRTRobot11::MainLoop()
 
     prevState = gameState;
 
-    //if we finish in time cancel the watchdog's error message
+    // if we finish in time, cancel the watchdog's error message
     wdCancel(mainLoopWatchDog);
 }
 

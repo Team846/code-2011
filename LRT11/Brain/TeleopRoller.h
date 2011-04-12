@@ -22,7 +22,7 @@ void Brain::TeleopRoller()
         // or from autonomous when action.roller.commenceAutomation == true
         if(inputs.ShouldRollerCommenceAutomation() || action.roller.commenceAutomation)
         {
-        	action.roller.commenceAutomation = false;
+            action.roller.commenceAutomation = false;
             timer = 0;
             state = MOVING_LIFT_DOWN;
         }

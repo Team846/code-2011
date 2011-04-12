@@ -31,7 +31,7 @@ public:
     const static UINT32 CAN_ROLLER_TOP    = 3;
     const static UINT32 CAN_ROLLER_BOTTOM = 2;
 #endif
-    
+
     const static UINT32 CAN_DEPLOYER = 6;
 
     // Servos
