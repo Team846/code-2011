@@ -1,7 +1,9 @@
 #include "ModifiedDriveTrain.h"
+#include <math.h>
 
 ModifiedDriveTrain::ModifiedDriveTrain()
     : Component()
+    , driveEncoders(DriveEncoders::GetInstance())
     , closedRateTrain()
     , closedPositionTrain(closedRateTrain)
 #ifdef LRT_ROBOT_2011
@@ -11,11 +13,14 @@ ModifiedDriveTrain::ModifiedDriveTrain()
             DriveEncoders::GetInstance().GetRightEncoder(), "right")
 #else
     // TODO fix initialization
-    , leftESC(RobotConfig::CAN_DRIVE_LEFT, DriveEncoders::GetInstance().GetLeftEncoder(), "left")
-    , rightESC(RobotConfig::CAN_DRIVE_RIGHT, DriveEncoders::GetInstance().GetRightEncoder(), "right")
+    , leftESC(RobotConfig::CAN_DRIVE_LEFT, driveEncoders.GetLeftEncoder(), "left")
+    , rightESC(RobotConfig::CAN_DRIVE_RIGHT, driveEncoders.GetInstance().GetRightEncoder(), "right")
+    , config(Config::GetInstance())
 #endif
 {
-
+#warning "Set number of cycles to synchronize for"
+    cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 35);
+    synchronizedCyclesLeft = 0;
 }
 
 ModifiedDriveTrain::~ModifiedDriveTrain()
@@ -78,6 +83,15 @@ void ModifiedDriveTrain::Output()
 
         drive = command.drive;
         break;
+    case SYNCHRONIZING:
+        synchronizedCyclesLeft = cyclesToSynchronize;
+        break;
+    }
+
+    if(--synchronizedCyclesLeft > 0)
+    {
+        drive.rightCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedRightMotorSpeed());
+        drive.leftCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedLeftMotorSpeed());
     }
 
     // leftDC and rightDC are set to 0 if there is a need to brake;
@@ -103,4 +117,15 @@ void ModifiedDriveTrain::Output()
         leftESC.ResetCache();
         rightESC.ResetCache();
     }
+}
+
+float GetSynchronizedSpeed(float motorSpeed) //motor speed refers to the speed of the motor if it were engaged
+{
+    float absMotorSpeed = fabs(motorSpeed);
+    if(absMotorSpeed < 1E-4)
+        return 0.1; //We can't shift without moving so if we are stopped we spin forward at 10%
+    else if(absMotorSpeed < .10)
+        return 0.10 * Util::Sign<float>(motorSpeed); //If we are moving very slowly apply 10% power in the direction of movement to ensure the motor actually spins
+
+    return motorSpeed; //Otherwise just spin the motor close the the speed of the output shaft
 }

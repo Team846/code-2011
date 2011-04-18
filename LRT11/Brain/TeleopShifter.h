@@ -6,6 +6,9 @@ void Brain::TeleopShifter()
     static bool forceShiftedLow = false;
     static bool forceShiftedHigh = false;
 
+    //must set this way since is static
+    static int lastGear = ActionData::GetInstance().shifter.gear;
+
     // assume no force shift
     action.shifter.force = false;
 
@@ -19,7 +22,6 @@ void Brain::TeleopShifter()
             action.shifter.force = true;
             forceShiftedHigh = true;
         }
-
         // shifted to high gear; set low gear flag to false
         forceShiftedLow = false;
     }
@@ -36,4 +38,10 @@ void Brain::TeleopShifter()
         // shifted to low gear; set high gear flag to false
         forceShiftedHigh = false;
     }
+
+    //we commenced a shift
+    if(lastGear != action.shifter.gear)
+        action.driveTrain.mode = action.driveTrain.SYNCHRONIZING;
+
+    lastGear = action.shifter.gear;
 }

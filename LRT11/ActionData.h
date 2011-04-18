@@ -25,7 +25,8 @@ public:
         {
             RATE,
             POSITION,
-            DISTANCE
+            DISTANCE,
+            SYNCHRONIZING
         } mode;
 
         struct
