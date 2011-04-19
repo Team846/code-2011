@@ -19,6 +19,7 @@ LRTRobot11::LRTRobot11()
     , ds(*DriverStation::GetInstance())
 //    , switchLED(6)
     , prevState(DISABLED)
+    , canBusTester()
 {
     mainLoopWatchDog = wdCreate();
 }
@@ -66,6 +67,8 @@ void LRTRobot11::MainLoop()
         ProfiledSection ps("Configuration Buttons");
         config.Output();
     }
+
+    canBusTester.Output();
 
 #ifndef VIRTUAL
     ProxiedCANJaguar::SetGameState(gameState);

@@ -12,6 +12,7 @@
 #include "Components/Arm.h"
 #include "Components/Roller.h"
 #include "Components/MiniBotDeployer.h"
+#include "Components/CANBusTester.h"
 #include "Config/Config.h"
 #include "wdLib.h"
 #include "sysLib.h"
@@ -36,6 +37,8 @@ private:
     Roller roller;
 
     MinibotDeployer minibotDeployer;
+    CanBusTester canBusTester;
+
     Config& config;
 
     DriverStation& ds;

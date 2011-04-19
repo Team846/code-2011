@@ -1,10 +1,10 @@
 
-#include "LRTCanJaguar.h"
+#include "LRTCANJaguar.h"
 #define tNIRIO_i32 int
-#include "ChipObject/NiRioStatus.h"
+//#include "ChipObject/NiRioStatus.h"
 #include "CAN/JaguarCANDriver.h"
 #include "CAN/can_proto.h"
-#include "Utility.h"
+//#include "Utility.h"
 #include <stdio.h>
 
 #define swap16(x) ( (((x)>>8) &0x00FF) \
@@ -19,10 +19,11 @@
 const INT32 LRTCANJaguar::kControllerRate;
 const double LRTCANJaguar::kApproxBusVoltage;
 
+
 /**
  * Common initialization code called by all constructors.
  */
-void LRTCANJaguar::InitLRTCanJaguar()
+void LRTCANJaguar::InitCANJaguar()
 {
     m_transactionSemaphore = semMCreate(SEM_Q_PRIORITY | SEM_INVERSION_SAFE | SEM_DELETE_SAFE);
     if(m_deviceNumber < 1 || m_deviceNumber > 63)
@@ -71,8 +72,9 @@ LRTCANJaguar::LRTCANJaguar(UINT8 deviceNumber, ControlMode controlMode)
     , m_transactionSemaphore(NULL)
     , m_maxOutputVoltage(kApproxBusVoltage)
     , m_safetyHelper(NULL)
+    , readerTask("LiftPotReaderTask", (FUNCPTR) ReaderTaskEntry)
 {
-    InitLRTCanJaguar();
+    InitCANJaguar();
 }
 
 LRTCANJaguar::~LRTCANJaguar()
@@ -115,6 +117,7 @@ void LRTCANJaguar::Set(float outputValue, UINT8 syncGroup)
         if(outputValue > 1.0) outputValue = 1.0;
         if(outputValue < -1.0) outputValue = -1.0;
         dataSize = packPercentage(dataBuffer, outputValue);
+
     }
     break;
     case kSpeed:
@@ -149,11 +152,7 @@ void LRTCANJaguar::Set(float outputValue, UINT8 syncGroup)
         dataBuffer[dataSize] = syncGroup;
         dataSize++;
     }
-
-    {
-        ProfiledSection ps("Whole set transaction");
-        setTransaction(messageID, dataBuffer, dataSize);
-    }
+    setTransaction(messageID, dataBuffer, dataSize);
     if(m_safetyHelper) m_safetyHelper->Feed();
 }
 
@@ -392,18 +391,12 @@ void LRTCANJaguar::setTransaction(UINT32 messageID, const UINT8* data, UINT8 dat
     semTake(m_transactionSemaphore, WAIT_FOREVER);
 
     // Throw away any stale acks.
-    {
-        ProfiledSection ps("Stale Acks");
-        receiveMessage(&ackMessageID, NULL, 0, 0.0f);
-    }
+    receiveMessage(&ackMessageID, NULL, 0, 0.0f);
     // Send the message with the data.
     status = sendMessage(messageID | m_deviceNumber, data, dataSize);
     wpi_assertCleanStatus(status);
     // Wait for an ack.
-    {
-        ProfiledSection ps("Regular Acks");
-        status = receiveMessage(&ackMessageID, NULL, 0);
-    }
+    status = receiveMessage(&ackMessageID, NULL, 0);
     wpi_assertCleanStatus(status);
 
     // Transaction complete.
@@ -427,21 +420,13 @@ void LRTCANJaguar::getTransaction(UINT32 messageID, UINT8* data, UINT8* dataSize
     // Make sure we don't have more than one transaction with the same Jaguar outstanding.
     semTake(m_transactionSemaphore, WAIT_FOREVER);
 
-    {
-        ProfiledSection ps("Send message");
-        // Send the message requesting data.
-        status = sendMessage(targetedMessageID, NULL, 0);
-    }
-
+    // Send the message requesting data.
+    status = sendMessage(targetedMessageID, NULL, 0);
     wpi_assertCleanStatus(status);
     // Caller may have set bit31 for remote frame transmission so clear invalid bits[31-29]
     targetedMessageID &= 0x1FFFFFFF;
-
-    {
-        ProfiledSection ps("Recieve message");
-        // Wait for the data.
-        status = receiveMessage(&targetedMessageID, data, dataSize);
-    }
+    // Wait for the data.
+    status = receiveMessage(&targetedMessageID, data, dataSize);
     wpi_assertCleanStatus(status);
 
     // Transaction complete.
@@ -452,6 +437,7 @@ void LRTCANJaguar::getTransaction(UINT32 messageID, UINT8* data, UINT8* dataSize
  * Set the reference source device for speed controller mode.
  *
  * Choose encoder as the source of speed feedback when in speed control mode.
+ * This is currently the only possible value, so we'll just call it for you in the constructor.
  *
  * @param reference Specify a SpeedReference.
  */
@@ -833,10 +819,7 @@ float LRTCANJaguar::GetOutputCurrent()
     UINT8 dataBuffer[8];
     UINT8 dataSize;
 
-    {
-        ProfiledSection ps("Get Transaction");
-        getTransaction(LM_API_STATUS_CURRENT, dataBuffer, &dataSize);
-    }
+    getTransaction(LM_API_STATUS_CURRENT, dataBuffer, &dataSize);
     if(dataSize == sizeof(INT16))
     {
         return unpackFXP8_8(dataBuffer);
@@ -1223,3 +1206,54 @@ void LRTCANJaguar::StopMotor()
     DisableControl();
 }
 
+void LRTCANJaguar::StartReadingCurrent()
+{
+//  readerTask.
+}
+
+double LRTCANJaguar::GetMostRecentCurrent()
+{
+    return current;
+}
+
+int LRTCANJaguar::ReaderTaskEntry(int LRTCANJaguarPointer)
+{
+    LRTCANJaguar* jaggie = (LRTCANJaguar*) LRTCANJaguarPointer;
+    jaggie->ReaderTask();
+    return 0;
+}
+
+void LRTCANJaguar::ReaderTask()
+{
+    while(true)
+    {
+        UINT8 dataBuffer[8];
+        UINT8 dataSize;
+
+        UINT32 messageID = LM_API_STATUS_CURRENT;
+        UINT8* data = dataBuffer;
+        UINT32 targetedMessageID = messageID | m_deviceNumber;
+        INT32 status = 0;
+
+        // Make sure we don't have more than one transaction with the same Jaguar outstanding. Important thing to note. Things to test: Just seeing if you can repeatably send data
+
+        semTake(m_transactionSemaphore, WAIT_FOREVER);
+        // Send the message requesting data.
+        status = sendMessage(targetedMessageID, NULL, 0);
+        semGive(m_transactionSemaphore); //Only use semaphores for sending
+
+        wpi_assertCleanStatus(status);
+        // Caller may have set bit31 for remote frame transmission so clear invalid bits[31-29]
+        targetedMessageID &= 0x1FFFFFFF;
+        // Wait for the data.
+        status = receiveMessage(&targetedMessageID, data, &dataSize);
+        wpi_assertCleanStatus(status);
+        // Transaction complete.
+
+
+        if(dataSize == sizeof(INT16))
+            current = unpackFXP8_8(dataBuffer);
+        else
+            current = 0.0;
+    }
+}
