@@ -68,7 +68,7 @@ void LRTRobot11::MainLoop()
         config.Output();
     }
 
-    canBusTester.Output();
+   // canBusTester.Output();
 
 #ifndef VIRTUAL
     ProxiedCANJaguar::SetGameState(gameState);

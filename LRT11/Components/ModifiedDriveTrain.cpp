@@ -119,7 +119,7 @@ void ModifiedDriveTrain::Output()
     }
 }
 
-float GetSynchronizedSpeed(float motorSpeed) //motor speed refers to the speed of the motor if it were engaged
+float ModifiedDriveTrain::GetSynchronizedSpeed(float motorSpeed) //motor speed refers to the speed of the motor if it were engaged
 {
     float absMotorSpeed = fabs(motorSpeed);
     if(absMotorSpeed < 1E-4)
