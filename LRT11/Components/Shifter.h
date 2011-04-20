@@ -32,8 +32,10 @@ private:
     const static int onPulseLength = 2;
     const static int offPulseLength = 1;
 
-    const static float leftLowGearServoVal = 0.33;
-    const static float leftHighGearServoVal = 0.62;
+//    const static float leftLowGearServoVal = 0.33;
+//    const static float leftHighGearServoVal = 0.62;
+    const static float leftLowGearServoVal = 0.62;
+    const static float leftHighGearServoVal = 0.33;
 
     const static float rightLowGearServoVal = 0.67;
     const static float rightHighGearServoVal = 0.39;

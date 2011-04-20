@@ -67,10 +67,10 @@ DriveCommand CLRateTrain::Drive(float rawFwd, float rawTurn)
     float turningCorrection = turningError * pGainTurn;
     float newTurn = rawTurn + turningCorrection;
 
-    // normalized forward speed
-    float robotSpeed = highGear ? encoders.GetNormalizedForwardSpeed()
-            : encoders.GetNormalizedLowGearForwardSpeed();
-
+    float robotSpeed = encoders.GetNormalizedForwardMotorSpeed();
+    // don't want to limit the top speed of the drivetrain
+    robotSpeed = Util::Clamp<float>(robotSpeed, -1.0, 1.0);
+    
     float fwdError = rawFwd - robotSpeed;
     fwdError = fwdRunningError.UpdateSum(fwdError);
 

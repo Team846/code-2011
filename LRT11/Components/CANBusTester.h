@@ -21,7 +21,7 @@ public:
 
     virtual void Output()
     {
-        AsynchronousPrinter::Printf("curr: %5.2f", jaggie.GetMostRecentCurrent());
+        AsynchronousPrinter::Printf("curr: %5.2f\n", jaggie.GetMostRecentCurrent());
 #warning "Since dealing with multiple threads must test that it works consistently"
 
         static int i = 0;

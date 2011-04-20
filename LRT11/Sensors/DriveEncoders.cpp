@@ -39,22 +39,21 @@ double DriveEncoders::GetForwardSpeed()
     return (encoderLeft.GetRate() + encoderRight.GetRate()) / 2;
 }
 
+//removed the clamping -BA, -DG 4/20/11
 double DriveEncoders::GetNormalizedForwardSpeed()
 {
-    return Util::Clamp<double>(GetForwardSpeed() / MAX_ENCODER_RATE, -1.0, 1.0);
-}
-
-double DriveEncoders::GetNormalizedForwardMotorSpeed()
-{
-    return Util::Clamp<double>(
-            GetForwardSpeed() / isHighGear ? MAX_ENCODER_RATE
-            : MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER
-            , -1.0, 1.0);
+    return GetForwardSpeed() / MAX_ENCODER_RATE;
 }
 
 double DriveEncoders::GetNormalizedLowGearForwardSpeed()
 {
-    return Util::Clamp<double>(GetNormalizedForwardSpeed() * LOW_GEAR_MULTIPLIER, -1.0, 1.0);
+    return GetNormalizedForwardSpeed() * LOW_GEAR_MULTIPLIER;
+}
+
+double DriveEncoders::GetNormalizedForwardMotorSpeed()
+{
+    return isHighGear ? GetNormalizedForwardSpeed() :
+    	GetNormalizedLowGearForwardSpeed();
 }
 
 double DriveEncoders::GetNormalizedLowGearTurningSpeed()
@@ -77,7 +76,7 @@ double DriveEncoders::GetNormalizedMotorTurningSpeed()
 {
     return GetTurningSpeed() / isHighGear
             ? MAX_TURNING_RATE
-            : MAX_TURNING_RATE / LOW_GEAR_MULTIPLIER;
+            : MAX_TURNING_RATE * LOW_GEAR_MULTIPLIER;
 }
 
 double DriveEncoders::GetRobotDist()
@@ -126,7 +125,16 @@ double DriveEncoders::GetNormalizedLeftSpeed()
 double DriveEncoders::GetNormalizedLeftMotorSpeed()
 {
     return Util::Clamp<double>(
-            encoderLeft.GetRate() / isHighGear ? MAX_ENCODER_RATE : MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER
+            encoderLeft.GetRate() / 
+            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
+            , -1.0, 1.0);
+}
+
+double DriveEncoders::GetNormalizedLeftOppositeGearMotorSpeed()
+{
+    return Util::Clamp<double>(
+            encoderLeft.GetRate() / 
+            (!isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
             , -1.0, 1.0);
 }
 
@@ -141,8 +149,15 @@ double DriveEncoders::GetNormalizedRightSpeed()
 
 double DriveEncoders::GetNormalizedRightMotorSpeed()
 {
+            return encoderRight.GetRate() / 
+            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
+}
+
+double DriveEncoders::GetNormalizedRightOppositeGearMotorSpeed()
+{
     return Util::Clamp<double>(
-            encoderRight.GetRate() / isHighGear ? MAX_ENCODER_RATE : MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER
+            encoderRight.GetRate() / 
+            (!isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
             , -1.0, 1.0);
 }
 

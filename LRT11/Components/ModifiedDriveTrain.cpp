@@ -19,7 +19,7 @@ ModifiedDriveTrain::ModifiedDriveTrain()
 #endif
 {
 #warning "Set number of cycles to synchronize for"
-    cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 35);
+    cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 40);
     synchronizedCyclesLeft = 0;
 }
 
@@ -87,12 +87,23 @@ void ModifiedDriveTrain::Output()
         synchronizedCyclesLeft = cyclesToSynchronize;
         break;
     }
-
-    if(--synchronizedCyclesLeft > 0)
+    
+    --synchronizedCyclesLeft;
+    
+//    AsynchronousPrinter::Printf("sp:%.2f\n", driveEncoders.GetNormalizedRightMotorSpeed());
+    
+    if (synchronizedCyclesLeft > 20)
+    {
+        drive.rightCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedRightOppositeGearMotorSpeed());
+        drive.leftCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedLeftOppositeGearMotorSpeed());
+    }
+    else if(synchronizedCyclesLeft > 0)
     {
         drive.rightCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedRightMotorSpeed());
         drive.leftCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedLeftMotorSpeed());
     }
+//    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedLowGearForwardSpeed());
+//    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedForwardMotorSpeed());
 
     // leftDC and rightDC are set to 0 if there is a need to brake;
     // see DitheredBrakeTrain's Drive method
@@ -121,11 +132,13 @@ void ModifiedDriveTrain::Output()
 
 float ModifiedDriveTrain::GetSynchronizedSpeed(float motorSpeed) //motor speed refers to the speed of the motor if it were engaged
 {
+	AsynchronousPrinter::Printf("synchrospeed%.2f\n", motorSpeed);
+	
     float absMotorSpeed = fabs(motorSpeed);
     if(absMotorSpeed < 1E-4)
         return 0.1; //We can't shift without moving so if we are stopped we spin forward at 10%
     else if(absMotorSpeed < .10)
         return 0.10 * Util::Sign<float>(motorSpeed); //If we are moving very slowly apply 10% power in the direction of movement to ensure the motor actually spins
-
+        
     return motorSpeed; //Otherwise just spin the motor close the the speed of the output shaft
 }

@@ -28,8 +28,8 @@ public:
     const static UINT32 CAN_ROLLER_TOP    = 7;
     const static UINT32 CAN_ROLLER_BOTTOM = 5;
 #else
-    const static UINT32 CAN_ROLLER_TOP    = 3;
-    const static UINT32 CAN_ROLLER_BOTTOM = 2;
+    const static UINT32 CAN_ROLLER_TOP    = 32;
+    const static UINT32 CAN_ROLLER_BOTTOM = 22;
 #endif
 
     const static UINT32 CAN_DEPLOYER = 6;
