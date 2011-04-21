@@ -43,23 +43,46 @@ void Shifter::Output()
     {
         // ms * seconds / ms * cycles / second = cycles
         cycleCounter = (int)(forceShiftMs * 1.0 / 1000 * 50.0 / 1);
+  //      cycleCounter = forceShiftMs / cycleMs;  -dg  (what I would do.  cycleMS computed in 'robot'
         action.shifter.force = false;
     }
 
+    
+    
+    //If we are not moving, then don't power the servos, because they might not be able to engage. -dg
+    	//Why not get the normalized speeds of each encoder?  -dg
+    
+// What Mr G might have written. -dg.    
+//    boolean enableServo = false;
+//    if (cycleCounter <= 0)  //if not shifting, then check if we are moving forward or turning
+//    	enableServo = Util::Abs<float>( action.driveTrain.rate.rawForward)  > leftSetpointDeadband || 
+//    	Util::Abs<float>( action.driveTrain.rate.rawTurn)  > leftSetpointDeadband );
+//    
+//	leftServo.SetEnabled(enableServo);
+//	rightServo.SetEnabled(enableServo);
+    
+	
     bool forceShift = cycleCounter > 0;
+    
     float leftSetpoint = action.driveTrain.rate.rawForward - action.driveTrain.rate.rawTurn;
     float rightSetpoint = action.driveTrain.rate.rawForward + action.driveTrain.rate.rawTurn;
 
+    //Check the Left Servo
     if(Util::Abs<float>(leftSetpoint) > leftSetpointDeadband || forceShift)
         leftServo.SetEnabled(true);
     else
         leftServo.SetEnabled(false);
-
+    
+    
+    //Now check the Right Servo
     if(Util::Abs<float>(rightSetpoint) > rightSetpointDeadband || forceShift)
         rightServo.SetEnabled(true);
     else
         rightServo.SetEnabled(false);
 
+    
+    
+    
     switch(action.shifter.gear)
     {
     case LOW_GEAR:
@@ -75,6 +98,6 @@ void Shifter::Output()
         break;
     }
 
-    if(forceShift)
+    if(cycleCounter > 0)
         cycleCounter--;
 }

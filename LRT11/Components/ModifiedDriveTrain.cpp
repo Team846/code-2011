@@ -101,10 +101,16 @@ void ModifiedDriveTrain::Output()
     {
         drive.rightCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedRightMotorSpeed());
         drive.leftCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedLeftMotorSpeed());
+        drive.rightCommand.dutyCycle *= 0.60;  //reduce power, since the motors are unloaded.
+        drive.leftCommand.dutyCycle *= 0.60;
     }
 //    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedLowGearForwardSpeed());
 //    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedForwardMotorSpeed());
 
+    
+    //!!IF WE ARE SHIFTING, WE SHOULDN'T BE APPLYING BRAKES!! FIX THIS  -dg
+    
+    
     // leftDC and rightDC are set to 0 if there is a need to brake;
     // see DitheredBrakeTrain's Drive method
     leftESC.Set(drive.leftCommand.dutyCycle);
