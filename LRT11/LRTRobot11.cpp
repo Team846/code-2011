@@ -68,7 +68,7 @@ void LRTRobot11::MainLoop()
         config.Output();
     }
 
-   // canBusTester.Output();
+    // canBusTester.Output();
 
 #ifndef VIRTUAL
     ProxiedCANJaguar::SetGameState(gameState);
@@ -81,13 +81,13 @@ void LRTRobot11::MainLoop()
     {
         // components to output only when enabled
 
-    	//shifter must output before drivetrain
+        //shifter must output before drivetrain
         if(ds.GetDigitalIn(5))
         {
             ProfiledSection ps("Servo Shifting");
             shifter.Output();
         }
-        
+
         if(ds.GetDigitalIn(1))
         {
             ProfiledSection ps("Drive Train");

@@ -15,11 +15,15 @@ typedef enum GameState
     TELEOPERATED
 };
 
+enum side { kLeft, kRight };
+
 // viable combinations are LRT_ROBOT_2011, LRT_ROBOT_2011 + VIRTUAL, neither
 #ifdef VIRTUAL
 #ifndef LRT_ROBOT_2011
 #error "VIRTUAL mode only works with LRT_ROBOT_2011"
-#endif
-#endif
+#endif //LRT_ROBOT_2011
+#endif //Virtual
 
-#endif
+
+
+#endif //GENERAL_H_

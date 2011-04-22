@@ -28,6 +28,7 @@ private:
 public:
     static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
+    enum encoder { kLeft, kRight };
 
 #ifdef LRT_ROBOT_2011
     const static float PULSES_PER_REVOLUTION = 100.0; // pulses per wheel revolution [BA]
@@ -65,16 +66,17 @@ public:
     double GetNormalizedLowGearTurningSpeed();
     double GetTurningSpeed();
     double GetNormalizedTurningSpeed();
-    double GetNormalizedMotorTurningSpeed();
+
     double GetRobotDist();
     int GetTurnTicks();
     double GetTurnRevolutions();
     double GetTurnAngle();
-    double GetLeftWheelDist();
-    double GetRightWheelDist();
+    double GetWheelDist(int side);
+    //    double GetLeftWheelDist();
+//   double GetRightWheelDist();
     double GetLeftSpeed();
-    
-    
+
+
 //    double GetNormalizedLeftSpeed();
     //speed of the motor if it were engaged
 //    double GetNormalizedLeftMotorSpeed();
@@ -83,7 +85,7 @@ public:
 //    double GetNormalizedRightSpeed();
 //    double GetNormalizedRightMotorSpeed();
     double GetNormalizedRightOppositeGearMotorSpeed();
-    
+
     double GetNormalizedMotorSpeed(LRTEncoder& encoder);
 
 #ifdef VIRTUAL

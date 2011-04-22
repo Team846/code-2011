@@ -70,7 +70,7 @@ DriveCommand CLRateTrain::Drive(float rawFwd, float rawTurn)
     float robotSpeed = encoders.GetNormalizedForwardMotorSpeed();
     // don't want to limit the top speed of the drivetrain
     robotSpeed = Util::Clamp<float>(robotSpeed, -1.0, 1.0);
-    
+
     float fwdError = rawFwd - robotSpeed;
     fwdError = fwdRunningError.UpdateSum(fwdError);
 

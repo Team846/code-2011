@@ -29,10 +29,8 @@ DriveEncoders::DriveEncoders()
     encoderRight.Start();
 }
 
-DriveEncoders::~DriveEncoders()
-{
-    // nothing
-}
+DriveEncoders::~DriveEncoders() {}
+
 
 double DriveEncoders::GetForwardSpeed()
 {
@@ -53,9 +51,9 @@ double DriveEncoders::GetNormalizedLowGearForwardSpeed()
 double DriveEncoders::GetNormalizedForwardMotorSpeed()
 {
     return isHighGear ? GetNormalizedForwardSpeed() :
-    	GetNormalizedLowGearForwardSpeed();
+            GetNormalizedLowGearForwardSpeed();
 }
-
+/***************** Turning Functions ***************************/
 double DriveEncoders::GetNormalizedLowGearTurningSpeed()
 {
     return GetNormalizedTurningSpeed() * LOW_GEAR_MULTIPLIER;
@@ -72,16 +70,11 @@ double DriveEncoders::GetNormalizedTurningSpeed()
     return GetTurningSpeed() / MAX_TURNING_RATE;
 }
 
-double DriveEncoders::GetNormalizedMotorTurningSpeed()
-{
-    return GetTurningSpeed() / isHighGear
-            ? MAX_TURNING_RATE
-            : MAX_TURNING_RATE * LOW_GEAR_MULTIPLIER;
-}
+
 
 double DriveEncoders::GetRobotDist()
 {
-    return (GetLeftWheelDist() + GetRightWheelDist()) / 2;
+    return (GetWheelDist(kLeft) + GetWheelDist(kRight)) / 2;
 }
 
 int DriveEncoders::GetTurnTicks()
@@ -100,44 +93,28 @@ double DriveEncoders::GetTurnAngle()
     return GetTurnRevolutions() * 360.0;
 }
 
-double DriveEncoders::GetLeftWheelDist()
+
+
+
+/************* Distance functions **************************************/
+double DriveEncoders::GetWheelDist(int side)
 {
-    // pusles / ( pulses / revolution ) * distancen / revolution = inch distance
-    return encoderLeft.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
+    // pulses / ( pulses / revolution ) * distance / revolution = inch distance
+    LRTEncoder& e = (side == kLeft ? encoderLeft : encoderRight);
+    return e.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
 }
 
-double DriveEncoders::GetRightWheelDist()
-{
-    // see GetLeftWheelDist() for calculation explanation
-    return encoderRight.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
-}
 
 double DriveEncoders::GetLeftSpeed()
 {
     return encoderLeft.GetRate();
 }
 
-//double DriveEncoders::GetNormalizedLeftSpeed()
-//{
-//    return Util::Clamp<double>(encoderLeft.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
-//}
-
-//double DriveEncoders::GetNormalizedLeftMotorSpeed()
-//{
-//    return Util::Clamp<double>(
-//            encoderLeft.GetRate() / 
-//            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
-//            , -1.0, 1.0);
-//}
-
-//Trial names
-//GetNormalizedLeftOppositeGearMotorSpeed
-//GetNormalizedMotorSpeed_OppositeGear
 
 double DriveEncoders::GetNormalizedLeftOppositeGearMotorSpeed()
 {
     return Util::Clamp<double>(
-            encoderLeft.GetRate() / 
+            encoderLeft.GetRate() /
             (!isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
             , -1.0, 1.0);
 }
@@ -146,26 +123,17 @@ double DriveEncoders::GetRightSpeed()
 {
     return encoderRight.GetRate();
 }
-//double DriveEncoders::GetNormalizedRightSpeed()
-//{
-//    return Util::Clamp<double>(encoderRight.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
-//}
 
-//double DriveEncoders::GetNormalizedRightMotorSpeed()
-//{
-//            return encoderRight.GetRate() / 
-//            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
-//}
 double DriveEncoders::GetNormalizedMotorSpeed(LRTEncoder& encoder)
 {
-            return encoder.GetRate() / 
+    return encoder.GetRate() /
             (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
 }
 
 double DriveEncoders::GetNormalizedRightOppositeGearMotorSpeed()
 {
     return Util::Clamp<double>(
-            encoderRight.GetRate() / 
+            encoderRight.GetRate() /
             (!isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
             , -1.0, 1.0);
 }
