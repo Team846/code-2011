@@ -117,18 +117,22 @@ double DriveEncoders::GetLeftSpeed()
     return encoderLeft.GetRate();
 }
 
-double DriveEncoders::GetNormalizedLeftSpeed()
-{
-    return Util::Clamp<double>(encoderLeft.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
-}
+//double DriveEncoders::GetNormalizedLeftSpeed()
+//{
+//    return Util::Clamp<double>(encoderLeft.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
+//}
 
-double DriveEncoders::GetNormalizedLeftMotorSpeed()
-{
-    return Util::Clamp<double>(
-            encoderLeft.GetRate() / 
-            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
-            , -1.0, 1.0);
-}
+//double DriveEncoders::GetNormalizedLeftMotorSpeed()
+//{
+//    return Util::Clamp<double>(
+//            encoderLeft.GetRate() / 
+//            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
+//            , -1.0, 1.0);
+//}
+
+//Trial names
+//GetNormalizedLeftOppositeGearMotorSpeed
+//GetNormalizedMotorSpeed_OppositeGear
 
 double DriveEncoders::GetNormalizedLeftOppositeGearMotorSpeed()
 {
@@ -142,14 +146,19 @@ double DriveEncoders::GetRightSpeed()
 {
     return encoderRight.GetRate();
 }
-double DriveEncoders::GetNormalizedRightSpeed()
-{
-    return Util::Clamp<double>(encoderRight.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
-}
+//double DriveEncoders::GetNormalizedRightSpeed()
+//{
+//    return Util::Clamp<double>(encoderRight.GetRate() / MAX_ENCODER_RATE, -1.0, 1.0);
+//}
 
-double DriveEncoders::GetNormalizedRightMotorSpeed()
+//double DriveEncoders::GetNormalizedRightMotorSpeed()
+//{
+//            return encoderRight.GetRate() / 
+//            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
+//}
+double DriveEncoders::GetNormalizedMotorSpeed(LRTEncoder& encoder)
 {
-            return encoderRight.GetRate() / 
+            return encoder.GetRate() / 
             (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
 }
 

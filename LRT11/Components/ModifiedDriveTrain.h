@@ -18,7 +18,7 @@ private:
     Esc leftESC, rightESC;
     Config& config;
 
-    int cyclesToSynchronize;
+    int cyclesToSynchronize;  //value in config file
     int synchronizedCyclesLeft;
     enum
     {

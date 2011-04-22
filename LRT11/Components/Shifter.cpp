@@ -1,4 +1,5 @@
 #include "Shifter.h"
+#include "../Util/AsynchronousPrinter.h"
 
 Shifter::Shifter()
     : leftServo(RobotConfig::LEFT_GEARBOX_SERVO_PORT)
@@ -20,11 +21,12 @@ void Shifter::Configure()
 {
     Config& config = Config::GetInstance();
 
-    leftSetpointDeadband = config.Get<float>(prefix + "leftSetpointDeadband", 0.1);
-    rightSetpointDeadband = config.Get<float>(prefix + "rightSetpointDeadband", 0.1);
+    //Why have two separate Deadbands?
+//    leftSetpointDeadband = config.Get<float>(prefix + "leftSetpointDeadband", 0.02);
+//    rightSetpointDeadband = config.Get<float>(prefix + "rightSetpointDeadband", 0.02);
 
-    // default time of 2 seconds (100 cycles)
-    forceShiftMs = config.Get<int>(prefix + "forceShiftMs", 2000);
+    // 50 is cycles/sec. (Should use constant -dg)
+    kShiftTime = (int) (50 * config.Get<float>(prefix + "forceShiftSeconds", 1.5));
 }
 
 void Shifter::Output()
@@ -39,65 +41,64 @@ void Shifter::Output()
 //    rightServo.Set(station.GetAnalogIn(2));
 //    return;
 
-    if(action.shifter.force && !cycleCounter)
-    {
-        // ms * seconds / ms * cycles / second = cycles
-        cycleCounter = (int)(forceShiftMs * 1.0 / 1000 * 50.0 / 1);
-  //      cycleCounter = forceShiftMs / cycleMs;  -dg  (what I would do.  cycleMS computed in 'robot'
-        action.shifter.force = false;
-    }
-
+    if(cycleCounter > 0)	//decrement the shift counter
+        cycleCounter--;
     
+    if(action.shifter.force && cycleCounter<=0)
+         cycleCounter = kShiftTime; //set counter.
+ 
+    //Power down servos if robot is not moving for several seconds; governed by servoDisableTimer -dg
+    if (servoDisableTimer > 0)
+    	servoDisableTimer--;
     
-    //If we are not moving, then don't power the servos, because they might not be able to engage. -dg
-    	//Why not get the normalized speeds of each encoder?  -dg
+    const bool robotTryingToMove =
+    	( action.driveTrain.rate.rawForward != 0.0 || action.driveTrain.rate.rawTurn != 0.0 );
     
-// What Mr G might have written. -dg.    
-//    boolean enableServo = false;
-//    if (cycleCounter <= 0)  //if not shifting, then check if we are moving forward or turning
-//    	enableServo = Util::Abs<float>( action.driveTrain.rate.rawForward)  > leftSetpointDeadband || 
-//    	Util::Abs<float>( action.driveTrain.rate.rawTurn)  > leftSetpointDeadband );
-//    
-//	leftServo.SetEnabled(enableServo);
-//	rightServo.SetEnabled(enableServo);
+    if (robotTryingToMove || action.shifter.force)
+    	servoDisableTimer = kServoDisableDelay; //reset timer
+       
+    bool enableServo = servoDisableTimer>0 ;
+ 
+	leftServo.SetEnabled(enableServo);
+	rightServo.SetEnabled(enableServo);
     
 	
-    bool forceShift = cycleCounter > 0;
-    
-    float leftSetpoint = action.driveTrain.rate.rawForward - action.driveTrain.rate.rawTurn;
-    float rightSetpoint = action.driveTrain.rate.rawForward + action.driveTrain.rate.rawTurn;
-
-    //Check the Left Servo
-    if(Util::Abs<float>(leftSetpoint) > leftSetpointDeadband || forceShift)
-        leftServo.SetEnabled(true);
-    else
-        leftServo.SetEnabled(false);
-    
-    
-    //Now check the Right Servo
-    if(Util::Abs<float>(rightSetpoint) > rightSetpointDeadband || forceShift)
-        rightServo.SetEnabled(true);
-    else
-        rightServo.SetEnabled(false);
+//    bool forceShift = cycleCounter > 0;
+//    
+//    float leftSetpoint = action.driveTrain.rate.rawForward - action.driveTrain.rate.rawTurn;
+//    float rightSetpoint = action.driveTrain.rate.rawForward + action.driveTrain.rate.rawTurn;
+//
+//    //Check the Left Servo
+//    if(Util::Abs<float>(leftSetpoint) > leftSetpointDeadband || forceShift)
+//        leftServo.SetEnabled(true);
+//    else
+//        leftServo.SetEnabled(false);
+//    
+//    
+//    //Now check the Right Servo
+//    if(Util::Abs<float>(rightSetpoint) > rightSetpointDeadband || forceShift)
+//        rightServo.SetEnabled(true);
+//    else
+//        rightServo.SetEnabled(false);
 
     
     
     
     switch(action.shifter.gear)
     {
-    case LOW_GEAR:
-        leftServo.Set(leftLowGearServoVal);
-        rightServo.Set(rightLowGearServoVal);
-        encoders.SetHighGear(false);
-        break;
-
-    case HIGH_GEAR:
-        leftServo.Set(leftHighGearServoVal);
-        rightServo.Set(rightHighGearServoVal);
-        encoders.SetHighGear(true);
-        break;
+	    case LOW_GEAR:
+	        leftServo.Set(leftLowGearServoVal);
+	        rightServo.Set(rightLowGearServoVal);
+	        encoders.SetHighGear(false);
+	        break;
+	
+	    case HIGH_GEAR:
+	        leftServo.Set(leftHighGearServoVal);
+	        rightServo.Set(rightHighGearServoVal);
+	        encoders.SetHighGear(true);
+	        break;
+	    default:
+	    	AsynchronousPrinter::Printf("Fatal: %s:%s\n", __FILE__, __LINE__);
     }
 
-    if(cycleCounter > 0)
-        cycleCounter--;
 }

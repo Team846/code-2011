@@ -73,15 +73,18 @@ public:
     double GetLeftWheelDist();
     double GetRightWheelDist();
     double GetLeftSpeed();
-    double GetNormalizedLeftSpeed();
     
+    
+//    double GetNormalizedLeftSpeed();
     //speed of the motor if it were engaged
-    double GetNormalizedLeftMotorSpeed();
+//    double GetNormalizedLeftMotorSpeed();
     double GetNormalizedLeftOppositeGearMotorSpeed();
     double GetRightSpeed();
-    double GetNormalizedRightSpeed();
-    double GetNormalizedRightMotorSpeed();
+//    double GetNormalizedRightSpeed();
+//    double GetNormalizedRightMotorSpeed();
     double GetNormalizedRightOppositeGearMotorSpeed();
+    
+    double GetNormalizedMotorSpeed(LRTEncoder& encoder);
 
 #ifdef VIRTUAL
     VirtualLRTEncoder& GetLeftEncoder();
