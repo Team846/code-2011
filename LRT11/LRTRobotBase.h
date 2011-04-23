@@ -5,6 +5,7 @@
 #include "Util\Util.h"
 #include "Util\Profiler.h"
 #include "Util\AsynchronousPrinter.h"
+#include "CAN\JaguarReader.h"
 
 /**
  * IterativeRobot implements a specific type of Robot Program framework, extending the RobotBase class.
@@ -43,8 +44,9 @@ protected:
     LRTRobotBase();
     virtual ~LRTRobotBase();
 
+    JaguarReader& reader;
     int cycleCount;
-    int extraCycles;
+
 //    int packetsMissedInLifetime;
 //    double minCycleTime, maxCycleTime;
 

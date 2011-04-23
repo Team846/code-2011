@@ -19,7 +19,6 @@ LRTRobot11::LRTRobot11()
     , ds(*DriverStation::GetInstance())
 //    , switchLED(6)
     , prevState(DISABLED)
-    , canBusTester()
 {
     mainLoopWatchDog = wdCreate();
 }

@@ -5,9 +5,14 @@ Roller::Roller()
     : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port numbers later
     , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
     , prefix("Roller.")
+    , ignoreCycles(25)
+    , detected(false)
 {
     topRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
     bottomRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+
+    topRoller.CollectCurrent();
+    bottomRoller.CollectCurrent();
 }
 
 Roller::~Roller()
@@ -17,13 +22,24 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
-//    float totalCurrent;
+    float topCurrent, bottomCurrent;
+
     {
-//        ProfiledSection ps("Get Roller Currents");
-//        totalCurrent = topRoller.GetOutputCurrent() + bottomRoller.GetOutputCurrent();
+        ProfiledSection ps("Get Roller Currents");
+        topCurrent = topRoller.GetCurrent();
+        bottomCurrent = bottomRoller.GetCurrent();
     }
 
-//    AsynchronousPrinter::Printf("Total current: %.2f\n", totalCurrent);
+//    static int cycleCount = 0;
+//    if(++cycleCount % 10 == 0)
+//    {
+//        AsynchronousPrinter::Printf("I: %d, T: %.2f\n", ignoreCycles,
+//                topCurrent + bottomCurrent);
+//        fflush(stdout);
+//    }
+
+    if(--ignoreCycles <= 0 && topCurrent + bottomCurrent > 15)
+        detected = true;
 
     // observe currents
 #ifdef USE_DASHBOARD
@@ -31,8 +47,16 @@ void Roller::RollInward()
 //    SmartDashboard::Log(bottomRoller.GetOutputCurrent(), "Bottom Current");
 #endif
 
-    topRoller.Set(dutyCycleSucking);
-    bottomRoller.Set(dutyCycleSucking);
+    if(detected)
+    {
+        topRoller.Set(0);
+        bottomRoller.Set(0);
+    }
+    else
+    {
+        topRoller.Set(dutyCycleSucking);
+        bottomRoller.Set(dutyCycleSucking);
+    }
 }
 
 void Roller::RollOutward()
@@ -78,6 +102,12 @@ void Roller::Output()
     if(action.master.abort)
         // stop moving rollers
         action.roller.state = action.roller.STOPPED;
+
+    if(action.roller.state != action.roller.SUCKING)
+    {
+        ignoreCycles = 25;
+        detected = false;
+    }
 
     switch(action.roller.state)
     {

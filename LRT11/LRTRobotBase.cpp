@@ -1,11 +1,14 @@
 #include "LRTRobotBase.h"
+#include "Utility.h"
+#include "sysLib.h"
 
 /**
  * Constructor for RobotIterativeBase. Initializes member variables.
  */
 LRTRobotBase::LRTRobotBase()
-    : cycleCount(0)
-    , extraCycles(0)
+    : reader(JaguarReader::GetInstance())
+    , cycleCount(0)
+
 {
 
 }
@@ -37,6 +40,8 @@ void LRTRobotBase::StartCompetition()
     RobotInit();
     Profiler& profiler = Profiler::GetInstance();
 
+    UINT32 sleepTime_us = 0;
+
 //    const int reportPeriod = 50 * 5;
 //    double cycleWaitTimes[reportPeriod], cycleRunTimes[reportPeriod];
 //
@@ -53,74 +58,38 @@ void LRTRobotBase::StartCompetition()
     // loop forever, calling the main loop
     while(true)
     {
-        // 20000 us; 20 ms
-        double newCycleExpire = GetFPGATime() + 20000;
+        cycleCount++;
+
+        // GetFPGATime() is in microseconds
+        // find the start of the next twenty millisecond tick of the clock
+        UINT32 cycleExpire_us = ((UINT32)(GetFPGATime() / 20000) + 1) * 20000;
         profiler.StartNewCycle();
-
-//        UINT32 packetNumber = m_ds->GetPacketNumber();
-//        GetWatchdog().Feed();
-//        double waitStart = Timer::GetFPGATimestamp();
-//        while(!NextPeriodReady())
-//            Wait(0.0005);   // allow other tasks to run
-
-        // packet number used to determine if information was missed;
-        // it increments by one for each new packet
-//        UINT32 dsPacketNumber = m_ds->GetPacketNumber();
-//        if(veryFirstPacketInLifetime)
-//            veryFirstPacketInLifetime = false;
-//        else
-////            packetsMissedInLastReportPeriod += dsPacketNumber - lastPacketNumber - 1;
-//            packetsMissedInLastReportPeriod += Util::Max<int>(dsPacketNumber - lastPacketNumber - 1, 0);
-//
-//        lastPacketNumber = dsPacketNumber;
-//        double cycleStart = Timer::GetFPGATimestamp();
 
         {
             ProfiledSection ps("Main Loop");
             MainLoop();
         }
 
-//        double cycleEnd = Timer::GetFPGATimestamp();
-//        double cycleRunTime = cycleEnd - cycleStart;
-//        double cycleWaitTime = cycleStart - waitStart;
-//
-//        cycleRunTimes[cycleIndex] = cycleRunTime * 1000; // ms
-//        cycleWaitTimes[cycleIndex] = cycleWaitTime * 1000; // ms
-//
-//        ++cycleIndex;
-//        if(cycleIndex == reportPeriod)
-//        {
-//            cycleIndex = 0;
-//
-//            // reported statistics
-//            double runMin, runMax, runMean;
-//            double waitMin, waitMax, waitMean;
-//
-//            Util::MinMaxMean<double>(cycleRunTimes, reportPeriod, &runMin, &runMax, &runMean);
-//            Util::MinMaxMean<double>(cycleWaitTimes, reportPeriod, &waitMin, &waitMax, &waitMean);
-//
-//            packetsMissedInLifetime += packetsMissedInLastReportPeriod;
-//            sprintf(buffer, "Run time: [%.2f-%.2f]ms, ~%.2fms | Wait: [%.2f-%.2f]ms, ~%.2fms | Miss: %d pkts, (%d total)\n"
-//                    , runMin, runMax, runMean
-//                    , waitMin, waitMax, waitMean
-//                    , packetsMissedInLastReportPeriod, packetsMissedInLifetime);
-#ifdef USE_DASHBOARD
-//            SmartDashboard::Log(buffer, "Basic Report");
-#endif
-//            packetsMissedInLastReportPeriod = 0;
-//
-//            // minimum/maximum of all cycles
-//            minCycleTime = min(minCycleTime, runMin);
-//            maxCycleTime = max(maxCycleTime, runMax);
-//        }
-
-        while(GetFPGATime() < newCycleExpire)
-            extraCycles++; // count up extra cycles while waiting
-
-        if(cycleCount++ % 350 == 0)
+        if(cycleCount % 100 == 0)
         {
-            AsynchronousPrinter::Printf("Extra cycles: %d\n", extraCycles);
-            extraCycles = 0;
+//          printf("Cycle count: %d\n", cycleCount);
+//          printf("Sleep time: %.2fms\n\n", sleepTime_us * 1.0e-3);
+//          printf("Time: %.4fms\n", GetFPGATime() * 1.0e-3);
+//          printf("Target Time: %.4fms\n", cycleExpire_us * 1.0e-3);
+//          fflush(stdout);
         }
+
+        sleepTime_us = cycleExpire_us - GetFPGATime();
+
+        // sleep allows other threads to run -KV/DG 4/2011
+        if(sleepTime_us > 0)
+        {
+            reader.ReaderTask();
+            taskDelay((UINT32)(sysClkRateGet() * sleepTime_us * 1.0e-6));
+        }
+
+        // sleep often returns early -KV/DG 4/2011
+        while(GetFPGATime() < cycleExpire_us)
+            ; // burn off cycles until target time has passed
     }
 }

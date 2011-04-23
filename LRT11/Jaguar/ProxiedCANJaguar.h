@@ -14,11 +14,32 @@ private:
     GameState lastState;
     static GameState gameState;
 
+    int index;
+
 public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();
 
+    typedef struct
+    {
+        int num;
+        ProxiedCANJaguar* j[32];
+
+        float currents[32];
+        float potValues[32];
+
+        bool shouldCollectCurrent[32];
+        bool shouldCollectPotValue[32];
+    } JaguarList;
+
+    static JaguarList jaguars;
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
+
+    void CollectCurrent();
+    void CollectPotValue();
+
+    float GetCurrent();
+
 #ifdef VIRTUAL
     virtual float Get();
     virtual void Disable();

@@ -25,6 +25,9 @@ private:
     float dutyCycleRotatingIn;
     float dutyCycleRotatingOut;
 
+    int ignoreCycles;
+    bool detected;
+
     void RollInward();
     void RollOutward();
     void RollOpposite(bool rotateUpward);

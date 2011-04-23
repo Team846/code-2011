@@ -1,6 +1,7 @@
 #include "ProxiedCANJaguar.h"
 
 GameState ProxiedCANJaguar::gameState = DISABLED;
+ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     : CANJaguar(channel)
@@ -11,13 +12,41 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     , lastState(DISABLED)
 //    : controller(CANBusController::GetInstance())
 #endif
+    , index(jaguars.num)
 {
+    jaguars.j[jaguars.num++] = this;
 
+    jaguars.currents[index] = 0;
+    jaguars.shouldCollectCurrent[index] = false;
+
+    jaguars.potValues[index] = 0;
+    jaguars.shouldCollectPotValue[index] = false;
 }
 
 ProxiedCANJaguar::~ProxiedCANJaguar()
 {
 
+}
+
+void ProxiedCANJaguar::CollectCurrent()
+{
+    jaguars.shouldCollectCurrent[index] = true;
+}
+
+void ProxiedCANJaguar::CollectPotValue()
+{
+    jaguars.shouldCollectPotValue[index] = true;
+}
+
+float ProxiedCANJaguar::GetCurrent()
+{
+    if(!jaguars.shouldCollectCurrent[index])
+    {
+        AsynchronousPrinter::Printf("Fatal %s:%s\n", __FILE__, __LINE__);
+        return -1.0;
+    }
+
+    return jaguars.currents[index];
 }
 
 #ifdef VIRTUAL

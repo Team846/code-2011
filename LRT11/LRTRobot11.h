@@ -37,8 +37,6 @@ private:
     Roller roller;
 
     MinibotDeployer minibotDeployer;
-    CanBusTester canBusTester;
-
     Config& config;
 
     DriverStation& ds;
