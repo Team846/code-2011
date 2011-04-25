@@ -6,7 +6,7 @@ JaguarReader::JaguarReader()
     : readerTask("JaguarReaderTask", (FUNCPTR) StartReaderTask)
     , readSemaphore(semBCreate(SEM_Q_PRIORITY, SEM_EMPTY))
 {
-//    readerTask.Start();
+    readerTask.Start();
 }
 
 JaguarReader& JaguarReader::GetInstance()
@@ -39,19 +39,19 @@ void JaguarReader::ReaderTask()
 #define potValues jaguars.potValues
 #define shouldCollectPotValue jaguars.shouldCollectPotValue
 
-//    while(true)
-//    {
-    // wait until the end of the main loop with free cycles
-//        semTake(readSemaphore, WAIT_FOREVER);
-
-    for(int index = 0; index < jaguars.num; index++)
+    while(true)
     {
-        // collect current and pot value if necessary
-        if(shouldCollectCurrent[index])
-            currents[index] = j[index]->GetOutputCurrent();
+        // wait until the end of the main loop with free cycles
+        semTake(readSemaphore, WAIT_FOREVER);
 
-        if(shouldCollectPotValue[index])
-            potValues[index] = j[index]->GetPosition();
+        for(int index = 0; index < jaguars.num; index++)
+        {
+            // collect current and pot value if necessary
+            if(shouldCollectCurrent[index])
+                currents[index] = j[index]->GetOutputCurrent();
+
+            if(shouldCollectPotValue[index])
+                potValues[index] = j[index]->GetPosition();
+        }
     }
-//    }
 }
