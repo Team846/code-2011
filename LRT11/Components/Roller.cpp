@@ -11,8 +11,10 @@ Roller::Roller()
     topRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
     bottomRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
+#ifdef LRT_ROBOT_2011
     topRoller.CollectCurrent();
     bottomRoller.CollectCurrent();
+#endif
 }
 
 Roller::~Roller()

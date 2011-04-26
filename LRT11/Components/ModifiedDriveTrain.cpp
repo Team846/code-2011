@@ -21,6 +21,9 @@ ModifiedDriveTrain::ModifiedDriveTrain()
 #warning "Set number of cycles to synchronize for"
     cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 60);
     synchronizedCyclesLeft = 0;
+
+//    leftESC.CollectCurrent();
+//    rightESC.CollectCurrent();
 }
 
 ModifiedDriveTrain::~ModifiedDriveTrain()
@@ -31,6 +34,13 @@ ModifiedDriveTrain::~ModifiedDriveTrain()
 void ModifiedDriveTrain::Output()
 {
     DriveCommand drive;
+
+//    static int cycleCount = 0;
+//    if(++cycleCount % 10 == 0)
+//    {
+//        AsynchronousPrinter::Printf("Left: %6.3f ", leftESC.GetCurrent());
+//        AsynchronousPrinter::Printf("Right: %6.3f\n", rightESC.GetCurrent());
+//    }
 
     closedRateTrain.SetHighGear(action.shifter.gear == action.shifter.HIGH_GEAR);
     closedRateTrain.SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);

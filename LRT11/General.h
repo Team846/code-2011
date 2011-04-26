@@ -7,7 +7,6 @@
 //#define LRT_ROBOT_2011
 #define USE_DASHBOARD
 
-
 typedef enum GameState
 {
     DISABLED,
@@ -15,7 +14,7 @@ typedef enum GameState
     TELEOPERATED
 };
 
-enum side { kLeft, kRight };
+enum Side { LEFT, RIGHT };
 
 // viable combinations are LRT_ROBOT_2011, LRT_ROBOT_2011 + VIRTUAL, neither
 #ifdef VIRTUAL
@@ -23,7 +22,5 @@ enum side { kLeft, kRight };
 #error "VIRTUAL mode only works with LRT_ROBOT_2011"
 #endif //LRT_ROBOT_2011
 #endif //Virtual
-
-
 
 #endif //GENERAL_H_

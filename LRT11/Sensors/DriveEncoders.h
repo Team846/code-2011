@@ -28,7 +28,6 @@ private:
 public:
     static DriveEncoders& GetInstance();
     virtual ~DriveEncoders();
-    enum encoder { kLeft, kRight };
 
 #ifdef LRT_ROBOT_2011
     const static float PULSES_PER_REVOLUTION = 100.0; // pulses per wheel revolution [BA]

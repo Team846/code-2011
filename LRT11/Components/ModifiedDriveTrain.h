@@ -29,6 +29,7 @@ private:
     };
 
     float GetSynchronizedSpeed(float motorSpeed);
+
 public:
     ModifiedDriveTrain();
     virtual ~ModifiedDriveTrain();

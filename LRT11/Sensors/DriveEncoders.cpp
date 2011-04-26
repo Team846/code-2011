@@ -74,7 +74,7 @@ double DriveEncoders::GetNormalizedTurningSpeed()
 
 double DriveEncoders::GetRobotDist()
 {
-    return (GetWheelDist(kLeft) + GetWheelDist(kRight)) / 2;
+    return (GetWheelDist(LEFT) + GetWheelDist(RIGHT)) / 2;
 }
 
 int DriveEncoders::GetTurnTicks()
@@ -100,7 +100,7 @@ double DriveEncoders::GetTurnAngle()
 double DriveEncoders::GetWheelDist(int side)
 {
     // pulses / ( pulses / revolution ) * distance / revolution = inch distance
-    LRTEncoder& e = (side == kLeft ? encoderLeft : encoderRight);
+    LRTEncoder& e = (side == LEFT ? encoderLeft : encoderRight);
     return e.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
 }
 
