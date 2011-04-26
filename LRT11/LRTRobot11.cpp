@@ -56,9 +56,9 @@ void LRTRobot11::MainLoop()
     // sysClkRateGet returns the number of ticks per cycle at the current clock rate.
     wdStart(mainLoopWatchDog, sysClkRateGet() / 50, outputstuffs, 0);
     GameState gameState = DetermineState();
-    
+
     StartOfCycleSubscriberSubscribers::GetInstance().NotifySubscribers();
-    
+
     {
         ProfiledSection ps("Brain Processing");
         brain.Process(gameState);

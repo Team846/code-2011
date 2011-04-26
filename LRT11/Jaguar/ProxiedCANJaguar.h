@@ -7,6 +7,8 @@
 #include "..\Util\StartOfCycleSubscriber.h"
 #include "taskLib.h"
 
+#define NON_BLOCKING
+
 class ProxiedCANJaguar : public CANJaguar, public StartOfCycleSubscriber
 {
 private:
@@ -15,12 +17,13 @@ private:
 
     GameState lastState;
     static GameState gameState;
-    
+
+    int index;
+
+#ifdef NON_BLOCKING
     static int setThreadEntryPoint(UINT32 proxiedCANJaguarPointer);
     int setThread();
-    
-    int index;
-    
+
     Task writerTask;
     SEM_ID setSemaphore;
     volatile bool shouldSetSetPoint;
@@ -28,6 +31,7 @@ private:
     volatile CANJaguar::NeutralMode neutralMode;
     volatile CANJaguar::NeutralMode lastNeutralMode;
     volatile bool shouldSetNeutralMode;
+#endif
 public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();

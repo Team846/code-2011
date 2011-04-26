@@ -4,24 +4,24 @@ StartOfCycleSubscriberSubscribers* StartOfCycleSubscriberSubscribers::instance =
 
 StartOfCycleSubscriber::StartOfCycleSubscriber()
 {
-	StartOfCycleSubscriberSubscribers::GetInstance().AddListener(this);
+    StartOfCycleSubscriberSubscribers::GetInstance().AddListener(this);
 }
 
 StartOfCycleSubscriberSubscribers::StartOfCycleSubscriberSubscribers()
-: subscribers()
+    : subscribers()
 {
-	
-	
+
+
 }
 
 void StartOfCycleSubscriberSubscribers::AddListener(StartOfCycleSubscriber* newSubscriber)
 {
-		subscribers.push_back(newSubscriber);
+    subscribers.push_back(newSubscriber);
 }
 
 void StartOfCycleSubscriberSubscribers::NotifySubscribers()
 {
-	for (unsigned int i = 0; i < subscribers.size(); i++)
-		subscribers[i]->NewCycle();
+    for(unsigned int i = 0; i < subscribers.size(); i++)
+        subscribers[i]->NewCycle();
 }
 
