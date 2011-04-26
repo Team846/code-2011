@@ -131,10 +131,6 @@ void ModifiedDriveTrain::Output()
     {
         //Handle normal braking
 
-        // leftDC and rightDC are set to 0 if there is a need to brake;
-        // see DitheredBrakeTrain's Drive method
-        leftESC.Set(drive.leftCommand.dutyCycle);
-        rightESC.Set(drive.rightCommand.dutyCycle);
 
         // leftBrakeDC and rightBrakeDC are 0 if a PWM duty cycle is being
         // sent; see DitheredBrakeTrain's Drive method
@@ -143,12 +139,17 @@ void ModifiedDriveTrain::Output()
         // value in range [1,8]; 1 means no braking while 8 means max braking
         leftESC.SetBrake((int)(drive.leftCommand.brakingDutyCycle * 8));
         rightESC.SetBrake((int)(drive.rightCommand.brakingDutyCycle * 8));
-    }   //end of normal braking
+	    
+        // apply brakes only has an effect if SetBrake is called with a
+	    // non-zero parameter
+	    leftESC.ApplyBrakes();
+	    rightESC.ApplyBrakes();
 
-    // apply brakes only has an effect if SetBrake is called with a
-    // non-zero parameter
-    leftESC.ApplyBrakes();
-    rightESC.ApplyBrakes();
+	    // leftDC and rightDC are set to 0 if there is a need to brake;
+        // see DitheredBrakeTrain's Drive method
+        leftESC.Set(drive.leftCommand.dutyCycle);
+        rightESC.Set(drive.rightCommand.dutyCycle);
+    }   //end of normal braking
 
     if(action.wasDisabled)
     {

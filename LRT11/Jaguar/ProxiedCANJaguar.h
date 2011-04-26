@@ -4,8 +4,10 @@
 #include "..\General.h"
 #include "..\CAN\VirtualCANBusController.h"
 #include "..\Util\Util.h"
+#include "..\Util\StartOfCycleSubscriber.h"
+#include "taskLib.h"
 
-class ProxiedCANJaguar : public CANJaguar
+class ProxiedCANJaguar : public CANJaguar, public StartOfCycleSubscriber
 {
 private:
     float lastSetpoint;
@@ -13,9 +15,19 @@ private:
 
     GameState lastState;
     static GameState gameState;
-
+    
+    static int setThreadEntryPoint(UINT32 proxiedCANJaguarPointer);
+    int setThread();
+    
     int index;
-
+    
+    Task writerTask;
+    SEM_ID setSemaphore;
+    volatile bool shouldSetSetPoint;
+    volatile float setPoint;
+    volatile CANJaguar::NeutralMode neutralMode;
+    volatile CANJaguar::NeutralMode lastNeutralMode;
+    volatile bool shouldSetNeutralMode;
 public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();
@@ -34,12 +46,14 @@ public:
 
     static JaguarList jaguars;
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
+    void ConfigNeutralMode(CANJaguar::NeutralMode neutralMode);
 
     void CollectCurrent();
     void CollectPotValue();
 
     float GetCurrent();
 
+    virtual void NewCycle();
 #ifdef VIRTUAL
     virtual float Get();
     virtual void Disable();

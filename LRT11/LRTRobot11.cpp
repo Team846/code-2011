@@ -1,4 +1,6 @@
 #include "LRTRobot11.h"
+#include "Util/StartOfCycleSubscriber.h"
+#include "usrLib.h"
 
 LRTRobot11::LRTRobot11()
     : brain()
@@ -50,12 +52,13 @@ static int outputstuffs(...)
 
 void LRTRobot11::MainLoop()
 {
-
     // setup a watchdog to warn us if our loop takes too long
     // sysClkRateGet returns the number of ticks per cycle at the current clock rate.
     wdStart(mainLoopWatchDog, sysClkRateGet() / 50, outputstuffs, 0);
     GameState gameState = DetermineState();
-
+    
+    StartOfCycleSubscriberSubscribers::GetInstance().NotifySubscribers();
+    
     {
         ProfiledSection ps("Brain Processing");
         brain.Process(gameState);
