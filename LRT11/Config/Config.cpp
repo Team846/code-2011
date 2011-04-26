@@ -4,6 +4,8 @@
 Config* Config::instance = NULL;
 vector<Configurable*> Config::configurables;
 bool Config::hasRun = false;
+const string Config::CONFIG_FILE_PATH = "/LRTConfig11.txt";
+time_t Config::fileModifiedTime = 0;
 
 Config& Config::GetInstance()
 {
@@ -30,10 +32,10 @@ Config::Config()
     AddToSingletonList();
 }
 
-bool Config::Load(string path)
+bool Config::Load()
 {
     ProfiledSection pf("Config.Load");
-    configData = tload(path);
+    configData = tload(CONFIG_FILE_PATH);
 
     if(!hasRun)
     {
@@ -77,7 +79,8 @@ map<string, string> Config::tload(string path)
             ProfiledSection pf("Config.tload");
             ret[key] = val;
         }
-        AsynchronousPrinter::Printf("Cfg:%s=%s\n", key.c_str(), val.c_str());
+
+        printf("Cfg:%s=%s\n", key.c_str(), val.c_str());
     }
 
     fin.close();
@@ -91,9 +94,9 @@ void Config::Log(string key, string oldval, string newval)
     log.close();
 }
 
-bool Config::Save(string path)
+bool Config::Save()
 {
-    ofstream fout(path.c_str());
+    ofstream fout(CONFIG_FILE_PATH.c_str());
     if(!fout.is_open())    // could not create file in that path
         return false;
 
@@ -206,5 +209,19 @@ void Config::Output()
     {
         AsynchronousPrinter::Printf("Applying Configuration\n");
         ConfigureAll();
+    }
+}
+
+void Config::CheckForFileUpdates()
+{
+    Config& config = Config::GetInstance();
+
+    struct stat statistics;
+    stat(CONFIG_FILE_PATH.c_str(), &statistics);
+
+    if(fileModifiedTime != statistics.st_mtime)
+    {
+        config.Load();
+        fileModifiedTime = statistics.st_mtime;
     }
 }

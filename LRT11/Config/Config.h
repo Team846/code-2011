@@ -11,6 +11,9 @@
 #include <fstream>
 #include <map>
 #include "../Components/Component.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 class Config : public SensorBase, public Component
 {
@@ -20,8 +23,11 @@ public:
     virtual ~Config() { }
     static Config& GetInstance();
 
-    bool Load(string path = "/LRTConfig11.txt");
-    bool Save(string path = "/LRTConfig11.txt");
+    const static string CONFIG_FILE_PATH;
+    static time_t fileModifiedTime;
+
+    bool Load();
+    bool Save();
 
     float ScaleAssignableAnalogValue(float value, int analogIndex);
     void UpdateAssignableDials();
@@ -33,6 +39,7 @@ public:
     static vector<Configurable*> configurables;
     static void RegisterConfigurable(Configurable* configurable);
     static void ConfigureAll();
+    static void CheckForFileUpdates();
 
     virtual void Output();
 

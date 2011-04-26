@@ -16,4 +16,8 @@ void Brain::Disabled()
 
     hasMoved = false;
     wasDisabledLastCycle = true;
+
+    static int cycleCount = 0;
+    if(++cycleCount % 50 == 0) // check every second
+        Config::CheckForFileUpdates();
 }
