@@ -13,6 +13,7 @@ To do at champs
 - LRT_ROBOT_2011 and other defines
 - Minibot current
 - Clean build
+- Lift potentiometer values
 
 To test
 / Disable/Enable components

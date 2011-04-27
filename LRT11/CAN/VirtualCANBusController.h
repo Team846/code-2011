@@ -2,7 +2,6 @@
 #define VIRTUAL_CAN_BUS_CONTROLLER_H_
 
 #include "..\General.h"
-#include "..\Jaguar\SafeCANJaguar.h"
 #include "..\Util\AsynchronousPrinter.h"
 #include "..\Util\DutyCycleSubscriber.h"
 #include "..\Config\RobotConfig.h"

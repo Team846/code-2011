@@ -3,7 +3,7 @@
 
 #include "Component.h"
 #include "..\Config\Config.h"
-#include "..\Jaguar\ProxiedCANJaguarWithBrake.h"
+#include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Sensors\VirtualPot.h"
 using namespace std;
 
