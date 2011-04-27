@@ -4,12 +4,8 @@
 #include "..\General.h"
 #include "..\CAN\VirtualCANBusController.h"
 #include "..\Util\Util.h"
-#include "..\Util\StartOfCycleSubscriber.h"
-#include "taskLib.h"
 
-#define NON_BLOCKING
-
-class ProxiedCANJaguar : public CANJaguar, public StartOfCycleSubscriber
+class ProxiedCANJaguar : public CANJaguar
 {
 private:
     float lastSetpoint;
@@ -20,18 +16,6 @@ private:
 
     int index;
 
-#ifdef NON_BLOCKING
-    static int setThreadEntryPoint(UINT32 proxiedCANJaguarPointer);
-    int setThread();
-
-    Task writerTask;
-    SEM_ID setSemaphore;
-    volatile bool shouldSetSetPoint;
-    volatile float setPoint;
-    volatile CANJaguar::NeutralMode neutralMode;
-    volatile CANJaguar::NeutralMode lastNeutralMode;
-    volatile bool shouldSetNeutralMode;
-#endif
 public:
     ProxiedCANJaguar(UINT8 channel);
     ~ProxiedCANJaguar();
@@ -50,14 +34,12 @@ public:
 
     static JaguarList jaguars;
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
-    void ConfigNeutralMode(CANJaguar::NeutralMode neutralMode);
 
     void CollectCurrent();
     void CollectPotValue();
 
     float GetCurrent();
 
-    virtual void NewCycle();
 #ifdef VIRTUAL
     virtual float Get();
     virtual void Disable();

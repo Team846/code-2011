@@ -12,6 +12,7 @@ To do at champs
 - Deal with double load config file issue
 - LRT_ROBOT_2011 and other defines
 - Minibot current
+- Clean build
 
 To test
 / Disable/Enable components

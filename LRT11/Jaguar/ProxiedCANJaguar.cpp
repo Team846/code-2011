@@ -5,7 +5,6 @@ ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     : CANJaguar(channel)
-    , StartOfCycleSubscriber()
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
     , channel(channel)
@@ -14,9 +13,6 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
 //    : controller(CANBusController::GetInstance())
 #endif
     , index(jaguars.num)
-#ifdef NON_BLOCKING
-    , writerTask((Util::ToString<int>(channel) + "jagSetTask").c_str(), (FUNCPTR)ProxiedCANJaguar::setThreadEntryPoint)
-#endif
 {
     jaguars.j[jaguars.num++] = this;
 
@@ -25,11 +21,6 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
 
     jaguars.potValues[index] = 0;
     jaguars.shouldCollectPotValue[index] = false;
-
-#ifdef NON_BLOCKING
-    setSemaphore = semBCreate(SEM_Q_PRIORITY, SEM_EMPTY);
-    writerTask.Start((UINT32) this);
-#endif
 }
 
 ProxiedCANJaguar::~ProxiedCANJaguar()
@@ -56,34 +47,6 @@ float ProxiedCANJaguar::GetCurrent()
     }
 
     return jaguars.currents[index];
-}
-
-#ifdef NON_BLOCKING
-int ProxiedCANJaguar::setThreadEntryPoint(UINT32 proxiedCANJaguarPointer)
-{
-    ProxiedCANJaguar* jaguar = (ProxiedCANJaguar*) proxiedCANJaguarPointer;
-    return jaguar->setThread();
-}
-
-int ProxiedCANJaguar::setThread()
-{
-    while(true)
-    {
-        semTake(setSemaphore, WAIT_FOREVER);
-        if(shouldSetSetPoint)
-            CANJaguar::Set(setPoint);
-        if(shouldSetNeutralMode)
-            CANJaguar::ConfigNeutralMode(neutralMode);
-    }
-}
-#endif
-
-void ProxiedCANJaguar::NewCycle()
-{
-#ifdef NON_BLOCKING
-    shouldSetSetPoint    = false;
-    shouldSetNeutralMode = false;
-#endif
 }
 
 #ifdef VIRTUAL
@@ -182,40 +145,16 @@ void ProxiedCANJaguar::ResetCache()
     controller.ResetCache(channel);
 }
 #else
-
 void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
     // send the value if there is a setpoint or game state change
     if(setpoint != lastSetpoint || lastState != gameState)
-    {
-#ifdef NON_BLOCKING
-        setPoint = setpoint;
-        shouldSetSetPoint = true;
-#else
         CANJaguar::Set(setpoint);
-#endif
-    }
-#ifdef NON_BLOCKING
-    else
-        shouldSetSetPoint = false;
-    semGive(setSemaphore);
-#endif
 
     lastSetpoint = setpoint;
     lastState = gameState;
 }
 
-void ProxiedCANJaguar::ConfigNeutralMode(NeutralMode neutralMode)
-{
-#ifdef NON_BLOCKING
-    if(neutralMode == lastNeutralMode)
-        return;
-    shouldSetNeutralMode = true;
-    this->neutralMode = neutralMode;
-#else
-    CANJaguar::ConfigNeutralMode(neutralMode);
-#endif
-}
 void ProxiedCANJaguar::SetGameState(GameState state)
 {
     gameState = state;
@@ -223,13 +162,7 @@ void ProxiedCANJaguar::SetGameState(GameState state)
 
 void ProxiedCANJaguar::ResetCache()
 {
-#ifdef NON_BLOCKING
-    shouldSetSetPoint = true;
-    shouldSetNeutralMode = true;
-    semGive(setSemaphore);
-#else
     // bogus value to reset cache
     lastSetpoint = -1.0e6;
-#endif
 }
 #endif

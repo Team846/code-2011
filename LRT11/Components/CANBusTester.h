@@ -5,13 +5,13 @@
 class CanBusTester : Component
 {
 private:
-//    LRTCANJaguar jaggie;
+    LRTCANJaguar jaggie;
 public:
     CanBusTester()
-//#warning "Changeme"
-//        : jaggie(99)
+#warning "Changeme"
+        : jaggie(99)
     {
-//        jaggie.StartReadingCurrent();
+        jaggie.StartReadingCurrent();
     }
 
     virtual ~CanBusTester()
@@ -21,16 +21,16 @@ public:
 
     virtual void Output()
     {
-//        AsynchronousPrinter::Printf("curr: %5.2f\n", jaggie.GetMostRecentCurrent());
-//#warning "Since dealing with multiple threads must test that it works consistently"
-//
-//        static int i = 0;
-//        static float setPoint = 0.5;
-//        if(++i % 50 == 0)
-//        {
-//            setPoint = -setPoint;
-//            jaggie.Set(setPoint);
-//        }
+        AsynchronousPrinter::Printf("curr: %5.2f\n", jaggie.GetMostRecentCurrent());
+#warning "Since dealing with multiple threads must test that it works consistently"
+
+        static int i = 0;
+        static float setPoint = 0.5;
+        if(++i % 50 == 0)
+        {
+            setPoint = -setPoint;
+            jaggie.Set(setPoint);
+        }
     }
 };
 #endif
