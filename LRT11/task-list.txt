@@ -14,6 +14,7 @@ To do at champs
 - Minibot current
 - Clean build
 - Lift potentiometer values
+- Address ActionData::GetInstance in TeleopShifter.h
 
 To test
 / Disable/Enable components
