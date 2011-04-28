@@ -43,16 +43,16 @@ void Brain::Auton()
 
 void Brain::EncoderAuton()
 {
-    static int e = 0;
-    if(++e % 10 == 1)
-    {
-        for(int i = 1; i <= 8; i++)
-            AsynchronousPrinter::Printf("%d ", ds.GetDigitalIn(i));
-        AsynchronousPrinter::Printf("\n");
-    }
-//  if (!PauseOnDS_input(8))
-//      AsynchronousPrinter::Printf("Switch\n" );
-    return;
+//    static int e = 0;
+//    if(++e % 10 == 1)
+//    {
+//        for(int i = 1; i <= 8; i++)
+//            AsynchronousPrinter::Printf("%d ", ds.GetDigitalIn(i));
+//        AsynchronousPrinter::Printf("\n");
+//    }
+////  if (!PauseOnDS_input(8))
+////      AsynchronousPrinter::Printf("Switch\n" );
+//    return;
 
     static char* stateName = "unknown state";
 
@@ -62,7 +62,6 @@ void Brain::EncoderAuton()
         WAIT_FOR_DRIVE_FORWARD,
         STALL_DETECTION,
         STEP_BACK,
-        WAIT_FOR_STEP_BACK,
         MOVE_LIFT_UP,
         WAIT_FOR_MOVE_LIFT_UP,
         ROTATE_ROLLER,
@@ -99,7 +98,7 @@ void Brain::EncoderAuton()
 
     if(advanceState)
     {
-#define PAUSE_AUTON
+//#define PAUSE_AUTON
 #ifdef PAUSE_AUTON
         // waits until key is released
         if(canPause && PauseOnDS_input(8))

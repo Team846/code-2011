@@ -34,7 +34,7 @@ void Brain::TeleopRoller()
             action.lift.manualMode = true;
             action.lift.power = -0.4;
 
-            // keep moving down for one tenth of a second
+            // keep moving down for 2/5 of a second
             if(++timer > 20)
                 action.roller.state = action.roller.SPITTING;
             break;

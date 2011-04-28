@@ -392,10 +392,10 @@ void LRTCANJaguar::setTransaction(UINT32 messageID, const UINT8* data, UINT8 dat
     receiveMessage(&ackMessageID, NULL, 0, 0.0f);
     // Send the message with the data.
     status = sendMessage(messageID | m_deviceNumber, data, dataSize);
-    wpi_assertCleanStatus(status);
+//    wpi_assertCleanStatus(status);
     // Wait for an ack.
     status = receiveMessage(&ackMessageID, NULL, 0);
-    wpi_assertCleanStatus(status);
+//    wpi_assertCleanStatus(status);
 
     // Transaction complete.
     semGive(m_transactionSemaphore);
@@ -420,12 +420,12 @@ void LRTCANJaguar::getTransaction(UINT32 messageID, UINT8* data, UINT8* dataSize
 
     // Send the message requesting data.
     status = sendMessage(targetedMessageID, NULL, 0);
-    wpi_assertCleanStatus(status);
+//    wpi_assertCleanStatus(status);
     // Caller may have set bit31 for remote frame transmission so clear invalid bits[31-29]
     targetedMessageID &= 0x1FFFFFFF;
     // Wait for the data.
     status = receiveMessage(&targetedMessageID, data, dataSize);
-    wpi_assertCleanStatus(status);
+//    wpi_assertCleanStatus(status);
 
     // Transaction complete.
     semGive(m_transactionSemaphore);

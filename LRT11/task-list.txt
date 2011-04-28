@@ -13,6 +13,7 @@ To do at champs
 - New deployment routine
 - Minibot
 - Autonomous
+- Error printing
 - Deal with double load config file issue
 / Save configuration file
 / Check robot configuration

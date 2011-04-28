@@ -60,6 +60,7 @@ void Brain::Process(GameState gameState)
 
     case TELEOPERATED:
         Teleop();
+//        Auton();
         break;
 
     case AUTONOMOUS:

@@ -1,6 +1,6 @@
 #include "Brain.h"
 
-#define LIFT_RELEASE
+//#define LIFT_RELEASE
 
 void Brain::AutomatedRoutines()
 {
@@ -8,12 +8,26 @@ void Brain::AutomatedRoutines()
     if(inputs.ShouldCommenceMoveArmToMiddle())
         action.automatedRoutine.ringer = action.automatedRoutine.ARM_MIDDLE_POSITON;
 #ifdef LIFT_RELEASE
-    else if(inputs.ShouldCommenceReleaseRingerWithLift())
-        action.automatedRoutine.ringer = action.automatedRoutine.COMMENCE_DROP_RINGER;
-    else if(inputs.ShouldReleaseRingerWithLift())
+    static int timer = 0;
+
+    static enum
+    {
+        MOVE_LIFT_AND_REVERSE_ROLLER,
+        STOPPING
+    } state = MOVE_LIFT_AND_REVERSE_ROLLER;
+
+//    else if(inputs.ShouldCommenceReleaseRingerWithLift())
+//        action.automatedRoutine.ringer = action.automatedRoutine.COMMENCE_DROP_RINGER;
+//    else if(inputs.ShouldReleaseRingerWithLift())
+//    if(inputs.ShouldReleaseRingerWithLift())
+    if(inputs.ShouldCommenceReleaseRingerWithLift())
+    {
+        timer = 0;
+        state = MOVE_LIFT_AND_REVERSE_ROLLER;
         action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
-    else if(inputs.ShouldTerminateReleaseRingerWithLift())
-        action.automatedRoutine.ringer = action.automatedRoutine.TERMINATE_DROP_RINGER;
+    }
+//    else if(inputs.ShouldTerminateReleaseRingerWithLift())
+//        action.automatedRoutine.ringer = action.automatedRoutine.TERMINATE_DROP_RINGER;
 #else
     else if(inputs.ShouldCommenceReleaseRingerWithArm())
         action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
@@ -46,7 +60,30 @@ void Brain::AutomatedRoutines()
     else if(action.automatedRoutine.ringer == action.automatedRoutine.DROP_RINGER)
     {
 #ifdef LIFT_RELEASE
-        action.roller.automated = true;
+        switch(state)
+        {
+        case MOVE_LIFT_AND_REVERSE_ROLLER:
+            action.arm.state = action.arm.PRESET_MIDDLE;
+
+            action.lift.givenCommand = true;
+            action.lift.manualMode = true;
+            action.lift.power = -0.4;
+
+            if(++timer > 15)
+            {
+                action.roller.state = action.roller.SPITTING;
+                if(timer > 30)
+                    state = STOPPING;
+            }
+            break;
+
+        case STOPPING:
+            action.lift.power = 0;
+            action.arm.state = action.arm.PRESET_TOP;
+            action.roller.state = action.roller.STOPPED;
+            break;
+        }
+
 #else
         action.arm.state = action.arm.PRESET_BOTTOM;
         action.roller.state = action.roller.SPITTING;
