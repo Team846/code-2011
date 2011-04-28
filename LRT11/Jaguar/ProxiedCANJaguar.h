@@ -4,8 +4,9 @@
 #include "..\General.h"
 #include "..\CAN\VirtualCANBusController.h"
 #include "..\Util\Util.h"
+#include "LRTCANJaguar.h"
 
-class ProxiedCANJaguar : public CANJaguar
+class ProxiedCANJaguar : public LRTCANJaguar
 {
 private:
     float lastSetpoint;

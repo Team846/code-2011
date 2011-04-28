@@ -20,7 +20,7 @@ Arm::Arm()
     , pulseCount(0)
 {
     // brake when set to 0 to keep the arm in place
-    armEsc.ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+    armEsc.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
     Configure();
 }
 

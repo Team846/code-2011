@@ -1,15 +1,12 @@
+#ifndef LRT_CAN_JAGUAR_H
+#define LRT_CAN_JAGUAR_H
 
-#ifndef LRTCanJaguar_H
-#define LRTCanJaguar_H
-
-#include "..\Util\Profiler.h"
-//#include "MotorSafety.h"
-//#include "MotorSafetyHelper.h"
-//#include "PIDOutput.h"
-//#include "SpeedController.h"
+#include "MotorSafety.h"
+#include "MotorSafetyHelper.h"
+#include "PIDOutput.h"
+#include "SpeedController.h"
 #include <semLib.h>
 #include <vxWorks.h>
-
 
 /**
  * Luminary Micro Jaguar Speed Control
@@ -83,10 +80,6 @@ public:
     bool IsSafetyEnabled();
     void SetSafetyEnabled(bool enabled);
 
-    //LRTAdditions
-    void StartReadingCurrent();
-    double GetMostRecentCurrent();
-
 protected:
     UINT8 packPercentage(UINT8* buffer, double value);
     UINT8 packFXP8_8(UINT8* buffer, double value);
@@ -110,11 +103,6 @@ protected:
     double m_maxOutputVoltage;
 
     MotorSafetyHelper* m_safetyHelper;
-
-    Task readerTask;
-    static int ReaderTaskEntry(int LRTCANJaguarPointer);
-    void ReaderTask();
-    double current;
 
 private:
     void InitCANJaguar();

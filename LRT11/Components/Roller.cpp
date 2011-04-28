@@ -8,8 +8,8 @@ Roller::Roller()
     , ignoreCycles(25)
     , detected(false)
 {
-    topRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
-    bottomRoller.ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+    topRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
+    bottomRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
 
 #ifdef LRT_ROBOT_2011
     topRoller.CollectCurrent();

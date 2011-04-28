@@ -4,7 +4,7 @@ GameState ProxiedCANJaguar::gameState = DISABLED;
 ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
-    : CANJaguar(channel)
+    : LRTCANJaguar(channel)
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
     , channel(channel)
@@ -160,7 +160,7 @@ void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
     // send the value if there is a setpoint or game state change
     if(setpoint != lastSetpoint || lastState != gameState)
-        CANJaguar::Set(setpoint);
+        LRTCANJaguar::Set(setpoint);
 
     lastSetpoint = setpoint;
     lastState = gameState;

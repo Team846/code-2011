@@ -42,9 +42,9 @@ void LRTRobot11::RobotInit()
     AsynchronousPrinter::Printf(build);
 }
 
-static int outputstuffs(...)
+static int ExecutionNotify(...)
 {
-    AsynchronousPrinter::Printf("main execution > 20ms\n");
+    AsynchronousPrinter::Printf("Main execution > 20ms\n");
     return 0;
 }
 
@@ -53,7 +53,7 @@ void LRTRobot11::MainLoop()
 
     // setup a watchdog to warn us if our loop takes too long
     // sysClkRateGet returns the number of ticks per cycle at the current clock rate.
-    wdStart(mainLoopWatchDog, sysClkRateGet() / 50, outputstuffs, 0);
+    wdStart(mainLoopWatchDog, sysClkRateGet() / 50, ExecutionNotify, 0);
     GameState gameState = DetermineState();
 
     {

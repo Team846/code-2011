@@ -1,11 +1,12 @@
 
 #include "LRTCANJaguar.h"
 #define tNIRIO_i32 int
-//#include "ChipObject/NiRioStatus.h"
+#include "ChipObject/NiRioStatus.h"
 #include "CAN/JaguarCANDriver.h"
 #include "CAN/can_proto.h"
-//#include "Utility.h"
+#include "Utility.h"
 #include <stdio.h>
+#include "..\Util\AsynchronousPrinter.h"
 
 #define swap16(x) ( (((x)>>8) &0x00FF) \
         | (((x)<<8) &0xFF00) )
@@ -18,7 +19,6 @@
 
 const INT32 LRTCANJaguar::kControllerRate;
 const double LRTCANJaguar::kApproxBusVoltage;
-
 
 /**
  * Common initialization code called by all constructors.
@@ -72,7 +72,6 @@ LRTCANJaguar::LRTCANJaguar(UINT8 deviceNumber, ControlMode controlMode)
     , m_transactionSemaphore(NULL)
     , m_maxOutputVoltage(kApproxBusVoltage)
     , m_safetyHelper(NULL)
-    , readerTask("LiftPotReaderTask", (FUNCPTR) ReaderTaskEntry)
 {
     InitCANJaguar();
 }
@@ -117,7 +116,6 @@ void LRTCANJaguar::Set(float outputValue, UINT8 syncGroup)
         if(outputValue > 1.0) outputValue = 1.0;
         if(outputValue < -1.0) outputValue = -1.0;
         dataSize = packPercentage(dataBuffer, outputValue);
-
     }
     break;
     case kSpeed:
@@ -431,13 +429,15 @@ void LRTCANJaguar::getTransaction(UINT32 messageID, UINT8* data, UINT8* dataSize
 
     // Transaction complete.
     semGive(m_transactionSemaphore);
+
+    if(status != 0)
+        AsynchronousPrinter::Printf("CAN: %d\n", m_deviceNumber);
 }
 
 /**
  * Set the reference source device for speed controller mode.
  *
  * Choose encoder as the source of speed feedback when in speed control mode.
- * This is currently the only possible value, so we'll just call it for you in the constructor.
  *
  * @param reference Specify a SpeedReference.
  */
@@ -1206,54 +1206,3 @@ void LRTCANJaguar::StopMotor()
     DisableControl();
 }
 
-void LRTCANJaguar::StartReadingCurrent()
-{
-//  readerTask.
-}
-
-double LRTCANJaguar::GetMostRecentCurrent()
-{
-    return current;
-}
-
-int LRTCANJaguar::ReaderTaskEntry(int LRTCANJaguarPointer)
-{
-    LRTCANJaguar* jaggie = (LRTCANJaguar*) LRTCANJaguarPointer;
-    jaggie->ReaderTask();
-    return 0;
-}
-
-void LRTCANJaguar::ReaderTask()
-{
-    while(true)
-    {
-        UINT8 dataBuffer[8];
-        UINT8 dataSize;
-
-        UINT32 messageID = LM_API_STATUS_CURRENT;
-        UINT8* data = dataBuffer;
-        UINT32 targetedMessageID = messageID | m_deviceNumber;
-        INT32 status = 0;
-
-        // Make sure we don't have more than one transaction with the same Jaguar outstanding. Important thing to note. Things to test: Just seeing if you can repeatably send data
-
-        semTake(m_transactionSemaphore, WAIT_FOREVER);
-        // Send the message requesting data.
-        status = sendMessage(targetedMessageID, NULL, 0);
-        semGive(m_transactionSemaphore); //Only use semaphores for sending
-
-        wpi_assertCleanStatus(status);
-        // Caller may have set bit31 for remote frame transmission so clear invalid bits[31-29]
-        targetedMessageID &= 0x1FFFFFFF;
-        // Wait for the data.
-        status = receiveMessage(&targetedMessageID, data, &dataSize);
-        wpi_assertCleanStatus(status);
-        // Transaction complete.
-
-
-        if(dataSize == sizeof(INT16))
-            current = unpackFXP8_8(dataBuffer);
-        else
-            current = 0.0;
-    }
-}

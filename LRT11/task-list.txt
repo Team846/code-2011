@@ -10,6 +10,7 @@
 To do at champs
 - Drive train
 - Shifting
+- New deployment routine
 - Minibot
 - Autonomous
 - Deal with double load config file issue

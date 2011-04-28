@@ -26,7 +26,7 @@ void CANJaguarBrake::ApplyBrakes()
     bool shouldBrakeThisCycle = ditherPattern[amount] & (1 << cycleCount);
 
     // ConfigNeutralMode sets whether the jaguar should brake or coast
-    jaguar.ConfigNeutralMode(shouldBrakeThisCycle ? CANJaguar::kNeutralMode_Brake : CANJaguar::kNeutralMode_Coast);
+    jaguar.ConfigNeutralMode(shouldBrakeThisCycle ? LRTCANJaguar::kNeutralMode_Brake : LRTCANJaguar::kNeutralMode_Coast);
 }
 
 /*

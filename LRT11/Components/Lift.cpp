@@ -27,11 +27,11 @@ Lift::~Lift()
 void Lift::Configure()
 {
 //    liftEsc.SetControlMode(CANJaguar::kPosition);
-    liftEsc.ChangeControlMode(CANJaguar::kPosition);
+    liftEsc.ChangeControlMode(LRTCANJaguar::kPosition);
 #ifdef VIRTUAL
     liftEsc.SetPositionReference(&liftPot);
 #else
-    liftEsc.SetPositionReference(CANJaguar::kPosRef_Potentiometer);
+    liftEsc.SetPositionReference(LRTCANJaguar::kPosRef_Potentiometer);
 #endif
 
     liftEsc.SetPID(config.Get<double>(prefix + "pGain", 100), config.Get<double>(prefix + "iGain", 0),
@@ -61,7 +61,7 @@ void Lift::Configure()
 void Lift::ConfigureManualMode()
 {
 //    liftEsc.SetControlMode(CANJaguar::kPercentVbus);
-    liftEsc.ChangeControlMode(CANJaguar::kPercentVbus);
+    liftEsc.ChangeControlMode(LRTCANJaguar::kPercentVbus);
     liftEsc.EnableControl();
 }
 
