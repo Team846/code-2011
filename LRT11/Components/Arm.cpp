@@ -36,7 +36,6 @@ void Arm::Configure()
     maxPosition = config.Get<float>(prefix + "maxPosition", 530);
 
     midPositionDeadband = config.Get<float>(prefix + "midPositionDeadband", 10);
-    midPGain = config.Get<float>(prefix + "MidPGain");
 
     powerUp = config.Get<float>(prefix + "powerUp", 0.30);
     powerRetainUp = config.Get<float>(prefix + "powerRetainUp", 0.10);

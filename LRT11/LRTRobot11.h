@@ -44,8 +44,8 @@ private:
     GameState DetermineState();
 
 //    AnalogChannel armPot;
-
     WDOG_ID mainLoopWatchDog;
+
 public:
     LRTRobot11();
     virtual ~LRTRobot11();

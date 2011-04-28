@@ -80,7 +80,7 @@ void LRTRobot11::MainLoop()
     {
         // components to output only when enabled
 
-        //shifter must output before drivetrain
+        // shifter must output before drivetrain
         if(ds.GetDigitalIn(5))
         {
             ProfiledSection ps("Servo Shifting");
@@ -110,12 +110,6 @@ void LRTRobot11::MainLoop()
             ProfiledSection ps("Arm");
             arm.Output();
         }
-
-//        {
-//            ProfiledSection ps("Encoder Data Collection");
-//            encoderData.Output();
-//        }
-
 
         if(ds.GetDigitalIn(6))
         {
