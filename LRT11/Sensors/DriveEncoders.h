@@ -66,6 +66,7 @@ public:
     double GetNormalizedLowGearTurningSpeed();
     double GetTurningSpeed();
     double GetNormalizedTurningSpeed();
+    double GetNormalizedTurningMotorSpeed();
 
     double GetRobotDist();
     int GetTurnTicks();

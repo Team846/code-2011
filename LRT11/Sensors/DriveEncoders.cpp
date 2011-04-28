@@ -53,6 +53,7 @@ double DriveEncoders::GetNormalizedForwardMotorSpeed()
     return isHighGear ? GetNormalizedForwardSpeed() :
             GetNormalizedLowGearForwardSpeed();
 }
+
 /***************** Turning Functions ***************************/
 double DriveEncoders::GetNormalizedLowGearTurningSpeed()
 {
@@ -70,7 +71,11 @@ double DriveEncoders::GetNormalizedTurningSpeed()
     return GetTurningSpeed() / MAX_TURNING_RATE;
 }
 
-
+double DriveEncoders::GetNormalizedTurningMotorSpeed()
+{
+    return isHighGear ? GetNormalizedTurningSpeed() :
+            GetNormalizedLowGearTurningSpeed();
+}
 
 double DriveEncoders::GetRobotDist()
 {
@@ -93,9 +98,6 @@ double DriveEncoders::GetTurnAngle()
     return GetTurnRevolutions() * 360.0;
 }
 
-
-
-
 /************* Distance functions **************************************/
 double DriveEncoders::GetWheelDist(int side)
 {
@@ -104,12 +106,10 @@ double DriveEncoders::GetWheelDist(int side)
     return e.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
 }
 
-
 double DriveEncoders::GetLeftSpeed()
 {
     return encoderLeft.GetRate();
 }
-
 
 double DriveEncoders::GetNormalizedLeftOppositeGearMotorSpeed()
 {

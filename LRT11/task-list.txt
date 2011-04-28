@@ -12,8 +12,8 @@ To do at champs
 - Shifting
 - Minibot
 - Autonomous
-- Save configuration file
 - Deal with double load config file issue
+/ Save configuration file
 / Check robot configuration
 / Clean build
 / LRT_ROBOT_2011 and other defines

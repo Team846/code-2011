@@ -42,7 +42,11 @@ void ModifiedDriveTrain::Output()
 //    }
 
     closedRateTrain.SetHighGear(action.shifter.gear == action.shifter.HIGH_GEAR);
-    closedRateTrain.SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);
+//    closedRateTrain.SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);
+
+    closedRateTrain.SetClosedLoopEnabled(false);
+    SmartDashboard::Log(driveEncoders.GetNormalizedForwardMotorSpeed(), "Normalized Speed");
+    SmartDashboard::Log(driveEncoders.GetNormalizedTurningMotorSpeed(), "Normalized Turning Speed");
 
     // calculate left duty cycle, right duty cycle, left brake, and
     // right brake based off of joystick inputs and mode
