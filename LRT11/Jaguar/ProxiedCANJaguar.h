@@ -39,6 +39,7 @@ public:
     void CollectPotValue();
 
     float GetCurrent();
+    float GetPotValue();
 
 #ifdef VIRTUAL
     virtual float Get();

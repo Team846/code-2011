@@ -99,7 +99,6 @@ void Brain::EncoderAuton()
 
     if(advanceState)
     {
-#warning "Change ds button we are looking in"
 #define PAUSE_AUTON
 #ifdef PAUSE_AUTON
         // waits until key is released

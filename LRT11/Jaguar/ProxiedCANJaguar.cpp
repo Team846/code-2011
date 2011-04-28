@@ -42,11 +42,22 @@ float ProxiedCANJaguar::GetCurrent()
 {
     if(!jaguars.shouldCollectCurrent[index])
     {
-        AsynchronousPrinter::Printf("Fatal %s:%s\n", __FILE__, __LINE__);
+        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
         return -1.0;
     }
 
     return jaguars.currents[index];
+}
+
+float ProxiedCANJaguar::GetPotValue()
+{
+    if(!jaguars.shouldCollectPotValue[index])
+    {
+        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
+        return -1.0;
+    }
+
+    return jaguars.potValues[index];
 }
 
 #ifdef VIRTUAL

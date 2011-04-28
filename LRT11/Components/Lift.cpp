@@ -7,8 +7,6 @@ Lift::Lift()
     , liftEsc(RobotConfig::CAN_LIFT)
 #ifdef VIRTUAL
     , liftPot(RobotConfig::CAN_LIFT, 10, 1.0, 6.5)
-#else
-    , potReader(LiftPotReader::GetInstance())
 #endif
     , timeoutCycles(0)
     , cycleCount(0)
@@ -16,7 +14,9 @@ Lift::Lift()
     , potDeadband(0)
     , positionMode(true)
 {
-    LiftPotReader::SetLiftEsc(&liftEsc);
+#ifdef LRT_ROBOT_2011
+    liftEsc.CollectPotValue();
+#endif
 }
 
 Lift::~Lift()
@@ -108,10 +108,9 @@ void Lift::Output()
 
     float potValue = 0.0;
 #ifdef VIRTUAL
-    potValue = liftPot.GetPosition();
+    potValue = liftPot.GetPotValue();
 #else
-//    potValue = liftEsc.GetPosition();
-    potValue = potReader.GetPotValue();
+    potValue = liftEsc.GetPotValue();
 #endif
 
 #ifdef USE_DASHBOARD
@@ -243,10 +242,6 @@ void Lift::Output()
 #endif
         break;
     }
-
-#ifndef VIRTUAL
-    potReader.StartReading();
-#endif
 }
 
 /*

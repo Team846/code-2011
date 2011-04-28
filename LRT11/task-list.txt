@@ -10,11 +10,13 @@
 To do at champs
 - Save configuration file
 - Deal with double load config file issue
-- LRT_ROBOT_2011 and other defines
-- Minibot current
-- Clean build
-- Lift potentiometer values
-- Address ActionData::GetInstance in TeleopShifter.h
+/ Check robot configuration
+/ Clean build
+/ LRT_ROBOT_2011 and other defines
+/ Minibot current
+/ Lift potentiometer values
+/ Address ActionData::GetInstance in TeleopShifter.h
+/ Define lift release
 
 To test
 / Disable/Enable components

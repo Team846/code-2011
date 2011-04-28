@@ -43,9 +43,9 @@ void MinibotDeployer::Output()
         state = ACCELERATING;
 
         // deployment already commenced
+        deployerEsc.CollectCurrent();
         action.deployer.shouldDeployMinibot = false;
     }
-
 
     // abort overrides everything
     if(action.master.abort)
@@ -82,7 +82,7 @@ void MinibotDeployer::Output()
         setPoint = 0.5;
 
         // used to detect current spike
-        float current = deployerEsc.GetOutputCurrent();
+        float current = deployerEsc.GetCurrent();
 
 #ifdef USE_DASHBOARD
         SmartDashboard::Log(current, "Minibot Deployment Current");

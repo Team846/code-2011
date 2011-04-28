@@ -15,10 +15,9 @@ ModifiedDriveTrain::ModifiedDriveTrain()
     // TODO fix initialization
     , leftESC(RobotConfig::CAN_DRIVE_LEFT, driveEncoders.GetLeftEncoder(), "left")
     , rightESC(RobotConfig::CAN_DRIVE_RIGHT, driveEncoders.GetInstance().GetRightEncoder(), "right")
-    , config(Config::GetInstance())
 #endif
+    , config(Config::GetInstance())
 {
-#warning "Set number of cycles to synchronize for"
     cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 60);
     synchronizedCyclesLeft = 0;
 

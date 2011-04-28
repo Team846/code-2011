@@ -7,7 +7,7 @@ void Brain::TeleopShifter()
     static bool forceShiftedHigh = false;
 
     //must set this way since is static
-    static int lastGear = ActionData::GetInstance().shifter.gear;
+    static int lastGear = action.shifter.gear;
 
     // assume no force shift
     action.shifter.force = false;

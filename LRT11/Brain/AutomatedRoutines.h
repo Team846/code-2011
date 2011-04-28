@@ -1,6 +1,6 @@
 #include "Brain.h"
 
-//#define LIFT_RELEASE
+#define LIFT_RELEASE
 
 void Brain::AutomatedRoutines()
 {

@@ -49,10 +49,11 @@ public:
 
     const static float TICKS_PER_FULL_TURN   = 997.0; // measured 3/28/11 at room 612 -KV
     const static float WHEEL_DIAMETER        = 8.0; // in
-#endif
 
     // extrapolate max low gear speed
     const static float LOW_GEAR_MULTIPLIER = 3 / 1.35 / 0.83;
+#endif
+
 
     const static float PI = 3.14159;
 
