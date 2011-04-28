@@ -37,7 +37,7 @@ public:
     virtual void Set(float setpoint, UINT8 syncGroup = 0);
 
     void CollectCurrent();
-    void CollectPotValue();
+    void CollectPotValue(bool shouldCollect);
 
     float GetCurrent();
     float GetPotValue();

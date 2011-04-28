@@ -33,9 +33,9 @@ void ProxiedCANJaguar::CollectCurrent()
     jaguars.shouldCollectCurrent[index] = true;
 }
 
-void ProxiedCANJaguar::CollectPotValue()
+void ProxiedCANJaguar::CollectPotValue(bool shouldCollect)
 {
-    jaguars.shouldCollectPotValue[index] = true;
+    jaguars.shouldCollectPotValue[index] = shouldCollect;
 }
 
 float ProxiedCANJaguar::GetCurrent()
@@ -51,11 +51,11 @@ float ProxiedCANJaguar::GetCurrent()
 
 float ProxiedCANJaguar::GetPotValue()
 {
-    if(!jaguars.shouldCollectPotValue[index])
-    {
-        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
-        return -1.0;
-    }
+//    if(!jaguars.shouldCollectPotValue[index])
+//    {
+//        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
+//        return -1.0;
+//    }
 
     return jaguars.potValues[index];
 }

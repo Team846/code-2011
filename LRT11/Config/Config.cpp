@@ -28,7 +28,7 @@ Config::Config()
         analogAssignmentScaleMax[i] = 1;
     }
 
-    Load();
+    CheckForFileUpdates();
     AddToSingletonList();
 }
 
@@ -214,14 +214,16 @@ void Config::Output()
 
 void Config::CheckForFileUpdates()
 {
-    Config& config = Config::GetInstance();
-
     struct stat statistics;
     stat(CONFIG_FILE_PATH.c_str(), &statistics);
 
     if(fileModifiedTime != statistics.st_mtime)
     {
-        config.Load();
+        Load();
+
+        // Load() sometimes saves the configuration, so get the
+        // new modified time
+        stat(CONFIG_FILE_PATH.c_str(), &statistics);
         fileModifiedTime = statistics.st_mtime;
     }
 }

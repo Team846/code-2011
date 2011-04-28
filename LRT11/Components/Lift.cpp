@@ -14,9 +14,6 @@ Lift::Lift()
     , potDeadband(0)
     , positionMode(true)
 {
-#ifdef LRT_ROBOT_2011
-    liftEsc.CollectPotValue();
-#endif
 }
 
 Lift::~Lift()
@@ -121,11 +118,17 @@ void Lift::Output()
     if(action.master.abort)
         state = ABORT;
 
+    static int potCycleCount = 0;
+
     switch(state)
     {
     case IDLE:
 //        AsynchronousPrinter::Printf("Idle\n");
         liftEsc.DisableControl();
+        liftEsc.CollectPotValue(false);
+
+        if(++potCycleCount % 50 == 0)
+            liftEsc.CollectPotValue(true);
 
         if(!positionMode)
         {
@@ -138,6 +141,7 @@ void Lift::Output()
     case ABORT:
 //        AsynchronousPrinter::Printf("Abort\n");
         liftEsc.DisableControl();
+        liftEsc.CollectPotValue(false);
 
         if(!positionMode)
             liftEsc.Set(0.0);
@@ -147,6 +151,7 @@ void Lift::Output()
 
     case PULSING:
 //        AsynchronousPrinter::Printf("Pulsing\n");
+        liftEsc.CollectPotValue(true);
         if(positionMode)
         {
             // configure jaguar for voltage mode
@@ -163,6 +168,7 @@ void Lift::Output()
 
     case MANUAL:
 //        AsynchronousPrinter::Printf("Manual\n");
+        liftEsc.CollectPotValue(true);
         action.lift.doneState = action.lift.IN_PROGRESS; // not done yet
 
         if((action.lift.power > 0 && potValue < maxPosition) ||
@@ -180,6 +186,7 @@ void Lift::Output()
 
     case PRESET:
 //        AsynchronousPrinter::Printf("Preset\n");
+        liftEsc.CollectPotValue(true);
         action.lift.doneState = action.lift.IN_PROGRESS; // not done yet
         string key = prefix;
 

@@ -39,7 +39,7 @@ public:
     static vector<Configurable*> configurables;
     static void RegisterConfigurable(Configurable* configurable);
     static void ConfigureAll();
-    static void CheckForFileUpdates();
+    void CheckForFileUpdates();
 
     virtual void Output();
 

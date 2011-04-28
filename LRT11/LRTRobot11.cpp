@@ -31,7 +31,7 @@ LRTRobot11::~LRTRobot11()
 void LRTRobot11::RobotInit()
 {
     config.ConfigureAll();
-    config.Save();
+//    config.Save();
 
     const char* build = (Util::ToString<int>(config.Get<int>("BuildNumber")) + "-" +
             Util::ToString<int>(config.Get<int>("RunNumber"))).c_str();
