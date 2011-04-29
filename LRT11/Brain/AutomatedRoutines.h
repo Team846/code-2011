@@ -81,6 +81,7 @@ void Brain::AutomatedRoutines()
             action.lift.power = 0;
             action.arm.state = action.arm.PRESET_TOP;
             action.roller.state = action.roller.STOPPED;
+            action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
             break;
         }
 
