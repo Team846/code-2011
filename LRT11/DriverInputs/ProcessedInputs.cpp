@@ -82,6 +82,11 @@ bool ProcessedInputs::ShouldShiftHigh()
     return driverStick.IsButtonDown(8);
 }
 
+bool ProcessedInputs::ShouldToggleGear()
+{
+    return driverStick.IsButtonJustPressed(8);
+}
+
 bool ProcessedInputs::ShouldShiftThird()
 {
     return driverStick.IsButtonDown(9);

@@ -81,6 +81,7 @@ public:
 
     // shifting
     bool ShouldShiftHigh();
+    bool ShouldToggleGear();
     bool ShouldShiftThird();
 
     // minibot deployment

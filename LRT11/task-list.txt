@@ -10,6 +10,8 @@
 To do at champs
 - New deployment routine
 - Toggle shift button
+- Remove caching
+- Repeatably test autonomous
 / Drive train
 / Shifting
 - Error printing

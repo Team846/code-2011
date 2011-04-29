@@ -1,6 +1,6 @@
 #include "Brain.h"
 
-//#define LIFT_RELEASE
+#define LIFT_RELEASE
 
 void Brain::AutomatedRoutines()
 {
@@ -69,10 +69,10 @@ void Brain::AutomatedRoutines()
             action.lift.manualMode = true;
             action.lift.power = -0.4;
 
-            if(++timer > 15)
+            if(++timer > 10)
             {
                 action.roller.state = action.roller.SPITTING;
-                if(timer > 30)
+                if(timer > 20)
                     state = STOPPING;
             }
             break;

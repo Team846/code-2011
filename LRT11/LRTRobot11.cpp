@@ -42,11 +42,11 @@ void LRTRobot11::RobotInit()
     AsynchronousPrinter::Printf(build);
 }
 
-static int ExecutionNotify(...)
-{
-    AsynchronousPrinter::Printf("Main execution > 20ms\n");
-    return 0;
-}
+//static int ExecutionNotify(...)
+//{
+//    AsynchronousPrinter::Printf("Main execution > 20ms\n");
+//    return 0;
+//}
 
 void LRTRobot11::MainLoop()
 {
