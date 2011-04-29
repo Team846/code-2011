@@ -73,7 +73,7 @@ void LRTRobotBase::StartCompetition()
         if(cycleCount % 100 == 0)
         {
 //          printf("Cycle count: %d\n", cycleCount);
-            printf("Sleep time: %.2fms\n\n", sleepTime_us * 1.0e-3);
+            AsynchronousPrinter::Printf("Sleep time: %.2fms\n\n", sleepTime_us * 1.0e-3);
 //          printf("Time: %.4fms\n", GetFPGATime() * 1.0e-3);
 //          printf("Target Time: %.4fms\n", cycleExpire_us * 1.0e-3);
 //          fflush(stdout);

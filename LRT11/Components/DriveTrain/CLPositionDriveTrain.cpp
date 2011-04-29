@@ -43,7 +43,7 @@ DriveCommand CLPositionDriveTrain::Drive(float maxFwdSpeed, float maxTurnSpeed)
         float error = movePositionInfo.target - encoders.GetRobotDist();
         fwdCorrection = error * pGainFwd;
 
-        AsynchronousPrinter::Printf("Moving error: %.2f\n", error);
+//        AsynchronousPrinter::Printf("Moving error: %.2f\n", error);
 
         int turnError = movePositionInfo.initialBearing - encoders.GetTurnTicks();
         turnCorrection = turnError * pGainFwdTurnCorrection;
@@ -54,7 +54,7 @@ DriveCommand CLPositionDriveTrain::Drive(float maxFwdSpeed, float maxTurnSpeed)
         int error = turnAngleInfo.target - encoders.GetTurnTicks();
         turnCorrection = error * pGainTurn;
 
-        AsynchronousPrinter::Printf("Turning error: %d\n", error);
+//        AsynchronousPrinter::Printf("Turning error: %d\n", error);
 
         float fwdError = turnAngleInfo.initialDistance - encoders.GetRobotDist();
         fwdCorrection = pGainTurnFwdCorrection * fwdError;

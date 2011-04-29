@@ -94,7 +94,6 @@ void Brain::EncoderAuton()
     if(wait > 0)
     {
         wait--;
-        AsynchronousPrinter::Printf("waiting\n");
         return;
     }
 
@@ -117,7 +116,8 @@ void Brain::EncoderAuton()
         timeout = 0;
     }
 
-#define PRINTSTATE() AsynchronousPrinter::Printf("Entering %s\n", stateName)
+    // disabled because of excessive printing -KV -DG championships 4/28/11
+#define PRINTSTATE() do { } while(false) // AsynchronousPrinter::Printf("Entering %s\n", stateName)
     switch(state)
     {
     case DRIVE_FORWARD: // move drive to a location; move arm up; shift to low gear

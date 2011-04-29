@@ -1,5 +1,7 @@
 #include "AsynchronousPrinter.h"
 
+#define PRINT 0
+
 AsynchronousPrinter* AsynchronousPrinter::instance = NULL;
 
 AsynchronousPrinter& AsynchronousPrinter::GetInstance()
@@ -11,6 +13,10 @@ AsynchronousPrinter& AsynchronousPrinter::GetInstance()
 
 void AsynchronousPrinter::Printf(const char* format, ...)
 {
+#if !PRINT
+    return;
+#endif
+
     const int maxLength = 256;
     char buffer[maxLength];
 
@@ -64,6 +70,10 @@ void AsynchronousPrinter::PrinterTaskRunner()
 }
 void AsynchronousPrinter::PrinterTask()
 {
+#if !PRINT
+    return;
+#endif
+
     while(true)
     {
         while(!queue.empty())
