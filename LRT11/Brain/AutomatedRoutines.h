@@ -2,10 +2,61 @@
 
 #define LIFT_RELEASE
 
+void Brain::AutomatedRoutineWithLift()
+{
+    static int timer = 0;
+
+    static enum
+    {
+        IDLE,
+        MOVE_LIFT_AND_REVERSE_ROLLER,
+        STOPPING
+    } state = IDLE;
+
+    if(inputs.ShouldReleaseRingerWithLift())
+    {
+        timer = 0;
+        state = MOVE_LIFT_AND_REVERSE_ROLLER;
+        action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+    }
+
+    // if aborted make sure we stop the automated ejection
+    if(inputs.ShouldAbort())
+        state = IDLE;
+
+    switch(state)
+    {
+    case IDLE:
+        break;
+
+    case MOVE_LIFT_AND_REVERSE_ROLLER:
+        action.arm.state = action.arm.PRESET_MIDDLE;
+
+        action.lift.givenCommand = true;
+        action.lift.manualMode = true;
+        action.lift.power = -0.4;
+
+        if(++timer > 10)
+        {
+            action.roller.state = action.roller.SPITTING;
+            if(timer > 20)
+                state = STOPPING;
+        }
+        break;
+
+    case STOPPING:
+        action.lift.power = 0;
+        action.arm.state = action.arm.PRESET_TOP;
+        action.roller.state = action.roller.STOPPED;
+        state = IDLE;
+        break;
+    }
+}
+
 void Brain::AutomatedRoutines()
 {
     // setup for new release method using the arm
-    if(inputs.ShouldCommenceMoveArmToMiddle())
+    if(inputs.ShouldMoveArmToMiddle())
         action.automatedRoutine.ringer = action.automatedRoutine.ARM_MIDDLE_POSITON;
 #ifdef LIFT_RELEASE
     static int timer = 0;
@@ -20,7 +71,8 @@ void Brain::AutomatedRoutines()
 //        action.automatedRoutine.ringer = action.automatedRoutine.COMMENCE_DROP_RINGER;
 //    else if(inputs.ShouldReleaseRingerWithLift())
 //    if(inputs.ShouldReleaseRingerWithLift())
-    if(inputs.ShouldCommenceReleaseRingerWithLift())
+//    if(inputs.ShouldCommenceReleaseRingerWithLift())
+    if(inputs.ShouldReleaseRingerWithLift())
     {
         timer = 0;
         state = MOVE_LIFT_AND_REVERSE_ROLLER;
@@ -29,10 +81,10 @@ void Brain::AutomatedRoutines()
 //    else if(inputs.ShouldTerminateReleaseRingerWithLift())
 //        action.automatedRoutine.ringer = action.automatedRoutine.TERMINATE_DROP_RINGER;
 #else
-    else if(inputs.ShouldCommenceReleaseRingerWithArm())
+    else if(inputs.ShouldReleaseRingerWithArm())
         action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
 #endif
-    else if(inputs.ShouldCommenceMoveArmUpAndLiftDown())
+    else if(inputs.ShouldMoveArmUpAndLiftDown())
     {
         action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
 

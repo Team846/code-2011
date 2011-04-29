@@ -68,16 +68,12 @@ public:
     bool GetOperatorThrottle();
 
     // automated ringer deployment with arm controls
-    bool ShouldCommenceMoveArmToMiddle();
-    bool ShouldCommenceReleaseRingerWithArm();
+    bool ShouldMoveArmToMiddle();
+    bool ShouldReleaseRingerWithArm();
+    bool ShouldMoveArmUpAndLiftDown();
 
-    //3 routines is because of a workaround to the current way roller+lift automation is handled. The changes required to handle it properly may break things so it will be postponed until after champs.
-    bool ShouldCommenceReleaseRingerWithLift();
+    // automated ringer deployment with lift controls
     bool ShouldReleaseRingerWithLift();
-    bool ShouldTerminateReleaseRingerWithLift();
-
-    bool ShouldCommenceMoveArmUpAndLiftDown();
-    bool EndDropRingerAutomation();
 
     // shifting
     bool ShouldShiftHigh();

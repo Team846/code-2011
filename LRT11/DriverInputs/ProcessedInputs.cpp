@@ -177,7 +177,7 @@ bool ProcessedInputs::ShouldRollerBeAutomated()
 
 bool ProcessedInputs::ShouldRollerCommenceAutomation()
 {
-    return operatorStick.IsButtonJustPressed(2);
+    return operatorStick.IsButtonJustPressed(12);
 }
 
 bool ProcessedInputs::GetOperatorThrottle()
@@ -185,39 +185,24 @@ bool ProcessedInputs::GetOperatorThrottle()
     return -operatorStick.GetRawAxis(4) > 0.5;
 }
 
-bool ProcessedInputs::ShouldCommenceMoveArmToMiddle()
+bool ProcessedInputs::ShouldMoveArmToMiddle()
 {
     return driverStick.IsButtonJustPressed(10);
 }
 
-bool ProcessedInputs::ShouldCommenceReleaseRingerWithArm()
+bool ProcessedInputs::ShouldReleaseRingerWithArm()
 {
     return operatorStick.IsButtonJustPressed(12);
 }
 
-bool ProcessedInputs::ShouldReleaseRingerWithLift()
-{
-    return operatorStick.IsButtonDown(12);
-}
-
-bool ProcessedInputs::ShouldCommenceReleaseRingerWithLift()
-{
-    return operatorStick.IsButtonJustPressed(12);
-}
-
-bool ProcessedInputs::ShouldTerminateReleaseRingerWithLift()
-{
-    return operatorStick.IsButtonJustReleased(12);
-}
-
-bool ProcessedInputs::ShouldCommenceMoveArmUpAndLiftDown()
+bool ProcessedInputs::ShouldMoveArmUpAndLiftDown()
 {
     return operatorStick.IsButtonJustPressed(11);
 }
 
-bool ProcessedInputs::EndDropRingerAutomation()
+bool ProcessedInputs::ShouldReleaseRingerWithLift()
 {
-    return driverStick.IsButtonJustPressed(0);
+    return operatorStick.IsButtonJustPressed(2);
 }
 
 bool ProcessedInputs::ShouldDeployAligner()

@@ -61,6 +61,7 @@ private:
     void Teleop();
 
     // Subroutines used in multiple modes
+    void AutomatedRoutineWithLift();
     void AutomatedRoutines();
     void AutomatedFollowLine();
 
@@ -74,7 +75,7 @@ private:
     void TeleopRoller();
     void TeleopMinibot();
 
-    //Autonomous routines
+    // Autonomous routines
     void Side();
     void EncoderAuton();
     void Middle(int numberOfTubes);
