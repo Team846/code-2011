@@ -8,10 +8,13 @@
 ======================
 
 To do at champs
-- Remove caching
-- Disable error printing
-- Fix remnants of automated routine
+- Minibot deployment
+- Shifting
 - Lift inches up after preset bottom (after fixed delay)
+/ Disable error printing
+/ Arm
+/ Remove caching
+/ Fix remnants of automated routine
 / New deployment routine
 / Toggle shift button
 / Repeatably test autonomous

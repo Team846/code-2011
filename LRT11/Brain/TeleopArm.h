@@ -5,6 +5,7 @@ void Brain::TeleopArm()
     // default to the arm at the top state
 //    action.arm.state = action.arm.PRESET_TOP;
     action.arm.state = action.arm.PRESET_TOP;
+    static int timer = 0;
 
     if(inputs.ShouldMoveArmDown())
         action.arm.state = action.arm.MANUAL_DOWN;
@@ -12,7 +13,18 @@ void Brain::TeleopArm()
         action.arm.state = action.arm.MANUAL_UP;
     // driver wants the arm down and the roller to rotate
     else if(inputs.ShouldGrabGamePiece())
+    {
         action.arm.state = action.arm.PRESET_BOTTOM;
+        timer = 0;
+    }
+    else if(action.arm.doneState == action.arm.FAILURE)
+    {
+        if(++timer > 100)
+        {
+            action.arm.state = action.arm.IDLE;
+            timer = 0;
+        }
+    }
 
     if(wasDisabledLastCycle)
         // must set to IDLE to register state change
