@@ -2,9 +2,6 @@
 
 void Brain::TeleopArm()
 {
-    // default to the arm at the top state
-//    action.arm.state = action.arm.PRESET_TOP;
-    action.arm.state = action.arm.PRESET_TOP;
     static int timer = 0;
 
     if(inputs.ShouldMoveArmDown())
@@ -17,6 +14,11 @@ void Brain::TeleopArm()
         action.arm.state = action.arm.PRESET_BOTTOM;
         timer = 0;
     }
+    else if(inputs.ShouldMoveArmToMiddle())
+    {
+        action.arm.state = action.arm.PRESET_MIDDLE;
+        timer = 0;
+    }
     else if(action.arm.doneState == action.arm.FAILURE)
     {
         if(++timer > 100)
@@ -25,6 +27,9 @@ void Brain::TeleopArm()
             timer = 0;
         }
     }
+    else if(action.arm.state != action.arm.PRESET_MIDDLE)
+        // default to the arm at the top state
+        action.arm.state = action.arm.PRESET_TOP;
 
     if(wasDisabledLastCycle)
         // must set to IDLE to register state change
