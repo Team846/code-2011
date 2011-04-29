@@ -41,6 +41,9 @@ void Arm::Configure()
     powerRetainUp = config.Get<float>(prefix + "powerRetainUp", 0.10);
     powerDown = config.Get<float>(prefix + "powerDown", -0.15);
 
+    midPowerUp = config.Get<float>(prefix + "midPowerUp", 0.2);
+    midPowerDown = config.Get<float>(prefix + "midPowerDown", -0.15);
+
     timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 }
 
@@ -141,9 +144,9 @@ void Arm::Output()
 //          armEsc.Set(correction);
 
         if(potValue > midPosition + midPositionDeadband)
-            armEsc.Set(powerDown / 2);
+            armEsc.Set(midPowerDown);
         else if(potValue < midPosition - midPositionDeadband)
-            armEsc.Set(powerUp / 2);
+            armEsc.Set(midPowerUp);
         else
         {
             // prevent cycle count from becoming < 0
