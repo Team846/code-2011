@@ -1,5 +1,7 @@
 #include "ProxiedCANJaguar.h"
 
+#define DISABLE_SETPOINT_CACHING  0
+
 GameState ProxiedCANJaguar::gameState = DISABLED;
 ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
 
@@ -93,6 +95,10 @@ void ProxiedCANJaguar::CommTask()
             shouldCacheSetpoint = true;
         else
             shouldCacheSetpoint = false;
+
+#if DISABLE_SETPOINT_CACHING
+        shouldCacheSetpoint = false;
+#endif
 
         if(!shouldCacheSetpoint)
         {

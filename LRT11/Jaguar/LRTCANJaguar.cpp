@@ -412,11 +412,15 @@ void LRTCANJaguar::setTransaction(UINT32 messageID, const UINT8* data, UINT8 dat
  */
 void LRTCANJaguar::getTransaction(UINT32 messageID, UINT8* data, UINT8* dataSize)
 {
+    UINT32 ackMessageID = LM_API_ACK | m_deviceNumber;
     UINT32 targetedMessageID = messageID | m_deviceNumber;
     INT32 status = 0;
 
     // Make sure we don't have more than one transaction with the same Jaguar outstanding.
     semTake(m_transactionSemaphore, WAIT_FOREVER);
+
+    // Throw away any stale acks; force synchronization (recommended by Joe Hertsenburgerr) -KV 4/28/11
+    receiveMessage(&ackMessageID, NULL, 0, 0.0f);
 
     // Send the message requesting data.
     status = sendMessage(targetedMessageID, NULL, 0);

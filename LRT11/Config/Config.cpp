@@ -80,7 +80,7 @@ map<string, string> Config::tload(string path)
             ret[key] = val;
         }
 
-        printf("Cfg:%s=%s\n", key.c_str(), val.c_str());
+        AsynchronousPrinter::Printf("Cfg:%s=%s\n", key.c_str(), val.c_str());
     }
 
     fin.close();
