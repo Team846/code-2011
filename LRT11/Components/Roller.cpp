@@ -11,10 +11,6 @@ Roller::Roller()
     topRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
     bottomRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
 
-#ifdef LRT_ROBOT_2011
-    topRoller.CollectCurrent();
-    bottomRoller.CollectCurrent();
-#endif
 }
 
 Roller::~Roller()
@@ -24,6 +20,9 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
+    topRoller.ShouldCollectCurrent(true);
+    bottomRoller.ShouldCollectCurrent(true);
+
     float topCurrent, bottomCurrent;
 
     {
@@ -109,6 +108,9 @@ void Roller::Output()
     {
         ignoreCycles = 25;
         detected = false;
+
+        topRoller.ShouldCollectCurrent(false);
+        bottomRoller.ShouldCollectCurrent(false);
     }
 
     switch(action.roller.state)

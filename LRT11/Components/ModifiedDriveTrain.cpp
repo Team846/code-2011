@@ -18,7 +18,7 @@ ModifiedDriveTrain::ModifiedDriveTrain()
 #endif
     , config(Config::GetInstance())
 {
-    cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 60);
+    Configure();
     synchronizedCyclesLeft = 0;
 
 //    leftESC.CollectCurrent();
@@ -28,6 +28,11 @@ ModifiedDriveTrain::ModifiedDriveTrain()
 ModifiedDriveTrain::~ModifiedDriveTrain()
 {
 
+}
+
+void ModifiedDriveTrain::Configure()
+{
+    cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 60);
 }
 
 void ModifiedDriveTrain::Output()
@@ -42,11 +47,11 @@ void ModifiedDriveTrain::Output()
 //    }
 
     closedRateTrain.SetHighGear(action.shifter.gear == action.shifter.HIGH_GEAR);
-//    closedRateTrain.SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);
+    closedRateTrain.SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);
 
-    closedRateTrain.SetClosedLoopEnabled(false);
-    SmartDashboard::Log(driveEncoders.GetNormalizedForwardMotorSpeed(), "Normalized Speed");
-    SmartDashboard::Log(driveEncoders.GetNormalizedTurningMotorSpeed(), "Normalized Turning Speed");
+//    closedRateTrain.SetClosedLoopEnabled(false);
+//    SmartDashboard::Log(driveEncoders.GetNormalizedForwardMotorSpeed(), "Normalized Speed");
+//    SmartDashboard::Log(driveEncoders.GetNormalizedTurningMotorSpeed(), "Normalized Turning Speed");
 
     // calculate left duty cycle, right duty cycle, left brake, and
     // right brake based off of joystick inputs and mode
@@ -124,6 +129,10 @@ void ModifiedDriveTrain::Output()
 //    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedLowGearForwardSpeed());
 //    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedForwardMotorSpeed());
 
+    // leftDC and rightDC are set to 0 if there is a need to brake;
+    // see DitheredBrakeTrain's Drive method
+    leftESC.Set(drive.leftCommand.dutyCycle);
+    rightESC.Set(drive.rightCommand.dutyCycle);
 
     if(synchronizedCyclesLeft > 0) //trying to shift?  Then don't apply brakes
     {
@@ -133,14 +142,6 @@ void ModifiedDriveTrain::Output()
     else
     {
         //Handle normal braking
-
-        // leftDC and rightDC are set to 0 if there is a need to brake;
-        // see DitheredBrakeTrain's Drive method
-        leftESC.Set(drive.leftCommand.dutyCycle);
-        rightESC.Set(drive.rightCommand.dutyCycle);
-
-        // leftBrakeDC and rightBrakeDC are 0 if a PWM duty cycle is being
-        // sent; see DitheredBrakeTrain's Drive method
 
         // leftBrakeDC and rightBrakeDC must be converted from a percent to a
         // value in range [1,8]; 1 means no braking while 8 means max braking

@@ -81,10 +81,14 @@ void LRTRobotBase::StartCompetition()
 
         sleepTime_us = cycleExpire_us - GetFPGATime();
 
+//        AsynchronousPrinter::Printf("----\n");
+        for(int i = 0; i < ProxiedCANJaguar::jaguars.num; i++)
+            ProxiedCANJaguar::jaguars.j[i]->BeginComm();
+
         // sleep allows other threads to run -KV/DG 4/2011
         if(sleepTime_us > 0)
         {
-            reader.StartReading();
+//            reader.StartReading();
             taskDelay((UINT32)(sysClkRateGet() * sleepTime_us * 1.0e-6));
         }
 

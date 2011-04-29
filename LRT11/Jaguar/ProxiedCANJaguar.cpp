@@ -5,14 +5,24 @@ ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     : LRTCANJaguar(channel)
+    , channel(channel)
+    , setpoint(0.0)
+    , lastSetpoint(0.0)
+    , mode(LRTCANJaguar::kNeutralMode_Coast)
+    , lastMode(LRTCANJaguar::kNeutralMode_Coast)
+    , current(0.0)
+    , collectCurrent(false)
+    , potValue(0.0)
+    , collectPotValue(false)
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
-    , channel(channel)
 #else
     , lastState(DISABLED)
 //    : controller(CANBusController::GetInstance())
 #endif
     , index(jaguars.num)
+    , commTask(("Jaguar Task ID #" + Util::ToString<int>(channel)).c_str(), (FUNCPTR) ProxiedCANJaguar::StartCommTask)
+    , commSemaphore(semBCreate(SEM_Q_PRIORITY, SEM_EMPTY))
 {
     jaguars.j[jaguars.num++] = this;
 
@@ -21,6 +31,8 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
 
     jaguars.potValues[index] = 0;
     jaguars.shouldCollectPotValue[index] = false;
+
+    commTask.Start((UINT32) this);
 }
 
 ProxiedCANJaguar::~ProxiedCANJaguar()
@@ -28,25 +40,28 @@ ProxiedCANJaguar::~ProxiedCANJaguar()
 
 }
 
-void ProxiedCANJaguar::CollectCurrent()
+void ProxiedCANJaguar::ShouldCollectCurrent(bool shouldCollect)
 {
-    jaguars.shouldCollectCurrent[index] = true;
+//    jaguars.shouldCollectCurrent[index] = true;
+    collectCurrent = shouldCollect;
 }
 
-void ProxiedCANJaguar::CollectPotValue(bool shouldCollect)
+void ProxiedCANJaguar::ShouldCollectPotValue(bool shouldCollect)
 {
-    jaguars.shouldCollectPotValue[index] = shouldCollect;
+//    jaguars.shouldCollectPotValue[index] = shouldCollect;
+    collectPotValue = shouldCollect;
 }
 
 float ProxiedCANJaguar::GetCurrent()
 {
-    if(!jaguars.shouldCollectCurrent[index])
-    {
-        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
-        return -1.0;
-    }
+//    if(!jaguars.shouldCollectCurrent[index])
+//    {
+//        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
+//        return -1.0;
+//    }
 
-    return jaguars.currents[index];
+//    return jaguars.currents[index];
+    return current;
 }
 
 float ProxiedCANJaguar::GetPotValue()
@@ -57,7 +72,59 @@ float ProxiedCANJaguar::GetPotValue()
 //        return -1.0;
 //    }
 
-    return jaguars.potValues[index];
+//    return jaguars.potValues[index];
+    return potValue;
+}
+
+int ProxiedCANJaguar::StartCommTask(UINT32 proxiedCANJaguarPointer)
+{
+    ProxiedCANJaguar* jaguar = (ProxiedCANJaguar*) proxiedCANJaguarPointer;
+    jaguar->CommTask();
+    return 0;
+}
+
+void ProxiedCANJaguar::CommTask()
+{
+    while(true)
+    {
+        semTake(commSemaphore, WAIT_FOREVER);
+
+        if(setpoint == lastSetpoint && lastState == gameState)
+            shouldCacheSetpoint = true;
+        else
+            shouldCacheSetpoint = false;
+
+        if(!shouldCacheSetpoint)
+        {
+            LRTCANJaguar::Set(setpoint);
+            lastSetpoint = setpoint;
+        }
+
+        if(mode == lastMode && lastState == gameState)
+            shouldCacheMode = true;
+        else
+            shouldCacheMode = false;
+
+        if(!shouldCacheMode)
+        {
+            LRTCANJaguar::ConfigNeutralMode(mode);
+            lastMode = mode;
+        }
+
+        if(collectCurrent)
+            current = LRTCANJaguar::GetOutputCurrent();
+
+        if(collectPotValue)
+            potValue = LRTCANJaguar::GetPosition();
+
+        lastState = gameState;
+//        AsynchronousPrinter::Printf("%d\n", channel);
+    }
+}
+
+void ProxiedCANJaguar::BeginComm()
+{
+    semGive(commSemaphore);
 }
 
 #ifdef VIRTUAL
@@ -159,11 +226,18 @@ void ProxiedCANJaguar::ResetCache()
 void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
     // send the value if there is a setpoint or game state change
-    if(setpoint != lastSetpoint || lastState != gameState)
-        LRTCANJaguar::Set(setpoint);
+//    if(setpoint != lastSetpoint || lastState != gameState)
+//        LRTCANJaguar::Set(setpoint);
 
-    lastSetpoint = setpoint;
-    lastState = gameState;
+    this->setpoint = setpoint;
+
+//    lastSetpoint = setpoint;
+//    lastState = gameState;
+}
+
+void ProxiedCANJaguar::ConfigNeutralMode(NeutralMode mode)
+{
+    this->mode = mode;
 }
 
 void ProxiedCANJaguar::SetGameState(GameState state)

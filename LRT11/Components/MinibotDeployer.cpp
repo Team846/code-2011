@@ -43,7 +43,7 @@ void MinibotDeployer::Output()
         state = ACCELERATING;
 
         // deployment already commenced
-        deployerEsc.CollectCurrent();
+        deployerEsc.ShouldCollectCurrent(true);
         action.deployer.shouldDeployMinibot = false;
     }
 

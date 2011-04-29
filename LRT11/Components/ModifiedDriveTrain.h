@@ -9,7 +9,7 @@
 #include "DriveTrain\CLPositionDriveTrain.h"
 #include "..\Jaguar\Esc.h"
 
-class ModifiedDriveTrain : public Component
+class ModifiedDriveTrain : public Component, public Configurable
 {
 private:
     DriveEncoders& driveEncoders;
@@ -29,6 +29,7 @@ private:
     };
 
     float GetSynchronizedSpeed(float motorSpeed);
+    virtual void Configure();
 
 public:
     ModifiedDriveTrain();

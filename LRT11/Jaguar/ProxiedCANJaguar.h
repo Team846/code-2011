@@ -5,17 +5,34 @@
 #include "..\CAN\VirtualCANBusController.h"
 #include "..\Util\Util.h"
 #include "LRTCANJaguar.h"
+#include "taskLib.h"
 
 class ProxiedCANJaguar : public LRTCANJaguar
 {
 private:
-    float lastSetpoint;
     int channel;
+
+    volatile float setpoint;
+    volatile float lastSetpoint;
+    volatile bool shouldCacheSetpoint;
+
+    volatile NeutralMode mode;
+    volatile NeutralMode lastMode;
+    volatile bool shouldCacheMode;
+
+    volatile float current;
+    volatile bool collectCurrent;
+
+    volatile float potValue;
+    volatile bool collectPotValue;
 
     GameState lastState;
     static GameState gameState;
 
     int index;
+    Task commTask;
+
+    SEM_ID commSemaphore;
 
 public:
     ProxiedCANJaguar(UINT8 channel);
@@ -34,13 +51,19 @@ public:
     } JaguarList;
 
     static JaguarList jaguars;
-    virtual void Set(float setpoint, UINT8 syncGroup = 0);
+    void Set(float setpoint, UINT8 syncGroup = 0);
+    void ConfigNeutralMode(LRTCANJaguar::NeutralMode mode);
 
-    void CollectCurrent();
-    void CollectPotValue(bool shouldCollect);
+    void ShouldCollectCurrent(bool shouldCollect);
+    void ShouldCollectPotValue(bool shouldCollect);
 
     float GetCurrent();
     float GetPotValue();
+
+    static int StartCommTask(UINT32 proxiedCANJaguarPointer);
+    void CommTask();
+
+    void BeginComm();
 
 #ifdef VIRTUAL
     virtual float Get();
@@ -64,7 +87,6 @@ public:
     double GetPosition();
     double GetSpeed();
 
-    void ConfigNeutralMode(CANJaguar::NeutralMode mode);
     void ResetCache();
 #else
     static void SetGameState(GameState state);
