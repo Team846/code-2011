@@ -23,8 +23,8 @@ private:
     const static string TIME;
 };
 
-const int Build::NUMBER = 3391;
-const string Build::TIME = "Thu Apr 28 20:07:23 2011";
+const int Build::NUMBER = 3395;
+const string Build::TIME = "Thu Apr 28 20:18:46 2011";
 
 #endif
 

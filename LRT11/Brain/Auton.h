@@ -77,11 +77,13 @@ void Brain::EncoderAuton()
     static int state = DRIVE_FORWARD;
 
     static int timer = 0;
+    static int timeout = 0;
     static int wait  = 0;
 
     if(wasDisabledLastCycle)
     {
         timer = 0;
+        timeout = 0;
         wait  = 0;
         state = DRIVE_FORWARD;
     }
@@ -112,6 +114,7 @@ void Brain::EncoderAuton()
         canPause = true;
         advanceState = false;
         timer = 0;
+        timeout = 0;
     }
 
 #define PRINTSTATE() AsynchronousPrinter::Printf("Entering %s\n", stateName)
@@ -167,8 +170,10 @@ void Brain::EncoderAuton()
         if(driveEncoders.GetNormalizedLowGearForwardSpeed() > 0.1)
             timer = 51; // bypass the timer below
 
-        if(++timer > 50 &&
-                driveEncoders.GetNormalizedLowGearForwardSpeed() < 0.05)
+        // advance state when stalled
+        // or after a timeout for testing in pits
+        if((++timer > 50 &&
+                driveEncoders.GetNormalizedLowGearForwardSpeed() < 0.05) || ++timeout > 200)
         {
             action.driveTrain.rate.usingClosedLoop = true;
             action.driveTrain.rate.rawForward = 0.0;
