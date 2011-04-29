@@ -56,6 +56,7 @@ void Brain::Process(GameState gameState)
     {
     case DISABLED:
         Disabled();
+        Teleop();
         break;
 
     case TELEOPERATED:

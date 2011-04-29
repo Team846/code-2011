@@ -193,38 +193,38 @@ void Lift::Output()
         action.lift.doneState = action.lift.IN_PROGRESS; // not done yet
         string key = prefix;
 
-        float setPoint;
+        float setpoint = 0.0;
         if(action.lift.highColumn)
-            setPoint = config.Get<float>(prefix + "highRowReference");
+            key += "highColumn.";
+//            setPoint = config.Get<float>(prefix + "highRowReference");
         else
-            setPoint = config.Get<float>(prefix + "lowRowReference");
+            key += "lowColumn.";
+//            setPoint = config.Get<float>(prefix + "lowRowReference");
 
         switch(action.lift.preset)
         {
         case STOWED:
-            break; // no relative position
+            setpoint = 0; // no movement
+            break;
         case LOW_PEG:
-            // low peg relative position is different for high
-            // and low row
-            if(action.lift.highColumn)
-                key += "highRowLowPegRelative";
-            else
-                key += "lowRowLowPegRelative";
+            key += "lowPeg";
             break;
         case MED_PEG:
-            key += "mediumPegRelative";
+            key += "mediumPeg";
             break;
         case HIGH_PEG:
-            key += "highPegRelative";
+            key += "highPeg";
             break;
         }
 
         if(action.lift.preset != action.lift.STOWED)
-            setPoint += config.Get<float>(key); // relative to bottom
+            setpoint = config.Get<float>(key); // relative to bottom
+
+        action.arm.state = action.arm.PRESET_TOP;
 
 //        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setPoint));
         // update done flag
-        if(Util::Abs<float>(potValue - setPoint) < potDeadband)
+        if(Util::Abs<float>(potValue - setpoint) < potDeadband)
         {
 //            AsynchronousPrinter::Printf("Updating done flag");
             action.lift.doneState = action.lift.SUCCESS;
@@ -232,14 +232,14 @@ void Lift::Output()
 
             if(action.lift.preset == action.lift.MED_PEG || action.lift.preset == action.lift.HIGH_PEG)
             {
-                AsynchronousPrinter::Printf("Lift success; moving arm to middle position\n");
+//                AsynchronousPrinter::Printf("Lift success; moving arm to middle position\n");
                 action.arm.state = action.arm.PRESET_MIDDLE;
                 shouldMoveArmToMiddle = true;
             }
         }
 
-        SmartDashboard::Log(setPoint, "Lift Set Point");
-        liftEsc.Set(setPoint);
+        SmartDashboard::Log(setpoint, "Lift Set Point");
+        liftEsc.Set(setpoint);
         cycleCount--;
 
         if(cycleCount == 0)

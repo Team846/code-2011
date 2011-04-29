@@ -11,6 +11,8 @@ To do at champs
 - Minibot deployment
 - Shifting
 - Lift inches up after preset bottom (after fixed delay)
+- Load + apply when file is changed
+- Lift calibration
 / Disable error printing
 / Arm
 / Remove caching

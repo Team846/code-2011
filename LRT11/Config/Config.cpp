@@ -220,6 +220,7 @@ void Config::CheckForFileUpdates()
     if(fileModifiedTime != statistics.st_mtime)
     {
         Load();
+        ConfigureAll();
 
         // Load() sometimes saves the configuration, so get the
         // new modified time
