@@ -8,13 +8,13 @@
 ======================
 
 To do at champs
-- Drive train
-- Shifting
+/ Drive train
+/ Shifting
 - New deployment routine
-- Minibot
-- Autonomous
 - Error printing
-- Deal with double load config file issue
+/ Deal with double load config file issue
+/ Minibot
+/ Autonomous
 / Save configuration file
 / Check robot configuration
 / Clean build
