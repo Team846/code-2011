@@ -1,6 +1,6 @@
 #include "ProxiedCANJaguar.h"
 
-#define DISABLE_SETPOINT_CACHING  0
+#define DISABLE_SETPOINT_CACHING 0
 
 GameState ProxiedCANJaguar::gameState = DISABLED;
 ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
@@ -10,8 +10,11 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     , channel(channel)
     , setpoint(0.0)
     , lastSetpoint(0.0)
+    , shouldCacheSetpoint(false)
+    , cacheSetpointCounter(0)
     , mode(LRTCANJaguar::kNeutralMode_Coast)
     , lastMode(LRTCANJaguar::kNeutralMode_Coast)
+    , shouldCacheMode(false)
     , current(0.0)
     , collectCurrent(false)
     , potValue(0.0)
@@ -100,11 +103,16 @@ void ProxiedCANJaguar::CommTask()
         shouldCacheSetpoint = false;
 #endif
 
-        if(!shouldCacheSetpoint)
+        // cache if setpoint has changed or if value has been cached for over
+        // half a second -KV -DG championships 4/28/11
+        if(!shouldCacheSetpoint || cacheSetpointCounter > 25)
         {
             LRTCANJaguar::Set(setpoint);
             lastSetpoint = setpoint;
+            cacheSetpointCounter = 0;
         }
+        else
+            cacheSetpointCounter++;
 
         if(mode == lastMode && lastState == gameState)
             shouldCacheMode = true;

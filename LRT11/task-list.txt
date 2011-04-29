@@ -10,6 +10,8 @@
 To do at champs
 - Remove caching
 - Disable error printing
+- Fix remnants of automated routine
+- Lift inches up after preset bottom (after fixed delay)
 / New deployment routine
 / Toggle shift button
 / Repeatably test autonomous

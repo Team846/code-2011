@@ -14,7 +14,9 @@ private:
 
     volatile float setpoint;
     volatile float lastSetpoint;
+
     volatile bool shouldCacheSetpoint;
+    int cacheSetpointCounter;
 
     volatile NeutralMode mode;
     volatile NeutralMode lastMode;
@@ -26,8 +28,8 @@ private:
     volatile float potValue;
     volatile bool collectPotValue;
 
-    GameState lastState;
     static GameState gameState;
+    GameState lastState;
 
     int index;
     Task commTask;
