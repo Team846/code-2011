@@ -97,7 +97,7 @@ void MinibotDeployer::Output()
 #endif
 
         // wait until a current spike or 1 second timeout
-        if(current > currentThreshold || ++timer % 50 == 0)
+        if(/* current > currentThreshold || */ ++timer % 50 == 0)
         {
             state = RELAX; // relax for a bit
             timer = 0;
