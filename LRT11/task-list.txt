@@ -8,11 +8,11 @@
 ======================
 
 To do at champs
-- Lift calibration (high value)
 - Move arm to middle position automatically?
 - Lift odd power issue
 - Shifting issue
 - Minibot deployment slow
+/ Lift calibration (high value)
 / Lift success value doesn't get updated if the pot position changes
 / Fix arm movement downward
 / Lift inches up after preset bottom (after fixed delay)

@@ -123,7 +123,7 @@ void Lift::Output()
         state = ABORT;
 
     static int potCycleCount = 0;
-    static bool shouldMoveArmToMiddle = false;
+//    static bool shouldMoveArmToMiddle = false;
 
     switch(state)
     {
@@ -141,8 +141,8 @@ void Lift::Output()
             action.lift.doneState = action.lift.SUCCESS;
             liftEsc.Set(0.0);
         }
-        else if(shouldMoveArmToMiddle)
-            action.arm.state = action.arm.PRESET_MIDDLE;
+//        else if(shouldMoveArmToMiddle)
+//            action.arm.state = action.arm.PRESET_MIDDLE;
         break;
 
     case ABORT:
@@ -235,12 +235,12 @@ void Lift::Output()
             action.lift.doneState = action.lift.SUCCESS;
 //            cycleCount = 1; // will get decremented to 0
 
-            if(action.lift.preset == action.lift.MED_PEG || action.lift.preset == action.lift.HIGH_PEG)
-            {
-//                AsynchronousPrinter::Printf("Lift success; moving arm to middle position\n");
-                action.arm.state = action.arm.PRESET_MIDDLE;
-                shouldMoveArmToMiddle = true;
-            }
+//            if(action.lift.preset == action.lift.MED_PEG || action.lift.preset == action.lift.HIGH_PEG)
+//            {
+////                AsynchronousPrinter::Printf("Lift success; moving arm to middle position\n");
+//                action.arm.state = action.arm.PRESET_MIDDLE;
+//                shouldMoveArmToMiddle = true;
+//            }
         }
         else
             // keep arm upright when the lift is moving
@@ -259,7 +259,7 @@ void Lift::Output()
             if(action.lift.doneState != action.lift.SUCCESS)
             {
                 action.lift.doneState = action.lift.FAILURE;
-                shouldMoveArmToMiddle = false;
+//                shouldMoveArmToMiddle = false;
             }
 
             if(action.lift.preset == action.lift.LOW_PEG &&
