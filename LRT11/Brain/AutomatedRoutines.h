@@ -34,12 +34,12 @@ void Brain::AutomatedRoutineWithLift()
 
         action.lift.givenCommand = true;
         action.lift.manualMode = true;
-        action.lift.power = -0.4;
+        action.lift.power = -0.6;
 
-        if(++timer > 15)
+        if(++timer > 10)
         {
             action.roller.state = action.roller.SPITTING;
-            if(timer > 25)
+            if(timer > 20)
                 state = STOPPING;
         }
         break;
