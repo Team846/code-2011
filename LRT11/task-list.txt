@@ -8,11 +8,12 @@
 ======================
 
 To do at champs
-- Drag down more
-- Increase lift manual power
-- Lift odd power issue
-- Shifting issue
+- Arm middle preset doesn't work until button is pressed twice
 - Minibot deployment slow
+- Shifting issue
+/ Drag down more
+/ Increase lift manual power
+/ Lift odd power issue
 / Move arm to middle position automatically?
 / Lift calibration (high value)
 / Lift success value doesn't get updated if the pot position changes
