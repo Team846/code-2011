@@ -97,6 +97,8 @@ public:
         // used to automate roller spitting (rotate + reverse roller)
         bool automated;
         bool commenceAutomation;
+
+        float maxSuckPower;
     } roller;
 
     struct

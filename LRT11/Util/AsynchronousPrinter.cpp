@@ -1,6 +1,6 @@
 #include "AsynchronousPrinter.h"
 
-#define PRINT 0
+#define PRINT 1
 
 AsynchronousPrinter* AsynchronousPrinter::instance = NULL;
 

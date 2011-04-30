@@ -70,6 +70,8 @@ void Arm::Output()
     {
     case PRESET_TOP:
         action.arm.doneState = action.arm.IN_PROGRESS;
+        // overriden below to change roller speed while moving the arm up
+        action.roller.maxSuckPower = 1.0;
 
         // don't merely switch to the IDLE state, as the caller will likely
         // set the state each time through the loop
@@ -92,6 +94,9 @@ void Arm::Output()
         {
             action.arm.doneState = action.arm.IN_PROGRESS;
             armEsc.Set(powerUp);
+
+            action.roller.state = action.roller.SUCKING;
+            action.roller.maxSuckPower = 0.3; // lower duty cycle
 
             // make roller suck while moving up to keep
             // game piece in

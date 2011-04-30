@@ -8,6 +8,7 @@
 ======================
 
 To do at champs
+- Fix arm movement downward
 - Minibot deployment
 - Shifting
 - Lift inches up after preset bottom (after fixed delay)

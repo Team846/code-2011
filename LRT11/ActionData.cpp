@@ -72,6 +72,7 @@ ActionData::ActionData()
     roller.rotateUpward = true;
     roller.automated = false;
     roller.commenceAutomation = false;
+    roller.maxSuckPower = 1.0;
 
     deployer.shouldAlignerRelease = false;
     deployer.shouldDeployMinibot = false;

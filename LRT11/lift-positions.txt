@@ -24,3 +24,18 @@ New low column middle: looks good
 New low column high: looks good
 New high column middle: 4.95
 New high column high: looks good
+
+New low column middle: 4.57
+New low column high: 7.80
+New high column middle: 5.13
+New high column high: 8.48
+
+New low column middle: 4.41
+New low column high: 
+New high column middle: 
+New high column high: 8.54
+
+New low column middle: 4.49
+New low column high: 
+New high column middle: 
+New high column high: 8.64

@@ -220,8 +220,6 @@ void Lift::Output()
         if(action.lift.preset != action.lift.STOWED)
             setpoint = config.Get<float>(key); // relative to bottom
 
-        action.arm.state = action.arm.PRESET_TOP;
-
 //        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setPoint));
         // update done flag
         if(Util::Abs<float>(potValue - setpoint) < potDeadband)
@@ -237,6 +235,9 @@ void Lift::Output()
                 shouldMoveArmToMiddle = true;
             }
         }
+        else
+            // keep arm upright when the lift is moving
+            action.arm.state = action.arm.PRESET_TOP;
 
         SmartDashboard::Log(setpoint, "Lift Set Point");
         liftEsc.Set(setpoint);

@@ -20,16 +20,16 @@ Roller::~Roller()
 
 void Roller::RollInward()
 {
-    topRoller.ShouldCollectCurrent(true);
-    bottomRoller.ShouldCollectCurrent(true);
+//    topRoller.ShouldCollectCurrent(true);
+//    bottomRoller.ShouldCollectCurrent(true);
 
-    float topCurrent, bottomCurrent;
-
-    {
-        ProfiledSection ps("Get Roller Currents");
-        topCurrent = topRoller.GetCurrent();
-        bottomCurrent = bottomRoller.GetCurrent();
-    }
+//    float topCurrent, bottomCurrent;
+//
+//    {
+//        ProfiledSection ps("Get Roller Currents");
+//        topCurrent = topRoller.GetCurrent();
+//        bottomCurrent = bottomRoller.GetCurrent();
+//    }
 
 //    static int cycleCount = 0;
 //    if(++cycleCount % 10 == 0)
@@ -39,8 +39,8 @@ void Roller::RollInward()
 //        fflush(stdout);
 //    }
 
-    if(--ignoreCycles <= 0 && topCurrent + bottomCurrent > 15)
-        detected = true;
+//    if(--ignoreCycles <= 0 && topCurrent + bottomCurrent > 15)
+//        detected = true;
 
     // observe currents
 #ifdef USE_DASHBOARD
@@ -48,16 +48,18 @@ void Roller::RollInward()
 //    SmartDashboard::Log(bottomRoller.GetOutputCurrent(), "Bottom Current");
 #endif
 
-    if(detected)
-    {
-        topRoller.Set(0);
-        bottomRoller.Set(0);
-    }
-    else
-    {
-        topRoller.Set(dutyCycleSucking);
-        bottomRoller.Set(dutyCycleSucking);
-    }
+//    if(detected)
+//    {
+//        topRoller.Set(0);
+//        bottomRoller.Set(0);
+//    }
+//    else
+//    {
+    topRoller.Set(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
+            Util::Abs<float>(dutyCycleSucking)));
+    bottomRoller.Set(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
+            Util::Abs<float>(dutyCycleSucking)));
+//    }
 }
 
 void Roller::RollOutward()
@@ -74,16 +76,16 @@ void Roller::Stop()
 
 void Roller::RollOpposite(bool rotateUpward)
 {
-    // set duty cycles based on rotation direction
-    static int cycleCount = 0;
+//    static int cycleCount = 0;
 
+    // set duty cycles based on rotation direction
     if(rotateUpward)
     {
         topRoller.Set(dutyCycleRotatingIn);
         bottomRoller.Set(dutyCycleRotatingOut);
     }
     // pulse rotate and suck when rotating downward
-    else if(++cycleCount < 10)
+    else
     {
         topRoller.Set(dutyCycleRotatingOut);
         bottomRoller.Set(dutyCycleRotatingIn);
@@ -93,8 +95,8 @@ void Roller::RollOpposite(bool rotateUpward)
 //        topRoller.Set(dutyCycleSucking);
 //        bottomRoller.Set(dutyCycleSucking);
 //    }
-    else
-        cycleCount = 0;
+//    else
+//        cycleCount = 0;
 }
 
 void Roller::Output()
