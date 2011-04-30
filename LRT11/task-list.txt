@@ -8,9 +8,12 @@
 ======================
 
 To do at champs
-- Arm middle preset doesn't work until button is pressed twice
+- Calibrate lift low position
+- Shift high in autonomous
 - Minibot deployment slow
 - Shifting issue
+/ Refine automated ejection
+/ Arm middle preset doesn't work until button is pressed twice
 / Drag down more
 / Increase lift manual power
 / Lift odd power issue
