@@ -217,9 +217,13 @@ void Config::CheckForFileUpdates()
     struct stat statistics;
     stat(CONFIG_FILE_PATH.c_str(), &statistics);
 
+    // reload when the file has been modified
     if(fileModifiedTime != statistics.st_mtime)
     {
         Load();
+
+        // must configure the new values
+        AsynchronousPrinter::Printf("Applying Configuration\n");
         ConfigureAll();
 
         // Load() sometimes saves the configuration, so get the

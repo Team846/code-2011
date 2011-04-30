@@ -7,13 +7,14 @@
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
 
-class MinibotDeployer : public Component
+class MinibotDeployer : public Component, public Configurable
 {
 public:
     MinibotDeployer();
     virtual ~MinibotDeployer();
 
     virtual void Output();
+    virtual void Configure();
 
 private:
     Config& config;
