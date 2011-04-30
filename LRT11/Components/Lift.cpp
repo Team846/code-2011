@@ -45,12 +45,16 @@ void Lift::Configure()
     timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 
     // bottom of low row is the lowest position
-    minPosition = config.Get<float>(prefix + "lowRowReference", 1.17)
-            + config.Get<float>(prefix + "lowRowLowPegRelative", 0.7);
+//    minPosition = config.Get<float>(prefix + "lowRowReference", 1.17)
+//            + config.Get<float>(prefix + "lowRowLowPegRelative", 0.7);
+
+    minPosition = config.Get<float>(prefix + "lowColumn.lowPeg", 1.72);
 
     // bottom of high row + high peg relative is the highest position
-    maxPosition = config.Get<float>(prefix + "highRowReference", 1.87)
-            + config.Get<float>(prefix + "highPegRelative", 6.5);
+//    maxPosition = config.Get<float>(prefix + "highRowReference", 1.87)
+//            + config.Get<float>(prefix + "highPegRelative", 6.5);
+
+    maxPosition = config.Get<float>(prefix + "highColumn.highPeg", 8.64);
 
     potDeadband = config.Get<float>(prefix + "deadband", 0.4);
 }
@@ -159,14 +163,17 @@ void Lift::Output()
         {
             // configure jaguar for voltage mode
             ConfigureManualMode();
+            liftEsc.Set(0.0); // clear any old setpoint values from position mode
             positionMode = false;
         }
 
         if(potValue >= minPosition)
         {
-            liftEsc.ResetCache();
             liftEsc.Set(-0.1);
+//            liftEsc.ResetCache();
         }
+        else
+            liftEsc.Set(0.0);
         break;
 
     case MANUAL:
@@ -241,10 +248,14 @@ void Lift::Output()
 
         SmartDashboard::Log(setpoint, "Lift Set Point");
         liftEsc.Set(setpoint);
-        cycleCount--;
+
+        if(cycleCount > 0)
+            cycleCount--;
 
         if(cycleCount == 0)
         {
+//            AsynchronousPrinter::Printf("Success: %d\n", action.lift.doneState == action.lift.SUCCESS);
+
             if(action.lift.doneState != action.lift.SUCCESS)
             {
                 action.lift.doneState = action.lift.FAILURE;

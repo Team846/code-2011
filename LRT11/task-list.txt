@@ -8,6 +8,7 @@
 ======================
 
 To do at champs
+- Lift success value doesn't get updated if the pot position changes
 - Fix arm movement downward
 - Minibot deployment
 - Shifting
