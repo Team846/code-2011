@@ -12,6 +12,7 @@ To do at champs
 - Shift high in autonomous
 - Minibot deployment slow
 - Shifting issue
+/ Arm moves roller slowly when trigger is toggled
 / Refine automated ejection
 / Arm middle preset doesn't work until button is pressed twice
 / Drag down more

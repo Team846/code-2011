@@ -109,6 +109,8 @@ void Arm::Output()
 
     case PRESET_BOTTOM:
         action.arm.doneState = action.arm.IN_PROGRESS;
+        action.roller.maxSuckPower = 1.0;
+
         if(--cycleCount < 0)
         {
             action.arm.doneState = action.arm.FAILURE;
