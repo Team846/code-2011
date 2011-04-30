@@ -40,7 +40,8 @@ void LRTRobotBase::StartCompetition()
     RobotInit();
     Profiler& profiler = Profiler::GetInstance();
 
-    UINT32 sleepTime_us = 0;
+    // must allow a negative value in case loop runs over 20ms
+    INT32 sleepTime_us = 0;
 
 //    const int reportPeriod = 50 * 5;
 //    double cycleWaitTimes[reportPeriod], cycleRunTimes[reportPeriod];
@@ -79,6 +80,8 @@ void LRTRobotBase::StartCompetition()
 //          fflush(stdout);
         }
 
+        // implicit two's complement conversion allows sleeptime_us to be negative
+        // even though both operands are UINT32s
         sleepTime_us = cycleExpire_us - GetFPGATime();
 
 //        AsynchronousPrinter::Printf("----\n");
