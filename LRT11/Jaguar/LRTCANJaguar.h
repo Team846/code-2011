@@ -79,6 +79,8 @@ public:
     void StopMotor();
     bool IsSafetyEnabled();
     void SetSafetyEnabled(bool enabled);
+    INT32 GetStatus();
+    bool StatusOK();
 
 protected:
     UINT8 packPercentage(UINT8* buffer, double value);
@@ -103,6 +105,7 @@ protected:
     double m_maxOutputVoltage;
 
     MotorSafetyHelper* m_safetyHelper;
+    INT32 m_status;
 
 private:
     void InitCANJaguar();

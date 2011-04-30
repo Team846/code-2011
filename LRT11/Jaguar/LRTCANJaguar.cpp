@@ -72,6 +72,7 @@ LRTCANJaguar::LRTCANJaguar(UINT8 deviceNumber, ControlMode controlMode)
     , m_transactionSemaphore(NULL)
     , m_maxOutputVoltage(kApproxBusVoltage)
     , m_safetyHelper(NULL)
+    , m_status(0)
 {
     InitCANJaguar();
 }
@@ -383,7 +384,6 @@ INT32 LRTCANJaguar::receiveMessage(UINT32* messageID, UINT8* data, UINT8* dataSi
 void LRTCANJaguar::setTransaction(UINT32 messageID, const UINT8* data, UINT8 dataSize)
 {
     UINT32 ackMessageID = LM_API_ACK | m_deviceNumber;
-    INT32 status = 0;
 
     // Make sure we don't have more than one transaction with the same Jaguar outstanding.
     semTake(m_transactionSemaphore, WAIT_FOREVER);
@@ -391,10 +391,10 @@ void LRTCANJaguar::setTransaction(UINT32 messageID, const UINT8* data, UINT8 dat
     // Throw away any stale acks.
     receiveMessage(&ackMessageID, NULL, 0, 0.0f);
     // Send the message with the data.
-    status = sendMessage(messageID | m_deviceNumber, data, dataSize);
+    m_status = sendMessage(messageID | m_deviceNumber, data, dataSize);
 //    wpi_assertCleanStatus(status);
     // Wait for an ack.
-    status = receiveMessage(&ackMessageID, NULL, 0);
+    m_status = receiveMessage(&ackMessageID, NULL, 0);
 //    wpi_assertCleanStatus(status);
 
     // Transaction complete.
@@ -414,7 +414,6 @@ void LRTCANJaguar::getTransaction(UINT32 messageID, UINT8* data, UINT8* dataSize
 {
     UINT32 ackMessageID = LM_API_ACK | m_deviceNumber;
     UINT32 targetedMessageID = messageID | m_deviceNumber;
-    INT32 status = 0;
 
     // Make sure we don't have more than one transaction with the same Jaguar outstanding.
     semTake(m_transactionSemaphore, WAIT_FOREVER);
@@ -423,18 +422,18 @@ void LRTCANJaguar::getTransaction(UINT32 messageID, UINT8* data, UINT8* dataSize
     receiveMessage(&ackMessageID, NULL, 0, 0.0f);
 
     // Send the message requesting data.
-    status = sendMessage(targetedMessageID, NULL, 0);
+    m_status = sendMessage(targetedMessageID, NULL, 0);
 //    wpi_assertCleanStatus(status);
     // Caller may have set bit31 for remote frame transmission so clear invalid bits[31-29]
     targetedMessageID &= 0x1FFFFFFF;
     // Wait for the data.
-    status = receiveMessage(&targetedMessageID, data, dataSize);
+    m_status = receiveMessage(&targetedMessageID, data, dataSize);
 //    wpi_assertCleanStatus(status);
 
     // Transaction complete.
     semGive(m_transactionSemaphore);
 
-    if(status != 0)
+    if(m_status != 0)
         AsynchronousPrinter::Printf("CAN: %d\n", m_deviceNumber);
 }
 
@@ -1208,5 +1207,23 @@ void LRTCANJaguar::SetSafetyEnabled(bool enabled)
 void LRTCANJaguar::StopMotor()
 {
     DisableControl();
+}
+
+/**
+ * Get the returned status from the last transaction.
+ * A non-zero status indicates an error.
+ */
+INT32 LRTCANJaguar::GetStatus()
+{
+    return m_status;
+}
+
+/**
+ * Returns true if the last transaction returned a non-zero
+ * status (no error). This is equivalent to GetStatus() == 0
+ */
+bool LRTCANJaguar::StatusOK()
+{
+    return GetStatus() == 0;
 }
 

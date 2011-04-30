@@ -126,10 +126,22 @@ void ProxiedCANJaguar::CommTask()
         }
 
         if(collectCurrent)
-            current = LRTCANJaguar::GetOutputCurrent();
+        {
+            float current = LRTCANJaguar::GetOutputCurrent();
+            if(StatusOK())
+                this->current = current;
+            else
+                AsynchronousPrinter::Printf("Invalid current; not storing\n");
+        }
 
         if(collectPotValue)
-            potValue = LRTCANJaguar::GetPosition();
+        {
+            float potValue = LRTCANJaguar::GetPosition();
+            if(StatusOK())
+                this->potValue = potValue;
+            else
+                AsynchronousPrinter::Printf("Invalid pot value; not storing\n");
+        }
 
         lastState = gameState;
 //        AsynchronousPrinter::Printf("%d\n", channel);
