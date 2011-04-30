@@ -8,10 +8,12 @@
 ======================
 
 To do at champs
-- Move arm to middle position automatically?
+- Drag down more
+- Increase lift manual power
 - Lift odd power issue
 - Shifting issue
 - Minibot deployment slow
+/ Move arm to middle position automatically?
 / Lift calibration (high value)
 / Lift success value doesn't get updated if the pot position changes
 / Fix arm movement downward
