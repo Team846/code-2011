@@ -115,7 +115,7 @@ bool ProcessedInputs::ShouldManuallyPowerLift()
 float ProcessedInputs::GetLiftPower()
 {
     // 50% max duty cycle to ensure that lift is controllable
-    return 0.5 * -operatorStick.GetY();
+    return -operatorStick.GetY();
 }
 
 bool ProcessedInputs::IsHighRow()
