@@ -31,6 +31,9 @@ void MinibotDeployer::Output()
         // set servo to locked position
         alignerServo.Set(lockedServoValue);
 
+    if(action.wasDisabled)
+        deployerEsc.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
+
     static enum
     {
         IDLE,

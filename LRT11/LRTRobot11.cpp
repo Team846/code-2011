@@ -76,12 +76,6 @@ void LRTRobot11::MainLoop()
 //    if(prevState != gameState)
 //        controller.ResetCache();
 
-    if(ds.GetDigitalIn(3))
-    {
-        ProfiledSection ps("Lift");
-        lift.Output();
-    }
-
     if(gameState != DISABLED)
     {
         // components to output only when enabled
@@ -105,6 +99,11 @@ void LRTRobot11::MainLoop()
 //            positionDrive.Output();
         }
 
+        if(ds.GetDigitalIn(3))
+        {
+            ProfiledSection ps("Lift");
+            lift.Output();
+        }
 
         if(ds.GetDigitalIn(4))
         {
