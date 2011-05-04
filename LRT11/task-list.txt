@@ -8,11 +8,11 @@
 ======================
 
 To do at champs
-- Minibot deployment current
 - Calibrate lift low position
-- Shift high in autonomous
 - Minibot deployment slow
 - Shifting issue
+/ Minibot deployment current
+/ Shift high in autonomous
 / Minibot deployment brakes
 / Arm moves roller slowly when trigger is toggled
 / Refine automated ejection
