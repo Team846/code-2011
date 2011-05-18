@@ -15,8 +15,17 @@
 #include "wdLib.h"
 #include "sysLib.h"
 
+#include "Util/AsynchronousPrinter.h"
+
 class LRTRobot11 : public LRTRobotBase
 {
+public:
+    LRTRobot11();
+    virtual ~LRTRobot11();
+
+    virtual void RobotInit();
+    virtual void MainLoop();
+
 private:
     Brain brain;
 #ifdef VIRTUAL
@@ -46,12 +55,7 @@ private:
 //    AnalogChannel armPot;
 //    WDOG_ID mainLoopWatchDog;
 
-public:
-    LRTRobot11();
-    virtual ~LRTRobot11();
 
-    virtual void RobotInit();
-    virtual void MainLoop();
 };
 
 #endif

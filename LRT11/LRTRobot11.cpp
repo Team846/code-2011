@@ -20,12 +20,14 @@ LRTRobot11::LRTRobot11()
 //    , switchLED(6)
     , prevState(DISABLED)
 {
+    puts("Create LRTRobot11");
 //    mainLoopWatchDog = wdCreate();
+
 }
 
 LRTRobot11::~LRTRobot11()
 {
-
+    AsynchronousPrinter::DeleteSingleton(); //end background printing
 }
 
 void LRTRobot11::RobotInit()

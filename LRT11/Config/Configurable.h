@@ -2,7 +2,7 @@
 #define CONFIGURABLE_H_
 
 #include "../General.h"
-#include "../Util/AsynchronousPrinter.h"
+
 
 class Configurable
 {
@@ -13,4 +13,4 @@ public:
     virtual void Configure() = 0;
 };
 
-#endif
+#endif //CONFIGURABLE_H_

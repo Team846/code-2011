@@ -4,7 +4,10 @@
 #include "../General.h"
 #include <fstream>
 #include <queue>
-using namespace std;
+
+
+//Is this part of SensorBase only so we can call AddToSingletonList()? -dg 5/2011
+//Can we close this in a well-defined manner?  TODO
 
 class AsynchronousFileLogger : public SensorBase
 {
@@ -18,7 +21,7 @@ public:
 
 protected:
     AsynchronousFileLogger();
-    DISALLOW_COPY_AND_ASSIGN(AsynchronousFileLogger);
+
 
 private:
     static void PrinterTaskRunner();
@@ -35,6 +38,7 @@ private:
 
     const static int kMaxBuffer = 1024;
     ofstream fout;
+    DISALLOW_COPY_AND_ASSIGN(AsynchronousFileLogger);
 };
 
 #endif

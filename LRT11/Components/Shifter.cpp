@@ -62,7 +62,7 @@ void Shifter::Output()
         break;
 
     default:
-        AsynchronousPrinter::Printf("Fatal: %s:%s\n", __FILE__, __LINE__);
+        AsynchronousPrinter::Printf("Fatal: %s:%d\n", __FILE__, __LINE__);
         break;
     }
 }

@@ -2,13 +2,14 @@
 
 #define PRINT 1
 
-AsynchronousPrinter* AsynchronousPrinter::instance = NULL;
+AsynchronousPrinter* AsynchronousPrinter::instance_ = NULL;
 
-AsynchronousPrinter& AsynchronousPrinter::GetInstance()
+AsynchronousPrinter& AsynchronousPrinter::Instance()
 {
-    if(instance == NULL)
-        instance = new AsynchronousPrinter();
-    return *instance;
+    puts("GetInstance");
+    if(instance_ == NULL)
+        instance_ = new AsynchronousPrinter();
+    return *instance_;
 }
 
 void AsynchronousPrinter::Printf(const char* format, ...)
@@ -16,24 +17,23 @@ void AsynchronousPrinter::Printf(const char* format, ...)
 #if !PRINT
     return;
 #endif
+    char buffer[256];
 
-    const int maxLength = 256;
-    char buffer[maxLength];
-
-    AsynchronousPrinter& me = GetInstance();
+    AsynchronousPrinter& me = Instance();
 
     va_list args;
     va_start(args, format);
 
-    vsprintf(buffer, format, args);
+    int n_bytes =  vsprintf(buffer, format, args);
     va_end(args);
 
+    if(n_bytes >= 0)
     {
         Synchronized s(me.semaphore);
         string str(buffer);
 
         me.queue.push(str);
-        me.queueBytes += str.length();
+        me.queueBytes += n_bytes;
 
         if(me.queueBytes >= kMaxBuffer)
         {
@@ -48,14 +48,12 @@ void AsynchronousPrinter::Printf(const char* format, ...)
     }
 }
 
-AsynchronousPrinter::AsynchronousPrinter()
-    : semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE
-            | SEM_INVERSION_SAFE))
-    , queueBytes(0)
-    , printerTask("AsynchronousPrinter",
-            (FUNCPTR)AsynchronousPrinter::PrinterTaskRunner)
+AsynchronousPrinter::AsynchronousPrinter() :
+    semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE | SEM_INVERSION_SAFE)),
+    queueBytes(0),
+    printerTask("AsynchronousPrinter", (FUNCPTR)AsynchronousPrinter::PrinterTaskRunner)
 {
-    AddToSingletonList();
+//    AddToSingletonList();
     printerTask.Start();
 }
 
@@ -64,9 +62,17 @@ AsynchronousPrinter::~AsynchronousPrinter()
     semDelete(semaphore);
 }
 
+void AsynchronousPrinter::DeleteSingleton()
+{
+    if(NULL == instance_)
+        return;
+    delete instance_;
+    instance_ = NULL;
+}
+
 void AsynchronousPrinter::PrinterTaskRunner()
 {
-    AsynchronousPrinter::GetInstance().PrinterTask();
+    Instance().PrinterTask();
 }
 void AsynchronousPrinter::PrinterTask()
 {
@@ -81,15 +87,14 @@ void AsynchronousPrinter::PrinterTask()
             string str;
 
             {
+                //Critical block
                 Synchronized s(semaphore);
                 str = queue.front();
-
                 queue.pop();
                 queueBytes -= str.length();
-
-                Wait(0.001);   // allow other tasks to run
             }
 
+            Wait(0.001);   // allow other tasks to run
             printf(str.c_str());
         }
 
