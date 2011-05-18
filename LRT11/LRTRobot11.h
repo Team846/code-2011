@@ -16,6 +16,7 @@
 #include "sysLib.h"
 
 #include "Util/AsynchronousPrinter.h"
+#include "Util/PrintInConstructor.h"
 
 class LRTRobot11 : public LRTRobotBase
 {
@@ -25,9 +26,12 @@ public:
 
     virtual void RobotInit();
     virtual void MainLoop();
+    PrintInConstructor dc_brain_;
 
 private:
     Brain brain;
+
+    PrintInConstructor dc_CANBus_;
 #ifdef VIRTUAL
     VirtualCANBusController& controller;
 #else

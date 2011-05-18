@@ -3,7 +3,6 @@
 #define BUILD_H_
 
 #include <string>
-using namespace std;
 
 class Build
 {
@@ -13,18 +12,16 @@ public:
         return NUMBER;
     }
 
-    static string GetTime()
+    static std::string GetTime()
     {
         return TIME;
     }
 
 private:
     const static int NUMBER;
-    const static string TIME;
+    const static std::string TIME;
 };
 
-const int Build::NUMBER = 3623;
-const string Build::TIME = "Tue May 17 17:09:18 2011";
 
 #endif
 

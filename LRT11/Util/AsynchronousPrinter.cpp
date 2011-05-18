@@ -6,7 +6,6 @@ AsynchronousPrinter* AsynchronousPrinter::instance_ = NULL;
 
 AsynchronousPrinter& AsynchronousPrinter::Instance()
 {
-    puts("GetInstance");
     if(instance_ == NULL)
         instance_ = new AsynchronousPrinter();
     return *instance_;

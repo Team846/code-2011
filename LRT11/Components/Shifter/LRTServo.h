@@ -9,7 +9,8 @@ private:
     bool enabled;
 
 public:
-    LRTServo(UINT32 channel);
+    char* name; //user supplied name of servo for diagnostics
+    LRTServo(UINT32 channel, char* name);
     ~LRTServo();
 
     void SetEnabled(bool enabled);

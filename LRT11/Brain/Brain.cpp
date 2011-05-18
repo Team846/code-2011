@@ -33,6 +33,7 @@ Brain::Brain()
 {
     // first reading is bogus; throw it out 3/12/11 -KV
     lineSensor.GetLinePosition();
+    printf("Constructed Brain\n");
 }
 
 Brain::~Brain()

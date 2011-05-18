@@ -3,8 +3,8 @@
 
 MinibotDeployer::MinibotDeployer()
     : config(Config::GetInstance())
-    , deployerEsc(RobotConfig::CAN_DEPLOYER)
-    , alignerServo(RobotConfig::ALIGNER_SERVO)
+    , deployerEsc(RobotConfig::CAN.DEPLOYER)
+    , alignerServo(RobotConfig::PWM_Port.ALIGNER_SERVO, "Minibot Deployment Servo")
 {
     Configure();
 }

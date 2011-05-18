@@ -1,5 +1,5 @@
-#include "Config.h"
 #include "Build.h"
+#include "Config.h"
 
 Config* Config::instance = NULL;
 vector<Configurable*> Config::configurables;
@@ -30,6 +30,7 @@ Config::Config()
 
     CheckForFileUpdates();
     AddToSingletonList();
+    printf("Constructed Config\n");
 }
 
 bool Config::Load()

@@ -46,7 +46,7 @@ void VirtualCANBusController::Set(int id, float val)
     int idx = BusIdToIndex(id);
 
     // position mode for the lift must be handled differently
-    if((UINT32) id == RobotConfig::CAN_LIFT && liftMode == CANJaguar::kPosition)
+    if((UINT32) id == RobotConfig::CAN.LIFT && liftMode == CANJaguar::kPosition)
     {
         if(liftPot == NULL)
         {

@@ -1,10 +1,12 @@
 #include "LRTServo.h"
 
-LRTServo::LRTServo(UINT32 channel)
+LRTServo::LRTServo(UINT32 channel, char* name)
     : Servo(channel)
     , enabled(true)
+    , name(name)
 {
-
+    if(!name) name = "servo";
+    printf("Created %s on channel %d\n", name, channel);
 }
 
 LRTServo::~LRTServo()
@@ -14,8 +16,10 @@ LRTServo::~LRTServo()
 
 void LRTServo::SetEnabled(bool enabled)
 {
-    this->enabled = enabled;
+    if(this->enabled != enabled)  //state change; TODO delete this.
+        printf("Servo: %d\n", enabled);
 
+    this->enabled = enabled;
     if(!enabled)
         this->SetOffline();
 }

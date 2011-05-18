@@ -4,9 +4,9 @@
 Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
-    , liftEsc(RobotConfig::CAN_LIFT)
+    , liftEsc(RobotConfig::CAN.LIFT)  //Pot is directly connected to Jaguar ESC, not the cRio
 #ifdef VIRTUAL
-    , liftPot(RobotConfig::CAN_LIFT, 10, 1.0, 6.5)
+    , liftPot(RobotConfig::CAN.LIFT, 10, 1.0, 6.5)
 #endif
     , timeoutCycles(0)
     , cycleCount(0)
@@ -14,6 +14,7 @@ Lift::Lift()
     , potDeadband(0)
     , positionMode(true)
 {
+    printf("Lift Constructed. CANid: %d\n", RobotConfig::CAN.LIFT);
 }
 
 Lift::~Lift()

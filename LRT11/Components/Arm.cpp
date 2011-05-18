@@ -4,7 +4,7 @@
 Arm::Arm()
     : config(Config::GetInstance())
     , prefix("Arm.")
-    , armEsc(RobotConfig::CAN_ARM)
+    , armEsc(RobotConfig::CAN.ARM_)
 #ifdef VIRTUAL
     // arm is ~29 inches
     // speed: 29 in * 1 ft / 12 in * 1.3 rps * 2 pi rad / rev = ~19.7 ft/s

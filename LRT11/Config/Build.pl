@@ -6,7 +6,7 @@ use warnings;
 use POSIX qw(tzset);
 
 # helper variables
-my $file = "build.h";
+my $file = "build.cpp";
 my $numPrefix = "NUMBER =";
 my $timePrefix = "TIME =";
 

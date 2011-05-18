@@ -1,7 +1,10 @@
 #include "LRTRobot11.h"
-
+#include "Util/PrintInConstructor.h"
 LRTRobot11::LRTRobot11()
-    : brain()
+    :
+    dc_brain_("START Brain")
+    , brain()
+    , dc_CANBus_("START CANbus")
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
 #else
@@ -20,7 +23,7 @@ LRTRobot11::LRTRobot11()
 //    , switchLED(6)
     , prevState(DISABLED)
 {
-    puts("Create LRTRobot11");
+    printf("Created LRTRobot11\n");
 //    mainLoopWatchDog = wdCreate();
 
 }

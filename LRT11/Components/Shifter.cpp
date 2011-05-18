@@ -2,12 +2,12 @@
 #include "../Util/AsynchronousPrinter.h"
 
 Shifter::Shifter()
-    : leftServo(RobotConfig::LEFT_GEARBOX_SERVO_PORT)
-    , rightServo(RobotConfig::RIGHT_GEARBOX_SERVO_PORT)
+    : leftServo(RobotConfig::PWM_Port.LEFT_GEARBOX_SERVO, "Left Shift Servo")
+    , rightServo(RobotConfig::PWM_Port.RIGHT_GEARBOX_SERVO, "Right Shift Servo")
     , encoders(DriveEncoders::GetInstance())
     , prefix("Shifter.")
 {
-
+    puts("Shifter Constructed");
 }
 
 Shifter::~Shifter()

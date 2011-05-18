@@ -2,8 +2,8 @@
 #include "..\Config\RobotConfig.h"
 
 Roller::Roller()
-    : topRoller(RobotConfig::CAN_ROLLER_TOP) // change port numbers later
-    , bottomRoller(RobotConfig::CAN_ROLLER_BOTTOM)
+    : topRoller(RobotConfig::CAN.ROLLER_TOP) // change port numbers later
+    , bottomRoller(RobotConfig::CAN.ROLLER_BOTTOM)
     , prefix("Roller.")
     , ignoreCycles(25)
     , detected(false)
