@@ -1,12 +1,14 @@
 #include "LRTServo.h"
+#include "../../Util/AsynchronousPrinter.h"
 
 LRTServo::LRTServo(UINT32 channel, char* name)
     : Servo(channel)
     , enabled(true)
-    , name(name)
+    , previous_value_(999.0) //an out of range value
+    , name_(name)
 {
-    if(!name) name = "servo";
-    printf("Created %s on channel %d\n", name, channel);
+    if(!name_) name_ = "servo";
+    printf("Created %s on channel %d\n", name_, channel);
 }
 
 LRTServo::~LRTServo()
@@ -32,7 +34,12 @@ bool LRTServo::IsEnabled()
 void LRTServo::Set(float value)
 {
     if(enabled)
+    {
+        if(previous_value_ != value)
+            AsynchronousPrinter::Printf("%s set: %4f\n", name_, previous_value_ = value);
+
         Servo::Set(value);
+    }
 }
 
 void LRTServo::SetAngle(float angle)

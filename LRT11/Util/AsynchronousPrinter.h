@@ -7,32 +7,30 @@
 class AsynchronousPrinter
 {
 public:
-    virtual ~AsynchronousPrinter();
+    virtual ~AsynchronousPrinter(); //why is this virtual? -dg
     static AsynchronousPrinter& Instance();
 
-    static void Printf(const char* format, ...);
-    void StopPrinterTask();
-    void ResumePrinterTask();
-    static void DeleteSingleton();
+    static int Printf(const char* format, ...);
+    static void Quit();
+
 protected:
     AsynchronousPrinter();
 
 private:
-    static void PrinterTaskRunner();
-    void PrinterTask();
+    static int PrinterTaskRunner(); //match (FUNCPTR):  int *FUNCPTR(...)
+    int PrinterTask();
 
-    bool enabled;
-    static AsynchronousPrinter* instance_;
+    bool quitting_; //if true, then we are exiting and closing down the print queue.
+    bool running_;  //true if print task is running.
 
     SEM_ID semaphore;
     int queueBytes;
 
-    Task printerTask;
+    Task printerTask; //T vsWorks background task that prints the buffered output.
     queue<string> queue;
 
-    const static int kMaxBuffer = 1024;
+    const static int kMaxBuffer = 4096;
     DISALLOW_COPY_AND_ASSIGN(AsynchronousPrinter);
-
 };
 
 #endif

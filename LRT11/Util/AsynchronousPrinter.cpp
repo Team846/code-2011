@@ -2,23 +2,42 @@
 
 #define PRINT 1
 
-AsynchronousPrinter* AsynchronousPrinter::instance_ = NULL;
 
 AsynchronousPrinter& AsynchronousPrinter::Instance()
 {
-    if(instance_ == NULL)
-        instance_ = new AsynchronousPrinter();
-    return *instance_;
+    static AsynchronousPrinter printer;
+    return printer;
 }
 
-void AsynchronousPrinter::Printf(const char* format, ...)
+AsynchronousPrinter::AsynchronousPrinter()
+    : quitting_(false)
+    , running_(false)
+    , semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE | SEM_INVERSION_SAFE))
+    , queueBytes(0)
+    , printerTask("AsynchronousPrinter", (FUNCPTR)AsynchronousPrinter::PrinterTaskRunner)
+{
+    printerTask.Start();
+}
+
+AsynchronousPrinter::~AsynchronousPrinter()
+{
+    Quit(); //kill the running print tasks.
+    if(running_)
+        Wait(0.010); //wait for print tasks to die. (will they die? -dg)
+
+    semDelete(semaphore);
+}
+
+int AsynchronousPrinter::Printf(const char* format, ...)
 {
 #if !PRINT
-    return;
+    return 0; // # of bytes printed
 #endif
     char buffer[256];
 
     AsynchronousPrinter& me = Instance();
+    if(me.quitting_)   //the program is quitting. Abort.
+        return 0; // # of bytes printed
 
     va_list args;
     va_start(args, format);
@@ -29,6 +48,9 @@ void AsynchronousPrinter::Printf(const char* format, ...)
     if(n_bytes >= 0)
     {
         Synchronized s(me.semaphore);
+        if(me.quitting_)   //the program is quitting & waiting for us.  Stop.
+            return 0; // # of bytes printed.
+
         string str(buffer);
 
         me.queue.push(str);
@@ -45,68 +67,53 @@ void AsynchronousPrinter::Printf(const char* format, ...)
             me.queueBytes = overflow.length();
         }
     }
+    return n_bytes;
 }
 
-AsynchronousPrinter::AsynchronousPrinter() :
-    semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE | SEM_INVERSION_SAFE)),
-    queueBytes(0),
-    printerTask("AsynchronousPrinter", (FUNCPTR)AsynchronousPrinter::PrinterTaskRunner)
+
+
+
+//May be called externally to stop printing.
+void AsynchronousPrinter::Quit()
 {
-//    AddToSingletonList();
-    printerTask.Start();
+    Instance().quitting_ = true;
 }
 
-AsynchronousPrinter::~AsynchronousPrinter()
-{
-    semDelete(semaphore);
-}
-
-void AsynchronousPrinter::DeleteSingleton()
-{
-    if(NULL == instance_)
-        return;
-    delete instance_;
-    instance_ = NULL;
-}
-
-void AsynchronousPrinter::PrinterTaskRunner()
-{
-    Instance().PrinterTask();
-}
-void AsynchronousPrinter::PrinterTask()
+int AsynchronousPrinter::PrinterTaskRunner()
 {
 #if !PRINT
-    return;
+    Instance().running_ = false;
+    return 0; //printer task dies.
 #endif
+    Instance().running_ = true;
+    int status = Instance().PrinterTask();
+    Instance().running_ = false;
+    printf("Stopping Async Printing\n");
+    return status;
+}
 
-    while(true)
+int AsynchronousPrinter::PrinterTask()
+{
+    while(!quitting_)
     {
-        while(!queue.empty())
+        while(!quitting_ && !queue.empty())
         {
             string str;
-
             {
                 //Critical block
                 Synchronized s(semaphore);
+                if(quitting_)   //the program is quitting & waiting for us.  Stop.
+                    return 0;
                 str = queue.front();
                 queue.pop();
                 queueBytes -= str.length();
             }
 
-            Wait(0.001);   // allow other tasks to run
             printf(str.c_str());
+            Wait(0.001);   // allow other tasks to run
         }
 
         Wait(0.002);   // allow other tasks to run
     }
-}
-
-void AsynchronousPrinter::StopPrinterTask()
-{
-    printerTask.Suspend();
-}
-
-void AsynchronousPrinter::ResumePrinterTask()
-{
-    printerTask.Resume();
+    return 0; //no error
 }

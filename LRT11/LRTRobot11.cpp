@@ -30,7 +30,8 @@ LRTRobot11::LRTRobot11()
 
 LRTRobot11::~LRTRobot11()
 {
-    AsynchronousPrinter::DeleteSingleton(); //end background printing
+    //  AsynchronousPrinter::DeleteSingleton(); //end background printing
+    AsynchronousPrinter::Quit(); //end background printing; let print task quit.
 }
 
 void LRTRobot11::RobotInit()
