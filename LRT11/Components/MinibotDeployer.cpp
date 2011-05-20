@@ -3,10 +3,11 @@
 
 MinibotDeployer::MinibotDeployer()
     : config(Config::GetInstance())
-    , deployerEsc(RobotConfig::CAN.DEPLOYER)
+    , deployerEsc(RobotConfig::CAN.DEPLOYER, "Minibot Deployer")
     , alignerServo(RobotConfig::PWM_Port.ALIGNER_SERVO, "Minibot Deployment Servo")
 {
     Configure();
+    printf("Minibot Deployer Constructed\n");
 }
 
 MinibotDeployer::~MinibotDeployer()

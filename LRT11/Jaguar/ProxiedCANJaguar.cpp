@@ -5,9 +5,10 @@
 GameState ProxiedCANJaguar::gameState = DISABLED;
 ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
 
-ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
+ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
     : LRTCANJaguar(channel)
     , channel(channel)
+    , name_(name)
     , setpoint(0.0)
     , lastSetpoint(0.0)
     , shouldCacheSetpoint(false)
@@ -26,8 +27,10 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
 //    : controller(CANBusController::GetInstance())
 #endif
     , index(jaguars.num)
-    , commTask(("Jaguar Task ID #" + Util::ToString<int>(channel)).c_str(), (FUNCPTR) ProxiedCANJaguar::StartCommTask)
+    , commTask(("Jaguar Task ID #" + Util::ToString<int>(channel)).c_str(), (FUNCPTR) ProxiedCANJaguar::CommTaskWrapper)
     , commSemaphore(semBCreate(SEM_Q_PRIORITY, SEM_EMPTY))
+    , running_(false)
+    , quitting_(false)
 {
     jaguars.j[jaguars.num++] = this;
 
@@ -37,7 +40,9 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel)
     jaguars.potValues[index] = 0;
     jaguars.shouldCollectPotValue[index] = false;
 
+    if(name_ == NULL) name_ = "?";
     commTask.Start((UINT32) this);
+    printf("Created Jaguar %s on channel %d\n", name_, channel);
 }
 
 ProxiedCANJaguar::~ProxiedCANJaguar()
@@ -81,18 +86,26 @@ float ProxiedCANJaguar::GetPotValue()
     return potValue;
 }
 
-int ProxiedCANJaguar::StartCommTask(UINT32 proxiedCANJaguarPointer)
+int ProxiedCANJaguar::CommTaskWrapper(UINT32 proxiedCANJaguarPointer)
 {
     ProxiedCANJaguar* jaguar = (ProxiedCANJaguar*) proxiedCANJaguarPointer;
-    jaguar->CommTask();
-    return 0;
+    if(jaguar->channel != 0)    // ignore jags on channel #0 -dg
+    {
+        jaguar->running_ = true;
+        jaguar->CommTask();
+    }
+    jaguar->running_ = false;
+    printf("Ending task for Jaguar %s %d\n", jaguar->name_, jaguar->channel);
+    return 0; // return no error
 }
 
 void ProxiedCANJaguar::CommTask()
 {
-    while(true)
+    while(!quitting_)
     {
         semTake(commSemaphore, WAIT_FOREVER);
+        if(quitting_)
+            break;
 
         if(setpoint == lastSetpoint && lastState == gameState)
             shouldCacheSetpoint = true;

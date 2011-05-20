@@ -12,9 +12,9 @@ AsynchronousPrinter& AsynchronousPrinter::Instance()
 AsynchronousPrinter::AsynchronousPrinter()
     : quitting_(false)
     , running_(false)
-    , semaphore(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE | SEM_INVERSION_SAFE))
-    , queueBytes(0)
-    , printerTask("AsynchronousPrinter", (FUNCPTR)AsynchronousPrinter::PrinterTaskRunner)
+    , semaphore_(semMCreate(SEM_Q_PRIORITY | SEM_DELETE_SAFE | SEM_INVERSION_SAFE))
+    , queue_bytes_(0)
+    , printerTask("LRT-AsynchronousPrinter", (FUNCPTR)AsynchronousPrinter::PrinterTaskWrapper)
 {
     printerTask.Start();
 }
@@ -25,7 +25,7 @@ AsynchronousPrinter::~AsynchronousPrinter()
     if(running_)
         Wait(0.010); //wait for print tasks to die. (will they die? -dg)
 
-    semDelete(semaphore);
+    semDelete(semaphore_);
 }
 
 int AsynchronousPrinter::Printf(const char* format, ...)
@@ -47,24 +47,24 @@ int AsynchronousPrinter::Printf(const char* format, ...)
 
     if(n_bytes >= 0)
     {
-        Synchronized s(me.semaphore);
+        Synchronized s(me.semaphore_);
         if(me.quitting_)   //the program is quitting & waiting for us.  Stop.
             return 0; // # of bytes printed.
 
         string str(buffer);
 
-        me.queue.push(str);
-        me.queueBytes += n_bytes;
+        me.queue_.push(str);
+        me.queue_bytes_ += n_bytes;
 
-        if(me.queueBytes >= kMaxBuffer)
+        if(me.queue_bytes_ >= kMaxBuffer_)
         {
-            while(!me.queue.empty())
-                me.queue.pop();
+            while(!me.queue_.empty())
+                me.queue_.pop();
 
             string overflow("(AsyncPrinter Buffer Overflow)\n");
 
-            me.queue.push(overflow);
-            me.queueBytes = overflow.length();
+            me.queue_.push(overflow);
+            me.queue_bytes_ = overflow.length();
         }
     }
     return n_bytes;
@@ -79,7 +79,7 @@ void AsynchronousPrinter::Quit()
     Instance().quitting_ = true;
 }
 
-int AsynchronousPrinter::PrinterTaskRunner()
+int AsynchronousPrinter::PrinterTaskWrapper()
 {
 #if !PRINT
     Instance().running_ = false;
@@ -96,17 +96,17 @@ int AsynchronousPrinter::PrinterTask()
 {
     while(!quitting_)
     {
-        while(!quitting_ && !queue.empty())
+        while(!quitting_ && !queue_.empty())
         {
             string str;
             {
                 //Critical block
-                Synchronized s(semaphore);
+                Synchronized s(semaphore_);
                 if(quitting_)   //the program is quitting & waiting for us.  Stop.
                     return 0;
-                str = queue.front();
-                queue.pop();
-                queueBytes -= str.length();
+                str = queue_.front();
+                queue_.pop();
+                queue_bytes_ -= str.length();
             }
 
             printf(str.c_str());

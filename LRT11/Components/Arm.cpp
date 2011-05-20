@@ -4,7 +4,7 @@
 Arm::Arm()
     : config(Config::GetInstance())
     , prefix("Arm.")
-    , armEsc(RobotConfig::CAN.ARM_)
+    , armEsc(RobotConfig::CAN.ARM_, "Arm")
 #ifdef VIRTUAL
     // arm is ~29 inches
     // speed: 29 in * 1 ft / 12 in * 1.3 rps * 2 pi rad / rev = ~19.7 ft/s
@@ -22,6 +22,7 @@ Arm::Arm()
     // brake when set to 0 to keep the arm in place
     armEsc.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
     Configure();
+    printf("Arm Constructed.\n");
 }
 
 Arm::~Arm()

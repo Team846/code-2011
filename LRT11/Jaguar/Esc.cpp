@@ -32,7 +32,7 @@ Esc::Esc(int channel, VirtualLRTEncoder& encoder, string name)
 #else
 Esc::Esc(int channel, LRTEncoder& encoder, string name)
 #endif
-    : ProxiedCANJaguar(channel)
+    : ProxiedCANJaguar(channel, "ESC?")
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(false)
     , partner(0)
@@ -49,7 +49,7 @@ Esc::Esc(int channelA, int channelB, VirtualLRTEncoder& encoder, string name)
 #else
 Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
 #endif
-    : ProxiedCANJaguar(channelA)
+    : ProxiedCANJaguar(channelA, "ESC A?")
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(true)
     , partner(new Esc(channelB, encoder, name + "B"))

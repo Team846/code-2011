@@ -4,7 +4,7 @@
 Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
-    , liftEsc(RobotConfig::CAN.LIFT)  //Pot is directly connected to Jaguar ESC, not the cRio
+    , liftEsc(RobotConfig::CAN.LIFT, "Lift")  //Pot is directly connected to Jaguar ESC, not the cRio
 #ifdef VIRTUAL
     , liftPot(RobotConfig::CAN.LIFT, 10, 1.0, 6.5)
 #endif

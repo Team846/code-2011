@@ -11,6 +11,7 @@ class ProxiedCANJaguar : public LRTCANJaguar
 {
 private:
     int channel;
+    char* name_;
 
     volatile float setpoint;
     volatile float lastSetpoint;
@@ -35,9 +36,11 @@ private:
     Task commTask;
 
     SEM_ID commSemaphore;
+    bool running_; //implementation in progress - controlled termination of task -dg
+    bool quitting_; // ditto
 
 public:
-    ProxiedCANJaguar(UINT8 channel);
+    ProxiedCANJaguar(UINT8 channel, char* name);
     ~ProxiedCANJaguar();
 
     typedef struct
@@ -62,7 +65,7 @@ public:
     float GetCurrent();
     float GetPotValue();
 
-    static int StartCommTask(UINT32 proxiedCANJaguarPointer);
+    static int CommTaskWrapper(UINT32 proxiedCANJaguarPointer);
     void CommTask();
 
     void BeginComm();

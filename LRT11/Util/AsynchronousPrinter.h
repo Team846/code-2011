@@ -1,8 +1,8 @@
 #ifndef LRT_ASYNCPRINT_H_
 #define LRT_ASYNCPRINT_H_
 
-#include "../General.h"
 #include <queue>
+#include "WPILib.h"
 
 class AsynchronousPrinter
 {
@@ -17,19 +17,19 @@ protected:
     AsynchronousPrinter();
 
 private:
-    static int PrinterTaskRunner(); //match (FUNCPTR):  int *FUNCPTR(...)
+    static int PrinterTaskWrapper(); //match (FUNCPTR):  int *FUNCPTR(...)
     int PrinterTask();
 
     bool quitting_; //if true, then we are exiting and closing down the print queue.
     bool running_;  //true if print task is running.
 
-    SEM_ID semaphore;
-    int queueBytes;
+    SEM_ID semaphore_;
+    int queue_bytes_;
 
     Task printerTask; //T vsWorks background task that prints the buffered output.
-    queue<string> queue;
+    queue<string> queue_;
 
-    const static int kMaxBuffer = 4096;
+    const static int kMaxBuffer_ = 4096;
     DISALLOW_COPY_AND_ASSIGN(AsynchronousPrinter);
 };
 

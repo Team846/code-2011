@@ -2,15 +2,15 @@
 #include "..\Config\RobotConfig.h"
 
 Roller::Roller()
-    : topRoller(RobotConfig::CAN.ROLLER_TOP) // change port numbers later
-    , bottomRoller(RobotConfig::CAN.ROLLER_BOTTOM)
+    : topRoller(RobotConfig::CAN.ROLLER_TOP, "Top Roller") // change port numbers later
+    , bottomRoller(RobotConfig::CAN.ROLLER_BOTTOM, "Bottom Roller")
     , prefix("Roller.")
     , ignoreCycles(25)
     , detected(false)
 {
     topRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
     bottomRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
-
+    printf("Rollers Constructed\n");
 }
 
 Roller::~Roller()
