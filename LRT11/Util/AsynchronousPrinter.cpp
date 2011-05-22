@@ -21,11 +21,15 @@ AsynchronousPrinter::AsynchronousPrinter()
 
 AsynchronousPrinter::~AsynchronousPrinter()
 {
-    Quit(); //kill the running print tasks.
     if(running_)
-        Wait(0.010); //wait for print tasks to die. (will they die? -dg)
+        printerTask.Stop();
+//TODO: we don't need members variable quitting_ anymore. -dg
+//  Quit(); //kill the running print tasks.
+//   if(running_)
+//       Wait(0.010); //wait for print tasks to die. (will they die? -dg)
 
     semDelete(semaphore_);
+    printf("Async Printer Task deleted");   //really not needed. -dg
 }
 
 int AsynchronousPrinter::Printf(const char* format, ...)

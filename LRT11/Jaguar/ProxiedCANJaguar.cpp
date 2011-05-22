@@ -47,9 +47,13 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
 
 ProxiedCANJaguar::~ProxiedCANJaguar()
 {
-
+    if(running_)
+    {
+        commTask.Stop();
+        printf("Task %d killed for CANid=%d:%s\n", commTask.GetID(), channel, name_);
+    }
+    //leave the semaphore; we are quitting anyway. -dg. Is this Bad?
 }
-
 void ProxiedCANJaguar::ShouldCollectCurrent(bool shouldCollect)
 {
 //    jaguars.shouldCollectCurrent[index] = true;

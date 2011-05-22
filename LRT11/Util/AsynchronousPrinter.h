@@ -23,7 +23,7 @@ private:
     bool quitting_; //if true, then we are exiting and closing down the print queue.
     bool running_;  //true if print task is running.
 
-    SEM_ID semaphore_;
+    semaphore* semaphore_;
     int queue_bytes_;
 
     Task printerTask; //T vsWorks background task that prints the buffered output.

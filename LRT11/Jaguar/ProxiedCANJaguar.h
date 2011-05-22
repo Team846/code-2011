@@ -35,7 +35,7 @@ private:
     int index;
     Task commTask;
 
-    SEM_ID commSemaphore;
+    semaphore* commSemaphore;
     bool running_; //implementation in progress - controlled termination of task -dg
     bool quitting_; // ditto
 
