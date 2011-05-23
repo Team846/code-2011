@@ -11,7 +11,7 @@ double LCD::gameTime = -1.0;
 LCD::LCD() :
     loadArray("\\|/-")
 {
-    AddToSingletonList();
+    AddToSingletonList(); //TODO Make this a static object. -dg
 
     textBuffer = new char[kNumBufferLines * kNumBufferColumns];
     outputBuffer = new char[USER_DS_LCD_DATA_SIZE];
@@ -20,6 +20,8 @@ LCD::LCD() :
     memset(textBuffer, ' ', kNumBufferLines * kNumBufferColumns);
 
     textBufferSemaphore = semMCreate(SEM_DELETE_SAFE | SEM_INVERSION_SAFE);
+
+    printf("Constructed LCD\n");
 }
 
 LCD::~LCD()

@@ -59,7 +59,7 @@ private:
     const char* loadArray;
     char* textBuffer;
     char* outputBuffer;
-    SEM_ID textBufferSemaphore;
+    semaphore* textBufferSemaphore;
 
     static double gameTime;
 };

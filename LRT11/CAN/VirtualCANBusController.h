@@ -60,7 +60,7 @@ public:
     // blocking functions with no parameter
     void DisableControl(int channel)
     {
-        if((UINT32) channel == RobotConfig::CAN.LIFT && liftMode == CANJaguar::kPosition)
+        if((UINT32) channel == RobotConfig::CAN::LIFT && liftMode == CANJaguar::kPosition)
         {
             liftMode = CANJaguar::kPercentVbus;
             Set(channel, 0);

@@ -5,6 +5,7 @@ Console* Console::instance = NULL;
 Console::Console() :
     cycleNum(0)
 {
+    printf("Constructed Console\n");
 }
 
 Console& Console::GetInstance()

@@ -2,9 +2,11 @@
 #include "Util/PrintInConstructor.h"
 LRTRobot11::LRTRobot11()
     :
-    dc_brain_("START Brain")
+    dc_brain_(
+        "\n\n\n---------------------------------------------------------\n"
+        "Begin LRTRobot Constructor\n")
     , brain()
-    , dc_CANBus_("START CANbus")
+    , dc_CANBus_("START CANbus\n")
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
 #else

@@ -7,9 +7,9 @@
 #include <iomanip>
 
 LineSensor::LineSensor()
-    : adc(RobotConfig::LINE_SENSOR_ADC)
-    , clock(RobotConfig::LINE_SENSOR_CLOCK)
-    , si(RobotConfig::LINE_SENSOR_SI)
+    : adc(RobotConfig::ANALOG::LINE_SENSOR_ADC)
+    , clock(RobotConfig::DIGITAL_IO::LINE_SENSOR_CLOCK)
+    , si(RobotConfig::DIGITAL_IO::LINE_SENSOR_SI)
     , lastLinePos(0)
     , firstRun(true)
 {

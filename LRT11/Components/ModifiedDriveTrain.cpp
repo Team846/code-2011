@@ -7,14 +7,14 @@ ModifiedDriveTrain::ModifiedDriveTrain()
     , closedRateTrain()
     , closedPositionTrain(closedRateTrain)
 #ifdef LRT_ROBOT_2011
-    , leftESC(RobotConfig::CAN.DRIVE_LEFT_A, RobotConfig::CAN.DRIVE_LEFT_B,
+    , leftESC(RobotConfig::CAN::DRIVE_LEFT_A, RobotConfig::CAN::DRIVE_LEFT_B,
             DriveEncoders::GetInstance().GetLeftEncoder(), "left")
-    , rightESC(RobotConfig::CAN.DRIVE_RIGHT_A, RobotConfig::CAN.DRIVE_RIGHT_B,
+    , rightESC(RobotConfig::CAN::DRIVE_RIGHT_A, RobotConfig::CAN::DRIVE_RIGHT_B,
             DriveEncoders::GetInstance().GetRightEncoder(), "right")
 #else
     // TODO fix initialization
-    , leftESC(RobotConfig::CAN.DRIVE_LEFT, driveEncoders.GetLeftEncoder(), "left")
-    , rightESC(RobotConfig::CAN.DRIVE_RIGHT, driveEncoders.GetInstance().GetRightEncoder(), "right")
+    , leftESC(RobotConfig::CAN::DRIVE_LEFT, driveEncoders.GetLeftEncoder(), "left")
+    , rightESC(RobotConfig::CAN::DRIVE_RIGHT, driveEncoders.GetInstance().GetRightEncoder(), "right")
 #endif
     , config(Config::GetInstance())
 {

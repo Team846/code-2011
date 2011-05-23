@@ -13,8 +13,8 @@ VirtualPot::VirtualPot(UINT32 channel, int potTurns, float ftPerTurn,
         position = turns / 2.0;
 
     // if tracking the arm pot, subscribe to the CAN arm
-    if(channel == RobotConfig::POT_ARM)
-        Subscribe(RobotConfig::CAN.ARM_);
+    if(channel == RobotConfig::ANALOG::POT_ARM)
+        Subscribe(RobotConfig::CAN::ARM_);
     // all other pots are connected to the jaguars directly,
     // so the pot channel and CAN id are the same
     else

@@ -14,18 +14,18 @@ VirtualLRTEncoder::VirtualLRTEncoder(UINT8 sourceA, UINT8 sourceB)
             | SEM_INVERSION_SAFE))
 {
     // working with left encoder, so subscribe to left CAN drive
-    if(sourceA == RobotConfig::DIO_ENCODER_LEFT_A)
+    if(sourceA == RobotConfig::DIGITAL_IO::ENCODER_LEFT_A)
 #ifdef LRT_ROBOT_2011
-        Subscribe(RobotConfig::CAN.DRIVE_LEFT_A);
+        Subscribe(RobotConfig::CAN::DRIVE_LEFT_A);
 #else
-        Subscribe(RobotConfig::CAN.DRIVE_LEFT);
+        Subscribe(RobotConfig::CAN::DRIVE_LEFT);
 #endif
     // working with right encoder, so subscribe to right CAN drive
-    else if(sourceA == RobotConfig::DIO_ENCODER_RIGHT_A)
+    else if(sourceA == RobotConfig::DIGITAL_IO::ENCODER_RIGHT_A)
 #ifdef LRT_ROBOT_2011
-        Subscribe(RobotConfig::CAN.DRIVE_RIGHT_A);
+        Subscribe(RobotConfig::CAN::DRIVE_RIGHT_A);
 #else
-        Subscribe(RobotConfig::CAN.DRIVE_RIGHT);
+        Subscribe(RobotConfig::CAN::DRIVE_RIGHT);
 #endif
 }
 

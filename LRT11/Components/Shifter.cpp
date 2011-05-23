@@ -2,8 +2,8 @@
 #include "../Util/AsynchronousPrinter.h"
 
 Shifter::Shifter()
-    : leftServo(RobotConfig::PWM_Port.LEFT_GEARBOX_SERVO, "Left Shift Servo")
-    , rightServo(RobotConfig::PWM_Port.RIGHT_GEARBOX_SERVO, "Right Shift Servo")
+    : leftServo(RobotConfig::PWM::LEFT_GEARBOX_SERVO, "Left Shift Servo")
+    , rightServo(RobotConfig::PWM::RIGHT_GEARBOX_SERVO, "Right Shift Servo")
     , encoders(DriveEncoders::GetInstance())
     , prefix("Shifter.")
 {

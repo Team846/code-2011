@@ -10,13 +10,15 @@ DriveEncoders& DriveEncoders::GetInstance()
 }
 
 DriveEncoders::DriveEncoders()
-    : encoderLeft(RobotConfig::DIO_ENCODER_LEFT_A,
-            RobotConfig::DIO_ENCODER_LEFT_B /*, 534.0 / 574.0 */)
+    : encoderLeft(
+        RobotConfig::DIGITAL_IO::ENCODER_LEFT_A,
+        RobotConfig::DIGITAL_IO::ENCODER_LEFT_B /*, 534.0 / 574.0 */)
 #ifndef VIRTUAL
     , uselessEncoder(3, 6)
 #endif
-    , encoderRight(RobotConfig::DIO_ENCODER_RIGHT_A,
-            RobotConfig::DIO_ENCODER_RIGHT_B)
+    , encoderRight(
+        RobotConfig::DIGITAL_IO::ENCODER_RIGHT_A,
+        RobotConfig::DIGITAL_IO::ENCODER_RIGHT_B)
     , isHighGear(false)
 {
     AddToSingletonList();

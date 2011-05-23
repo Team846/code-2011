@@ -4,14 +4,14 @@
 Arm::Arm()
     : config(Config::GetInstance())
     , prefix("Arm.")
-    , armEsc(RobotConfig::CAN.ARM_, "Arm")
+    , armEsc(RobotConfig::CAN::ARM_, "Arm")
 #ifdef VIRTUAL
     // arm is ~29 inches
     // speed: 29 in * 1 ft / 12 in * 1.3 rps * 2 pi rad / rev = ~19.7 ft/s
     // ft / turn: 29 in * 1 ft / 12 in * 2 pi rad / rev = ~15.2 ft
     , armPot(RobotConfig::POT_ARM, 1, 15.2, 19.7)
 #else
-    , armPot(RobotConfig::POT_ARM)
+    , armPot(RobotConfig::ANALOG::POT_ARM)
 #endif
     , state(IDLE)
     , oldState(action.arm.IDLE)

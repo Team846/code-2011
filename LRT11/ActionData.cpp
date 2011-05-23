@@ -11,8 +11,6 @@ ActionData& ActionData::GetInstance()
 
 ActionData::ActionData()
 {
-    AddToSingletonList();
-
     // used to abort movements
     master.abort = false;
 

@@ -3,7 +3,7 @@
 
 #include "General.h"
 
-class ActionData : public SensorBase
+class ActionData
 {
 private:
     static ActionData* instance;
