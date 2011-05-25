@@ -7,7 +7,7 @@ MinibotDeployer::MinibotDeployer()
     , alignerServo(RobotConfig::PWM::ALIGNER_SERVO, "Minibot Deployment Servo")
 {
     Configure();
-    printf("Minibot Deployer Constructed\n");
+    printf("Constructed Minibot Deployer\n");
 }
 
 MinibotDeployer::~MinibotDeployer()

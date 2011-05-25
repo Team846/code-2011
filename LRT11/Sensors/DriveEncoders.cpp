@@ -21,14 +21,13 @@ DriveEncoders::DriveEncoders()
         RobotConfig::DIGITAL_IO::ENCODER_RIGHT_B)
     , isHighGear(false)
 {
-    AddToSingletonList();
-
     // want to stay with ticks/second
     encoderLeft.SetDistancePerPulse(1);
     encoderRight.SetDistancePerPulse(1);
 
     encoderLeft.Start();
     encoderRight.Start();
+    printf("Construct Drive Encoders\n");
 }
 
 DriveEncoders::~DriveEncoders() {}

@@ -10,13 +10,13 @@
 #ifndef LRT_PROFILER_H_
 #define LRT_PROFILER_H_
 
-#include "../General.h"
-#include "AsynchronousPrinter.h"
+
 #include <map>
 #include <string>
 #include <sstream>
 #include <iomanip>
-using namespace std;
+#include "../General.h"
+#include "AsynchronousPrinter.h"
 
 class Profiler : public SensorBase
 {

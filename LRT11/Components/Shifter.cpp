@@ -7,7 +7,7 @@ Shifter::Shifter()
     , encoders(DriveEncoders::GetInstance())
     , prefix("Shifter.")
 {
-    puts("Shifter Constructed");
+    puts("Constructed Shifter");
 }
 
 Shifter::~Shifter()

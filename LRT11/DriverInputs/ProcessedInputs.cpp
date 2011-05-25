@@ -1,12 +1,30 @@
 #include "ProcessedInputs.h"
 
+//Need a means of specifying both a stick and a button/axis
+//In progress - incomplete implementation -dg
+namespace JOY1
+{
+    namespace BUTTON //12 buttons; btns 13-16 are inaccessible.
+    {
+        const int Fun1 = 1;
+    }
+} //In Progress -dg
+
+
 ProcessedInputs* ProcessedInputs::instance = NULL;
 
 ProcessedInputs::ProcessedInputs()
-    : driverStick(1, DriverStationConfig::NUM_JOYSTICK_BUTTONS,
+    : driverStick(1,
+            DriverStationConfig::NUM_JOYSTICK_BUTTONS,
             DriverStationConfig::NUM_JOYSTICK_AXES)
-    , operatorStick(2, DriverStationConfig::NUM_JOYSTICK_BUTTONS,
+    , operatorStick(2,
+            DriverStationConfig::NUM_JOYSTICK_BUTTONS,
             DriverStationConfig::NUM_JOYSTICK_AXES)
+    , joy_((DebouncedJoystick *[2 + 1]) // ONE based array
+{
+    NULL, &driverStick, &operatorStick
+})
+
 {
     AddToSingletonList();
 }

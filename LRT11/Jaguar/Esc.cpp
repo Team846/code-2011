@@ -35,7 +35,7 @@ Esc::Esc(int channel, LRTEncoder& encoder, string name)
     : ProxiedCANJaguar(channel, "ESC?")
     , CANJaguarBrake((*(ProxiedCANJaguar*)this))
     , hasPartner(false)
-    , partner(0)
+    , partner(NULL)
     , encoder(encoder)
     , name(name)
     , index(0)
@@ -59,7 +59,22 @@ Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
     , stoppingIntegrator(0)
     , errorRunning(0)
 {
+    printf("Constructed ESC: %s\n", name.c_str());
 }
+
+Esc::~Esc()
+{
+    return;
+    //for some reason I can't delete partner without causing a crash when the task ends. -dg
+    if(partner)
+    {
+        delete partner;
+        partner = NULL;
+        hasPartner = false;
+    }
+}
+
+
 
 void Esc::Configure()
 {

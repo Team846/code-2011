@@ -30,8 +30,9 @@ private:
 
 #ifdef LRT_ROBOT_2011
     //2011 robot
-    const static float leftLowGearServoVal = 0.33;
-    const static float leftHighGearServoVal = 0.62;
+    const static float leftLowGearServoVal = 0.25; // = 0.33;
+    const static float leftHighGearServoVal = 0.25 + 0.29; //= 0.62;
+
     const static float rightLowGearServoVal = 0.67;
     const static float rightHighGearServoVal = 0.39;
 #else

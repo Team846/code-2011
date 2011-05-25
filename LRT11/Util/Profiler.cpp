@@ -26,6 +26,7 @@ template <class PairT> struct SortBySecondValue
 void Profiler::StartNewCycle()
 {
     ++cycleIndex;
+    return;
 
     if(cycleIndex >= reportPeriod)
     {

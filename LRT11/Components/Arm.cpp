@@ -22,7 +22,7 @@ Arm::Arm()
     // brake when set to 0 to keep the arm in place
     armEsc.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
     Configure();
-    printf("Arm Constructed.\n");
+    printf("Constructed Arm\n");
 }
 
 Arm::~Arm()

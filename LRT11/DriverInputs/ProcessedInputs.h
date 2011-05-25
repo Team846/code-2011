@@ -17,9 +17,10 @@ private:
     double turnDeadband;
 
     float GetThrottle();
-
     DebouncedJoystick driverStick, operatorStick;
 
+    //joy_[2] are synoymns for the driver/operator stick, allowing array assignment of buttons
+    DebouncedJoystick* const joy_[2 + 1];
 protected:
     ProcessedInputs();
     DISALLOW_COPY_AND_ASSIGN(ProcessedInputs);

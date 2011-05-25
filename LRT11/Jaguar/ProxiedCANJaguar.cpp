@@ -27,7 +27,7 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
 //    : controller(CANBusController::GetInstance())
 #endif
     , index(jaguars.num)
-    , commTask(("Jaguar Task ID #" + Util::ToString<int>(channel)).c_str(), (FUNCPTR) ProxiedCANJaguar::CommTaskWrapper)
+    , commTask(("JAG#" + Util::ToString<int>(channel)).c_str(), (FUNCPTR) ProxiedCANJaguar::CommTaskWrapper)
     , commSemaphore(semBCreate(SEM_Q_PRIORITY, SEM_EMPTY))
     , running_(false)
     , quitting_(false)
@@ -49,8 +49,9 @@ ProxiedCANJaguar::~ProxiedCANJaguar()
 {
     if(running_)
     {
+        INT32 task_id = commTask.GetID();
         commTask.Stop();
-        printf("Task %d killed for CANid=%d:%s\n", commTask.GetID(), channel, name_);
+        printf("Task 0x%x killed for CANid=%d:%s\n\n", task_id, channel, name_);
     }
     //leave the semaphore; we are quitting anyway. -dg. Is this Bad?
 }

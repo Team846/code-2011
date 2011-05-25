@@ -23,13 +23,12 @@ AsynchronousPrinter::~AsynchronousPrinter()
 {
     if(running_)
         printerTask.Stop();
-//TODO: we don't need members variable quitting_ anymore. -dg
-//  Quit(); //kill the running print tasks.
-//   if(running_)
-//       Wait(0.010); //wait for print tasks to die. (will they die? -dg)
 
     semDelete(semaphore_);
-    printf("Async Printer Task deleted");   //really not needed. -dg
+
+    //For some reason, this destructor isn't getting called when the robot task is killed -dg
+    // I never see this line printed.  Hence the call to Aysync...Quit() in the rebot dtor
+    printf("Async Printer deleted");
 }
 
 int AsynchronousPrinter::Printf(const char* format, ...)

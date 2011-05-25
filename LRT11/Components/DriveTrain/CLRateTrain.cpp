@@ -13,6 +13,7 @@ CLRateTrain::CLRateTrain()
     , usingClosedLoop(true)
     , highGear(true)
 {
+    printf("Constructed CLRateTrain\n");
 }
 
 void CLRateTrain::Configure()

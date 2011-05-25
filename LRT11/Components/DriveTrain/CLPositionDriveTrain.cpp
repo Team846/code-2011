@@ -17,6 +17,8 @@ CLPositionDriveTrain::CLPositionDriveTrain(CLRateTrain& train)
     moveDistanceInfo.initialBearing = 0;
     moveDistanceInfo.goingForward = true;
     moveDistanceInfo.hasCommand = false;
+
+    printf("Constructed CLPositionDriveTrain\n");
 }
 
 void CLPositionDriveTrain::Configure()

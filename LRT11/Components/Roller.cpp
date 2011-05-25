@@ -10,7 +10,7 @@ Roller::Roller()
 {
     topRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
     bottomRoller.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Coast);
-    printf("Rollers Constructed\n");
+    printf("Constructed Rollers\n");
 }
 
 Roller::~Roller()
