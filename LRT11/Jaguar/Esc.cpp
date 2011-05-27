@@ -64,8 +64,6 @@ Esc::Esc(int channelA, int channelB, LRTEncoder& encoder, string name)
 
 Esc::~Esc()
 {
-    return;
-    //for some reason I can't delete partner without causing a crash when the task ends. -dg
     if(partner)
     {
         delete partner;

@@ -21,12 +21,12 @@
 class LRTRobot11 : public LRTRobotBase
 {
 public:
+    PrintInConstructor firstMember_;
     LRTRobot11();
     virtual ~LRTRobot11();
 
     virtual void RobotInit();
     virtual void MainLoop();
-    PrintInConstructor dc_brain_;
 
 private:
     Brain brain;
@@ -58,8 +58,7 @@ private:
 
 //    AnalogChannel armPot;
 //    WDOG_ID mainLoopWatchDog;
-
-
+    PrintInConstructor lastMember_; //trace constructor/destructor.
 };
 
 #endif

@@ -1,5 +1,6 @@
+#include <stdio.h>
 #include "ProxiedCANJaguar.h"
-
+#include "../CAN/JaguarReader.h"
 #define DISABLE_SETPOINT_CACHING 0
 
 GameState ProxiedCANJaguar::gameState = DISABLED;
@@ -7,6 +8,8 @@ ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
     : LRTCANJaguar(channel)
+    , taskName_("JAG#" + Util::ToString<int>(channel))
+    , print_ctor_dtor(taskName_.c_str(), (taskName_ + "\n").c_str())
     , channel(channel)
     , name_(name)
     , setpoint(0.0)
@@ -27,7 +30,7 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
 //    : controller(CANBusController::GetInstance())
 #endif
     , index(jaguars.num)
-    , commTask(("JAG#" + Util::ToString<int>(channel)).c_str(), (FUNCPTR) ProxiedCANJaguar::CommTaskWrapper)
+    , commTask(taskName_.c_str(), (FUNCPTR) ProxiedCANJaguar::CommTaskWrapper)
     , commSemaphore(semBCreate(SEM_Q_PRIORITY, SEM_EMPTY))
     , running_(false)
     , quitting_(false)
@@ -42,19 +45,26 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
 
     if(name_ == NULL) name_ = "?";
     commTask.Start((UINT32) this);
-    printf("Created Jaguar %s on channel %d\n", name_, channel);
+    printf("Created Jaguar %2d: %s\n", channel, name_);
 }
 
 ProxiedCANJaguar::~ProxiedCANJaguar()
+{
+    JaguarReader::GetInstance().StopTask(); //is this the best place? -dg TODO
+    StopBackgroundTask();
+
+    //leave the semaphore; we are quitting anyway. -dg. Is this Bad?
+}
+void ProxiedCANJaguar::StopBackgroundTask()
 {
     if(running_)
     {
         INT32 task_id = commTask.GetID();
         commTask.Stop();
-        printf("Task 0x%x killed for CANid=%d:%s\n\n", task_id, channel, name_);
+        printf("Task 0x%x killed for CANid=%d:%s\n", task_id, channel, name_);
     }
-    //leave the semaphore; we are quitting anyway. -dg. Is this Bad?
 }
+
 void ProxiedCANJaguar::ShouldCollectCurrent(bool shouldCollect)
 {
 //    jaguars.shouldCollectCurrent[index] = true;

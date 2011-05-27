@@ -43,6 +43,7 @@ public:
 protected:
     LRTRobotBase();
     virtual ~LRTRobotBase();
+    bool quitting_;  //use this to kill the main loop for orderly shutdown.
 
     JaguarReader& reader;
     int cycleCount;

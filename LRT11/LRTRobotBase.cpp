@@ -6,11 +6,12 @@
  * Constructor for RobotIterativeBase. Initializes member variables.
  */
 LRTRobotBase::LRTRobotBase()
-    : reader(JaguarReader::GetInstance())
+    : quitting_(false)
+    , reader(JaguarReader::GetInstance())
     , cycleCount(0)
 
 {
-
+    printf("Creating LRTRobotbase\n");
 }
 
 /**
@@ -18,7 +19,7 @@ LRTRobotBase::LRTRobotBase()
  */
 LRTRobotBase::~LRTRobotBase()
 {
-
+    printf("Deleting LRTRobotBase\n\n");    //should be our last access to the program.
 }
 
 /**
@@ -56,8 +57,8 @@ void LRTRobotBase::StartCompetition()
 //    // buffer for the basic report period; see bottom of method
 //    char buffer[200];
 
-    // loop forever, calling the main loop
-    while(true)
+    // loop until we are quitting -- must be set by the destructor of the derived class.
+    while(!quitting_)
     {
         cycleCount++;
 
@@ -85,6 +86,7 @@ void LRTRobotBase::StartCompetition()
         sleepTime_us = cycleExpire_us - GetFPGATime();
 
 //        AsynchronousPrinter::Printf("----\n");
+        //NB: This loop must be quit *before* the Jaguars are deleted!
         for(int i = 0; i < ProxiedCANJaguar::jaguars.num; i++)
             ProxiedCANJaguar::jaguars.j[i]->BeginComm();
 

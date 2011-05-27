@@ -3,7 +3,8 @@
 JaguarReader* JaguarReader::instance = NULL;
 
 JaguarReader::JaguarReader()
-    : readerTask("JaguarReaderTask", (FUNCPTR) StartReaderTask)
+    : print_ctor_dtor("JaguarReader\n")
+    , readerTask("JaguarReaderTask", (FUNCPTR) StartReaderTask)
     , readSemaphore(semBCreate(SEM_Q_PRIORITY, SEM_EMPTY))
 {
     readerTask.Start();
@@ -26,9 +27,17 @@ void JaguarReader::StartReaderTask()
 {
     JaguarReader::GetInstance().ReaderTask();
 }
+void JaguarReader::StopTask()
+{
+    JaguarReader::GetInstance().readerTask.Stop();
+}
+
 
 void JaguarReader::ReaderTask()
 {
+// Jaguar tasks may have died or the jag objects may have been destroyed.
+// This task must be robust to check. -dg
+
     // make large variable names more readable
 #define jaguars ProxiedCANJaguar::jaguars
 #define j jaguars.j

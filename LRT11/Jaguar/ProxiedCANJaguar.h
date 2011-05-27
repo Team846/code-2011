@@ -1,15 +1,18 @@
 #ifndef PROXIED_CAN_JAGUAR_H_
 #define PROXIED_CAN_JAGUAR_H_
 
-#include "..\General.h"
-#include "..\CAN\VirtualCANBusController.h"
-#include "..\Util\Util.h"
+#include "../General.h"
+#include "../CAN/VirtualCANBusController.h"
+#include "../Util/Util.h"
 #include "LRTCANJaguar.h"
 #include "taskLib.h"
+#include "../Util/PrintInConstructor.h"
 
 class ProxiedCANJaguar : public LRTCANJaguar
 {
 private:
+    string taskName_;
+    PrintInConstructor print_ctor_dtor;
     int channel;
     char* name_;
 
@@ -42,6 +45,7 @@ private:
 public:
     ProxiedCANJaguar(UINT8 channel, char* name);
     ~ProxiedCANJaguar();
+    void StopBackgroundTask();
 
     typedef struct
     {
@@ -56,6 +60,7 @@ public:
     } JaguarList;
 
     static JaguarList jaguars;
+
     void Set(float setpoint, UINT8 syncGroup = 0);
     void ConfigNeutralMode(LRTCANJaguar::NeutralMode mode);
 

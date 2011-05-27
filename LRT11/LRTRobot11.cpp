@@ -2,11 +2,12 @@
 #include "Util/PrintInConstructor.h"
 LRTRobot11::LRTRobot11()
     :
-    dc_brain_(
+    firstMember_(
         "\n\n\n---------------------------------------------------------\n"
-        "Begin LRTRobot Constructor\n")
+        "Begin LRTRobot Constructor\n",
+        "LRTRobot Destroyed\n\n")
     , brain()
-    , dc_CANBus_("START CANbus\n")
+    , dc_CANBus_("CANbus\n")
 #ifdef VIRTUAL
     , controller(VirtualCANBusController::GetInstance())
 #else
@@ -24,16 +25,27 @@ LRTRobot11::LRTRobot11()
     , ds(*DriverStation::GetInstance())
 //    , switchLED(6)
     , prevState(DISABLED)
-{
-    printf("Created LRTRobot11\n");
-//    mainLoopWatchDog = wdCreate();
+    , lastMember_("LRTRobot.LastMember\n") //trace constructor.
 
+{
+//    mainLoopWatchDog = wdCreate();
+    printf("---- Robot Initialized ----\n\n");
 }
 
 LRTRobot11::~LRTRobot11()
 {
-    //  AsynchronousPrinter::DeleteSingleton(); //end background printing
-    AsynchronousPrinter::Quit(); //end background printing; let print task quit.
+    // Testing shows this to be the entry point for a Kill signal.
+    // Start shutting down processes here. -dg
+    printf("\n\nBegin Deleting LRTRobot11\n");
+
+    // Kill the main loop, so we don't access deleted objects. -dg
+    LRTRobotBase::quitting_ = true;
+    printf("LRTRobot11 says to LRTRobotBase: \"Quit Main Loop please\"\n");
+    Wait(0.100); //Wait for main loop to exec one last time and then exit.  Should take < 20ms.
+
+    //End background printing; Request print task to stop and die.
+    //Premature?  We could move this to ~LRTRobotBase()
+    AsynchronousPrinter::Quit();
 }
 
 void LRTRobot11::RobotInit()
@@ -130,7 +142,11 @@ void LRTRobot11::MainLoop()
             ProfiledSection ps("Minibot Deployment");
             minibotDeployer.Output();
         }
-
+//        if(ds.GetDigitalIn(8))
+//        {
+//            printf("Switch 8 on DS set; Exiting -D.Giandomenico\n");
+//            exit(100);
+//        }
         // To add another component output:
         //
         // {
@@ -158,3 +174,12 @@ GameState LRTRobot11::DetermineState()
 }
 
 START_ROBOT_CLASS(LRTRobot11);
+/*
+ * The Entry point of the Program is "FRC_UserProgram_StartupLibraryInit()"
+ * This calls RobotBase::startRobotTask((FUNCPTR)FRC_userClassFactory);
+ * which in turn creates a new "LRTRobot11"
+ * and calls the virtual RobotBase::StartCompetition()
+ * -> LRTRobotBase::StartCompetition();
+ * This VxWorks task is named "FRC_RobotTask"
+ * -D.Giandomenico (description of WPLIB start code)
+ */
