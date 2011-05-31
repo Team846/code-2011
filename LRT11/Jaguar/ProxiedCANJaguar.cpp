@@ -63,7 +63,9 @@ ProxiedCANJaguar::~ProxiedCANJaguar()
     // currently the main loop is killed in the dtor of LRTRobot11.
 //   JaguarReader::GetInstance().StopTask(); //kill the jag reader that accesses this object.
     StopBackgroundTask();
-    delete commSemaphore;
+    int error = semDelete(commSemaphore);
+    if(error)
+        printf("SemDelete Error=%d\n", error);
 }
 void ProxiedCANJaguar::StopBackgroundTask()
 {
@@ -132,6 +134,7 @@ void ProxiedCANJaguar::CommTask()
             shouldCacheSetpoint = false;
         if(false == shouldCacheSetpoint)    //*always* clear the counter if caching is false.
             cacheSetpointCounter = 0;
+
 
 
 #if DISABLE_SETPOINT_CACHING

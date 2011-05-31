@@ -64,12 +64,17 @@ void Arm::Output()
         return; // do not allow normal processing
     }
 
+    bool state_change_print = (oldState != action.arm.state);
+
     if(oldState != action.arm.state)
         cycleCount = timeoutCycles; // reset timeout
 
     switch(action.arm.state)
     {
     case PRESET_TOP:
+        if(state_change_print)
+            AsynchronousPrinter::Printf("Arm: Preset Top\n");
+
         action.arm.doneState = action.arm.IN_PROGRESS;
         // overriden below to change roller speed while moving the arm up
         action.roller.maxSuckPower = 1.0;
@@ -109,6 +114,8 @@ void Arm::Output()
         break;
 
     case PRESET_BOTTOM:
+        if(state_change_print)
+            AsynchronousPrinter::Printf("Arm: Preset Bottom\n");
         action.arm.doneState = action.arm.IN_PROGRESS;
         action.roller.maxSuckPower = 1.0;
 
@@ -135,6 +142,8 @@ void Arm::Output()
         break;
 
     case PRESET_MIDDLE:
+        if(state_change_print)
+            AsynchronousPrinter::Printf("Arm: Preset Middle\n");
         action.arm.doneState = action.arm.IN_PROGRESS;
 
         // no timeout for now
@@ -165,6 +174,8 @@ void Arm::Output()
         break;
 
     case MANUAL_UP:
+        if(state_change_print)
+            AsynchronousPrinter::Printf("Arm: Manual Up\n");
         if(potValue < maxPosition)
             armEsc.SetDutyCycle(powerUp);
         else
@@ -176,6 +187,8 @@ void Arm::Output()
         break;
 
     case MANUAL_DOWN:
+        if(state_change_print)
+            AsynchronousPrinter::Printf("Arm: Manual Down\n");
         if(potValue > minPosition)
             armEsc.SetDutyCycle(powerDown);
         else
@@ -187,9 +200,14 @@ void Arm::Output()
         break;
 
     case IDLE:
+        if(state_change_print)
+            AsynchronousPrinter::Printf("Arm: Idle\n");
         action.arm.doneState = action.arm.SUCCESS;
         armEsc.SetDutyCycle(0.0);
         break;
+    default:
+        AsynchronousPrinter::Printf("Arm: ERROR Unknown State\n");
+
     }
 
     oldState = action.arm.state;

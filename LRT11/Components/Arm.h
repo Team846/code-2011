@@ -7,6 +7,8 @@
 #include "..\Sensors\VirtualPot.h"
 using namespace std;
 
+
+
 class Arm : public Component, public Configurable
 {
 private:
@@ -18,12 +20,13 @@ private:
 #else
     AnalogChannel armPot;
 #endif
-
+public:
     enum
     {
         IDLE = 1, PRESET_BOTTOM = 2, PRESET_TOP = 3,
-        PRESET_MIDDLE = 4,  MANUAL_DOWN = 5, MANUAL_UP = 6
+        PRESET_MIDDLE = 4,  MANUAL_DOWN = 5, MANUAL_UP = 6, N_States
     } state;
+
     int oldState;
 
     float maxPosition, minPosition, midPosition, midPositionDeadband;
