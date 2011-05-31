@@ -20,7 +20,7 @@ private:
     volatile float lastSetpoint;
 
     volatile bool shouldCacheSetpoint;
-    int cacheSetpointCounter;
+    int cacheSetpointCounter;   //timer for how long cache may be held.
 
     volatile NeutralMode mode;
     volatile NeutralMode lastMode;
@@ -52,16 +52,24 @@ public:
         int num;
         ProxiedCANJaguar* j[32];
 
-        float currents[32];
-        float potValues[32];
+//        float currents[32];
+//        float potValues[32];
 
-        bool shouldCollectCurrent[32];
-        bool shouldCollectPotValue[32];
+//       bool shouldCollectCurrent[32];
+//        bool shouldCollectPotValue[32];
     } JaguarList;
 
-    static JaguarList jaguars;
+    // static JaguarList jaguars;
 
+    static ProxiedCANJaguar* jaguar_list_;
+    ProxiedCANJaguar* next_jaguar_;
+
+    void SetDutyCycle(float duty_cycle);
+    void SetPosition(float position);
+
+private:    //don't let external objects control the ESC with the ambiguous Set() cmd
     void Set(float setpoint, UINT8 syncGroup = 0);
+public:
     void ConfigNeutralMode(LRTCANJaguar::NeutralMode mode);
 
     void ShouldCollectCurrent(bool shouldCollect);

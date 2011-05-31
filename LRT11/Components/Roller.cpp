@@ -55,23 +55,23 @@ void Roller::RollInward()
 //    }
 //    else
 //    {
-    topRoller.Set(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
+    topRoller.SetDutyCycle(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
             Util::Abs<float>(dutyCycleSucking)));
-    bottomRoller.Set(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
+    bottomRoller.SetDutyCycle(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
             Util::Abs<float>(dutyCycleSucking)));
 //    }
 }
 
 void Roller::RollOutward()
 {
-    topRoller.Set(dutyCycleSpittingTop);
-    bottomRoller.Set(dutyCycleSpittingBottom);
+    topRoller.SetDutyCycle(dutyCycleSpittingTop);
+    bottomRoller.SetDutyCycle(dutyCycleSpittingBottom);
 }
 
 void Roller::Stop()
 {
-    topRoller.Set(0.0);
-    bottomRoller.Set(0.0);
+    topRoller.SetDutyCycle(0.0);
+    bottomRoller.SetDutyCycle(0.0);
 }
 
 void Roller::RollOpposite(bool rotateUpward)
@@ -81,14 +81,14 @@ void Roller::RollOpposite(bool rotateUpward)
     // set duty cycles based on rotation direction
     if(rotateUpward)
     {
-        topRoller.Set(dutyCycleRotatingIn);
-        bottomRoller.Set(dutyCycleRotatingOut);
+        topRoller.SetDutyCycle(dutyCycleRotatingIn);
+        bottomRoller.SetDutyCycle(dutyCycleRotatingOut);
     }
     // pulse rotate and suck when rotating downward
     else
     {
-        topRoller.Set(dutyCycleRotatingOut);
-        bottomRoller.Set(dutyCycleRotatingIn);
+        topRoller.SetDutyCycle(dutyCycleRotatingOut);
+        bottomRoller.SetDutyCycle(dutyCycleRotatingIn);
     }
 //    else if(++cycleCount < 20)
 //    {

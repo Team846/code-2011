@@ -1,5 +1,6 @@
 #include "JaguarReader.h"
 
+//Obsolete -- all references to JaguarReader in the program should be removed. -dg 5/30/2011 TODO
 JaguarReader* JaguarReader::instance = NULL;
 
 JaguarReader::JaguarReader()
@@ -12,6 +13,7 @@ JaguarReader::JaguarReader()
 
 JaguarReader& JaguarReader::GetInstance()
 {
+    printf("JAGUAR READER: Get Instance\n");    //shouldn't be here.
     if(instance == NULL)
         instance = new JaguarReader();
     return *instance;
@@ -35,6 +37,7 @@ void JaguarReader::StopTask()
 
 void JaguarReader::ReaderTask()
 {
+#if 0 //CUT
 // Jaguar tasks may have died or the jag objects may have been destroyed.
 // This task must be robust to check. -dg
 
@@ -63,4 +66,5 @@ void JaguarReader::ReaderTask()
                 potValues[index] = j[index]->GetPosition();
         }
     }
+#endif // CUT
 }

@@ -45,7 +45,7 @@ protected:
     virtual ~LRTRobotBase();
     bool quitting_;  //use this to kill the main loop for orderly shutdown.
 
-    JaguarReader& reader;
+//   JaguarReader& reader;
     int cycleCount;
 
 //    int packetsMissedInLifetime;

@@ -97,7 +97,7 @@ void Esc::Stop()
     if(Util::Abs<double>(RobotSpeed) > 0.3)
     {
         SetBrake(8);
-        Set(0.0);
+        SetDutyCycle(0.0);
         return;
     }
     double error = 0.0 - RobotSpeed;
@@ -112,21 +112,27 @@ void Esc::Stop()
 //        Set(0.0);
 
 //    Set(errorRunning * pGain * (1 - k));
-    Set(correction);
+    SetDutyCycle(correction);
     SetBrake(8);
 }
 
 void Esc::Set(float speed)
 {
+    printf("ERROR:Call to Set in ESC\n");   //ToDo
+}
+
+void Esc::SetDutyCycle(float speed)
+
+{
     if(hasPartner)
-        partner->Set(speed);
+        partner->SetDutyCycle(speed);
 
 #ifdef USE_DASHBOARD
 //    SmartDashboard::Log(speed, name.c_str());
 #endif
 
     // no current limiting
-    ProxiedCANJaguar::Set(Util::Clamp<float>(speed, -1.0, 1.0));
+    ProxiedCANJaguar::SetDutyCycle(Util::Clamp<float>(speed, -1.0, 1.0));
 //    controller.Set(channel, Util::Clamp<float>(speed, -1.0, 1.0));
 }
 

@@ -58,7 +58,7 @@ void Arm::Output()
 
     if(action.master.abort)
     {
-        armEsc.Set(0.0);
+        armEsc.SetDutyCycle(0.0);
         action.arm.state = action.arm.IDLE;
         action.arm.doneState = action.arm.ABORTED;
         return; // do not allow normal processing
@@ -79,14 +79,14 @@ void Arm::Output()
         if(--cycleCount < 0)
         {
             action.arm.doneState = action.arm.FAILURE;
-            armEsc.Set(0.0);
+            armEsc.SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue >= maxPosition)
         {
             action.arm.doneState = action.arm.SUCCESS;
-            armEsc.Set(powerRetainUp);
+            armEsc.SetDutyCycle(powerRetainUp);
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
             cycleCount = 100;
@@ -94,7 +94,7 @@ void Arm::Output()
         else
         {
             action.arm.doneState = action.arm.IN_PROGRESS;
-            armEsc.Set(powerUp);
+            armEsc.SetDutyCycle(powerUp);
 
             action.roller.state = action.roller.SUCKING;
             action.roller.maxSuckPower = 0.3; // lower duty cycle
@@ -115,14 +115,14 @@ void Arm::Output()
         if(--cycleCount < 0)
         {
             action.arm.doneState = action.arm.FAILURE;
-            armEsc.Set(0.0);
+            armEsc.SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue <= minPosition)
         {
             action.arm.doneState = action.arm.SUCCESS;
-            armEsc.Set(0.0); // don't go below the min position
+            armEsc.SetDutyCycle(0.0); // don't go below the min position
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
             cycleCount = 100;
@@ -130,7 +130,7 @@ void Arm::Output()
         else
         {
             action.arm.doneState = action.arm.IN_PROGRESS;
-            armEsc.Set(powerDown);
+            armEsc.SetDutyCycle(powerDown);
         }
         break;
 
@@ -152,23 +152,23 @@ void Arm::Output()
 //          armEsc.Set(correction);
 
         if(potValue > midPosition + midPositionDeadband)
-            armEsc.Set(midPowerDown);
+            armEsc.SetDutyCycle(midPowerDown);
         else if(potValue < midPosition - midPositionDeadband)
-            armEsc.Set(midPowerUp);
+            armEsc.SetDutyCycle(midPowerUp);
         else
         {
             // prevent cycle count from becoming < 0
             cycleCount = 100;
             action.arm.doneState = action.arm.SUCCESS;
-            armEsc.Set(0.0);
+            armEsc.SetDutyCycle(0.0);
         }
         break;
 
     case MANUAL_UP:
         if(potValue < maxPosition)
-            armEsc.Set(powerUp);
+            armEsc.SetDutyCycle(powerUp);
         else
-            armEsc.Set(0.0);
+            armEsc.SetDutyCycle(0.0);
 
         action.arm.doneState = action.arm.IN_PROGRESS;
         // operator must hold button to stay in manual mode
@@ -177,9 +177,9 @@ void Arm::Output()
 
     case MANUAL_DOWN:
         if(potValue > minPosition)
-            armEsc.Set(powerDown);
+            armEsc.SetDutyCycle(powerDown);
         else
-            armEsc.Set(0.0);
+            armEsc.SetDutyCycle(0.0);
 
         action.arm.doneState = action.arm.IN_PROGRESS;
         // operator must hold button to stay in manual mode
@@ -188,7 +188,7 @@ void Arm::Output()
 
     case IDLE:
         action.arm.doneState = action.arm.SUCCESS;
-        armEsc.Set(0.0);
+        armEsc.SetDutyCycle(0.0);
         break;
     }
 

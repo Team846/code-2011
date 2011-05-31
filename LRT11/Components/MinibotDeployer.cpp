@@ -133,5 +133,5 @@ void MinibotDeployer::Output()
         break;
     }
 
-    deployerEsc.Set(setPoint);
+    deployerEsc.SetDutyCycle(setPoint);
 }

@@ -4,7 +4,9 @@
 #define DISABLE_SETPOINT_CACHING 0
 
 GameState ProxiedCANJaguar::gameState = DISABLED;
-ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
+//ProxiedCANJaguar::JaguarList ProxiedCANJaguar::jaguars = {0};
+ProxiedCANJaguar::ProxiedCANJaguar* ProxiedCANJaguar::jaguar_list_ = NULL;
+
 
 ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
     : LRTCANJaguar(channel)
@@ -12,6 +14,7 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
     , print_ctor_dtor(taskName_.c_str(), (taskName_ + "\n").c_str())
     , channel(channel)
     , name_(name)
+
     , setpoint(0.0)
     , lastSetpoint(0.0)
     , shouldCacheSetpoint(false)
@@ -29,19 +32,23 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
     , lastState(DISABLED)
 //    : controller(CANBusController::GetInstance())
 #endif
-    , index(jaguars.num)
+//    , index(jaguars.num)
     , commTask(taskName_.c_str(), (FUNCPTR) ProxiedCANJaguar::CommTaskWrapper)
     , commSemaphore(semBCreate(SEM_Q_PRIORITY, SEM_EMPTY))
     , running_(false)
     , quitting_(false)
 {
-    jaguars.j[jaguars.num++] = this;
+//    jaguars.j[jaguars.num++] = this;
 
-    jaguars.currents[index] = 0;
-    jaguars.shouldCollectCurrent[index] = false;
+    //Insert this jaguar into the list of jaguars.
+    next_jaguar_ = jaguar_list_;
+    jaguar_list_ = this;
 
-    jaguars.potValues[index] = 0;
-    jaguars.shouldCollectPotValue[index] = false;
+//   jaguars.currents[index] = 0; //TODO Delete these commented lines. -dg
+//    jaguars.shouldCollectCurrent[index] = false;
+
+//    jaguars.potValues[index] = 0;
+//   jaguars.shouldCollectPotValue[index] = false;
 
     if(name_ == NULL) name_ = "?";
     commTask.Start((UINT32) this);
@@ -50,54 +57,42 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
 
 ProxiedCANJaguar::~ProxiedCANJaguar()
 {
-    JaguarReader::GetInstance().StopTask(); //is this the best place? -dg TODO
+    //Before we delete the jaguar object,
+    //the Jaguar reader task should be killed
+    // and the main loop that accesses jags should be killed.
+    // currently the main loop is killed in the dtor of LRTRobot11.
+//   JaguarReader::GetInstance().StopTask(); //kill the jag reader that accesses this object.
     StopBackgroundTask();
-
-    //leave the semaphore; we are quitting anyway. -dg. Is this Bad?
+    delete commSemaphore;
 }
 void ProxiedCANJaguar::StopBackgroundTask()
 {
     if(running_)
     {
-        INT32 task_id = commTask.GetID();
+        INT32 task_id = commTask.GetID(); //for info only. no safety check.
         commTask.Stop();
         printf("Task 0x%x killed for CANid=%d:%s\n", task_id, channel, name_);
     }
 }
 
+
 void ProxiedCANJaguar::ShouldCollectCurrent(bool shouldCollect)
 {
-//    jaguars.shouldCollectCurrent[index] = true;
     collectCurrent = shouldCollect;
 }
 
 void ProxiedCANJaguar::ShouldCollectPotValue(bool shouldCollect)
 {
-//    jaguars.shouldCollectPotValue[index] = shouldCollect;
     collectPotValue = shouldCollect;
 }
 
 float ProxiedCANJaguar::GetCurrent()
 {
-//    if(!jaguars.shouldCollectCurrent[index])
-//    {
-//        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
-//        return -1.0;
-//    }
-
-//    return jaguars.currents[index];
     return current;
 }
 
 float ProxiedCANJaguar::GetPotValue()
 {
-//    if(!jaguars.shouldCollectPotValue[index])
-//    {
-//        AsynchronousPrinter::Printf("Fatal %s:%d\n", __FILE__, __LINE__);
-//        return -1.0;
-//    }
-
-//    return jaguars.potValues[index];
     return potValue;
 }
 
@@ -122,36 +117,41 @@ void ProxiedCANJaguar::CommTask()
         if(quitting_)
             break;
 
-        if(setpoint == lastSetpoint && lastState == gameState)
-            shouldCacheSetpoint = true;
-        else
+        //Determine if we can cache the setpoint and mode.
+        shouldCacheMode = shouldCacheSetpoint = true; //default, unless...
+        if(lastState != gameState)
+            shouldCacheMode = shouldCacheSetpoint = false;
+        if(mode != lastMode)
+            shouldCacheMode = shouldCacheSetpoint = false;
+        if(setpoint != lastSetpoint)
             shouldCacheSetpoint = false;
+
+        // cache if value has been cached for over
+        // half a second -KV -DG championships 4/28/11
+        if(++cacheSetpointCounter >= 25)
+            shouldCacheSetpoint = false;
+        if(false == shouldCacheSetpoint)    //*always* clear the counter if caching is false.
+            cacheSetpointCounter = 0;
+
 
 #if DISABLE_SETPOINT_CACHING
         shouldCacheSetpoint = false;
 #endif
 
-        // cache if setpoint has changed or if value has been cached for over
-        // half a second -KV -DG championships 4/28/11
-        if(!shouldCacheSetpoint || cacheSetpointCounter > 25)
-        {
-            LRTCANJaguar::Set(setpoint);
-            lastSetpoint = setpoint;
-            cacheSetpointCounter = 0;
-        }
-        else
-            cacheSetpointCounter++;
-
-        if(mode == lastMode && lastState == gameState)
-            shouldCacheMode = true;
-        else
-            shouldCacheMode = false;
-
-        if(!shouldCacheMode)
+        //change the mode, then do the set point.
+        if(shouldCacheMode == false)
         {
             LRTCANJaguar::ConfigNeutralMode(mode);
             lastMode = mode;
         }
+        if(shouldCacheSetpoint == false)
+        {
+            LRTCANJaguar::Set(setpoint);
+            lastSetpoint = setpoint;
+        }
+
+
+
 
         if(collectCurrent)
         {
@@ -277,12 +277,25 @@ void ProxiedCANJaguar::ResetCache()
     controller.ResetCache(channel);
 }
 #else
+
+
+//Set() is ambiguous, since it doesn't include the mode.
+//We've replaced them with specific command.  They are still in progress.  TODO -dg
+void ProxiedCANJaguar::SetDutyCycle(float duty_cycle)
+{
+    this->setpoint = duty_cycle;
+}
+
+void ProxiedCANJaguar::SetPosition(float position)
+{
+    this->setpoint = position;
+}
 void ProxiedCANJaguar::Set(float setpoint, UINT8 syncGroup)
 {
     // send the value if there is a setpoint or game state change
 //    if(setpoint != lastSetpoint || lastState != gameState)
 //        LRTCANJaguar::Set(setpoint);
-
+    printf("ERROR: Calling Set() in ProxiedCANJaguar: %s\n;", name_);
     this->setpoint = setpoint;
 
 //    lastSetpoint = setpoint;

@@ -7,7 +7,7 @@
  */
 LRTRobotBase::LRTRobotBase()
     : quitting_(false)
-    , reader(JaguarReader::GetInstance())
+//   , reader(JaguarReader::GetInstance())
     , cycleCount(0)
 
 {
@@ -85,10 +85,13 @@ void LRTRobotBase::StartCompetition()
         // even though both operands are UINT32s
         sleepTime_us = cycleExpire_us - GetFPGATime();
 
-//        AsynchronousPrinter::Printf("----\n");
         //NB: This loop must be quit *before* the Jaguars are deleted!
-        for(int i = 0; i < ProxiedCANJaguar::jaguars.num; i++)
-            ProxiedCANJaguar::jaguars.j[i]->BeginComm();
+        //TODO: This should be moved to "MainLoop()" -dg
+        for(ProxiedCANJaguar* j = j->jaguar_list_; j != NULL; j = j->next_jaguar_)
+            j->BeginComm(); //release semaphores.
+
+//        for(int i = 0; i < ProxiedCANJaguar::jaguars.num; i++)
+//           ProxiedCANJaguar::jaguars.j[i]->BeginComm();
 
         // sleep allows other threads to run -KV/DG 4/2011
         if(sleepTime_us > 0)

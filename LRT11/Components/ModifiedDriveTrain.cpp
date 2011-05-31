@@ -132,8 +132,8 @@ void ModifiedDriveTrain::Output()
 
     // leftDC and rightDC are set to 0 if there is a need to brake;
     // see DitheredBrakeTrain's Drive method
-    leftESC.Set(drive.leftCommand.dutyCycle);
-    rightESC.Set(drive.rightCommand.dutyCycle);
+    leftESC.SetDutyCycle(drive.leftCommand.dutyCycle);
+    rightESC.SetDutyCycle(drive.rightCommand.dutyCycle);
 
     if(synchronizedCyclesLeft > 0) //trying to shift?  Then don't apply brakes
     {

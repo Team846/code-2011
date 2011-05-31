@@ -140,7 +140,7 @@ void Lift::Output()
         {
             // exited from manual mode; done with maneuver
             action.lift.doneState = action.lift.SUCCESS;
-            liftEsc.Set(0.0);
+            liftEsc.SetDutyCycle(0.0);
         }
 //        else if(shouldMoveArmToMiddle)
 //            action.arm.state = action.arm.PRESET_MIDDLE;
@@ -152,7 +152,7 @@ void Lift::Output()
         liftEsc.ShouldCollectPotValue(false);
 
         if(!positionMode)
-            liftEsc.Set(0.0);
+            liftEsc.SetDutyCycle(0.0);
 
         action.lift.doneState = action.lift.ABORTED;
         break;
@@ -164,17 +164,17 @@ void Lift::Output()
         {
             // configure jaguar for voltage mode
             ConfigureManualMode();
-            liftEsc.Set(0.0); // clear any old setpoint values from position mode
+            liftEsc.SetPosition(0.0); // clear any old setpoint values from position mode
             positionMode = false;
         }
 
         if(potValue >= minPosition)
         {
-            liftEsc.Set(-0.1);
+            liftEsc.SetPosition(-0.1);
 //            liftEsc.ResetCache();
         }
         else
-            liftEsc.Set(0.0);
+            liftEsc.SetPosition(0.0);
         break;
 
     case MANUAL:
@@ -186,11 +186,11 @@ void Lift::Output()
                 (action.lift.power < 0 && potValue > minPosition))
         {
             liftEsc.ResetCache();
-            liftEsc.Set(action.lift.power);
+            liftEsc.SetDutyCycle(action.lift.power);
         }
         else
             // don't power past the minimum and maximum positions
-            liftEsc.Set(0.0);
+            liftEsc.SetDutyCycle(0.0);
 
         state = IDLE;
         break;
@@ -248,7 +248,7 @@ void Lift::Output()
             action.arm.state = action.arm.PRESET_TOP;
 
         SmartDashboard::Log(setpoint, "Lift Set Point");
-        liftEsc.Set(setpoint);
+        liftEsc.SetPosition(setpoint);
 
         if(cycleCount > 0)
             cycleCount--;

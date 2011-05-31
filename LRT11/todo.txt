@@ -1,0 +1,45 @@
+todo.txt
+
+ Created on: May 27, 2011
+     Author: David
+
+
+-Create a class to control tasks within the process,
+Objective: orderly shutdown, without tasks accessing deleted objects.
+
+-Create a class that opens and initializes all hardware ports on the cRio.
+  Design Requirements:
+    Can create dummy objects
+    Can create simulated objects
+    Checks resources for conflicts prior to opening.
+    
+-Interrupt based camera-linescanner task.
+
+-Kill signal simulator (to simulate shutdowns that occur when reloading code.)
+Reason:  When code is reloaded, old code is killed.  If tasks are left runnning, or resources
+still held, then the cRio may hang or operate unpredictably.
+
+-Servo Setup
+ Design Requirement: Standalone utility to setup servo positions
+
+-Jaguar base operation 
+ Design Requirement:
+   Standalong utility to operate Jaguars or groups of Jaguars
+   Work for Serial or Ethernet based CAN
+   
+   
+-Drivetrain: Reorg
+Design Requirements:
+  Drivetrain should include instances of ESC's (not be class extensions) to better allow ganging.
+  
+ 
+-CAN thread
+  Currently:
+    *) main loop releases Jag threads (Problem if jags deleted)
+    *) jag threads set and read values.  Set command is ambiguous depending on mode. 
+     Interface should include the mode, and change mode as required.
+    *) Jag Reader function: Requests and Reads currents & pot values from each jaguar.  
+  
+ 
+ 
+ 

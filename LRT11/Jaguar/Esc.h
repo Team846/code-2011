@@ -25,7 +25,10 @@ public:
     ~Esc();
     virtual void Configure();
     void Stop();
-    virtual void Set(float speed);
+private:
+    virtual void Set(float speed);  //renaming set() to setDutyCycle()
+public:
+    void SetDutyCycle(float dutycycle);  //renaming set() to setSpeed()
 
     void ApplyBrakes();
     void SetBrake(int brakeAmount);
