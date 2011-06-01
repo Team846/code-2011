@@ -5,7 +5,7 @@
 #include "Util\Util.h"
 #include "Util\Profiler.h"
 #include "Util\AsynchronousPrinter.h"
-#include "CAN\JaguarReader.h"
+
 
 /**
  * IterativeRobot implements a specific type of Robot Program framework, extending the RobotBase class.

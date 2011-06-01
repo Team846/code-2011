@@ -62,7 +62,7 @@ ActionData::ActionData()
 
     demoLift.power = 0;
 
-    arm.state = arm.IDLE;
+    arm.state = ACTION::ARM_::IDLE;
     arm.doneState = arm.IN_PROGRESS;
 
     roller.state = roller.STOPPED;

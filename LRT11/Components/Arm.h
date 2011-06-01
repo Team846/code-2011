@@ -20,12 +20,11 @@ private:
 #else
     AnalogChannel armPot;
 #endif
-public:
-    enum
-    {
-        IDLE = 1, PRESET_BOTTOM = 2, PRESET_TOP = 3,
-        PRESET_MIDDLE = 4,  MANUAL_DOWN = 5, MANUAL_UP = 6, N_States
-    } state;
+//    enum  //Note Well: These must match the definitions in Action data
+//    {
+//        IDLE = 1, PRESET_BOTTOM = 2, PRESET_TOP = 3,
+//        PRESET_MIDDLE = 4,  MANUAL_DOWN = 5, MANUAL_UP = 6
+//    } state;
 
     int oldState;
 

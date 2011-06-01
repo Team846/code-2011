@@ -245,7 +245,7 @@ void Lift::Output()
         }
         else
             // keep arm upright when the lift is moving
-            action.arm.state = action.arm.PRESET_TOP;
+            action.arm.state = ACTION::ARM_::PRESET_TOP;
 
         SmartDashboard::Log(setpoint, "Lift Set Point");
         liftEsc.SetPosition(setpoint);

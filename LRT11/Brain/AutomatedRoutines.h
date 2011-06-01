@@ -30,7 +30,7 @@ void Brain::AutomatedRoutineWithLift()
         break;
 
     case MOVE_LIFT_AND_REVERSE_ROLLER:
-        action.arm.state = action.arm.PRESET_MIDDLE;
+        action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
 
         action.lift.givenCommand = true;
         action.lift.manualMode = true;
@@ -46,7 +46,7 @@ void Brain::AutomatedRoutineWithLift()
 
     case STOPPING:
         action.lift.power = 0;
-        action.arm.state = action.arm.PRESET_TOP;
+        action.arm.state = ACTION::ARM_::PRESET_TOP;
         action.roller.state = action.roller.STOPPED;
         state = IDLE;
         break;
@@ -99,7 +99,7 @@ void Brain::AutomatedRoutines()
 
     // execution for new release method using the arm
     if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_MIDDLE_POSITON)
-        action.arm.state = action.arm.PRESET_MIDDLE;
+        action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
 
 
 #ifdef LIFT_RELEASE
@@ -115,7 +115,7 @@ void Brain::AutomatedRoutines()
         switch(state)
         {
         case MOVE_LIFT_AND_REVERSE_ROLLER:
-            action.arm.state = action.arm.PRESET_MIDDLE;
+            action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
 
             action.lift.givenCommand = true;
             action.lift.manualMode = true;
@@ -131,7 +131,7 @@ void Brain::AutomatedRoutines()
 
         case STOPPING:
             action.lift.power = 0;
-            action.arm.state = action.arm.PRESET_TOP;
+            action.arm.state = ACTION::ARM_::PRESET_TOP;
             action.roller.state = action.roller.STOPPED;
             action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
             break;
@@ -154,7 +154,7 @@ void Brain::AutomatedRoutines()
 
     else if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_UP)
     {
-        action.arm.state = action.arm.PRESET_TOP;
+        action.arm.state = ACTION::ARM_::PRESET_TOP;
         if(action.arm.doneState == action.arm.SUCCESS)
         {
             AsynchronousPrinter::Printf("arm done\n");

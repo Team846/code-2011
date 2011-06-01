@@ -1,6 +1,7 @@
 #include "LRTRobotBase.h"
 #include "Utility.h"
 #include "sysLib.h"
+#include "Jaguar/ProxiedCANJaguar.h"
 
 /**
  * Constructor for RobotIterativeBase. Initializes member variables.

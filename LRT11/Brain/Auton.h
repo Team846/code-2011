@@ -132,7 +132,7 @@ void Brain::EncoderAuton()
 
         action.driveTrain.distance.done = false;
         // arm should stay in top position
-        action.arm.state = action.arm.PRESET_TOP;
+        action.arm.state = ACTION::ARM_::PRESET_TOP;
 
         // low gear driving
         action.shifter.gear = action.shifter.LOW_GEAR;

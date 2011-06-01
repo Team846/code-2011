@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "ProxiedCANJaguar.h"
-#include "../CAN/JaguarReader.h"
+#include "../Jaguar/ProxiedCANJaguar.h"
+
 #define DISABLE_SETPOINT_CACHING 0
 
 GameState ProxiedCANJaguar::gameState = DISABLED;

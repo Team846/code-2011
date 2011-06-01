@@ -13,8 +13,8 @@ Arm::Arm()
 #else
     , armPot(RobotConfig::ANALOG::POT_ARM)
 #endif
-    , state(IDLE)
-    , oldState(action.arm.IDLE)
+//   , state(IDLE)
+    , oldState(ACTION::ARM_::IDLE)
     , cycleCount(0)
     , presetMode(true)
     , pulseCount(0)
@@ -50,6 +50,7 @@ void Arm::Configure()
 
 void Arm::Output()
 {
+
     float potValue = armPot.GetAverageValue();
 
 #ifdef USE_DASHBOARD
@@ -59,7 +60,7 @@ void Arm::Output()
     if(action.master.abort)
     {
         armEsc.SetDutyCycle(0.0);
-        action.arm.state = action.arm.IDLE;
+        action.arm.state = ACTION::ARM_::IDLE;
         action.arm.doneState = action.arm.ABORTED;
         return; // do not allow normal processing
     }
@@ -71,7 +72,7 @@ void Arm::Output()
 
     switch(action.arm.state)
     {
-    case PRESET_TOP:
+    case ACTION::ARM_::PRESET_TOP:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Preset Top\n");
 
@@ -113,7 +114,7 @@ void Arm::Output()
         }
         break;
 
-    case PRESET_BOTTOM:
+    case ACTION::ARM_::PRESET_BOTTOM:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Preset Bottom\n");
         action.arm.doneState = action.arm.IN_PROGRESS;
@@ -141,7 +142,7 @@ void Arm::Output()
         }
         break;
 
-    case PRESET_MIDDLE:
+    case ACTION::ARM_::PRESET_MIDDLE:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Preset Middle\n");
         action.arm.doneState = action.arm.IN_PROGRESS;
@@ -173,7 +174,7 @@ void Arm::Output()
         }
         break;
 
-    case MANUAL_UP:
+    case ACTION::ARM_::MANUAL_UP:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Manual Up\n");
         if(potValue < maxPosition)
@@ -183,10 +184,10 @@ void Arm::Output()
 
         action.arm.doneState = action.arm.IN_PROGRESS;
         // operator must hold button to stay in manual mode
-        action.arm.state = action.arm.IDLE;
+        action.arm.state = ACTION::ARM_::IDLE;
         break;
 
-    case MANUAL_DOWN:
+    case ACTION::ARM_::MANUAL_DOWN:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Manual Down\n");
         if(potValue > minPosition)
@@ -196,10 +197,10 @@ void Arm::Output()
 
         action.arm.doneState = action.arm.IN_PROGRESS;
         // operator must hold button to stay in manual mode
-        action.arm.state = action.arm.IDLE;
+        action.arm.state = ACTION::ARM_::IDLE;
         break;
 
-    case IDLE:
+    case ACTION::ARM_::IDLE:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Idle\n");
         action.arm.doneState = action.arm.SUCCESS;
@@ -211,4 +212,12 @@ void Arm::Output()
     }
 
     oldState = action.arm.state;
+
+    //Print diagnostics
+    static int lastDoneState = 0;
+    static char* done_state_names[5] =
+    {"NULL", "IN_PROGRESS", "SUCCESS", "FAILURE", "ABORTED" };
+    if(lastDoneState != action.arm.doneState)
+        AsynchronousPrinter::Printf("Arm: DoneState:%s\n", done_state_names[action.arm.doneState]);
+    lastDoneState = action.arm.doneState;
 }
