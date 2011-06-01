@@ -19,7 +19,7 @@ void Brain::TeleopArm()
         action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
         timer = 0;
     }
-    else if(action.arm.doneState == action.arm.FAILURE)
+    else if(action.arm.completion_status == ACTION::FAILURE)
     {
         if(++timer > 100)
         {

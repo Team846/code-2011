@@ -13,11 +13,11 @@ void Brain::TeleopLift()
 
     // determine lift movement with else ifs for interlocks
     if(inputs.ShouldMoveLiftLow())
-        action.lift.preset = action.lift.LOW_PEG;
+        action.lift.lift_preset = ACTION::LIFT::LOW_PEG;
     else if(inputs.ShouldMoveLiftMedium())
-        action.lift.preset = action.lift.MED_PEG;
+        action.lift.lift_preset = ACTION::LIFT::MED_PEG;
     else if(inputs.ShouldMoveLiftHigh())
-        action.lift.preset = action.lift.HIGH_PEG;
+        action.lift.lift_preset = ACTION::LIFT::HIGH_PEG;
     else if(inputs.ShouldManuallyPowerLift())
     {
         action.lift.manualMode = true;

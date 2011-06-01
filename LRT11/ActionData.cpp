@@ -57,13 +57,13 @@ ActionData::ActionData()
     lift.manualMode = false;
     lift.power = 0;
     lift.highColumn = false;
-    lift.preset = lift.STOWED;
-    lift.doneState = lift.IN_PROGRESS;
+    lift.lift_preset = ACTION::LIFT::STOWED;
+    lift.completion_status = ACTION::IN_PROGRESS;
 
     demoLift.power = 0;
 
     arm.state = ACTION::ARM_::IDLE;
-    arm.doneState = arm.IN_PROGRESS;
+    arm.completion_status = ACTION::IN_PROGRESS;
 
     roller.state = roller.STOPPED;
     // if in roller.ROTATING state, default to rotating upward

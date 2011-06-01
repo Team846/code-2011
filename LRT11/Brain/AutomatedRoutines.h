@@ -90,7 +90,7 @@ void Brain::AutomatedRoutines()
 
         // since the lift waits for the arm you have to make sure
         // it does not think that the arm is already done
-        action.arm.doneState = action.arm.IN_PROGRESS;
+        action.arm.completion_status = ACTION::IN_PROGRESS;
     }
 
     // if aborted make sure we terminate the automated routine
@@ -155,19 +155,19 @@ void Brain::AutomatedRoutines()
     else if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_UP)
     {
         action.arm.state = ACTION::ARM_::PRESET_TOP;
-        if(action.arm.doneState == action.arm.SUCCESS)
+        if(action.arm.completion_status == ACTION::SUCCESS)
         {
             AsynchronousPrinter::Printf("arm done\n");
             action.automatedRoutine.ringer = action.automatedRoutine.LIFT_DOWN;
 
             action.lift.givenCommand = true;
-            action.lift.preset = action.lift.LOW_PEG;
-            action.lift.doneState = action.lift.IN_PROGRESS;
+            action.lift.lift_preset = ACTION::LIFT::LOW_PEG;
+            action.lift.completion_status = ACTION::IN_PROGRESS;
         }
     }
     else if(action.automatedRoutine.ringer == action.automatedRoutine.LIFT_DOWN)
     {
-        if(action.lift.doneState == action.lift.SUCCESS)
+        if(action.lift.completion_status == ACTION::SUCCESS)
             action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
     }
 }

@@ -214,7 +214,7 @@ void Brain::EncoderAuton()
         // read from the driverstation if it is a low/high peg.
         action.lift.highColumn = ds.GetDigitalIn(2);
 
-        action.lift.preset = action.lift.HIGH_PEG;
+        action.lift.lift_preset = ACTION::LIFT::HIGH_PEG;
         action.lift.manualMode = false;
         advanceState = true;
 
@@ -223,9 +223,9 @@ void Brain::EncoderAuton()
     case WAIT_FOR_MOVE_LIFT_UP:
         stateName = "WAIT_FOR_MOVE_LIFT_UP";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
-        if(action.lift.doneState != action.lift.IN_PROGRESS) // message is available
+        if(action.lift.completion_status != ACTION::IN_PROGRESS) // message is available
         {
-            if(action.lift.doneState == action.lift.SUCCESS)
+            if(action.lift.completion_status == ACTION::SUCCESS)
                 advanceState = true;
             else // lift operation failed; abort
                 state = IDLE;
@@ -273,7 +273,7 @@ void Brain::EncoderAuton()
         // depends on if the robot is in the middle or on the side
         action.lift.highColumn = ds.GetDigitalIn(2);
 
-        action.lift.preset = action.lift.LOW_PEG;
+        action.lift.lift_preset = ACTION::LIFT::LOW_PEG;
         action.lift.manualMode = false;
         advanceState = true;
         break;
@@ -282,10 +282,10 @@ void Brain::EncoderAuton()
         stateName = "WAIT_FOR_MOVE_LIFT_DOWN";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
 
-        if(action.lift.doneState == action.lift.SUCCESS)
+        if(action.lift.completion_status == ACTION::SUCCESS)
             advanceState = true;
-        else if(action.lift.doneState == action.lift.FAILURE ||
-                action.lift.doneState == action.lift.ABORTED)
+        else if(action.lift.completion_status == ACTION::FAILURE ||
+                action.lift.completion_status == ACTION::ABORTED)
             state = IDLE; // abort auton routine
 
         break;

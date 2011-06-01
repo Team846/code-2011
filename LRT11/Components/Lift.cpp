@@ -139,7 +139,7 @@ void Lift::Output()
         if(!positionMode)
         {
             // exited from manual mode; done with maneuver
-            action.lift.doneState = action.lift.SUCCESS;
+            action.lift.completion_status = ACTION::SUCCESS;
             liftEsc.SetDutyCycle(0.0);
         }
 //        else if(shouldMoveArmToMiddle)
@@ -154,7 +154,7 @@ void Lift::Output()
         if(!positionMode)
             liftEsc.SetDutyCycle(0.0);
 
-        action.lift.doneState = action.lift.ABORTED;
+        action.lift.completion_status = ACTION::ABORTED;
         break;
 
     case PULSING:
@@ -180,7 +180,7 @@ void Lift::Output()
     case MANUAL:
 //        AsynchronousPrinter::Printf("Manual\n");
         liftEsc.ShouldCollectPotValue(true);
-        action.lift.doneState = action.lift.IN_PROGRESS; // not done yet
+        action.lift.completion_status = ACTION::IN_PROGRESS; // not done yet
 
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
@@ -198,7 +198,7 @@ void Lift::Output()
     case PRESET:
 //        AsynchronousPrinter::Printf("Preset\n");
         liftEsc.ShouldCollectPotValue(true);
-        action.lift.doneState = action.lift.IN_PROGRESS; // not done yet
+        action.lift.completion_status = ACTION::IN_PROGRESS; // not done yet
         string key = prefix;
 
         float setpoint = 0.0;
@@ -209,7 +209,7 @@ void Lift::Output()
             key += "lowColumn.";
 //            setPoint = config.Get<float>(prefix + "lowRowReference");
 
-        switch(action.lift.preset)
+        switch(action.lift.lift_preset)
         {
         case STOWED:
             setpoint = 0; // no movement
@@ -225,7 +225,7 @@ void Lift::Output()
             break;
         }
 
-        if(action.lift.preset != action.lift.STOWED)
+        if(action.lift.lift_preset = ACTION::LIFT::STOWED)
             setpoint = config.Get<float>(key); // relative to bottom
 
 //        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setPoint));
@@ -233,7 +233,7 @@ void Lift::Output()
         if(Util::Abs<float>(potValue - setpoint) < potDeadband)
         {
 //            AsynchronousPrinter::Printf("Updating done flag");
-            action.lift.doneState = action.lift.SUCCESS;
+            action.lift.completion_status = ACTION::SUCCESS;
 //            cycleCount = 1; // will get decremented to 0
 
 //            if(action.lift.preset == action.lift.MED_PEG || action.lift.preset == action.lift.HIGH_PEG)
@@ -255,16 +255,16 @@ void Lift::Output()
 
         if(cycleCount == 0)
         {
-//            AsynchronousPrinter::Printf("Success: %d\n", action.lift.doneState == action.lift.SUCCESS);
+//            AsynchronousPrinter::Printf("Success: %d\n", action.lift.doneState == ACTION::SUCCESS);
 
-            if(action.lift.doneState != action.lift.SUCCESS)
+            if(action.lift.completion_status != ACTION::SUCCESS)
             {
-                action.lift.doneState = action.lift.FAILURE;
+                action.lift.completion_status = ACTION::FAILURE;
 //                shouldMoveArmToMiddle = false;
             }
 
-            if(action.lift.preset == action.lift.LOW_PEG &&
-                    action.lift.doneState == action.lift.SUCCESS)
+            if(action.lift.lift_preset == ACTION::LIFT::LOW_PEG &&
+                    action.lift.completion_status == ACTION::SUCCESS)
                 state = PULSING;
             else
                 state = IDLE;

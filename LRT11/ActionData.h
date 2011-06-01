@@ -5,6 +5,13 @@
 
 namespace ACTION
 {
+    enum eCompletionStatus
+    { IN_PROGRESS = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4};
+    char* const status_string[4 + 1] =
+    {   "ERROR", "In Progress", "Success", "Failure", "Aborted" };
+
+
+
     //Define the states used by the ARM
     namespace ARM_ //Can't use ARM without the underscore.  Name conflict. Don't know why. -dg
     {
@@ -14,7 +21,11 @@ namespace ACTION
             PRESET_MIDDLE = 4,  MANUAL_DOWN = 5, MANUAL_UP = 6
         };
     }
-};
+    namespace LIFT
+    {
+        enum ePresets {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4};
+    }
+} //namespace ACTION
 
 class ActionData
 {
@@ -80,8 +91,8 @@ public:
         float power;
 
         bool highColumn;
-        enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4} preset;
-        enum {IN_PROGRESS = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
+        ACTION::LIFT::ePresets lift_preset;
+        ACTION::eCompletionStatus completion_status;
     } lift;
 
     struct
@@ -92,7 +103,7 @@ public:
     struct
     {
         ACTION::ARM_::eStates state;
-        enum {IN_PROGRESS = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4} doneState;
+        ACTION::eCompletionStatus completion_status;
     } arm;
 
     struct

@@ -61,7 +61,7 @@ void Arm::Output()
     {
         armEsc.SetDutyCycle(0.0);
         action.arm.state = ACTION::ARM_::IDLE;
-        action.arm.doneState = action.arm.ABORTED;
+        action.arm.completion_status = ACTION::ABORTED;
         return; // do not allow normal processing
     }
 
@@ -76,7 +76,7 @@ void Arm::Output()
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Preset Top\n");
 
-        action.arm.doneState = action.arm.IN_PROGRESS;
+        action.arm.completion_status = ACTION::IN_PROGRESS;
         // overriden below to change roller speed while moving the arm up
         action.roller.maxSuckPower = 1.0;
 
@@ -84,14 +84,14 @@ void Arm::Output()
         // set the state each time through the loop
         if(--cycleCount < 0)
         {
-            action.arm.doneState = action.arm.FAILURE;
+            action.arm.completion_status = ACTION::FAILURE;
             armEsc.SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue >= maxPosition)
         {
-            action.arm.doneState = action.arm.SUCCESS;
+            action.arm.completion_status = ACTION::SUCCESS;
             armEsc.SetDutyCycle(powerRetainUp);
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
@@ -99,7 +99,7 @@ void Arm::Output()
         }
         else
         {
-            action.arm.doneState = action.arm.IN_PROGRESS;
+            action.arm.completion_status = ACTION::IN_PROGRESS;
             armEsc.SetDutyCycle(powerUp);
 
             action.roller.state = action.roller.SUCKING;
@@ -117,19 +117,19 @@ void Arm::Output()
     case ACTION::ARM_::PRESET_BOTTOM:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Preset Bottom\n");
-        action.arm.doneState = action.arm.IN_PROGRESS;
+        action.arm.completion_status = ACTION::IN_PROGRESS;
         action.roller.maxSuckPower = 1.0;
 
         if(--cycleCount < 0)
         {
-            action.arm.doneState = action.arm.FAILURE;
+            action.arm.completion_status = ACTION::FAILURE;
             armEsc.SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue <= minPosition)
         {
-            action.arm.doneState = action.arm.SUCCESS;
+            action.arm.completion_status = ACTION::SUCCESS;
             armEsc.SetDutyCycle(0.0); // don't go below the min position
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
@@ -137,7 +137,7 @@ void Arm::Output()
         }
         else
         {
-            action.arm.doneState = action.arm.IN_PROGRESS;
+            action.arm.completion_status = ACTION::IN_PROGRESS;
             armEsc.SetDutyCycle(powerDown);
         }
         break;
@@ -145,12 +145,12 @@ void Arm::Output()
     case ACTION::ARM_::PRESET_MIDDLE:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Preset Middle\n");
-        action.arm.doneState = action.arm.IN_PROGRESS;
+        action.arm.completion_status = ACTION::IN_PROGRESS;
 
         // no timeout for now
 //      if(--cycleCount < 0)
 //      {
-//          action.arm.doneState = action.arm.FAILURE;
+//          action.arm.status = ACTION::FAILURE;
 //          armEsc.Set(0.0);
 //          break; // timeout overrides everything
 //      }
@@ -169,7 +169,7 @@ void Arm::Output()
         {
             // prevent cycle count from becoming < 0
             cycleCount = 100;
-            action.arm.doneState = action.arm.SUCCESS;
+            action.arm.completion_status = ACTION::SUCCESS;
             armEsc.SetDutyCycle(0.0);
         }
         break;
@@ -182,7 +182,7 @@ void Arm::Output()
         else
             armEsc.SetDutyCycle(0.0);
 
-        action.arm.doneState = action.arm.IN_PROGRESS;
+        action.arm.completion_status = ACTION::IN_PROGRESS;
         // operator must hold button to stay in manual mode
         action.arm.state = ACTION::ARM_::IDLE;
         break;
@@ -195,7 +195,7 @@ void Arm::Output()
         else
             armEsc.SetDutyCycle(0.0);
 
-        action.arm.doneState = action.arm.IN_PROGRESS;
+        action.arm.completion_status = ACTION::IN_PROGRESS;
         // operator must hold button to stay in manual mode
         action.arm.state = ACTION::ARM_::IDLE;
         break;
@@ -203,7 +203,7 @@ void Arm::Output()
     case ACTION::ARM_::IDLE:
         if(state_change_print)
             AsynchronousPrinter::Printf("Arm: Idle\n");
-        action.arm.doneState = action.arm.SUCCESS;
+        action.arm.completion_status = ACTION::SUCCESS;
         armEsc.SetDutyCycle(0.0);
         break;
     default:
@@ -217,7 +217,7 @@ void Arm::Output()
     static int lastDoneState = 0;
     static char* done_state_names[5] =
     {"NULL", "IN_PROGRESS", "SUCCESS", "FAILURE", "ABORTED" };
-    if(lastDoneState != action.arm.doneState)
-        AsynchronousPrinter::Printf("Arm: DoneState:%s\n", done_state_names[action.arm.doneState]);
-    lastDoneState = action.arm.doneState;
+    if(lastDoneState != action.arm.state)
+        AsynchronousPrinter::Printf("Arm: DoneState:%s\n", done_state_names[action.arm.state]);
+    lastDoneState = action.arm.state;
 }
