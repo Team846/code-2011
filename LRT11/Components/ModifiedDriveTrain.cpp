@@ -47,7 +47,7 @@ void ModifiedDriveTrain::Output()
 //        AsynchronousPrinter::Printf("Right: %6.3f\n", rightESC.GetCurrent());
 //    }
 
-    closedRateTrain.SetHighGear(action.shifter.gear == action.shifter.HIGH_GEAR);
+    closedRateTrain.SetHighGear(action.shifter.gear == ACTION::GEARBOX::HIGH_GEAR);
     closedRateTrain.SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);
 
 //    closedRateTrain.SetClosedLoopEnabled(false);
@@ -58,7 +58,7 @@ void ModifiedDriveTrain::Output()
     // right brake based off of joystick inputs and mode
     switch(action.driveTrain.mode)
     {
-    case SPEED:
+    case ACTION::DRIVETRAIN::SPEED:
         if(action.driveTrain.rate.thirdGear)
             // scale raw turn to a max of 0.3
             drive = closedRateTrain.Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn * 0.3);
@@ -66,7 +66,7 @@ void ModifiedDriveTrain::Output()
             drive = closedRateTrain.Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn);
         break;
 
-    case POSITION:
+    case ACTION::DRIVETRAIN::POSITION:
         if(action.driveTrain.position.givenCommand)
         {
             if(action.driveTrain.position.shouldMoveDistance)
@@ -89,7 +89,7 @@ void ModifiedDriveTrain::Output()
                 action.driveTrain.position.maxTurnSpeed);
         break;
 
-    case DISTANCE:
+    case ACTION::DRIVETRAIN::DISTANCE:
         if(action.driveTrain.distance.givenCommand)
         {
             closedPositionTrain.SetMoveDistance(action.driveTrain.distance.distanceSetPoint);
@@ -102,7 +102,7 @@ void ModifiedDriveTrain::Output()
 
         drive = command.drive;
         break;
-    case SYNCHRONIZING:
+    case ACTION::DRIVETRAIN::SYNCHRONIZING:
         synchronizedCyclesLeft = cyclesToSynchronize;  //set shift timer from value in config file
         break;
     }

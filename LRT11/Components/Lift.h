@@ -24,7 +24,6 @@ private:
     float minPosition;
     float maxPosition;
 
-    enum {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4};
     void StartTimer();
 
     enum {MANUAL = 1, PRESET = 2} prevMode;

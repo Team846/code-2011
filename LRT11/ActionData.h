@@ -5,8 +5,9 @@
 
 namespace ACTION
 {
+    //These status results are shared by many of the automated routines.
     enum eCompletionStatus
-    { IN_PROGRESS = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4};
+    { UNSET = 0, IN_PROGRESS = 1, SUCCESS = 2, FAILURE = 3, ABORTED = 4};
     char* const status_string[4 + 1] =
     {   "ERROR", "In Progress", "Success", "Failure", "Aborted" };
 
@@ -20,10 +21,60 @@ namespace ACTION
             IDLE = 1, PRESET_BOTTOM = 2, PRESET_TOP = 3,
             PRESET_MIDDLE = 4,  MANUAL_DOWN = 5, MANUAL_UP = 6
         };
+        char* const state_string[6 + 1] =
+        {"ERROR", "IDLE", "Preset_Bottom", "Preset_Top", "Preset_Middle", "Manual_Down", "Manual_Up"};
     }
+
     namespace LIFT
     {
         enum ePresets {STOWED = 1, LOW_PEG = 2, MED_PEG = 3, HIGH_PEG = 4};
+        char* const presetStrings[4 + 1] =
+        {   "ERROR", "Stowed", "Low Peg", "Med Peg", "Hi Peg" };
+
+    }
+    namespace DRIVETRAIN
+    {
+        enum eMode
+        {
+            SPEED = 0,
+            POSITION = 1,
+            DISTANCE = 2,
+            SYNCHRONIZING = 3
+        };
+        char* const mode_strings[4] = {"RATE", "POSITION", "DISTANCE", "SYNCHRONIZING"};
+    }
+
+    namespace ROLLER
+    {
+        enum eStates {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROTATING = 4};
+        char* const state_string[6 + 1] =
+        {"ERROR", "Stopped", "Sucking", "Spitting", "Rotating"};
+    }
+
+    namespace RINGER
+    {
+        enum eRingerStates
+        {
+            ARM_MIDDLE_POSITON = 0,
+            COMMENCE_DROP_RINGER = 1,
+            DROP_RINGER,
+            TERMINATE_DROP_RINGER,
+            ARM_UP,
+            LIFT_DOWN,
+            IDLE = 6
+        };
+        char* const state_string[6 + 1] =
+        {
+            "Arm Middle Position", "Comence Drop Ringer", "Drop Ringer",
+            "Terminate_Drop_Ringer", "Arm Up", "Lift Down", "Idle"
+        };
+    }
+
+    namespace GEARBOX
+    {
+        enum eGearboxState {LOW_GEAR = 1, HIGH_GEAR = 2};
+        char* const state_string[2 + 1] = { "Low Gear", "High Gear"};
+
     }
 } //namespace ACTION
 
@@ -45,14 +96,7 @@ public:
     // drive train
     struct
     {
-        enum
-        {
-            RATE,
-            POSITION,
-            DISTANCE,
-            SYNCHRONIZING
-        } mode;
-
+        ACTION::DRIVETRAIN::eMode mode;
         struct
         {
             float rawForward, rawTurn;
@@ -108,7 +152,7 @@ public:
 
     struct
     {
-        enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROTATING = 4} state;
+        ACTION::ROLLER::eStates state;
 
         // true to rotate upward, false to rotate downward;
         // only active in ROTATING state
@@ -123,16 +167,7 @@ public:
 
     struct
     {
-        enum
-        {
-            ARM_MIDDLE_POSITON,
-            COMMENCE_DROP_RINGER,
-            DROP_RINGER,
-            TERMINATE_DROP_RINGER,
-            ARM_UP,
-            LIFT_DOWN,
-            IDLE
-        } ringer;
+        ACTION::RINGER::eRingerStates ringer;
     } automatedRoutine;
 
     struct
@@ -148,7 +183,7 @@ public:
 
     struct
     {
-        enum {LOW_GEAR = 1, HIGH_GEAR = 2} gear;
+        ACTION::GEARBOX::eGearboxState gear;
         bool force;
     } shifter;
 

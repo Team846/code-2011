@@ -4,7 +4,6 @@
 #include "../General.h"
 #include <string>
 #include <sstream>
-using namespace std;
 
 class Util
 {
@@ -28,9 +27,9 @@ public:
         return (val - min0) * (max1 - min1) / (max0 - min0) + min1;
     }
 
-    template <typename T> static string ToString(T val)
+    template <typename T> static std::string ToString(T val)
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << val;
         return ss.str();
     }
@@ -110,6 +109,9 @@ public:
             return val1;
         return val2;
     }
+    static void Die();
+    static void Die(const char* message);
+    static bool Assert(bool test, const char* message);
 };
 
 #endif

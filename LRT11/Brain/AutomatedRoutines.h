@@ -17,7 +17,7 @@ void Brain::AutomatedRoutineWithLift()
     {
         timer = 0;
         state = MOVE_LIFT_AND_REVERSE_ROLLER;
-        action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+        action.automatedRoutine.ringer = ACTION::RINGER::DROP_RINGER;
     }
 
     // if aborted make sure we stop the automated ejection
@@ -38,7 +38,7 @@ void Brain::AutomatedRoutineWithLift()
 
         if(++timer > 10)
         {
-            action.roller.state = action.roller.SPITTING;
+            action.roller.state = ACTION::ROLLER::SPITTING;
             if(timer > 20)
                 state = STOPPING;
         }
@@ -47,7 +47,7 @@ void Brain::AutomatedRoutineWithLift()
     case STOPPING:
         action.lift.power = 0;
         action.arm.state = ACTION::ARM_::PRESET_TOP;
-        action.roller.state = action.roller.STOPPED;
+        action.roller.state = ACTION::ROLLER::STOPPED;
         state = IDLE;
         break;
     }
@@ -57,7 +57,7 @@ void Brain::AutomatedRoutines()
 {
     // setup for new release method using the arm
     if(inputs.ShouldMoveArmToMiddle())
-        action.automatedRoutine.ringer = action.automatedRoutine.ARM_MIDDLE_POSITON;
+        action.automatedRoutine.ringer = ACTION::RINGER::ARM_MIDDLE_POSITON;
 #ifdef LIFT_RELEASE
     static int timer = 0;
 
@@ -68,7 +68,7 @@ void Brain::AutomatedRoutines()
     } state = MOVE_LIFT_AND_REVERSE_ROLLER;
 
 //    else if(inputs.ShouldCommenceReleaseRingerWithLift())
-//        action.automatedRoutine.ringer = action.automatedRoutine.COMMENCE_DROP_RINGER;
+//        action.automatedRoutine.ringer = ACTION::RINGER::COMMENCE_DROP_RINGER;
 //    else if(inputs.ShouldReleaseRingerWithLift())
 //    if(inputs.ShouldReleaseRingerWithLift())
 //    if(inputs.ShouldCommenceReleaseRingerWithLift())
@@ -76,17 +76,17 @@ void Brain::AutomatedRoutines()
     {
         timer = 0;
         state = MOVE_LIFT_AND_REVERSE_ROLLER;
-        action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+        action.automatedRoutine.ringer = ACTION::RINGER::DROP_RINGER;
     }
 //    else if(inputs.ShouldTerminateReleaseRingerWithLift())
-//        action.automatedRoutine.ringer = action.automatedRoutine.TERMINATE_DROP_RINGER;
+//        action.automatedRoutine.ringer = ACTION::RINGER::TERMINATE_DROP_RINGER;
 #else
     else if(inputs.ShouldReleaseRingerWithArm())
-        action.automatedRoutine.ringer = action.automatedRoutine.DROP_RINGER;
+        action.automatedRoutine.ringer = ACTION::RINGER::DROP_RINGER;
 #endif
     else if(inputs.ShouldMoveArmUpAndLiftDown())
     {
-        action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
+        action.automatedRoutine.ringer = ACTION::RINGER::ARM_UP;
 
         // since the lift waits for the arm you have to make sure
         // it does not think that the arm is already done
@@ -95,21 +95,21 @@ void Brain::AutomatedRoutines()
 
     // if aborted make sure we terminate the automated routine
     if(inputs.ShouldAbort())
-        action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
+        action.automatedRoutine.ringer = ACTION::RINGER::IDLE;
 
     // execution for new release method using the arm
-    if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_MIDDLE_POSITON)
+    if(action.automatedRoutine.ringer == ACTION::RINGER::ARM_MIDDLE_POSITON)
         action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
 
 
 #ifdef LIFT_RELEASE
-    else if(action.automatedRoutine.ringer == action.automatedRoutine.COMMENCE_DROP_RINGER)
+    else if(action.automatedRoutine.ringer == ACTION::RINGER::COMMENCE_DROP_RINGER)
     {
         action.roller.commenceAutomation = true;
         action.roller.automated = true;
     }
 #endif
-    else if(action.automatedRoutine.ringer == action.automatedRoutine.DROP_RINGER)
+    else if(action.automatedRoutine.ringer == ACTION::RINGER::DROP_RINGER)
     {
 #ifdef LIFT_RELEASE
         switch(state)
@@ -123,7 +123,7 @@ void Brain::AutomatedRoutines()
 
             if(++timer > 10)
             {
-                action.roller.state = action.roller.SPITTING;
+                action.roller.state = ACTION::ROLLER::SPITTING;
                 if(timer > 20)
                     state = STOPPING;
             }
@@ -132,43 +132,43 @@ void Brain::AutomatedRoutines()
         case STOPPING:
             action.lift.power = 0;
             action.arm.state = ACTION::ARM_::PRESET_TOP;
-            action.roller.state = action.roller.STOPPED;
-            action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
+            action.roller.state = ACTION::ROLLER::STOPPED;
+            action.automatedRoutine.ringer = ACTION::RINGER::IDLE;
             break;
         }
 
 #else
         action.arm.state = action.arm.PRESET_BOTTOM;
-        action.roller.state = action.roller.SPITTING;
+        action.roller.state = ACTION::ROLLER::SPITTING;
 #endif
     }
 #ifdef LIFT_RELEASE
-    else if(action.automatedRoutine.ringer == action.automatedRoutine.TERMINATE_DROP_RINGER)
+    else if(action.automatedRoutine.ringer == ACTION::RINGER::TERMINATE_DROP_RINGER)
     {
         action.roller.automated = false;
         //automatically put the arm up and lift down
-        action.automatedRoutine.ringer = action.automatedRoutine.ARM_UP;
+        action.automatedRoutine.ringer = ACTION::RINGER::ARM_UP;
     }
 #endif
 
 
-    else if(action.automatedRoutine.ringer == action.automatedRoutine.ARM_UP)
+    else if(action.automatedRoutine.ringer == ACTION::RINGER::ARM_UP)
     {
         action.arm.state = ACTION::ARM_::PRESET_TOP;
         if(action.arm.completion_status == ACTION::SUCCESS)
         {
             AsynchronousPrinter::Printf("arm done\n");
-            action.automatedRoutine.ringer = action.automatedRoutine.LIFT_DOWN;
+            action.automatedRoutine.ringer = ACTION::RINGER::LIFT_DOWN;
 
             action.lift.givenCommand = true;
             action.lift.lift_preset = ACTION::LIFT::LOW_PEG;
             action.lift.completion_status = ACTION::IN_PROGRESS;
         }
     }
-    else if(action.automatedRoutine.ringer == action.automatedRoutine.LIFT_DOWN)
+    else if(action.automatedRoutine.ringer == ACTION::RINGER::LIFT_DOWN)
     {
         if(action.lift.completion_status == ACTION::SUCCESS)
-            action.automatedRoutine.ringer = action.automatedRoutine.IDLE;
+            action.automatedRoutine.ringer = ACTION::RINGER::IDLE;
     }
 }
 

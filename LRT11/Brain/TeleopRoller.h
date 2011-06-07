@@ -3,10 +3,10 @@
 void Brain::TeleopRoller()
 {
     if(inputs.ShouldRollerSpit())
-        action.roller.state = action.roller.SPITTING;
+        action.roller.state = ACTION::ROLLER::SPITTING;
     // grab game piece is a driver-controlled button
     else if(inputs.ShouldGrabGamePiece() || inputs.ShouldRollerSuck())
-        action.roller.state = action.roller.SUCKING;
+        action.roller.state = ACTION::ROLLER::SUCKING;
     // spitting the ringer out (automated)
     else if(inputs.ShouldRollerBeAutomated() || action.roller.automated)
     {
@@ -36,7 +36,7 @@ void Brain::TeleopRoller()
 
             // keep moving down for 2/5 of a second
             if(++timer > 20)
-                action.roller.state = action.roller.SPITTING;
+                action.roller.state = ACTION::ROLLER::SPITTING;
             break;
         }
     }
@@ -44,15 +44,15 @@ void Brain::TeleopRoller()
     else if(inputs.ShouldRollerRotateUp())
     {
         action.roller.rotateUpward = true;
-        action.roller.state = action.roller.ROTATING;
+        action.roller.state = ACTION::ROLLER::ROTATING;
     }
     // rotate roller downaward
     else if(inputs.ShouldRollerRotateDown())
     {
         action.roller.rotateUpward = false;
-        action.roller.state = action.roller.ROTATING;
+        action.roller.state = ACTION::ROLLER::ROTATING;
     }
     // spit out ringer onto the peg
     else
-        action.roller.state = action.roller.STOPPED;
+        action.roller.state = ACTION::ROLLER::STOPPED;
 }

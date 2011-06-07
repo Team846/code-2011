@@ -49,13 +49,13 @@ void Shifter::Output()
 
     switch(action.shifter.gear)
     {
-    case LOW_GEAR:
+    case ACTION::GEARBOX::LOW_GEAR:
         leftServo.Set(leftLowGearServoVal);
         rightServo.Set(rightLowGearServoVal);
         encoders.SetHighGear(false);
         break;
 
-    case HIGH_GEAR:
+    case ACTION::GEARBOX::HIGH_GEAR:
         leftServo.Set(leftHighGearServoVal);
         rightServo.Set(rightHighGearServoVal);
         encoders.SetHighGear(true);

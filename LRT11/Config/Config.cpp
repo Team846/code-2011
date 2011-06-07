@@ -1,11 +1,11 @@
 #include "Build.h"
 #include "Config.h"
+#include "../Util/AsynchronousPrinter.h"
 
 Config* Config::instance = NULL;
 vector<Configurable*> Config::configurables;
 bool Config::hasRun = false;
 const string Config::CONFIG_FILE_PATH = "/LRTConfig11.txt";
-time_t Config::fileModifiedTime = 0;
 
 Config& Config::GetInstance()
 {
@@ -16,6 +16,7 @@ Config& Config::GetInstance()
 
 Config::Config()
     : ds(*DriverStation::GetInstance())
+    , configLastReadTime_(0)
     , buildNumKey("BuildNumber")
     , runNumKey("RunNumber")
     , buildTimeKey("BuildTime")
@@ -29,7 +30,6 @@ Config::Config()
     }
 
     CheckForFileUpdates();
-    AddToSingletonList();
     printf("Constructed Config\n");
 }
 
@@ -87,7 +87,11 @@ map<string, string> Config::tload(string path)
     fin.close();
     return ret;
 }
-
+/*
+ * Config::Log()
+ * writes changes in key values to the file "/log.txt".
+ * why? -dg
+ */
 void Config::Log(string key, string oldval, string newval)
 {
     ofstream log("/log.txt", ios::app);
@@ -101,8 +105,8 @@ bool Config::Save()
     if(!fout.is_open())    // could not create file in that path
         return false;
 
-    for(map<string, string>::const_iterator it = configData.begin(); it
-            != configData.end(); it++)
+    for(map<string, string>::const_iterator it = configData.begin();
+            it != configData.end(); it++)
         fout << it->first << "=" << it->second << "\n";
 
     fout.close();
@@ -213,13 +217,18 @@ void Config::Output()
     }
 }
 
+/*
+ * CheckForFileUpdates()
+ * checks to see if the Robot's configuration file on the cRio has been modified since
+ * it was last loaded.
+ */
 void Config::CheckForFileUpdates()
 {
     struct stat statistics;
     stat(CONFIG_FILE_PATH.c_str(), &statistics);
 
     // reload when the file has been modified
-    if(fileModifiedTime != statistics.st_mtime)
+    if(configLastReadTime_ != statistics.st_mtime)
     {
         Load();
 
@@ -227,9 +236,14 @@ void Config::CheckForFileUpdates()
         AsynchronousPrinter::Printf("Applying Configuration\n");
         ConfigureAll();
 
-        // Load() sometimes saves the configuration, so get the
-        // new modified time
+        //Wait for printing if this is the first time the program is read.
+        if(0 == configLastReadTime_)
+            while(!AsynchronousPrinter::QueueEmpty())
+                Wait(0.010);
+
+        // Load() sometimes saves the configuration,
+        // so get the new modified time.
         stat(CONFIG_FILE_PATH.c_str(), &statistics);
-        fileModifiedTime = statistics.st_mtime;
+        configLastReadTime_ = statistics.st_mtime;
     }
 }

@@ -62,20 +62,19 @@ void Arm::Output()
         armEsc.SetDutyCycle(0.0);
         action.arm.state = ACTION::ARM_::IDLE;
         action.arm.completion_status = ACTION::ABORTED;
-        return; // do not allow normal processing
+        return; // do not allow normal processing (ABORT is not printed...should fix this -dg)
     }
 
-    bool state_change_print = (oldState != action.arm.state);
+    const bool state_change = (oldState != action.arm.state);
+    if(state_change)
+        AsynchronousPrinter::Printf("Arm: %s\n", ACTION::ARM_::state_string[action.arm.state]);
 
-    if(oldState != action.arm.state)
+    if(state_change)
         cycleCount = timeoutCycles; // reset timeout
 
     switch(action.arm.state)
     {
     case ACTION::ARM_::PRESET_TOP:
-        if(state_change_print)
-            AsynchronousPrinter::Printf("Arm: Preset Top\n");
-
         action.arm.completion_status = ACTION::IN_PROGRESS;
         // overriden below to change roller speed while moving the arm up
         action.roller.maxSuckPower = 1.0;
@@ -102,21 +101,19 @@ void Arm::Output()
             action.arm.completion_status = ACTION::IN_PROGRESS;
             armEsc.SetDutyCycle(powerUp);
 
-            action.roller.state = action.roller.SUCKING;
+            action.roller.state = ACTION::ROLLER::SUCKING;
             action.roller.maxSuckPower = 0.3; // lower duty cycle
 
             // make roller suck while moving up to keep
             // game piece in
             if(++pulseCount % 2 == 0)
-                action.roller.state = action.roller.SUCKING;
+                action.roller.state = ACTION::ROLLER::SUCKING;
             else
-                action.roller.state = action.roller.STOPPED;
+                action.roller.state = ACTION::ROLLER::STOPPED;
         }
         break;
 
     case ACTION::ARM_::PRESET_BOTTOM:
-        if(state_change_print)
-            AsynchronousPrinter::Printf("Arm: Preset Bottom\n");
         action.arm.completion_status = ACTION::IN_PROGRESS;
         action.roller.maxSuckPower = 1.0;
 
@@ -143,8 +140,6 @@ void Arm::Output()
         break;
 
     case ACTION::ARM_::PRESET_MIDDLE:
-        if(state_change_print)
-            AsynchronousPrinter::Printf("Arm: Preset Middle\n");
         action.arm.completion_status = ACTION::IN_PROGRESS;
 
         // no timeout for now
@@ -175,8 +170,6 @@ void Arm::Output()
         break;
 
     case ACTION::ARM_::MANUAL_UP:
-        if(state_change_print)
-            AsynchronousPrinter::Printf("Arm: Manual Up\n");
         if(potValue < maxPosition)
             armEsc.SetDutyCycle(powerUp);
         else
@@ -188,8 +181,6 @@ void Arm::Output()
         break;
 
     case ACTION::ARM_::MANUAL_DOWN:
-        if(state_change_print)
-            AsynchronousPrinter::Printf("Arm: Manual Down\n");
         if(potValue > minPosition)
             armEsc.SetDutyCycle(powerDown);
         else
@@ -201,8 +192,6 @@ void Arm::Output()
         break;
 
     case ACTION::ARM_::IDLE:
-        if(state_change_print)
-            AsynchronousPrinter::Printf("Arm: Idle\n");
         action.arm.completion_status = ACTION::SUCCESS;
         armEsc.SetDutyCycle(0.0);
         break;
@@ -214,10 +203,8 @@ void Arm::Output()
     oldState = action.arm.state;
 
     //Print diagnostics
-    static int lastDoneState = 0;
-    static char* done_state_names[5] =
-    {"NULL", "IN_PROGRESS", "SUCCESS", "FAILURE", "ABORTED" };
-    if(lastDoneState != action.arm.state)
-        AsynchronousPrinter::Printf("Arm: DoneState:%s\n", done_state_names[action.arm.state]);
-    lastDoneState = action.arm.state;
+    static ACTION::eCompletionStatus lastDoneState = ACTION::UNSET;
+    if(lastDoneState != action.arm.completion_status)
+        AsynchronousPrinter::Printf("Arm: Status=%s\n", ACTION::status_string[action.arm.completion_status]);
+    lastDoneState = action.arm.completion_status;
 }

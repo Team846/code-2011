@@ -211,16 +211,16 @@ void Lift::Output()
 
         switch(action.lift.lift_preset)
         {
-        case STOWED:
+        case ACTION::LIFT::STOWED:
             setpoint = 0; // no movement
             break;
-        case LOW_PEG:
+        case ACTION::LIFT::LOW_PEG:
             key += "lowPeg";
             break;
-        case MED_PEG:
+        case ACTION::LIFT::MED_PEG:
             key += "mediumPeg";
             break;
-        case HIGH_PEG:
+        case ACTION::LIFT::HIGH_PEG:
             key += "highPeg";
             break;
         }

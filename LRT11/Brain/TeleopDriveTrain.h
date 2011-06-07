@@ -8,7 +8,7 @@ void Brain::TeleopDriveTrain()
 #endif
 
     // used for calibration
-    if(ds.GetDigitalIn(8))
+    if(0 && ds.GetDigitalIn(8)) //TODO: DON'T use inputs scattered through code! -dg
     {
 //        lineSensor.GetLinePosition();
         AutomatedFollowLine();
@@ -36,7 +36,7 @@ void Brain::TeleopDriveTrain()
     }
     else
     {
-        action.driveTrain.mode = action.driveTrain.RATE;
+        action.driveTrain.mode = ACTION::DRIVETRAIN::SPEED;
         action.driveTrain.rate.rawForward = inputs.GetForward();
         action.driveTrain.rate.rawTurn    = inputs.GetTurn();
 

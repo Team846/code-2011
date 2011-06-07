@@ -12,6 +12,10 @@ public:
 
     static int Printf(const char* format, ...);
     static void Quit();
+    static bool QueueEmpty()
+    {
+        return Instance().queue_.empty();
+    }
 
 protected:
     AsynchronousPrinter();

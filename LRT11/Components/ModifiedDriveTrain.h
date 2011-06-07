@@ -20,13 +20,7 @@ private:
 
     int cyclesToSynchronize;  //value in config file
     int synchronizedCyclesLeft;
-    enum
-    {
-        SPEED,
-        POSITION,
-        DISTANCE,
-        SYNCHRONIZING
-    };
+
 
     float GetSynchronizedSpeed(float motorSpeed);
     virtual void Configure();

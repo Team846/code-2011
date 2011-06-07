@@ -75,7 +75,6 @@ int AsynchronousPrinter::Printf(const char* format, ...)
 
 
 
-
 //May be called externally to stop printing.
 void AsynchronousPrinter::Quit()
 {

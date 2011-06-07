@@ -16,10 +16,10 @@ void Brain::TeleopShifter()
     {
         action.shifter.force = true;
 
-        if(lastGear == action.shifter.LOW_GEAR)
-            action.shifter.gear = action.shifter.HIGH_GEAR;
+        if(lastGear == ACTION::GEARBOX::LOW_GEAR)
+            action.shifter.gear = ACTION::GEARBOX::HIGH_GEAR;
         else
-            action.shifter.gear = action.shifter.LOW_GEAR;
+            action.shifter.gear = ACTION::GEARBOX::LOW_GEAR;
     }
 
     // always low gear unless shift high button is pushed down
@@ -51,7 +51,7 @@ void Brain::TeleopShifter()
 
     // commenced a shift; synchronize the drive train
     if(lastGear != action.shifter.gear)
-        action.driveTrain.mode = action.driveTrain.SYNCHRONIZING;
+        action.driveTrain.mode = ACTION::DRIVETRAIN::SYNCHRONIZING;
 
     lastGear = action.shifter.gear;
 }

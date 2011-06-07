@@ -41,5 +41,40 @@ Design Requirements:
     *) Jag Reader function: Requests and Reads currents & pot values from each jaguar.  
   
  
+ Notes:
+ Current structure for jags
+ ProxiedCANJag : LRTCANJag
+ Would like commands like:
+   SetDutyCycle
+   SetPosition
+   SetCurrent
+   SetSpeed
+   BrakeDutyCycle - dither braking
+   BrakePercent - percent of max torque, by compensating for speed. 
+   Set() and base level commands should be blocked.
+   ReadCurrent()
+   ReadPosition(max, min)
+   
+ Each Jag needs a task.
+ 
+ GearMotor
+   1 or 2 MotorControllers
+   GearBox
+ 
+ Drivetrain
+   GearMotor (LET+RIGHT)
+   Brakes (not differential)
+ 
+ 
+ 
+ 
+   
+ 
+ 
+ 
+ 
+
+ 
+ 
  
  

@@ -15,7 +15,6 @@ private:
     ProxiedCANJaguar bottomRoller;
 
     string prefix;
-    enum {STOPPED = 1, SUCKING = 2, SPITTING = 3, ROTATING = 4};
 
     float dutyCycleSucking;
 

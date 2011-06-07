@@ -8,7 +8,6 @@
  */
 LRTRobotBase::LRTRobotBase()
     : quitting_(false)
-//   , reader(JaguarReader::GetInstance())
     , cycleCount(0)
 
 {
@@ -36,6 +35,10 @@ LRTRobotBase::~LRTRobotBase()
  */
 void LRTRobotBase::StartCompetition()
 {
+    //Diagnostic: Print the task name.
+    //m_task is available only after robot is initialized -dg
+    printf("vxWorks task: %s\n", m_task->GetName());
+
     GetWatchdog().SetEnabled(false);
 
     // first and one-time initialization

@@ -38,17 +38,9 @@ ProxiedCANJaguar::ProxiedCANJaguar(UINT8 channel, char* name)
     , running_(false)
     , quitting_(false)
 {
-//    jaguars.j[jaguars.num++] = this;
 
-    //Insert this jaguar into the list of jaguars.
     next_jaguar_ = jaguar_list_;
     jaguar_list_ = this;
-
-//   jaguars.currents[index] = 0; //TODO Delete these commented lines. -dg
-//    jaguars.shouldCollectCurrent[index] = false;
-
-//    jaguars.potValues[index] = 0;
-//   jaguars.shouldCollectPotValue[index] = false;
 
     if(name_ == NULL) name_ = "?";
     commTask.Start((UINT32) this);

@@ -47,20 +47,6 @@ public:
     ~ProxiedCANJaguar();
     void StopBackgroundTask();
 
-    typedef struct
-    {
-        int num;
-        ProxiedCANJaguar* j[32];
-
-//        float currents[32];
-//        float potValues[32];
-
-//       bool shouldCollectCurrent[32];
-//        bool shouldCollectPotValue[32];
-    } JaguarList;
-
-    // static JaguarList jaguars;
-
     static ProxiedCANJaguar* jaguar_list_;
     ProxiedCANJaguar* next_jaguar_;
 

@@ -21,7 +21,6 @@ private:
     DriveEncoders& encoders;
 
     string prefix;
-    enum {LOW_GEAR = 1 , HIGH_GEAR = 2};
 
     //only let servo become disabled after a delay.
     //when Hitec HS322 servo is disabled, it jumps from it's last set point. -dg

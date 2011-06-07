@@ -123,7 +123,7 @@ void Brain::EncoderAuton()
     case DRIVE_FORWARD: // move drive to a location; move arm up; shift to low gear
         stateName = "DRIVE_FORWARD";
         PRINTSTATE();
-        action.driveTrain.mode = action.driveTrain.DISTANCE;
+        action.driveTrain.mode = ACTION::DRIVETRAIN::DISTANCE;
         action.driveTrain.distance.givenCommand = true;
 
         action.driveTrain.distance.distanceSetPoint = 15.0 * 12; // 15 feet
@@ -135,7 +135,7 @@ void Brain::EncoderAuton()
         action.arm.state = ACTION::ARM_::PRESET_TOP;
 
         // low gear driving
-        action.shifter.gear = action.shifter.LOW_GEAR;
+        action.shifter.gear = ACTION::GEARBOX::LOW_GEAR;
         action.shifter.force = true;
 
         advanceState = true;
@@ -148,7 +148,7 @@ void Brain::EncoderAuton()
         if(action.driveTrain.distance.done)
         {
             advanceState = true;
-            action.driveTrain.mode = action.driveTrain.RATE;
+            action.driveTrain.mode = ACTION::DRIVETRAIN::SPEED;
             action.driveTrain.rate.rawForward = 0.0;
             action.driveTrain.rate.rawTurn = 0.0;
         }
@@ -160,7 +160,7 @@ void Brain::EncoderAuton()
 
         stateName = "STALL_DETECTION";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
-        action.driveTrain.mode = action.driveTrain.RATE;
+        action.driveTrain.mode = ACTION::DRIVETRAIN::SPEED;
         action.driveTrain.rate.usingClosedLoop = false;
 
         action.driveTrain.rate.rawForward = 0.2;
@@ -186,7 +186,7 @@ void Brain::EncoderAuton()
         stateName = "STEP_BACK";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
 
-        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.mode = ACTION::DRIVETRAIN::POSITION;
         action.driveTrain.position.givenCommand = true;
 
         action.driveTrain.position.shouldMoveDistance = true;
@@ -236,7 +236,7 @@ void Brain::EncoderAuton()
         stateName = "ROTATE_ROLLER";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
         action.roller.rotateUpward = false; //go down
-        action.roller.state = action.roller.ROTATING;
+        action.roller.state = ACTION::ROLLER::ROTATING;
 
         if(++timer >= 75)
             advanceState = true;
@@ -293,7 +293,7 @@ void Brain::EncoderAuton()
     case SETUP_DRIVE_BACK:
         stateName = "SETUP_DRIVE_BACK";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
-        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.mode = ACTION::DRIVETRAIN::POSITION;
         action.driveTrain.position.givenCommand = true;
 
         action.driveTrain.position.shouldMoveDistance = true;
@@ -318,7 +318,7 @@ void Brain::EncoderAuton()
     case TURN_AROUND:
         stateName = "TURN_AROUND";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
-        action.driveTrain.mode = action.driveTrain.POSITION;
+        action.driveTrain.mode = ACTION::DRIVETRAIN::POSITION;
         action.driveTrain.position.givenCommand = true;
 
         action.driveTrain.position.shouldMoveDistance = false;

@@ -1,5 +1,7 @@
 #include "ProcessedInputs.h"
+#warning force compile
 
+#include "../Config/joystickdg.h"
 //Need a means of specifying both a stick and a button/axis
 //In progress - incomplete implementation -dg
 namespace JOY1
@@ -9,7 +11,6 @@ namespace JOY1
         const int Fun1 = 1;
     }
 } //In Progress -dg
-
 
 ProcessedInputs* ProcessedInputs::instance = NULL;
 

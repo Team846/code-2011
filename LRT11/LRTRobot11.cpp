@@ -1,5 +1,6 @@
 #include "LRTRobot11.h"
 #include "Util/PrintInConstructor.h"
+#include <signal.h>
 LRTRobot11::LRTRobot11()
     :
     firstMember_(
@@ -142,11 +143,13 @@ void LRTRobot11::MainLoop()
             ProfiledSection ps("Minibot Deployment");
             minibotDeployer.Output();
         }
-//        if(ds.GetDigitalIn(8))
-//        {
+        if(ds.GetDigitalIn(8))
+        {
 //            printf("Switch 8 on DS set; Exiting -D.Giandomenico\n");
-//            exit(100);
-//        }
+//            printf("Attempting to kill %#x %s\n", m_task->GetID(), m_task->GetName());
+//            int error = taskDelete(m_task->GetID());
+//            printf("Error=%d\n", error);
+        }
         // To add another component output:
         //
         // {
@@ -173,13 +176,31 @@ GameState LRTRobot11::DetermineState()
     return state;
 }
 
-START_ROBOT_CLASS(LRTRobot11);
+
 /*
- * The Entry point of the Program is "FRC_UserProgram_StartupLibraryInit()"
- * This calls RobotBase::startRobotTask((FUNCPTR)FRC_userClassFactory);
- * which in turn creates a new "LRTRobot11"
- * and calls the virtual RobotBase::StartCompetition()
+ * FRC_UserProgram_StartupLibraryInit()
+ *  is the entry point of the program, like main().
+ *
+ * The FRC_UserProgram_StartupLibraryInit() calls RobotBase::startRobotTask((FUNCPTR)FRC_userClassFactory)
+ * which creates a task called "FRC_RobotTask"
+ * that  ultimately calls FRC_userClassFactory() to create a new "LRTRobot11"
+ * and then calls the virtual RobotBase::StartCompetition()
  * -> LRTRobotBase::StartCompetition();
  * This VxWorks task is named "FRC_RobotTask"
+ * See WPILIB Robotbase.cpp
  * -D.Giandomenico (description of WPLIB start code)
  */
+
+//START_ROBOT_CLASS(LRTRobot11); //Expand the macro as below:
+RobotBase* FRC_userClassFactory()
+{
+    return new LRTRobot11();
+}
+extern "C" {
+    INT32 FRC_UserProgram_StartupLibraryInit()
+    {
+        RobotBase::startRobotTask((FUNCPTR)FRC_userClassFactory);
+        return 0;
+    }
+}
+

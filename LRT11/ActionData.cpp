@@ -14,7 +14,7 @@ ActionData::ActionData()
     // used to abort movements
     master.abort = false;
 
-    driveTrain.mode = driveTrain.RATE;
+    driveTrain.mode = ACTION::DRIVETRAIN::SPEED;
 
     driveTrain.rate.rawForward = 0;
     driveTrain.rate.rawTurn = 0;
@@ -65,7 +65,7 @@ ActionData::ActionData()
     arm.state = ACTION::ARM_::IDLE;
     arm.completion_status = ACTION::IN_PROGRESS;
 
-    roller.state = roller.STOPPED;
+    roller.state = ACTION::ROLLER::STOPPED;
     // if in roller.ROTATING state, default to rotating upward
     roller.rotateUpward = true;
     roller.automated = false;
@@ -77,7 +77,7 @@ ActionData::ActionData()
 
     encoderData.shouldCollect = false;
 
-    shifter.gear = shifter.LOW_GEAR;
+    shifter.gear = ACTION::GEARBOX::LOW_GEAR;
     shifter.force = false;
 
     config.load = false;

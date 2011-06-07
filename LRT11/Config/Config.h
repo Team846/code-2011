@@ -6,7 +6,6 @@
 #include "../Util/Util.h"
 #include "../Util/Console.h"
 #include "../Util/Profiler.h"
-#include "../Util/AsynchronousPrinter.h"
 #include <string>
 #include <fstream>
 #include <map>
@@ -15,7 +14,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-class Config : public SensorBase, public Component
+class Config : public Component
 {
 public:
     const static int kNumAnalogAssignable = 4;
@@ -24,7 +23,6 @@ public:
     static Config& GetInstance();
 
     const static string CONFIG_FILE_PATH;
-    static time_t fileModifiedTime;
 
     bool Load();
     bool Save();
@@ -46,13 +44,14 @@ public:
 protected:
     Config();
 
-private:
+protected:
     static Config* instance;
-    DISALLOW_COPY_AND_ASSIGN(Config);
+    DriverStation& ds;
+    time_t configLastReadTime_;
 
     map<string, string> configData;
     map<string, string> tload(string path);
-    DriverStation& ds;
+
 
     string analogAssignments[kNumAnalogAssignable];
     float analogAssignmentScaleMin[kNumAnalogAssignable];
@@ -62,6 +61,7 @@ private:
 
     static bool hasRun;
     string buildNumKey, runNumKey, buildTimeKey;
+    DISALLOW_COPY_AND_ASSIGN(Config);
 };
 
 #endif

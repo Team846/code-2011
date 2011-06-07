@@ -104,9 +104,9 @@ void Roller::Output()
     // abort overrides everything
     if(action.master.abort)
         // stop moving rollers
-        action.roller.state = action.roller.STOPPED;
+        action.roller.state = ACTION::ROLLER::STOPPED;
 
-    if(action.roller.state != action.roller.SUCKING)
+    if(action.roller.state != ACTION::ROLLER::SUCKING)
     {
         ignoreCycles = 25;
         detected = false;
@@ -117,16 +117,16 @@ void Roller::Output()
 
     switch(action.roller.state)
     {
-    case STOPPED:
+    case ACTION::ROLLER::STOPPED:
         Stop();
         break;
-    case SUCKING:
+    case ACTION::ROLLER::SUCKING:
         RollInward();
         break;
-    case SPITTING:
+    case ACTION::ROLLER::SPITTING:
         RollOutward();
         break;
-    case ROTATING:
+    case ACTION::ROLLER::ROTATING:
         RollOpposite(action.roller.rotateUpward);
         break;
     }
