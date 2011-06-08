@@ -1,6 +1,8 @@
 #include "LRTRobot11.h"
 #include "Util/PrintInConstructor.h"
-#include <signal.h>
+//#include <signal.h>
+//#include "Config/joystickdg.h"
+
 LRTRobot11::LRTRobot11()
     :
     firstMember_(
@@ -61,6 +63,12 @@ void LRTRobot11::RobotInit()
     SmartDashboard::Log(build, "Build/Run");
 #endif
     AsynchronousPrinter::Printf(build);
+
+    //Test code for new button assignments.  -dg 6/8/2011
+//    int status = driverstation_button::Initalize_All_Buttons();
+//    if(status)
+//        printf("FATAL ERROR in Initalize_All_Buttons()\n");
+
 }
 
 //static int ExecutionNotify(...)
