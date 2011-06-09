@@ -225,10 +225,10 @@ void Lift::Output()
             break;
         }
 
-        if(action.lift.lift_preset = ACTION::LIFT::STOWED)
+        if(ACTION::LIFT::STOWED != action.lift.lift_preset)
             setpoint = config.Get<float>(key); // relative to bottom
 
-//        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setPoint));
+//        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setpoint));
         // update done flag
         if(Util::Abs<float>(potValue - setpoint) < potDeadband)
         {
