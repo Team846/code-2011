@@ -189,3 +189,8 @@ float ModifiedDriveTrain::GetSynchronizedSpeed(float motorSpeed) //motor speed r
 
     return motorSpeed; //Otherwise just spin the motor close the the speed of the output shaft
 }
+
+string ModifiedDriveTrain::GetName()
+{
+    return "ModifiedDriveTrain";
+}

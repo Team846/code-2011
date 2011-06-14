@@ -5,7 +5,8 @@
 #include "..\Jaguar\ProxiedCANJaguar.h"
 
 Lift::Lift()
-    : config(Config::GetInstance())
+    : Component()
+    , config(Config::GetInstance())
     , prefix("Lift.")
     , timeoutCycles(0)
     , cycleCount(0)

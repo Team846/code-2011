@@ -6,7 +6,8 @@
 
 
 Arm::Arm()
-    : config(Config::GetInstance())
+    : Component()
+    , config(Config::GetInstance())
     , prefix("Arm.")
 //   , state(IDLE)
     , oldState(ACTION::ARM_::IDLE)

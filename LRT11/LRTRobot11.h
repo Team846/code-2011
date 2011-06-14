@@ -4,12 +4,7 @@
 #include "General.h"
 #include "LRTRobotBase.h"
 #include "Brain/Brain.h"
-#include "Components/ModifiedDriveTrain.h"
-#include "Components/Shifter.h"
-#include "Components/Lift.h"
-#include "Components/Arm.h"
-#include "Components/Roller.h"
-#include "Components/MiniBotDeployer.h"
+#include "Components/Component.h"
 #include "Config/Config.h"
 #include "wdLib.h"
 #include "sysLib.h"
@@ -54,6 +49,8 @@ private:
 
     GameState prevState;
     GameState DetermineState();
+
+    list<ComponentWithData>* components;
 
 //    AnalogChannel armPot;
 //    WDOG_ID mainLoopWatchDog;

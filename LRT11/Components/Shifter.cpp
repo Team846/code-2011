@@ -8,7 +8,8 @@
 
 
 Shifter::Shifter()
-    : encoders(DriveEncoders::GetInstance())
+    : Component()
+    , encoders(DriveEncoders::GetInstance())
     , prefix("Shifter.")
 {
 #ifdef VIRTUAL

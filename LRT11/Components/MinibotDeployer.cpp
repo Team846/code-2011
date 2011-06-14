@@ -6,7 +6,8 @@
 #include "Shifter\VIRTUALLRTServo.h"
 
 MinibotDeployer::MinibotDeployer()
-    : config(Config::GetInstance())
+    : Component()
+    , config(Config::GetInstance())
 {
     deployerEsc = new ProxiedCANJaguar(RobotConfig::CAN::DEPLOYER, "Minibot Deployer");
 #ifdef VIRTUAL

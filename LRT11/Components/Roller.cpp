@@ -7,7 +7,8 @@
 
 
 Roller::Roller()
-    : prefix("Roller.")
+    : Component()
+    , prefix("Roller.")
     , ignoreCycles(25)
     , detected(false)
 {

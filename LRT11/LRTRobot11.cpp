@@ -32,6 +32,7 @@ LRTRobot11::LRTRobot11()
     , lastMember_("LRTRobot.LastMember\n") //trace constructor.
 
 {
+    components = ComponentFactory::CreateComponents();
 //    mainLoopWatchDog = wdCreate();
     printf("---- Robot Initialized ----\n\n");
 }
@@ -91,16 +92,23 @@ void LRTRobot11::MainLoop()
         brain.Process(gameState);
     }
 
-    // components to output regardless of state
+    //iterate though and output components
+    for(list<ComponentWithData>::iterator iter = components->begin(); iter != components->end(); iter++)
     {
-        ProfiledSection ps("Configuration Buttons");
-        config.Output();
+    	// if we are enabled or the Component does not require the enabled state
+        if(gameState != DISABLED || !((*iter).second.RequiresEnabledState))
+        {
+            int DIO = (*iter).second.DIO;
+            if(DIO == ComponentData::NO_DISABLE_DIO || ds.GetDigitalIn(DIO))
+            {
+                ProfiledSection ps("Outputting " + (*iter).first->GetName());
+                (*iter).first->Output();
+            }
+
+        }
     }
 
-    // canBusTester.Output();
-
 #ifndef VIRTUAL
-//    ProxiedCANJaguar::SetGameState(gameState);
     ProxiedCANJaguar::SetGameState(gameState);
 #endif
 

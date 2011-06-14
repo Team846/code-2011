@@ -200,21 +200,7 @@ void Config::ConfigureAll()
 
 void Config::Output()
 {
-    if(action.config.load)
-    {
-        AsynchronousPrinter::Printf("Loading Configuration\n");
-        Load();
-    }
-    if(action.config.save)
-    {
-        AsynchronousPrinter::Printf("Saving Configuration\n");
-        Save();
-    }
-    if(action.config.apply)
-    {
-        AsynchronousPrinter::Printf("Applying Configuration\n");
-        ConfigureAll();
-    }
+
 }
 
 /*
@@ -246,4 +232,9 @@ void Config::CheckForFileUpdates()
         stat(CONFIG_FILE_PATH.c_str(), &statistics);
         configLastReadTime_ = statistics.st_mtime;
     }
+}
+
+string Config::GetName()
+{
+    return "Config";
 }

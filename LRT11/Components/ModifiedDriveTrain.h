@@ -32,6 +32,7 @@ public:
     virtual ~ModifiedDriveTrain();
 
     virtual void Output();
+    virtual string GetName();
 };
 
 #endif

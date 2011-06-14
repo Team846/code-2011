@@ -9,12 +9,11 @@
 #include <string>
 #include <fstream>
 #include <map>
-#include "../Components/Component.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
-class Config : public Component
+class Config
 {
 public:
     const static int kNumAnalogAssignable = 4;
@@ -39,7 +38,8 @@ public:
     static void ConfigureAll();
     void CheckForFileUpdates();
 
-    virtual void Output();
+    void Output();
+    virtual string GetName();
 
 protected:
     Config();
