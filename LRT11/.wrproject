@@ -219,7 +219,7 @@
             <booleanAttribute key="BLD::Info|Tool|Partial Image Linker|object" value="false"/>
             <booleanAttribute key="BLD::Info|Tool|Partial Image Linker|passAble" value="true"/>
             <stringAttribute key="BLD::Info|Tool|Partial Image Linker|sigs" value=""/>
-            <stringAttribute key="BLD::Info|cmd" value="..\OnBuild.bat"/>
+            <stringAttribute key="BLD::Info|cmd" value="../BuildScripts/BuildProject.cmd"/>
             <stringAttribute key="BLD::Info|defaultSpec" value="PPC603gnu"/>
             <stringAttribute key="BLD::Info|redirDir|PPC32diab" value="PPC32diab"/>
             <stringAttribute key="BLD::Info|redirDir|PPC32gnu" value="PPC32gnu"/>
