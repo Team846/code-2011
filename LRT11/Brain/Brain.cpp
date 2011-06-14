@@ -1,16 +1,5 @@
 #include "Brain.h"
 #include "..\ActionData.h"
-#include "Common.h"
-#include "Disabled.h"
-#include "Auton.h"
-#include "Teleop.h"
-#include "AutomatedRoutines.h"
-#include "TeleopDriveTrain.h"
-#include "TeleopShifter.h"
-#include "TeleopLift.h"
-#include "TeleopArm.h"
-#include "TeleopRoller.h"
-#include "TeleopMinibot.h"
 
 Brain::Brain()
     : config(Config::GetInstance())
