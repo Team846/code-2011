@@ -32,16 +32,6 @@ private:
 //    CANBusController& controller;
 #endif
 
-    ModifiedDriveTrain drive;
-//    PositionDriveTrain positionDrive;
-
-    Shifter shifter;
-
-    Lift lift;
-    Arm arm;
-    Roller roller;
-
-    MinibotDeployer minibotDeployer;
     Config& config;
 
     DriverStation& ds;
