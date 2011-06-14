@@ -1,33 +1,41 @@
 #include "Arm.h"
 #include "..\Config\RobotConfig.h"
+#include "..\Jaguar\ProxiedCANJaguar.h"
+#include "..\Config\Config.h"
+#include "..\Sensors\VirtualPot.h"
+
 
 Arm::Arm()
     : config(Config::GetInstance())
     , prefix("Arm.")
-    , armEsc(RobotConfig::CAN::ARM_, "Arm")
-#ifdef VIRTUAL
-    // arm is ~29 inches
-    // speed: 29 in * 1 ft / 12 in * 1.3 rps * 2 pi rad / rev = ~19.7 ft/s
-    // ft / turn: 29 in * 1 ft / 12 in * 2 pi rad / rev = ~15.2 ft
-    , armPot(RobotConfig::POT_ARM, 1, 15.2, 19.7)
-#else
-    , armPot(RobotConfig::ANALOG::POT_ARM)
-#endif
 //   , state(IDLE)
     , oldState(ACTION::ARM_::IDLE)
     , cycleCount(0)
     , presetMode(true)
     , pulseCount(0)
 {
+    armEsc = new ProxiedCANJaguar(RobotConfig::CAN::ARM_, "Arm");
+
+#ifdef VIRTUAL
+    // arm is ~29 inches
+    // speed: 29 in * 1 ft / 12 in * 1.3 rps * 2 pi rad / rev = ~19.7 ft/s
+    // ft / turn: 29 in * 1 ft / 12 in * 2 pi rad / rev = ~15.2 ft
+    armPot = new VirtualPot(RobotConfig::ANALOG::POT_ARM, 1, 15.2, 19.7);
+#else
+    armPot = new AnalogChannel(RobotConfig::ANALOG::POT_ARM);
+#endif
+
+
     // brake when set to 0 to keep the arm in place
-    armEsc.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
+    armEsc->ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
     Configure();
     printf("Constructed Arm\n");
 }
 
 Arm::~Arm()
 {
-
+    delete armEsc;
+    delete armPot;
 }
 
 void Arm::Configure()
@@ -51,7 +59,7 @@ void Arm::Configure()
 void Arm::Output()
 {
 
-    float potValue = armPot.GetAverageValue();
+    float potValue = armPot->GetAverageValue();
 
 #ifdef USE_DASHBOARD
     SmartDashboard::Log(potValue, "Arm Pot Value");
@@ -59,7 +67,7 @@ void Arm::Output()
 
     if(action.master.abort)
     {
-        armEsc.SetDutyCycle(0.0);
+        armEsc->SetDutyCycle(0.0);
         action.arm.state = ACTION::ARM_::IDLE;
         action.arm.completion_status = ACTION::ABORTED;
         return; // do not allow normal processing (ABORT is not printed...should fix this -dg)
@@ -84,14 +92,14 @@ void Arm::Output()
         if(--cycleCount < 0)
         {
             action.arm.completion_status = ACTION::FAILURE;
-            armEsc.SetDutyCycle(0.0);
+            armEsc->SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue >= maxPosition)
         {
             action.arm.completion_status = ACTION::SUCCESS;
-            armEsc.SetDutyCycle(powerRetainUp);
+            armEsc->SetDutyCycle(powerRetainUp);
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
             cycleCount = 100;
@@ -99,7 +107,7 @@ void Arm::Output()
         else
         {
             action.arm.completion_status = ACTION::IN_PROGRESS;
-            armEsc.SetDutyCycle(powerUp);
+            armEsc->SetDutyCycle(powerUp);
 
             action.roller.state = ACTION::ROLLER::SUCKING;
             action.roller.maxSuckPower = 0.3; // lower duty cycle
@@ -120,14 +128,14 @@ void Arm::Output()
         if(--cycleCount < 0)
         {
             action.arm.completion_status = ACTION::FAILURE;
-            armEsc.SetDutyCycle(0.0);
+            armEsc->SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue <= minPosition)
         {
             action.arm.completion_status = ACTION::SUCCESS;
-            armEsc.SetDutyCycle(0.0); // don't go below the min position
+            armEsc->SetDutyCycle(0.0); // don't go below the min position
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
             cycleCount = 100;
@@ -135,7 +143,7 @@ void Arm::Output()
         else
         {
             action.arm.completion_status = ACTION::IN_PROGRESS;
-            armEsc.SetDutyCycle(powerDown);
+            armEsc->SetDutyCycle(powerDown);
         }
         break;
 
@@ -157,23 +165,23 @@ void Arm::Output()
 //          armEsc.Set(correction);
 
         if(potValue > midPosition + midPositionDeadband)
-            armEsc.SetDutyCycle(midPowerDown);
+            armEsc->SetDutyCycle(midPowerDown);
         else if(potValue < midPosition - midPositionDeadband)
-            armEsc.SetDutyCycle(midPowerUp);
+            armEsc->SetDutyCycle(midPowerUp);
         else
         {
             // prevent cycle count from becoming < 0
             cycleCount = 100;
             action.arm.completion_status = ACTION::SUCCESS;
-            armEsc.SetDutyCycle(0.0);
+            armEsc->SetDutyCycle(0.0);
         }
         break;
 
     case ACTION::ARM_::MANUAL_UP:
         if(potValue < maxPosition)
-            armEsc.SetDutyCycle(powerUp);
+            armEsc->SetDutyCycle(powerUp);
         else
-            armEsc.SetDutyCycle(0.0);
+            armEsc->SetDutyCycle(0.0);
 
         action.arm.completion_status = ACTION::IN_PROGRESS;
         // operator must hold button to stay in manual mode
@@ -182,9 +190,9 @@ void Arm::Output()
 
     case ACTION::ARM_::MANUAL_DOWN:
         if(potValue > minPosition)
-            armEsc.SetDutyCycle(powerDown);
+            armEsc->SetDutyCycle(powerDown);
         else
-            armEsc.SetDutyCycle(0.0);
+            armEsc->SetDutyCycle(0.0);
 
         action.arm.completion_status = ACTION::IN_PROGRESS;
         // operator must hold button to stay in manual mode
@@ -193,7 +201,7 @@ void Arm::Output()
 
     case ACTION::ARM_::IDLE:
         action.arm.completion_status = ACTION::SUCCESS;
-        armEsc.SetDutyCycle(0.0);
+        armEsc->SetDutyCycle(0.0);
         break;
     default:
         AsynchronousPrinter::Printf("Arm: ERROR Unknown State\n");
@@ -207,4 +215,9 @@ void Arm::Output()
     if(lastDoneState != action.arm.completion_status)
         AsynchronousPrinter::Printf("Arm: Status=%s\n", ACTION::status_string[action.arm.completion_status]);
     lastDoneState = action.arm.completion_status;
+}
+
+string Arm::GetName()
+{
+    return "Arm";
 }

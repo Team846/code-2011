@@ -1,5 +1,6 @@
 #include "LRTRobot11.h"
 #include "Util/PrintInConstructor.h"
+#include "Jaguar\ProxiedCANJaguar.h"
 //#include <signal.h>
 //#include "Config/joystickdg.h"
 
@@ -99,6 +100,7 @@ void LRTRobot11::MainLoop()
     // canBusTester.Output();
 
 #ifndef VIRTUAL
+//    ProxiedCANJaguar::SetGameState(gameState);
     ProxiedCANJaguar::SetGameState(gameState);
 #endif
 

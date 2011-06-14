@@ -1,12 +1,15 @@
 #ifndef PROXIED_CAN_JAGUAR_H_
 #define PROXIED_CAN_JAGUAR_H_
 
-#include "../General.h"
-#include "../CAN/VirtualCANBusController.h"
-#include "../Util/Util.h"
-#include "LRTCANJaguar.h"
 #include "taskLib.h"
+
+#include "LRTCANJaguar.h"
+
+#include "../General.h"
+#include "../Util/Util.h"
 #include "../Util/PrintInConstructor.h"
+
+class VirtualCANBusController;
 
 class ProxiedCANJaguar : public LRTCANJaguar
 {

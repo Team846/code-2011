@@ -1,17 +1,30 @@
 #include "Shifter.h"
 #include "../Util/AsynchronousPrinter.h"
+#include "..\Config\Config.h"
+#include "Shifter\LRTServo.h"
+#include "Shifter\VirtualLRTServo.h"
+#include "..\Sensors\DriveEncoders.h"
+#include "..\Config\RobotConfig.h"
+
 
 Shifter::Shifter()
-    : leftServo(RobotConfig::PWM::LEFT_GEARBOX_SERVO, "Left Shift Servo")
-    , rightServo(RobotConfig::PWM::RIGHT_GEARBOX_SERVO, "Right Shift Servo")
-    , encoders(DriveEncoders::GetInstance())
+    : encoders(DriveEncoders::GetInstance())
     , prefix("Shifter.")
 {
+#ifdef VIRTUAL
+    leftServo = new VirtualLRTServo(RobotConfig::PWM::LEFT_GEARBOX_SERVO, "Left Shift Servo")
+    rightServo = new VirtualLRTServo(RobotConfig::PWM::RIGHT_GEARBOX_SERVO, "Right Shift Servo")
+#else
+    leftServo  = new LRTServo(RobotConfig::PWM::LEFT_GEARBOX_SERVO, "Left Shift Servo");
+    rightServo = new LRTServo(RobotConfig::PWM::RIGHT_GEARBOX_SERVO, "Right Shift Servo");
+#endif
     puts("Constructed Shifter");
 }
 
 Shifter::~Shifter()
 {
+    delete leftServo;
+    delete rightServo;
 
 }
 
@@ -23,13 +36,13 @@ void Shifter::Configure()
 void Shifter::Output()
 {
 #ifdef USE_DASHBOARD
-//    SmartDashboard::Log(leftServo.Get(), "Left servo position");
-//    SmartDashboard::Log(rightServo.Get(), "Right servo position");
+//    SmartDashboard::Log(leftServo->Get(), "Left servo position");
+//    SmartDashboard::Log(rightServo->Get(), "Right servo position");
 #endif
 
 //    DriverStation& station = *DriverStation::GetInstance();
-//    leftServo.Set(station.GetAnalogIn(1));
-//    rightServo.Set(station.GetAnalogIn(2));
+//    leftServo->Set(station.GetAnalogIn(1));
+//    rightServo->Set(station.GetAnalogIn(2));
 //    return;
 
     //Power down servos if robot is not moving for several seconds; governed by servoDisableTimer -dg
@@ -44,20 +57,20 @@ void Shifter::Output()
 
     bool enableServo = servoDisableTimer > 0 ;
 
-    leftServo.SetEnabled(enableServo);
-    rightServo.SetEnabled(enableServo);
+    leftServo->SetEnabled(enableServo);
+    rightServo->SetEnabled(enableServo);
 
     switch(action.shifter.gear)
     {
     case ACTION::GEARBOX::LOW_GEAR:
-        leftServo.Set(leftLowGearServoVal);
-        rightServo.Set(rightLowGearServoVal);
+        leftServo->Set(leftLowGearServoVal);
+        rightServo->Set(rightLowGearServoVal);
         encoders.SetHighGear(false);
         break;
 
     case ACTION::GEARBOX::HIGH_GEAR:
-        leftServo.Set(leftHighGearServoVal);
-        rightServo.Set(rightHighGearServoVal);
+        leftServo->Set(leftHighGearServoVal);
+        rightServo->Set(rightHighGearServoVal);
         encoders.SetHighGear(true);
         break;
 
@@ -66,3 +79,9 @@ void Shifter::Output()
         break;
     }
 }
+
+string Shifter::GetName()
+{
+    return "Shifter";
+}
+

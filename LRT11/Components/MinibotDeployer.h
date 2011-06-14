@@ -2,10 +2,12 @@
 #define MINIBOT_DEPLOYER_H
 
 #include "Component.h"
-#include "Shifter\LRTServo.h"
-#include "Shifter\VIRTUALLRTServo.h"
-#include "..\Jaguar\ProxiedCANJaguar.h"
-#include "..\Config\Config.h"
+#include "..\Config\Configurable.h"
+
+class Config;
+class ProxiedCANJaguar;
+class VirtualLRTServo;
+class LRTServo;
 
 class MinibotDeployer : public Component, public Configurable
 {
@@ -15,10 +17,11 @@ public:
 
     virtual void Output();
     virtual void Configure();
+    virtual string GetName();
 
 private:
     Config& config;
-    ProxiedCANJaguar deployerEsc;
+    ProxiedCANJaguar* deployerEsc;
 
     float lockedServoValue;
     float releasedServoValue;
@@ -26,9 +29,9 @@ private:
     int currentThreshold;
 
 #ifdef VIRTUAL
-    VirtualLRTServo alignerServo;
+    VirtualLRTServo* alignerServo;
 #else
-    LRTServo alignerServo;
+    LRTServo* alignerServo;
 #endif
 };
 

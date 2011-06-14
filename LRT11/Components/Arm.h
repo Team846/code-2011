@@ -2,23 +2,23 @@
 #define ARM_H_
 
 #include "Component.h"
-#include "..\Config\Config.h"
-#include "..\Jaguar\ProxiedCANJaguar.h"
-#include "..\Sensors\VirtualPot.h"
+#include "..\Config\Configurable.h"
 using namespace std;
 
-
+class ProxiedCANJaguar;
+class Config;
+class VirtualPot;
 
 class Arm : public Component, public Configurable
 {
 private:
     Config& config;
     string prefix;
-    ProxiedCANJaguar armEsc;
+    ProxiedCANJaguar* armEsc;
 #ifdef VIRTUAL
-    VirtualPot armPot;
+    VirtualPot* armPot;
 #else
-    AnalogChannel armPot;
+    AnalogChannel* armPot;
 #endif
 
     int oldState;
@@ -43,6 +43,8 @@ public:
 
     virtual void Configure();
     virtual void Output();
+
+    virtual string GetName();
 };
 
 #endif

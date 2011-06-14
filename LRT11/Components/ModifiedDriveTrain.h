@@ -3,19 +3,21 @@
 
 #include "..\General.h"
 #include "Component.h"
-#include "..\Config\Config.h"
-#include "..\Config\RobotConfig.h"
-#include "DriveTrain\CLRateTrain.h"
-#include "DriveTrain\CLPositionDriveTrain.h"
-#include "..\Jaguar\Esc.h"
+#include "..\Config\Configurable.h"
+
+class Config;
+class CLPositionDriveTrain;
+class CLRateTrain;
+class Esc;
+class DriveEncoders;
 
 class ModifiedDriveTrain : public Component, public Configurable
 {
 private:
     DriveEncoders& driveEncoders;
-    CLRateTrain closedRateTrain;
-    CLPositionDriveTrain closedPositionTrain;
-    Esc leftESC, rightESC;
+    CLRateTrain* closedRateTrain;
+    CLPositionDriveTrain* closedPositionTrain;
+    Esc* leftESC, *rightESC;
     Config& config;
 
     int cyclesToSynchronize;  //value in config file

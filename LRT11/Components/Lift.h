@@ -2,18 +2,21 @@
 #define LIFT_H_
 
 #include "Component.h"
-#include "..\Jaguar\ProxiedCANJaguar.h"
-#include "..\Config\Config.h"
-#include "..\Sensors\VirtualPot.h"
+#include "..\Config\Configurable.h"
+
+
+class Config;
+class ProxiedCANJaguar;
+class VirtualPot;
 
 class Lift : public Component, public Configurable
 {
 private:
     Config& config;
     string prefix;
-    ProxiedCANJaguar liftEsc;
+    ProxiedCANJaguar* liftEsc;
 #ifdef VIRTUAL
-    VirtualPot liftPot;
+    VirtualPot* liftPot;
 #endif
 
     const static float inchesToTurns = 1.0 / 12.0;
@@ -38,6 +41,7 @@ public:
     void ConfigureManualMode();
 
     virtual void Output();
+    virtual string GetName();
 };
 
 #endif

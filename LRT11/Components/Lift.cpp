@@ -1,44 +1,52 @@
 #include "Lift.h"
 #include "..\Config\RobotConfig.h"
+#include "..\Config\Config.h"
+#include "..\Sensors\VirtualPot.h"
+#include "..\Jaguar\ProxiedCANJaguar.h"
 
 Lift::Lift()
     : config(Config::GetInstance())
     , prefix("Lift.")
-    , liftEsc(RobotConfig::CAN::LIFT, "Lift")  //Pot is directly connected to Jaguar ESC, not the cRio
-#ifdef VIRTUAL
-    , liftPot(RobotConfig::CAN::LIFT, 10, 1.0, 6.5)
-#endif
     , timeoutCycles(0)
     , cycleCount(0)
     , prevMode(PRESET)
     , potDeadband(0)
     , positionMode(true)
 {
+    liftEsc = new ProxiedCANJaguar(RobotConfig::CAN::LIFT, "Lift");  //Pot is directly connected to Jaguar ESC, not the cRio
+#ifdef VIRTUAL
+    liftPot = new VirtualPot(RobotConfig::CAN::LIFT, 10, 1.0, 6.5);
+#endif
+
+
     printf("Lift Constructed. CANid: %d\n", RobotConfig::CAN::LIFT);
 }
 
 Lift::~Lift()
 {
-
+    delete liftEsc;
+#ifdef VIRTUAL
+    delete liftPot;
+#endif
 }
 
 void Lift::Configure()
 {
-//    liftEsc.SetControlMode(CANJaguar::kPosition);
-    liftEsc.ChangeControlMode(LRTCANJaguar::kPosition);
+//    liftEsc->SetControlMode(CANJaguar::kPosition);
+    liftEsc->ChangeControlMode(LRTCANJaguar::kPosition);
 #ifdef VIRTUAL
-    liftEsc.SetPositionReference(&liftPot);
+    liftEsc->SetPositionReference(&liftPot);
 #else
-    liftEsc.SetPositionReference(LRTCANJaguar::kPosRef_Potentiometer);
+    liftEsc->SetPositionReference(LRTCANJaguar::kPosRef_Potentiometer);
 #endif
 
-    liftEsc.SetPID(config.Get<double>(prefix + "pGain", 100), config.Get<double>(prefix + "iGain", 0),
+    liftEsc->SetPID(config.Get<double>(prefix + "pGain", 100), config.Get<double>(prefix + "iGain", 0),
             config.Get<double>(prefix + "dGain", 0));
 
-//    liftEsc.ConfigSoftPositionLimits(config.Get<double>(prefix + "forwardLimit", 0),
+//    liftEsc->ConfigSoftPositionLimits(config.Get<double>(prefix + "forwardLimit", 0),
 //            config.Get<double>(prefix + "reverseLimit", 10));
-//    liftEsc.SetPotentiometerTurns(10);
-    liftEsc.ConfigPotentiometerTurns(10);
+//    liftEsc->SetPotentiometerTurns(10);
+    liftEsc->ConfigPotentiometerTurns(10);
 
     Config& config = Config::GetInstance();
 
@@ -62,9 +70,9 @@ void Lift::Configure()
 
 void Lift::ConfigureManualMode()
 {
-//    liftEsc.SetControlMode(CANJaguar::kPercentVbus);
-    liftEsc.ChangeControlMode(LRTCANJaguar::kPercentVbus);
-    liftEsc.EnableControl();
+//    liftEsc->SetControlMode(CANJaguar::kPercentVbus);
+    liftEsc->ChangeControlMode(LRTCANJaguar::kPercentVbus);
+    liftEsc->EnableControl();
 }
 
 void Lift::Output()
@@ -105,14 +113,14 @@ void Lift::Output()
         }
 
         action.lift.givenCommand = false; // command has been processed
-        liftEsc.EnableControl();
+        liftEsc->EnableControl();
     }
 
     float potValue = 0.0;
 #ifdef VIRTUAL
-    potValue = liftPot.GetPotValue();
+    potValue = liftPot->GetPotValue();
 #else
-    potValue = liftEsc.GetPotValue();
+    potValue = liftEsc->GetPotValue();
 #endif
 
 #ifdef USE_DASHBOARD
@@ -130,17 +138,17 @@ void Lift::Output()
     {
     case IDLE:
 //        AsynchronousPrinter::Printf("Idle\n");
-        liftEsc.DisableControl();
-        liftEsc.ShouldCollectPotValue(false);
+        liftEsc->DisableControl();
+        liftEsc->ShouldCollectPotValue(false);
 
         if(++potCycleCount % 50 == 0)
-            liftEsc.ShouldCollectPotValue(true);
+            liftEsc->ShouldCollectPotValue(true);
 
         if(!positionMode)
         {
             // exited from manual mode; done with maneuver
             action.lift.completion_status = ACTION::SUCCESS;
-            liftEsc.SetDutyCycle(0.0);
+            liftEsc->SetDutyCycle(0.0);
         }
 //        else if(shouldMoveArmToMiddle)
 //            action.arm.state = action.arm.PRESET_MIDDLE;
@@ -148,56 +156,56 @@ void Lift::Output()
 
     case ABORT:
 //        AsynchronousPrinter::Printf("Abort\n");
-        liftEsc.DisableControl();
-        liftEsc.ShouldCollectPotValue(false);
+        liftEsc->DisableControl();
+        liftEsc->ShouldCollectPotValue(false);
 
         if(!positionMode)
-            liftEsc.SetDutyCycle(0.0);
+            liftEsc->SetDutyCycle(0.0);
 
         action.lift.completion_status = ACTION::ABORTED;
         break;
 
     case PULSING:
 //        AsynchronousPrinter::Printf("Pulsing\n");
-        liftEsc.ShouldCollectPotValue(true);
+        liftEsc->ShouldCollectPotValue(true);
         if(positionMode)
         {
             // configure jaguar for voltage mode
             ConfigureManualMode();
-            liftEsc.SetPosition(0.0); // clear any old setpoint values from position mode
+            liftEsc->SetPosition(0.0); // clear any old setpoint values from position mode
             positionMode = false;
         }
 
         if(potValue >= minPosition)
         {
-            liftEsc.SetPosition(-0.1);
-//            liftEsc.ResetCache();
+            liftEsc->SetPosition(-0.1);
+//            liftEsc->ResetCache();
         }
         else
-            liftEsc.SetPosition(0.0);
+            liftEsc->SetPosition(0.0);
         break;
 
     case MANUAL:
 //        AsynchronousPrinter::Printf("Manual\n");
-        liftEsc.ShouldCollectPotValue(true);
+        liftEsc->ShouldCollectPotValue(true);
         action.lift.completion_status = ACTION::IN_PROGRESS; // not done yet
 
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
         {
-            liftEsc.ResetCache();
-            liftEsc.SetDutyCycle(action.lift.power);
+            liftEsc->ResetCache();
+            liftEsc->SetDutyCycle(action.lift.power);
         }
         else
             // don't power past the minimum and maximum positions
-            liftEsc.SetDutyCycle(0.0);
+            liftEsc->SetDutyCycle(0.0);
 
         state = IDLE;
         break;
 
     case PRESET:
 //        AsynchronousPrinter::Printf("Preset\n");
-        liftEsc.ShouldCollectPotValue(true);
+        liftEsc->ShouldCollectPotValue(true);
         action.lift.completion_status = ACTION::IN_PROGRESS; // not done yet
         string key = prefix;
 
@@ -248,7 +256,7 @@ void Lift::Output()
             action.arm.state = ACTION::ARM_::PRESET_TOP;
 
         SmartDashboard::Log(setpoint, "Lift Set Point");
-        liftEsc.SetPosition(setpoint);
+        liftEsc->SetPosition(setpoint);
 
         if(cycleCount > 0)
             cycleCount--;
@@ -277,6 +285,11 @@ void Lift::Output()
     }
 }
 
+string Lift::GetName()
+{
+    return "Lift";
+}
+
 /*
 void Lift::Output()
 {
@@ -284,7 +297,7 @@ void Lift::Output()
 
     {
         ProfiledSection ps("Lift Log Position");
-//        potValue = liftEsc.GetPosition();
+//        potValue = liftEsc->GetPosition();
         potValue = liftPot.GetPosition();
         SmartDashboard::Log(potValue, "Lift Pot Value");
     }
@@ -293,7 +306,7 @@ void Lift::Output()
     {
         {
             ProfiledSection ps("Lift disable control");
-            liftEsc.DisableControl();
+            liftEsc->DisableControl();
         }
         return;
     }
@@ -304,12 +317,12 @@ void Lift::Output()
 
         // reset preset flags
         action.lift.done = false;
-        liftEsc.EnableControl();
+        liftEsc->EnableControl();
     }
 
     if(action.lift.manualMode)
     {
-        liftEsc.EnableControl();
+        liftEsc->EnableControl();
 
         if(prevMode == PRESET)
             ConfigureVoltageMode();
@@ -317,8 +330,8 @@ void Lift::Output()
         if((action.lift.power > 0 && potValue < maxPosition) ||
                 (action.lift.power < 0 && potValue > minPosition))
         {
-            liftEsc.ResetCache();
-            liftEsc.Set(action.lift.power);
+            liftEsc->ResetCache();
+            liftEsc->Set(action.lift.power);
         }
 
         action.lift.givenCommand = false;
@@ -359,7 +372,7 @@ void Lift::Output()
         if(Util::Abs<float>(potValue - setPoint) < potDeadband)
             action.lift.done = true;
 
-        liftEsc.Set(setPoint);
+        liftEsc->Set(setPoint);
         cycleCount--;
 
         SmartDashboard::Log(setPoint, "Lift Set Point");

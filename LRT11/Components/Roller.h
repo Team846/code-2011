@@ -2,17 +2,15 @@
 #define ROLLER_H_
 
 #include "Component.h"
-#include "..\Config\RobotConfig.h"
-#include "..\Config\Config.h"
-#include "..\Jaguar\ProxiedCANJaguar.h"
-#include "..\Util\Util.h"
-#include "..\Jaguar\LRTCANJaguar.h"
+#include "..\Config\Configurable.h"
+
+class ProxiedCANJaguar;
 
 class Roller : public Component, public Configurable
 {
 private:
-    ProxiedCANJaguar topRoller;
-    ProxiedCANJaguar bottomRoller;
+    ProxiedCANJaguar* topRoller;
+    ProxiedCANJaguar* bottomRoller;
 
     string prefix;
 
@@ -38,6 +36,7 @@ public:
 
     virtual void Output();
     virtual void Configure();
+    virtual string GetName();
 };
 
 #endif

@@ -3,19 +3,20 @@
 
 #include "..\General.h"
 #include "Component.h"
-#include "Shifter\LRTServo.h"
-#include "Shifter\VirtualLRTServo.h"
-#include "..\Config\RobotConfig.h"
-#include "..\Sensors\DriveEncoders.h"
-#include "..\Config\Config.h"
+#include "..\Config\Configurable.h"
+
+class Config;
+class DriveEncoders;
+class LRTServo;
+class VirtualLRTServo;
 
 class Shifter : public Component, public Configurable
 {
 private:
 #ifdef VIRTUAL
-    VirtualLRTServo leftServo, rightServo;
+    VirtualLRTServo* leftServo, *rightServo;
 #else
-    LRTServo leftServo, rightServo;
+    LRTServo* leftServo, *rightServo;
 #endif
 
     DriveEncoders& encoders;
@@ -49,6 +50,7 @@ public:
 
     void virtual Output();
     virtual void Configure();
+    virtual string GetName();
 };
 
 #endif //SHIFTER_H_

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../Jaguar/ProxiedCANJaguar.h"
+#include "../CAN/VirtualCANBusController.h"
 
 #define DISABLE_SETPOINT_CACHING 0
 

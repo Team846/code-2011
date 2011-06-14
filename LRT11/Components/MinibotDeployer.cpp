@@ -1,18 +1,27 @@
 #include "MiniBotDeployer.h"
 #include "..\Config\RobotConfig.h"
+#include "..\Config\Config.h"
+#include "..\Jaguar\ProxiedCANJaguar.h"
+#include "Shifter\LRTServo.h"
+#include "Shifter\VIRTUALLRTServo.h"
 
 MinibotDeployer::MinibotDeployer()
     : config(Config::GetInstance())
-    , deployerEsc(RobotConfig::CAN::DEPLOYER, "Minibot Deployer")
-    , alignerServo(RobotConfig::PWM::ALIGNER_SERVO, "Minibot Deployment Servo")
 {
+    deployerEsc = new ProxiedCANJaguar(RobotConfig::CAN::DEPLOYER, "Minibot Deployer");
+#ifdef VIRTUAL
+    alignerServo = new VirtualLRTServo(RobotConfig::PWM::ALIGNER_SERVO, "Minibot Deployment Servo");
+#else
+    alignerServo = new LRTServo(RobotConfig::PWM::ALIGNER_SERVO, "Minibot Deployment Servo");
+#endif
     Configure();
     printf("Constructed Minibot Deployer\n");
 }
 
 MinibotDeployer::~MinibotDeployer()
 {
-
+    delete deployerEsc;
+    delete alignerServo;
 }
 
 void MinibotDeployer::Configure()
@@ -27,13 +36,13 @@ void MinibotDeployer::Output()
 {
     if(action.deployer.shouldAlignerRelease)
         // set servo to release position
-        alignerServo.Set(releasedServoValue);
+        alignerServo->Set(releasedServoValue);
     else
         // set servo to locked position
-        alignerServo.Set(lockedServoValue);
+        alignerServo->Set(lockedServoValue);
 
     if(action.wasDisabled)
-        deployerEsc.ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
+        deployerEsc->ConfigNeutralMode(LRTCANJaguar::kNeutralMode_Brake);
 
     static enum
     {
@@ -52,7 +61,7 @@ void MinibotDeployer::Output()
         state = ACCELERATING;
 
         // deployment already commenced
-        deployerEsc.ShouldCollectCurrent(true);
+        deployerEsc->ShouldCollectCurrent(true);
         action.deployer.shouldDeployMinibot = false;
     }
 
@@ -91,7 +100,7 @@ void MinibotDeployer::Output()
         setPoint = 0.5;
 
         // used to detect current spike
-        float current = deployerEsc.GetCurrent();
+        float current = deployerEsc->GetCurrent();
 
 #ifdef USE_DASHBOARD
         SmartDashboard::Log(current, "Minibot Deployment Current");
@@ -133,5 +142,10 @@ void MinibotDeployer::Output()
         break;
     }
 
-    deployerEsc.SetDutyCycle(setPoint);
+    deployerEsc->SetDutyCycle(setPoint);
+}
+
+string MinibotDeployer::GetName()
+{
+    return "MinibotDeployer";
 }
