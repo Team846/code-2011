@@ -329,17 +329,10 @@ BuiltinDefaultCode_partialImage/Debug/Objects/LRT11/LRTRobot11.o:  \
   C:/Windriver/workspace/LRT11/Brain/..\Sensors\/../Util/AsynchronousPrinter.h \
   C:/Windriver/workspace/LRT11/Brain/..\Sensors\/..\Config\Config.h \
   C:/Windriver/workspace/LRT11/Brain/..\Sensors\/..\Config\Configurable.h \
-  C:/Windriver/workspace/LRT11/Components/ModifiedDriveTrain.h \
-  C:/Windriver/workspace/LRT11/Components/..\General.h \
   C:/Windriver/workspace/LRT11/Components/Component.h \
+  C:/Windriver/workspace/LRT11/Components/..\General.h \
   C:/Windriver/workspace/LRT11/Components/..\ActionData.h \
   c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/c++/3.4.4/list \
-  C:/Windriver/workspace/LRT11/Components/..\Config\Configurable.h \
-  C:/Windriver/workspace/LRT11/Components/Shifter.h \
-  C:/Windriver/workspace/LRT11/Components/Lift.h \
-  C:/Windriver/workspace/LRT11/Components/Arm.h \
-  C:/Windriver/workspace/LRT11/Components/Roller.h \
-  C:/Windriver/workspace/LRT11/Components/MiniBotDeployer.h \
   C:/Windriver/workspace/LRT11/Config/Config.h \
   C:/WindRiver/vxworks-6.3/target/h/wdLib.h \
   C:/WindRiver/vxworks-6.3/target/h/sysLib.h \
@@ -1020,27 +1013,13 @@ C:/Windriver/workspace/LRT11/Brain/..\Sensors\/..\Config\Config.h:
 
 C:/Windriver/workspace/LRT11/Brain/..\Sensors\/..\Config\Configurable.h:
 
-C:/Windriver/workspace/LRT11/Components/ModifiedDriveTrain.h:
+C:/Windriver/workspace/LRT11/Components/Component.h:
 
 C:/Windriver/workspace/LRT11/Components/..\General.h:
-
-C:/Windriver/workspace/LRT11/Components/Component.h:
 
 C:/Windriver/workspace/LRT11/Components/..\ActionData.h:
 
 c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/c++/3.4.4/list:
-
-C:/Windriver/workspace/LRT11/Components/..\Config\Configurable.h:
-
-C:/Windriver/workspace/LRT11/Components/Shifter.h:
-
-C:/Windriver/workspace/LRT11/Components/Lift.h:
-
-C:/Windriver/workspace/LRT11/Components/Arm.h:
-
-C:/Windriver/workspace/LRT11/Components/Roller.h:
-
-C:/Windriver/workspace/LRT11/Components/MiniBotDeployer.h:
 
 C:/Windriver/workspace/LRT11/Config/Config.h:
 

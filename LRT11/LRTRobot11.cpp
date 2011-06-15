@@ -17,14 +17,6 @@ LRTRobot11::LRTRobot11()
 #else
 //    , controller(CANBusController::GetInstance())
 #endif
-    , drive()
-//    , positionDrive()
-//    , encoderData()
-    , shifter()
-    , lift()
-    , arm()
-    , roller()
-    , minibotDeployer()
     , config(Config::GetInstance())
     , ds(*DriverStation::GetInstance())
 //    , switchLED(6)
@@ -95,7 +87,7 @@ void LRTRobot11::MainLoop()
     //iterate though and output components
     for(list<ComponentWithData>::iterator iter = components->begin(); iter != components->end(); iter++)
     {
-    	// if we are enabled or the Component does not require the enabled state
+        // if we are enabled or the Component does not require the enabled state
         if(gameState != DISABLED || !((*iter).second.RequiresEnabledState))
         {
             int DIO = (*iter).second.DIO;
@@ -114,67 +106,6 @@ void LRTRobot11::MainLoop()
 
 //    if(prevState != gameState)
 //        controller.ResetCache();
-
-    if(gameState != DISABLED)
-    {
-        // components to output only when enabled
-
-        // shifter must output before drivetrain
-        if(ds.GetDigitalIn(5))
-        {
-            ProfiledSection ps("Servo Shifting");
-            shifter.Output();
-        }
-
-        if(ds.GetDigitalIn(1))
-        {
-            ProfiledSection ps("Drive Train");
-            drive.Output();
-        }
-
-        if(ds.GetDigitalIn(2))
-        {
-//            ProfiledSection ps("Position Drive");
-//            positionDrive.Output();
-        }
-
-        if(ds.GetDigitalIn(3))
-        {
-            ProfiledSection ps("Lift");
-            lift.Output();
-        }
-
-        if(ds.GetDigitalIn(4))
-        {
-            ProfiledSection ps("Arm");
-            arm.Output();
-        }
-
-        if(ds.GetDigitalIn(6))
-        {
-            ProfiledSection ps("Roller");
-            roller.Output();
-        }
-
-        if(ds.GetDigitalIn(7))
-        {
-            ProfiledSection ps("Minibot Deployment");
-            minibotDeployer.Output();
-        }
-        if(ds.GetDigitalIn(8))
-        {
-//            printf("Switch 8 on DS set; Exiting -D.Giandomenico\n");
-//            printf("Attempting to kill %#x %s\n", m_task->GetID(), m_task->GetName());
-//            int error = taskDelete(m_task->GetID());
-//            printf("Error=%d\n", error);
-        }
-        // To add another component output:
-        //
-        // {
-        //      ProfiledSection ps("Descriptive Phrase");
-        //      component.Output();
-        // }
-    }
 
     prevState = gameState;
 
