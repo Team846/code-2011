@@ -9,7 +9,7 @@
 #include "Roller.h"
 #include "MinibotDeployer.h"
 
-using namespace ComponentFactory;
+//using namespace ComponentFactory;
 
 ComponentData createComponentData(bool RequiresEnabledState, int DIO)
 {
@@ -19,19 +19,23 @@ ComponentData createComponentData(bool RequiresEnabledState, int DIO)
     return ret;
 }
 
-list< ComponentWithData >* CreateComponents()
-{
-    list< ComponentWithData >* components = new list < ComponentWithData >();
+//namespace 
+//{
 
-    components->push_back(ComponentWithData(new ConfigLoader(), createComponentData(false, ComponentData::NO_DISABLE_DIO)));
-
-    components->push_back(ComponentWithData(new Shifter(), createComponentData(true, 5)));
-    components->push_back(ComponentWithData(new ModifiedDriveTrain(), createComponentData(true, 1)));
-
-    components->push_back(ComponentWithData(new Lift(), createComponentData(true, 3)));
-    components->push_back(ComponentWithData(new Arm(), createComponentData(true, 4)));
-    components->push_back(ComponentWithData(new Roller(), createComponentData(true, 6)));
-    components->push_back(ComponentWithData(new MinibotDeployer(), createComponentData(true, 7)));
-
-    return components;
-}
+	list < ComponentWithData >* CreateComponents()
+	{
+	    list< ComponentWithData >* components = new list < ComponentWithData >();
+	
+	    components->push_back(ComponentWithData(new ConfigLoader(), createComponentData(false, ComponentData::NO_DISABLE_DIO)));
+	
+	    components->push_back(ComponentWithData(new Shifter(), createComponentData(true, 5)));
+	    components->push_back(ComponentWithData(new ModifiedDriveTrain(), createComponentData(true, 1)));
+	
+	    components->push_back(ComponentWithData(new Lift(), createComponentData(true, 3)));
+	    components->push_back(ComponentWithData(new Arm(), createComponentData(true, 4)));
+	    components->push_back(ComponentWithData(new Roller(), createComponentData(true, 6)));
+	    components->push_back(ComponentWithData(new MinibotDeployer(), createComponentData(true, 7)));
+	
+	    return components;
+	}
+//}

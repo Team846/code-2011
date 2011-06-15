@@ -29,9 +29,9 @@ typedef struct ComponentData
 };
 
 typedef pair < Component*, ComponentData> ComponentWithData;
-namespace ComponentFactory
-{
+//namespace ComponentFactory
+//{
     list < ComponentWithData >* CreateComponents();
-}
+//}
 
 #endif

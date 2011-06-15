@@ -24,7 +24,8 @@ LRTRobot11::LRTRobot11()
     , lastMember_("LRTRobot.LastMember\n") //trace constructor.
 
 {
-    components = ComponentFactory::CreateComponents();
+//    components = ComponentFactory::CreateComponents();
+    components = CreateComponents();
 //    mainLoopWatchDog = wdCreate();
     printf("---- Robot Initialized ----\n\n");
 }
