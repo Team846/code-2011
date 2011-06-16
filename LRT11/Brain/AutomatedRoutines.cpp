@@ -1,5 +1,7 @@
 #include "Brain.h"
-
+#include "..\ActionData\ArmAction.h"
+#include "..\ActionData\LiftAction.h"
+#include "..\ActionData\DriveAction.h"
 #define LIFT_RELEASE
 
 void Brain::AutomatedRoutineWithLift()
@@ -30,11 +32,11 @@ void Brain::AutomatedRoutineWithLift()
         break;
 
     case MOVE_LIFT_AND_REVERSE_ROLLER:
-        action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
+        action.arm->state = ACTION::ARM_::PRESET_MIDDLE;
 
-        action.lift.givenCommand = true;
-        action.lift.manualMode = true;
-        action.lift.power = -0.6;
+        action.lift->givenCommand = true;
+        action.lift->manualMode = true;
+        action.lift->power = -0.6;
 
         if(++timer > 10)
         {
@@ -45,8 +47,8 @@ void Brain::AutomatedRoutineWithLift()
         break;
 
     case STOPPING:
-        action.lift.power = 0;
-        action.arm.state = ACTION::ARM_::PRESET_TOP;
+        action.lift->power = 0;
+        action.arm->state = ACTION::ARM_::PRESET_TOP;
         action.roller.state = ACTION::ROLLER::STOPPED;
         state = IDLE;
         break;
@@ -90,7 +92,7 @@ void Brain::AutomatedRoutines()
 
         // since the lift waits for the arm you have to make sure
         // it does not think that the arm is already done
-        action.arm.completion_status = ACTION::IN_PROGRESS;
+        action.arm->completion_status = ACTION::IN_PROGRESS;
     }
 
     // if aborted make sure we terminate the automated routine
@@ -99,7 +101,7 @@ void Brain::AutomatedRoutines()
 
     // execution for new release method using the arm
     if(action.automatedRoutine.ringer == ACTION::RINGER::ARM_MIDDLE_POSITON)
-        action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
+        action.arm->state = ACTION::ARM_::PRESET_MIDDLE;
 
 
 #ifdef LIFT_RELEASE
@@ -115,11 +117,11 @@ void Brain::AutomatedRoutines()
         switch(state)
         {
         case MOVE_LIFT_AND_REVERSE_ROLLER:
-            action.arm.state = ACTION::ARM_::PRESET_MIDDLE;
+            action.arm->state = ACTION::ARM_::PRESET_MIDDLE;
 
-            action.lift.givenCommand = true;
-            action.lift.manualMode = true;
-            action.lift.power = -0.4;
+            action.lift->givenCommand = true;
+            action.lift->manualMode = true;
+            action.lift->power = -0.4;
 
             if(++timer > 10)
             {
@@ -130,15 +132,15 @@ void Brain::AutomatedRoutines()
             break;
 
         case STOPPING:
-            action.lift.power = 0;
-            action.arm.state = ACTION::ARM_::PRESET_TOP;
+            action.lift->power = 0;
+            action.arm->state = ACTION::ARM_::PRESET_TOP;
             action.roller.state = ACTION::ROLLER::STOPPED;
             action.automatedRoutine.ringer = ACTION::RINGER::IDLE;
             break;
         }
 
 #else
-        action.arm.state = action.arm.PRESET_BOTTOM;
+        action.arm->state = action.arm->PRESET_BOTTOM;
         action.roller.state = ACTION::ROLLER::SPITTING;
 #endif
     }
@@ -154,20 +156,20 @@ void Brain::AutomatedRoutines()
 
     else if(action.automatedRoutine.ringer == ACTION::RINGER::ARM_UP)
     {
-        action.arm.state = ACTION::ARM_::PRESET_TOP;
-        if(action.arm.completion_status == ACTION::SUCCESS)
+        action.arm->state = ACTION::ARM_::PRESET_TOP;
+        if(action.arm->completion_status == ACTION::SUCCESS)
         {
             AsynchronousPrinter::Printf("arm done\n");
             action.automatedRoutine.ringer = ACTION::RINGER::LIFT_DOWN;
 
-            action.lift.givenCommand = true;
-            action.lift.lift_preset = ACTION::LIFT::LOW_PEG;
-            action.lift.completion_status = ACTION::IN_PROGRESS;
+            action.lift->givenCommand = true;
+            action.lift->lift_preset = ACTION::LIFT::LOW_PEG;
+            action.lift->completion_status = ACTION::IN_PROGRESS;
         }
     }
     else if(action.automatedRoutine.ringer == ACTION::RINGER::LIFT_DOWN)
     {
-        if(action.lift.completion_status == ACTION::SUCCESS)
+        if(action.lift->completion_status == ACTION::SUCCESS)
             action.automatedRoutine.ringer = ACTION::RINGER::IDLE;
     }
 }
@@ -216,8 +218,8 @@ void Brain::AutomatedFollowLine()
             break;
 
         case FINDING:
-            action.driveTrain.rate.rawForward = 0.2;
-            action.driveTrain.rate.rawTurn = 0.0;
+            action.driveTrain->rate.rawForward = 0.2;
+            action.driveTrain->rate.rawTurn = 0.0;
 
             if(firstReading)
             {
@@ -231,13 +233,13 @@ void Brain::AutomatedFollowLine()
             break;
 
         case FOLLOWING:
-            action.driveTrain.rate.rawForward = 0.4;
+            action.driveTrain->rate.rawForward = 0.4;
 
             // push line position to the extreme if the line isn't detected
             if(linePosition == LineSensor::LINE_NOT_DETECTED)
             {
                 // go slower when trying to redetect line
-                action.driveTrain.rate.rawForward = 0.2;
+                action.driveTrain->rate.rawForward = 0.2;
 
                 // if the last value to the right of the center, use 80
                 if(prevLinePosition > 50)
@@ -248,13 +250,13 @@ void Brain::AutomatedFollowLine()
             }
             else if(linePosition == LineSensor::END_OF_LINE)
             {
-                action.driveTrain.rate.rawForward = 0.0;
-                action.driveTrain.rate.rawTurn = 0.0;
+                action.driveTrain->rate.rawForward = 0.0;
+                action.driveTrain->rate.rawTurn = 0.0;
                 state = DONE;
             }
 
             // first 4 pixels are sometimes bogus; they are cut out
-            action.driveTrain.rate.rawTurn = -0.1 * Util::Rescale(linePosition, 20, 80, -1, 1);
+            action.driveTrain->rate.rawTurn = -0.1 * Util::Rescale(linePosition, 20, 80, -1, 1);
             break;
 
         case DONE:

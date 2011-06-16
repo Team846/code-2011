@@ -1,5 +1,6 @@
 #include "Brain.h"
 #include "..\ActionData.h"
+#include "..\ActionData\DriveAction.h"
 
 Brain::Brain()
     : config(Config::GetInstance())
@@ -79,11 +80,11 @@ void Brain::Process(GameState gameState)
 void Brain::UpdateDashboardValues(GameState gameState)
 {
     // drive train and encoder logging
-    SmartDashboard::Log((int)(action.driveTrain.rate.rawForward * 100), "Raw Forward (F)");
-    SmartDashboard::Log(200 + (int)(action.driveTrain.rate.rawForward * 100), "Raw Forward (B)");
+    SmartDashboard::Log((int)(action.driveTrain->rate.rawForward * 100), "Raw Forward (F)");
+    SmartDashboard::Log(200 + (int)(action.driveTrain->rate.rawForward * 100), "Raw Forward (B)");
 
-    SmartDashboard::Log((int)(action.driveTrain.rate.rawTurn * 100), "Raw Turn (F)");
-    SmartDashboard::Log(200 + (int)(action.driveTrain.rate.rawTurn * 100), "Raw Turn (B)");
+    SmartDashboard::Log((int)(action.driveTrain->rate.rawTurn * 100), "Raw Turn (F)");
+    SmartDashboard::Log(200 + (int)(action.driveTrain->rate.rawTurn * 100), "Raw Turn (B)");
 
 //    SmartDashboard::Log(action.driveTrain.brakeLeft, "BL: ");
 //    SmartDashboard::Log(action.driveTrain.brakeRight, "BR: ");

@@ -1,4 +1,5 @@
 #include "Brain.h"
+#include "..\ActionData\DriveAction.h"
 
 void Brain::TeleopDriveTrain()
 {
@@ -14,35 +15,35 @@ void Brain::TeleopDriveTrain()
         AutomatedFollowLine();
 //        if(wasDisabled)
 //        {
-//            action.driveTrain.mode = action.driveTrain.POSITION;
-//            action.driveTrain.position.givenCommand = true;
+//            action.driveTrain->mode = action.driveTrain->POSITION;
+//            action.driveTrain->position.givenCommand = true;
 //
-//            action.driveTrain.position.shouldMoveDistance = true;
-//            action.driveTrain.position.shouldTurnAngle = false;
+//            action.driveTrain->position.shouldMoveDistance = true;
+//            action.driveTrain->position.shouldTurnAngle = false;
 //
-//            action.driveTrain.position.distanceSetPoint = 15.0 * 12; // 15 feet forward
-//            action.driveTrain.position.turnSetPoint = 0.0;
+//            action.driveTrain->position.distanceSetPoint = 15.0 * 12; // 15 feet forward
+//            action.driveTrain->position.turnSetPoint = 0.0;
 //
-//            action.driveTrain.position.maxFwdSpeed = 0.3;
-//            action.driveTrain.position.maxTurnSpeed = 1.0;
+//            action.driveTrain->position.maxFwdSpeed = 0.3;
+//            action.driveTrain->position.maxTurnSpeed = 1.0;
 //        }
 
-//        if(action.driveTrain.distance.done)
+//        if(action.driveTrain->distance.done)
 //        {
-//            action.driveTrain.mode = action.driveTrain.RATE;
-//            action.driveTrain.rate.rawForward = 0.0;
-//            action.driveTrain.rate.rawTurn = 0.0;
+//            action.driveTrain->mode = action.driveTrain->RATE;
+//            action.driveTrain->rate.rawForward = 0.0;
+//            action.driveTrain->rate.rawTurn = 0.0;
 //        }
     }
     else
     {
-        action.driveTrain.mode = ACTION::DRIVETRAIN::SPEED;
-        action.driveTrain.rate.rawForward = inputs.GetForward();
-        action.driveTrain.rate.rawTurn    = inputs.GetTurn();
+        action.driveTrain->mode = ACTION::DRIVETRAIN::SPEED;
+        action.driveTrain->rate.rawForward = inputs.GetForward();
+        action.driveTrain->rate.rawTurn    = inputs.GetTurn();
 
-        action.driveTrain.rate.brakeLeft  = inputs.ShouldBrakeLeft();
-        action.driveTrain.rate.brakeRight = inputs.ShouldBrakeRight();
+        action.driveTrain->rate.brakeLeft  = inputs.ShouldBrakeLeft();
+        action.driveTrain->rate.brakeRight = inputs.ShouldBrakeRight();
 
-        action.driveTrain.rate.thirdGear  = inputs.ShouldShiftThird();
+        action.driveTrain->rate.thirdGear  = inputs.ShouldShiftThird();
     }
 }

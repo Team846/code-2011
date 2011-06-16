@@ -1,4 +1,7 @@
 #include "ActionData.h"
+#include "ActionData\ArmAction.h"
+#include "ActionData\LiftAction.h"
+#include "ActionData\DriveAction.h"
 
 ActionData* ActionData::instance = NULL;
 
@@ -14,29 +17,30 @@ ActionData::ActionData()
     // used to abort movements
     master.abort = false;
 
-    driveTrain.mode = ACTION::DRIVETRAIN::SPEED;
+    driveTrain = (DriveAction*) malloc(sizeof(DriveAction));
+    driveTrain->mode = ACTION::DRIVETRAIN::SPEED;
 
-    driveTrain.rate.rawForward = 0;
-    driveTrain.rate.rawTurn = 0;
-    driveTrain.rate.brakeLeft = false;
-    driveTrain.rate.brakeRight = false;
-    driveTrain.rate.thirdGear = false;
+    driveTrain->rate.rawForward = 0;
+    driveTrain->rate.rawTurn = 0;
+    driveTrain->rate.brakeLeft = false;
+    driveTrain->rate.brakeRight = false;
+    driveTrain->rate.thirdGear = false;
     // closed loop should default to on
-    driveTrain.rate.usingClosedLoop = true;
+    driveTrain->rate.usingClosedLoop = true;
 
-    driveTrain.position.givenCommand = false;
-    driveTrain.position.shouldMoveDistance = false;
-    driveTrain.position.shouldTurnAngle = false;
-    driveTrain.position.turnSetPoint = 0.0;
-    driveTrain.position.distanceSetPoint = 0.0;
-    driveTrain.position.maxFwdSpeed = 1.0;
-    driveTrain.position.maxTurnSpeed = 1.0;
-    driveTrain.position.done = false;
+    driveTrain->position.givenCommand = false;
+    driveTrain->position.shouldMoveDistance = false;
+    driveTrain->position.shouldTurnAngle = false;
+    driveTrain->position.turnSetPoint = 0.0;
+    driveTrain->position.distanceSetPoint = 0.0;
+    driveTrain->position.maxFwdSpeed = 1.0;
+    driveTrain->position.maxTurnSpeed = 1.0;
+    driveTrain->position.done = false;
 
-    driveTrain.distance.givenCommand = false;
-    driveTrain.distance.distanceDutyCycle = 0.0;
-    driveTrain.distance.distanceSetPoint = 0.0;
-    driveTrain.distance.done = false;
+    driveTrain->distance.givenCommand = false;
+    driveTrain->distance.distanceDutyCycle = 0.0;
+    driveTrain->distance.distanceSetPoint = 0.0;
+    driveTrain->distance.done = false;
 
     wasDisabled = true;
 
@@ -53,17 +57,19 @@ ActionData::ActionData()
 //    // closed loop should default to on
 //    positionTrain.usingClosedLoop = true;
 
-    lift.givenCommand = false;
-    lift.manualMode = false;
-    lift.power = 0;
-    lift.highColumn = false;
-    lift.lift_preset = ACTION::LIFT::STOWED;
-    lift.completion_status = ACTION::IN_PROGRESS;
+    lift = (LiftAction*) malloc(sizeof(LiftAction));
+    lift->givenCommand = false;
+    lift->manualMode = false;
+    lift->power = 0;
+    lift->highColumn = false;
+    lift->lift_preset = ACTION::LIFT::STOWED;
+    lift->completion_status = ACTION::IN_PROGRESS;
 
     demoLift.power = 0;
 
-    arm.state = ACTION::ARM_::IDLE;
-    arm.completion_status = ACTION::IN_PROGRESS;
+    arm = (ArmAction*) malloc(sizeof(ArmAction));//I'm sure there is a c++ way to do this, if you see it please fix it
+    arm->state = ACTION::ARM_::IDLE;
+    arm->completion_status = ACTION::IN_PROGRESS;
 
     roller.state = ACTION::ROLLER::STOPPED;
     // if in roller.ROTATING state, default to rotating upward
@@ -87,5 +93,7 @@ ActionData::ActionData()
 
 ActionData::~ActionData()
 {
-
+    free(arm);
+    free(lift);
+    free(driveTrain);
 }

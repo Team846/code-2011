@@ -19,8 +19,6 @@ private:
     Console();
     DISALLOW_COPY_AND_ASSIGN(Console);
 
-    friend class LRTRobot11;
-
     static Console* instance;
     volatile int cycleNum;
 

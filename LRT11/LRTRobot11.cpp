@@ -24,8 +24,8 @@ LRTRobot11::LRTRobot11()
     , lastMember_("LRTRobot.LastMember\n") //trace constructor.
 
 {
-//    components = ComponentFactory::CreateComponents();
-    components = CreateComponents();
+    components = Component::CreateComponents();
+
 //    mainLoopWatchDog = wdCreate();
     printf("---- Robot Initialized ----\n\n");
 }
@@ -91,8 +91,8 @@ void LRTRobot11::MainLoop()
         // if we are enabled or the Component does not require the enabled state
         if(gameState != DISABLED || !((*iter).second.RequiresEnabledState))
         {
-            int DIO = (*iter).second.DIO;
-            if(DIO == ComponentData::NO_DISABLE_DIO || ds.GetDigitalIn(DIO))
+            int DIO = (*iter).second.DS_DIOToDisableComponent;
+            if(DIO == ComponentData::NO_DS_DISABLE_DIO || ds.GetDigitalIn(DIO))
             {
                 ProfiledSection ps("Outputting " + (*iter).first->GetName());
                 (*iter).first->Output();

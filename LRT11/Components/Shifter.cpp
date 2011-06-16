@@ -5,6 +5,7 @@
 #include "Shifter\VirtualLRTServo.h"
 #include "..\Sensors\DriveEncoders.h"
 #include "..\Config\RobotConfig.h"
+#include "..\ActionData\DriveAction.h"
 
 
 Shifter::Shifter()
@@ -51,7 +52,7 @@ void Shifter::Output()
         servoDisableTimer--;
 
     const bool robotTryingToMove =
-        (action.driveTrain.rate.rawForward != 0.0 || action.driveTrain.rate.rawTurn != 0.0);
+        (action.driveTrain->rate.rawForward != 0.0 || action.driveTrain->rate.rawTurn != 0.0);
 
     if(robotTryingToMove || action.shifter.force)
         servoDisableTimer = kServoDisableDelay; //reset timer

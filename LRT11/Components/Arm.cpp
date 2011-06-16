@@ -3,6 +3,7 @@
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "..\Config\Config.h"
 #include "..\Sensors\VirtualPot.h"
+#include "..\ActionData\ArmAction.h"
 
 
 Arm::Arm()
@@ -69,22 +70,22 @@ void Arm::Output()
     if(action.master.abort)
     {
         armEsc->SetDutyCycle(0.0);
-        action.arm.state = ACTION::ARM_::IDLE;
-        action.arm.completion_status = ACTION::ABORTED;
+        action.arm->state = ACTION::ARM_::IDLE;
+        action.arm->completion_status = ACTION::ABORTED;
         return; // do not allow normal processing (ABORT is not printed...should fix this -dg)
     }
 
-    const bool state_change = (oldState != action.arm.state);
+    const bool state_change = (oldState != action.arm->state);
     if(state_change)
-        AsynchronousPrinter::Printf("Arm: %s\n", ACTION::ARM_::state_string[action.arm.state]);
+        AsynchronousPrinter::Printf("Arm: %s\n", ACTION::ARM_::state_string[action.arm->state]);
 
     if(state_change)
         cycleCount = timeoutCycles; // reset timeout
 
-    switch(action.arm.state)
+    switch(action.arm->state)
     {
     case ACTION::ARM_::PRESET_TOP:
-        action.arm.completion_status = ACTION::IN_PROGRESS;
+        action.arm->completion_status = ACTION::IN_PROGRESS;
         // overriden below to change roller speed while moving the arm up
         action.roller.maxSuckPower = 1.0;
 
@@ -92,14 +93,14 @@ void Arm::Output()
         // set the state each time through the loop
         if(--cycleCount < 0)
         {
-            action.arm.completion_status = ACTION::FAILURE;
+            action.arm->completion_status = ACTION::FAILURE;
             armEsc->SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue >= maxPosition)
         {
-            action.arm.completion_status = ACTION::SUCCESS;
+            action.arm->completion_status = ACTION::SUCCESS;
             armEsc->SetDutyCycle(powerRetainUp);
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
@@ -107,7 +108,7 @@ void Arm::Output()
         }
         else
         {
-            action.arm.completion_status = ACTION::IN_PROGRESS;
+            action.arm->completion_status = ACTION::IN_PROGRESS;
             armEsc->SetDutyCycle(powerUp);
 
             action.roller.state = ACTION::ROLLER::SUCKING;
@@ -123,19 +124,19 @@ void Arm::Output()
         break;
 
     case ACTION::ARM_::PRESET_BOTTOM:
-        action.arm.completion_status = ACTION::IN_PROGRESS;
+        action.arm->completion_status = ACTION::IN_PROGRESS;
         action.roller.maxSuckPower = 1.0;
 
         if(--cycleCount < 0)
         {
-            action.arm.completion_status = ACTION::FAILURE;
+            action.arm->completion_status = ACTION::FAILURE;
             armEsc->SetDutyCycle(0.0);
             break; // timeout overrides everything
         }
 
         if(potValue <= minPosition)
         {
-            action.arm.completion_status = ACTION::SUCCESS;
+            action.arm->completion_status = ACTION::SUCCESS;
             armEsc->SetDutyCycle(0.0); // don't go below the min position
             // cycleCount will never get decremented below 0, so powerRetainUp
             // will be maintained
@@ -143,18 +144,18 @@ void Arm::Output()
         }
         else
         {
-            action.arm.completion_status = ACTION::IN_PROGRESS;
+            action.arm->completion_status = ACTION::IN_PROGRESS;
             armEsc->SetDutyCycle(powerDown);
         }
         break;
 
     case ACTION::ARM_::PRESET_MIDDLE:
-        action.arm.completion_status = ACTION::IN_PROGRESS;
+        action.arm->completion_status = ACTION::IN_PROGRESS;
 
         // no timeout for now
 //      if(--cycleCount < 0)
 //      {
-//          action.arm.status = ACTION::FAILURE;
+//          action.arm->status = ACTION::FAILURE;
 //          armEsc.Set(0.0);
 //          break; // timeout overrides everything
 //      }
@@ -173,7 +174,7 @@ void Arm::Output()
         {
             // prevent cycle count from becoming < 0
             cycleCount = 100;
-            action.arm.completion_status = ACTION::SUCCESS;
+            action.arm->completion_status = ACTION::SUCCESS;
             armEsc->SetDutyCycle(0.0);
         }
         break;
@@ -184,9 +185,9 @@ void Arm::Output()
         else
             armEsc->SetDutyCycle(0.0);
 
-        action.arm.completion_status = ACTION::IN_PROGRESS;
+        action.arm->completion_status = ACTION::IN_PROGRESS;
         // operator must hold button to stay in manual mode
-        action.arm.state = ACTION::ARM_::IDLE;
+        action.arm->state = ACTION::ARM_::IDLE;
         break;
 
     case ACTION::ARM_::MANUAL_DOWN:
@@ -195,13 +196,13 @@ void Arm::Output()
         else
             armEsc->SetDutyCycle(0.0);
 
-        action.arm.completion_status = ACTION::IN_PROGRESS;
+        action.arm->completion_status = ACTION::IN_PROGRESS;
         // operator must hold button to stay in manual mode
-        action.arm.state = ACTION::ARM_::IDLE;
+        action.arm->state = ACTION::ARM_::IDLE;
         break;
 
     case ACTION::ARM_::IDLE:
-        action.arm.completion_status = ACTION::SUCCESS;
+        action.arm->completion_status = ACTION::SUCCESS;
         armEsc->SetDutyCycle(0.0);
         break;
     default:
@@ -209,13 +210,13 @@ void Arm::Output()
 
     }
 
-    oldState = action.arm.state;
+    oldState = action.arm->state;
 
     //Print diagnostics
     static ACTION::eCompletionStatus lastDoneState = ACTION::UNSET;
-    if(lastDoneState != action.arm.completion_status)
-        AsynchronousPrinter::Printf("Arm: Status=%s\n", ACTION::status_string[action.arm.completion_status]);
-    lastDoneState = action.arm.completion_status;
+    if(lastDoneState != action.arm->completion_status)
+        AsynchronousPrinter::Printf("Arm: Status=%s\n", ACTION::status_string[action.arm->completion_status]);
+    lastDoneState = action.arm->completion_status;
 }
 
 string Arm::GetName()

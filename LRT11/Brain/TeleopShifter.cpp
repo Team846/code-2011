@@ -1,4 +1,5 @@
 #include "Brain.h"
+#include "..\ActionData\DriveAction.h"
 
 void Brain::TeleopShifter()
 {
@@ -51,7 +52,7 @@ void Brain::TeleopShifter()
 
     // commenced a shift; synchronize the drive train
     if(lastGear != action.shifter.gear)
-        action.driveTrain.mode = ACTION::DRIVETRAIN::SYNCHRONIZING;
+        action.driveTrain->mode = ACTION::DRIVETRAIN::SYNCHRONIZING;
 
     lastGear = action.shifter.gear;
 }

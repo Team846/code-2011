@@ -76,7 +76,12 @@ namespace ACTION
         char* const state_string[2 + 1] = { "Low Gear", "High Gear"};
 
     }
+
 } //namespace ACTION
+
+struct ArmAction;
+struct LiftAction;
+struct DriveAction;
 
 class ActionData
 {
@@ -93,62 +98,15 @@ public:
         bool abort;
     } master;
 
-    // drive train
-    struct
-    {
-        ACTION::DRIVETRAIN::eMode mode;
-        struct
-        {
-            float rawForward, rawTurn;
-            bool brakeLeft, brakeRight;
-            bool usingClosedLoop;
-            bool thirdGear;
-        } rate;
-
-        struct
-        {
-            bool givenCommand;
-            bool shouldMoveDistance, shouldTurnAngle;
-
-            float distanceSetPoint, turnSetPoint; // inches, degrees
-            float maxFwdSpeed, maxTurnSpeed;
-
-            bool done;
-        } position;
-
-        struct
-        {
-            bool givenCommand;
-
-            float distanceDutyCycle;
-            float distanceSetPoint;
-
-            bool done;
-        } distance;
-
-    } driveTrain;
-
-    struct
-    {
-        bool givenCommand;
-        bool manualMode;
-        float power;
-
-        bool highColumn;
-        ACTION::LIFT::ePresets lift_preset;
-        ACTION::eCompletionStatus completion_status;
-    } lift;
+    DriveAction* driveTrain;
+    LiftAction* lift;
 
     struct
     {
         float power;
     } demoLift;
 
-    struct
-    {
-        ACTION::ARM_::eStates state;
-        ACTION::eCompletionStatus completion_status;
-    } arm;
+    ArmAction* arm;
 
     struct
     {

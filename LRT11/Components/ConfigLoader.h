@@ -1,3 +1,6 @@
+#ifndef _CONFIG_LOADER_H
+#define _CONFIG_LOADER_H
+
 #include "Component.h"
 
 class Config;
@@ -13,3 +16,5 @@ public:
 private:
     Config& config;
 };
+
+#endif

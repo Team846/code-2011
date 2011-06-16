@@ -1,4 +1,5 @@
 #include "Brain.h"
+#include "..\ActionData\LiftAction.h"
 
 void Brain::TeleopRoller()
 {
@@ -30,9 +31,9 @@ void Brain::TeleopRoller()
         switch(state)
         {
         case MOVING_LIFT_DOWN:
-            action.lift.givenCommand = true;
-            action.lift.manualMode = true;
-            action.lift.power = -0.4;
+            action.lift->givenCommand = true;
+            action.lift->manualMode = true;
+            action.lift->power = -0.4;
 
             // keep moving down for 2/5 of a second
             if(++timer > 20)

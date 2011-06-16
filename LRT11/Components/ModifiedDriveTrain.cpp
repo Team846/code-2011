@@ -5,6 +5,7 @@
 #include "..\Sensors\DriveEncoders.h"
 #include "..\Jaguar\Esc.h"
 #include "..\Config\RobotConfig.h"
+#include "..\ActionData\DriveAction.h"
 #include <math.h>
 
 ModifiedDriveTrain::ModifiedDriveTrain()
@@ -61,7 +62,7 @@ void ModifiedDriveTrain::Output()
 //    }
 
     closedRateTrain->SetHighGear(action.shifter.gear == ACTION::GEARBOX::HIGH_GEAR);
-    closedRateTrain->SetClosedLoopEnabled(action.driveTrain.rate.usingClosedLoop);
+    closedRateTrain->SetClosedLoopEnabled(action.driveTrain->rate.usingClosedLoop);
 
 //    closedRateTrain->SetClosedLoopEnabled(false);
 //    SmartDashboard::Log(driveEncoders.GetNormalizedForwardMotorSpeed(), "Normalized Speed");
@@ -69,49 +70,49 @@ void ModifiedDriveTrain::Output()
 
     // calculate left duty cycle, right duty cycle, left brake, and
     // right brake based off of joystick inputs and mode
-    switch(action.driveTrain.mode)
+    switch(action.driveTrain->mode)
     {
     case ACTION::DRIVETRAIN::SPEED:
-        if(action.driveTrain.rate.thirdGear)
+        if(action.driveTrain->rate.thirdGear)
             // scale raw turn to a max of 0.3
-            drive = closedRateTrain->Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn * 0.3);
+            drive = closedRateTrain->Drive(action.driveTrain->rate.rawForward, action.driveTrain->rate.rawTurn * 0.3);
         else
-            drive = closedRateTrain->Drive(action.driveTrain.rate.rawForward, action.driveTrain.rate.rawTurn);
+            drive = closedRateTrain->Drive(action.driveTrain->rate.rawForward, action.driveTrain->rate.rawTurn);
         break;
 
     case ACTION::DRIVETRAIN::POSITION:
-        if(action.driveTrain.position.givenCommand)
+        if(action.driveTrain->position.givenCommand)
         {
-            if(action.driveTrain.position.shouldMoveDistance)
+            if(action.driveTrain->position.shouldMoveDistance)
             {
                 AsynchronousPrinter::Printf("Move distance command");
-                closedPositionTrain->SetMovePosition(action.driveTrain.position.distanceSetPoint);
+                closedPositionTrain->SetMovePosition(action.driveTrain->position.distanceSetPoint);
             }
-            else if(action.driveTrain.position.shouldTurnAngle)
+            else if(action.driveTrain->position.shouldTurnAngle)
             {
                 AsynchronousPrinter::Printf("Turn angle command");
-                closedPositionTrain->SetTurnAngle(action.driveTrain.position.turnSetPoint);
+                closedPositionTrain->SetTurnAngle(action.driveTrain->position.turnSetPoint);
             }
 
-            action.driveTrain.position.givenCommand = false;
-            action.driveTrain.position.shouldMoveDistance = false;
-            action.driveTrain.position.shouldTurnAngle = false;
+            action.driveTrain->position.givenCommand = false;
+            action.driveTrain->position.shouldMoveDistance = false;
+            action.driveTrain->position.shouldTurnAngle = false;
         }
 
-        drive = closedPositionTrain->Drive(action.driveTrain.position.maxFwdSpeed,
-                action.driveTrain.position.maxTurnSpeed);
+        drive = closedPositionTrain->Drive(action.driveTrain->position.maxFwdSpeed,
+                action.driveTrain->position.maxTurnSpeed);
         break;
 
     case ACTION::DRIVETRAIN::DISTANCE:
-        if(action.driveTrain.distance.givenCommand)
+        if(action.driveTrain->distance.givenCommand)
         {
-            closedPositionTrain->SetMoveDistance(action.driveTrain.distance.distanceSetPoint);
-            action.driveTrain.distance.givenCommand = false;
+            closedPositionTrain->SetMoveDistance(action.driveTrain->distance.distanceSetPoint);
+            action.driveTrain->distance.givenCommand = false;
         }
 
         CLPositionCommand command =
-            closedPositionTrain->DriveAtLeastDistance(action.driveTrain.distance.distanceDutyCycle);
-        action.driveTrain.distance.done = command.done;
+            closedPositionTrain->DriveAtLeastDistance(action.driveTrain->distance.distanceDutyCycle);
+        action.driveTrain->distance.done = command.done;
 
         drive = command.drive;
         break;

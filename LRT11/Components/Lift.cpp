@@ -3,6 +3,8 @@
 #include "..\Config\Config.h"
 #include "..\Sensors\VirtualPot.h"
 #include "..\Jaguar\ProxiedCANJaguar.h"
+#include "..\ActionData\ArmAction.h"
+#include "..\ActionData\LiftAction.h"
 
 Lift::Lift()
     : Component()
@@ -87,9 +89,9 @@ void Lift::Output()
         PULSING
     } state = IDLE;
 
-    if(action.lift.givenCommand)
+    if(action.lift->givenCommand)
     {
-        if(action.lift.manualMode)
+        if(action.lift->manualMode)
         {
             if(positionMode)
             {
@@ -113,7 +115,7 @@ void Lift::Output()
             state = PRESET;
         }
 
-        action.lift.givenCommand = false; // command has been processed
+        action.lift->givenCommand = false; // command has been processed
         liftEsc->EnableControl();
     }
 
@@ -148,7 +150,7 @@ void Lift::Output()
         if(!positionMode)
         {
             // exited from manual mode; done with maneuver
-            action.lift.completion_status = ACTION::SUCCESS;
+            action.lift->completion_status = ACTION::SUCCESS;
             liftEsc->SetDutyCycle(0.0);
         }
 //        else if(shouldMoveArmToMiddle)
@@ -163,7 +165,7 @@ void Lift::Output()
         if(!positionMode)
             liftEsc->SetDutyCycle(0.0);
 
-        action.lift.completion_status = ACTION::ABORTED;
+        action.lift->completion_status = ACTION::ABORTED;
         break;
 
     case PULSING:
@@ -189,13 +191,13 @@ void Lift::Output()
     case MANUAL:
 //        AsynchronousPrinter::Printf("Manual\n");
         liftEsc->ShouldCollectPotValue(true);
-        action.lift.completion_status = ACTION::IN_PROGRESS; // not done yet
+        action.lift->completion_status = ACTION::IN_PROGRESS; // not done yet
 
-        if((action.lift.power > 0 && potValue < maxPosition) ||
-                (action.lift.power < 0 && potValue > minPosition))
+        if((action.lift->power > 0 && potValue < maxPosition) ||
+                (action.lift->power < 0 && potValue > minPosition))
         {
             liftEsc->ResetCache();
-            liftEsc->SetDutyCycle(action.lift.power);
+            liftEsc->SetDutyCycle(action.lift->power);
         }
         else
             // don't power past the minimum and maximum positions
@@ -207,18 +209,18 @@ void Lift::Output()
     case PRESET:
 //        AsynchronousPrinter::Printf("Preset\n");
         liftEsc->ShouldCollectPotValue(true);
-        action.lift.completion_status = ACTION::IN_PROGRESS; // not done yet
+        action.lift->completion_status = ACTION::IN_PROGRESS; // not done yet
         string key = prefix;
 
         float setpoint = 0.0;
-        if(action.lift.highColumn)
+        if(action.lift->highColumn)
             key += "highColumn.";
 //            setPoint = config.Get<float>(prefix + "highRowReference");
         else
             key += "lowColumn.";
 //            setPoint = config.Get<float>(prefix + "lowRowReference");
 
-        switch(action.lift.lift_preset)
+        switch(action.lift->lift_preset)
         {
         case ACTION::LIFT::STOWED:
             setpoint = 0; // no movement
@@ -234,7 +236,7 @@ void Lift::Output()
             break;
         }
 
-        if(ACTION::LIFT::STOWED != action.lift.lift_preset)
+        if(ACTION::LIFT::STOWED != action.lift->lift_preset)
             setpoint = config.Get<float>(key); // relative to bottom
 
 //        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setpoint));
@@ -242,10 +244,10 @@ void Lift::Output()
         if(Util::Abs<float>(potValue - setpoint) < potDeadband)
         {
 //            AsynchronousPrinter::Printf("Updating done flag");
-            action.lift.completion_status = ACTION::SUCCESS;
+            action.lift->completion_status = ACTION::SUCCESS;
 //            cycleCount = 1; // will get decremented to 0
 
-//            if(action.lift.preset == action.lift.MED_PEG || action.lift.preset == action.lift.HIGH_PEG)
+//            if(action.lift->preset == action.lift->MED_PEG || action.lift->preset == action.lift->HIGH_PEG)
 //            {
 ////                AsynchronousPrinter::Printf("Lift success; moving arm to middle position\n");
 //                action.arm.state = action.arm.PRESET_MIDDLE;
@@ -254,7 +256,7 @@ void Lift::Output()
         }
         else
             // keep arm upright when the lift is moving
-            action.arm.state = ACTION::ARM_::PRESET_TOP;
+            action.arm->state = ACTION::ARM_::PRESET_TOP; //This does not belong here
 
         SmartDashboard::Log(setpoint, "Lift Set Point");
         liftEsc->SetPosition(setpoint);
@@ -264,16 +266,16 @@ void Lift::Output()
 
         if(cycleCount == 0)
         {
-//            AsynchronousPrinter::Printf("Success: %d\n", action.lift.doneState == ACTION::SUCCESS);
+//            AsynchronousPrinter::Printf("Success: %d\n", action.lift->doneState == ACTION::SUCCESS);
 
-            if(action.lift.completion_status != ACTION::SUCCESS)
+            if(action.lift->completion_status != ACTION::SUCCESS)
             {
-                action.lift.completion_status = ACTION::FAILURE;
+                action.lift->completion_status = ACTION::FAILURE;
 //                shouldMoveArmToMiddle = false;
             }
 
-            if(action.lift.lift_preset == ACTION::LIFT::LOW_PEG &&
-                    action.lift.completion_status == ACTION::SUCCESS)
+            if(action.lift->lift_preset == ACTION::LIFT::LOW_PEG &&
+                    action.lift->completion_status == ACTION::SUCCESS)
                 state = PULSING;
             else
                 state = IDLE;
@@ -303,7 +305,7 @@ void Lift::Output()
         SmartDashboard::Log(potValue, "Lift Pot Value");
     }
 
-    if(!action.lift.givenCommand && cycleCount == 0)
+    if(!action.lift->givenCommand && cycleCount == 0)
     {
         {
             ProfiledSection ps("Lift disable control");
@@ -311,31 +313,31 @@ void Lift::Output()
         }
         return;
     }
-    else if((cycleCount == 0 || action.lift.givenCommand) && !action.lift.manualMode)
+    else if((cycleCount == 0 || action.lift->givenCommand) && !action.lift->manualMode)
     {
-        action.lift.givenCommand = false;
+        action.lift->givenCommand = false;
         StartTimer();
 
         // reset preset flags
-        action.lift.done = false;
+        action.lift->done = false;
         liftEsc->EnableControl();
     }
 
-    if(action.lift.manualMode)
+    if(action.lift->manualMode)
     {
         liftEsc->EnableControl();
 
         if(prevMode == PRESET)
             ConfigureVoltageMode();
 
-        if((action.lift.power > 0 && potValue < maxPosition) ||
-                (action.lift.power < 0 && potValue > minPosition))
+        if((action.lift->power > 0 && potValue < maxPosition) ||
+                (action.lift->power < 0 && potValue > minPosition))
         {
             liftEsc->ResetCache();
-            liftEsc->Set(action.lift.power);
+            liftEsc->Set(action.lift->power);
         }
 
-        action.lift.givenCommand = false;
+        action.lift->givenCommand = false;
         prevMode = MANUAL;
     }
     else
@@ -346,12 +348,12 @@ void Lift::Output()
         string key = prefix;
 
         float setPoint;
-        if(action.lift.highRow)
+        if(action.lift->highRow)
             setPoint = config.Get<float>(prefix + "highRowBottom");
         else
             setPoint = config.Get<float>(prefix + "lowRowBottom");
 
-        switch(action.lift.position)
+        switch(action.lift->position)
         {
         case STOWED:
             break; // no relative position
@@ -366,12 +368,12 @@ void Lift::Output()
             break;
         }
 
-        if(action.lift.position != action.lift.STOWED)
+        if(action.lift->position != action.lift->STOWED)
             setPoint += config.Get<float>(key); // relative to bottom
 
         // update done flag
         if(Util::Abs<float>(potValue - setPoint) < potDeadband)
-            action.lift.done = true;
+            action.lift->done = true;
 
         liftEsc->Set(setPoint);
         cycleCount--;
