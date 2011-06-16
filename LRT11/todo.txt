@@ -4,6 +4,22 @@ todo.txt
      Author: David
 
 
+
+Drivetrain structure
+  
+class  Navigation
+{
+  Class PowerTrain;
+  	Class GearMotorAssembly left, right;
+}
+
+
+at the lower level
+  
+   LRT_CAN_Task (all commands queued into task, or regular tasks flagged.  Modes replaced with sequences).
+     WPILIb_CAN_Controller
+
+
 Comments to WPILIB
 
 *) Many classes contain 'private' members, rather than 'protected' members.

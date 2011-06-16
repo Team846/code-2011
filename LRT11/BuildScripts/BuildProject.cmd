@@ -3,17 +3,17 @@
 ::   Note: we start in the folder "PPC603gnu"
 ::   B.Axlerod '13, K.Viswanathan '11, D.Giandomenico
 
-cd ../Config
-perl build.pl
+CD ..\Config
+PERL build.pl
 
-cd ../BuildScripts
-call BuildNumber_Increment.cmd ../BuildNumber.h
+CD ..\BuildScripts
+CALL BuildNumber_Increment.cmd ..\BuildNumber.h
 
-cd ..
+CD ..
 astyle "*.cpp" "*.h"
 
 ::Don't mess with changes to astyle  right now. Wait for Brian. -dg
 ::astyle --options=astylerc "*.cpp" "*.h"
 
-cd PPC603gnu
+CD PPC603gnu
 %makeprefix% make --no-print-directory %*
