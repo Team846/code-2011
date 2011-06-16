@@ -1,11 +1,13 @@
 #include "Build.h"
 #include "Config.h"
 #include "../Util/AsynchronousPrinter.h"
+#include <ctype.h>
 
 Config* Config::instance = NULL;
 vector<Configurable*> Config::configurables;
 bool Config::hasRun = false;
 const string Config::CONFIG_FILE_PATH = "/LRTConfig11.txt";
+const string Config::COMMENT_DELIMITERS = "#;";
 
 Config& Config::GetInstance()
 {
@@ -15,8 +17,8 @@ Config& Config::GetInstance()
 }
 
 Config::Config()
-    : ds(*DriverStation::GetInstance())
-    , configLastReadTime_(0)
+    : configLastReadTime_(0)
+    , ds(*DriverStation::GetInstance())
     , buildNumKey("BuildNumber")
     , runNumKey("RunNumber")
     , buildTimeKey("BuildTime")
@@ -54,6 +56,7 @@ bool Config::Load()
         hasRun = true;
     }
 
+    //deal with assignable dials
     for(int i = 0; i < kNumAnalogAssignable; ++i)
     {
         string keyname = "assignable." + Util::ToString<int>(i);
@@ -86,17 +89,6 @@ map<string, string> Config::tload(string path)
 
     fin.close();
     return ret;
-}
-/*
- * Config::Log()
- * writes changes in key values to the file "/log.txt".
- * why? -dg
- */
-void Config::Log(string key, string oldval, string newval)
-{
-    ofstream log("/log.txt", ios::app);
-    log << key << " changed from " << oldval << " to " << newval << '\n';
-    log.close();
 }
 
 bool Config::Save()
@@ -198,11 +190,6 @@ void Config::ConfigureAll()
         configurables.at(i)->Configure();
 }
 
-void Config::Output()
-{
-
-}
-
 /*
  * CheckForFileUpdates()
  * checks to see if the Robot's configuration file on the cRio has been modified since
@@ -234,7 +221,75 @@ void Config::CheckForFileUpdates()
     }
 }
 
-string Config::GetName()
+void Config::loadFile(string path)
 {
-    return "Config";
+    ifstream fin(path.c_str());
+    if(!fin.is_open())
+    {
+        AsynchronousPrinter::Printf(strcat("Config could not open ", path.c_str()));
+        return;
+    }
+    //loading a the file discards all changes
+    if(configFile != NULL)
+        delete configFile;
+    configFile = new list<string>();
+    if(newConfigData != NULL)
+        delete newConfigData;
+    newConfigData = new config();
+
+    //read the file into memory
+    while(!fin.eof())
+    {
+        string line;
+        getline(fin, line);
+        configFile->push_back(line);
+    }
+    fin.close();
+
+    //parse the file
+    string currentSection;
+    for(list<string>::iterator iter = configFile->begin(); iter != configFile->end(); iter++)
+    {
+        unsigned int length = iter->find_first_of(COMMENT_DELIMITERS.c_str());
+        if(length == string::npos)
+            length = iter->size();
+        string line = iter->substr(0, length); //string minus the comments
+
+        int startIndex = -1, endIndex = line.size() - 1;
+
+        //find end of proceeding whitespace
+        for(unsigned int i = 0; i < line.size(); i++)
+        {
+            if(!isspace(line[i]))
+            {
+                startIndex = i;
+                break;
+            }
+        }
+
+        if(startIndex == -1)
+            continue; //this line is all whitespace
+
+        //Find end of trailing whitespace
+        for(int i = line.size() - 1; i >= 0; i--)
+        {
+            if(!isspace(line[i]))
+            {
+                endIndex = i;
+                break;
+            }
+        }
+
+        line = line.substr(startIndex, endIndex - startIndex + 1); //trim proceeding and trailing whitespace
+
+        //check if start of new section
+        if(line[0] == '[')
+        {
+            currentSection = line.substr(1, line.find_last_of("]"));
+            continue;
+        }
+
+
+
+    }
 }

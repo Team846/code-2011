@@ -12,6 +12,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <list>
+
+typedef struct ConfigVal
+{
+    string val;
+    list<string>::iterator positionInFile;
+};
 
 class Config
 {
@@ -20,8 +27,6 @@ public:
 
     virtual ~Config() { }
     static Config& GetInstance();
-
-    const static string CONFIG_FILE_PATH;
 
     bool Load();
     bool Save();
@@ -33,35 +38,39 @@ public:
     template <typename T> T Get(string key, T defaultValue);
     template <typename T> void Set(string key, T val);
 
-    static vector<Configurable*> configurables;
     static void RegisterConfigurable(Configurable* configurable);
     static void ConfigureAll();
     void CheckForFileUpdates();
 
-    void Output();
-    virtual string GetName();
-
-protected:
+private:
     Config();
-
-protected:
     static Config* instance;
-    DriverStation& ds;
     time_t configLastReadTime_;
 
+    const static string CONFIG_FILE_PATH;
+    const static string COMMENT_DELIMITERS;
+
+    static vector<Configurable*> configurables;
+
+    list<string> *configFile; // line by line list of the config file
+
     map<string, string> configData;
+    typedef map<string, map<string, ConfigVal> > config;
+    config* newConfigData;
+
     map<string, string> tload(string path);
+    void loadFile(string path);
 
-
+    DriverStation& ds;
     string analogAssignments[kNumAnalogAssignable];
     float analogAssignmentScaleMin[kNumAnalogAssignable];
     float analogAssignmentScaleMax[kNumAnalogAssignable];
 
-    void Log(string key, string oldval, string newval);
-
     static bool hasRun;
     string buildNumKey, runNumKey, buildTimeKey;
+
     DISALLOW_COPY_AND_ASSIGN(Config);
 };
+
 
 #endif
