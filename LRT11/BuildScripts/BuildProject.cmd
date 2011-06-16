@@ -3,8 +3,8 @@
 ::   Note: we start in the folder "PPC603gnu"
 ::   B.Axlerod '13, K.Viswanathan '11, D.Giandomenico
 
-CD ..\Config
-PERL build.pl
+:: CD ..\Config
+:: PERL build.pl
 
 CD ..\BuildScripts
 CALL BuildNumber_Increment.cmd ..\BuildNumber.h
