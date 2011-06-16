@@ -57,6 +57,7 @@ private:
     map<string, string> configData;
     typedef map<string, map<string, ConfigVal> > config;
     config* newConfigData;
+    map<string, list<string>::iterator > *sections;
 
     map<string, string> tload(string path);
     void loadFile(string path);

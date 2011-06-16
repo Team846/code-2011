@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "../Util/AsynchronousPrinter.h"
 #include <ctype.h>
+#include <sstream>
 
 Config* Config::instance = NULL;
 vector<Configurable*> Config::configurables;
@@ -221,21 +222,60 @@ void Config::CheckForFileUpdates()
     }
 }
 
+string trimWhiteSpace(string str)
+{
+    int startIndex = -1, endIndex = str.size() - 1;
+
+    //find end of proceeding whitespace
+    for(unsigned int i = 0; i < str.size(); i++)
+    {
+        if(!isspace(str[i]))
+        {
+            startIndex = i;
+            break;
+        }
+    }
+
+    if(startIndex == -1)
+        return ""; //this line is all whitespace
+
+    //Find end of trailing whitespace
+    for(int i = str.size() - 1; i >= 0; i--)
+    {
+        if(!isspace(str[i]))
+        {
+            endIndex = i;
+            break;
+        }
+    }
+
+    return str.substr(startIndex, endIndex - startIndex + 1); //trim proceeding and trailing whitespace
+}
+
 void Config::loadFile(string path)
 {
+    ProfiledSection pf("Config.parse+load");
+
     ifstream fin(path.c_str());
     if(!fin.is_open())
     {
         AsynchronousPrinter::Printf(strcat("Config could not open ", path.c_str()));
         return;
     }
+
     //loading a the file discards all changes
     if(configFile != NULL)
         delete configFile;
     configFile = new list<string>();
+
     if(newConfigData != NULL)
         delete newConfigData;
     newConfigData = new config();
+
+    if(sections != NULL)
+        delete sections;
+    sections = new map<string, list<string>::iterator >();
+
 
     //read the file into memory
     while(!fin.eof())
@@ -253,43 +293,31 @@ void Config::loadFile(string path)
         unsigned int length = iter->find_first_of(COMMENT_DELIMITERS.c_str());
         if(length == string::npos)
             length = iter->size();
-        string line = iter->substr(0, length); //string minus the comments
+        string line = trimWhiteSpace(iter->substr(0, length)); //string minus the comments
 
-        int startIndex = -1, endIndex = line.size() - 1;
-
-        //find end of proceeding whitespace
-        for(unsigned int i = 0; i < line.size(); i++)
-        {
-            if(!isspace(line[i]))
-            {
-                startIndex = i;
-                break;
-            }
-        }
-
-        if(startIndex == -1)
-            continue; //this line is all whitespace
-
-        //Find end of trailing whitespace
-        for(int i = line.size() - 1; i >= 0; i--)
-        {
-            if(!isspace(line[i]))
-            {
-                endIndex = i;
-                break;
-            }
-        }
-
-        line = line.substr(startIndex, endIndex - startIndex + 1); //trim proceeding and trailing whitespace
+        if(line.size() == 0) //if line is all whitespace ignore
+            continue;
 
         //check if start of new section
         if(line[0] == '[')
         {
             currentSection = line.substr(1, line.find_last_of("]"));
+            (*sections)[currentSection] = iter;
+            AsynchronousPrinter::Printf("%s\n", currentSection.c_str());
             continue;
         }
 
+        stringstream sstream(line);
+        string key, val;
+        getline(sstream, key, '=');
+        getline(sstream, val);
+        if(key.find("=") != string::npos)//we don't allow more than 1 equals sign per line leave a comment stating that
+            (*iter) += "; more than 1 equals sign per line is illegal";
 
-
+        ConfigVal newVal;
+        newVal.val = val;
+        newVal.positionInFile = iter;
+        AsynchronousPrinter::Printf("\t%s=%s\n", key.c_str(), val.c_str());
+        (*newConfigData)[currentSection][key] = newVal;
     }
 }
