@@ -4,6 +4,7 @@
 #include "..\Config\Config.h"
 #include "..\Sensors\VirtualPot.h"
 #include "..\ActionData\ArmAction.h"
+#include "..\ActionData\RollerAction.h"
 
 
 Arm::Arm()
@@ -87,7 +88,7 @@ void Arm::Output()
     case ACTION::ARM_::PRESET_TOP:
         action.arm->completion_status = ACTION::IN_PROGRESS;
         // overriden below to change roller speed while moving the arm up
-        action.roller.maxSuckPower = 1.0;
+        action.roller->maxSuckPower = 1.0;
 
         // don't merely switch to the IDLE state, as the caller will likely
         // set the state each time through the loop
@@ -111,21 +112,21 @@ void Arm::Output()
             action.arm->completion_status = ACTION::IN_PROGRESS;
             armEsc->SetDutyCycle(powerUp);
 
-            action.roller.state = ACTION::ROLLER::SUCKING;
-            action.roller.maxSuckPower = 0.3; // lower duty cycle
+            action.roller->state = ACTION::ROLLER::SUCKING;
+            action.roller->maxSuckPower = 0.3; // lower duty cycle
 
             // make roller suck while moving up to keep
             // game piece in
             if(++pulseCount % 2 == 0)
-                action.roller.state = ACTION::ROLLER::SUCKING;
+                action.roller->state = ACTION::ROLLER::SUCKING;
             else
-                action.roller.state = ACTION::ROLLER::STOPPED;
+                action.roller->state = ACTION::ROLLER::STOPPED;
         }
         break;
 
     case ACTION::ARM_::PRESET_BOTTOM:
         action.arm->completion_status = ACTION::IN_PROGRESS;
-        action.roller.maxSuckPower = 1.0;
+        action.roller->maxSuckPower = 1.0;
 
         if(--cycleCount < 0)
         {

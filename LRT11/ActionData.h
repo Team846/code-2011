@@ -83,6 +83,11 @@ struct ArmAction;
 struct LiftAction;
 struct DriveAction;
 
+struct RollerAction;
+struct DeployerAction;
+struct ShifterAction;
+struct ConfigAction;
+
 class ActionData
 {
 private:
@@ -100,57 +105,28 @@ public:
 
     DriveAction* driveTrain;
     LiftAction* lift;
+    ArmAction* arm;
+    RollerAction* roller;
+    DeployerAction* deployer;
+    ShifterAction* shifter;
+    ConfigAction* config;
 
     struct
     {
         float power;
     } demoLift;
 
-    ArmAction* arm;
-
-    struct
-    {
-        ACTION::ROLLER::eStates state;
-
-        // true to rotate upward, false to rotate downward;
-        // only active in ROTATING state
-        bool rotateUpward;
-
-        // used to automate roller spitting (rotate + reverse roller)
-        bool automated;
-        bool commenceAutomation;
-
-        float maxSuckPower;
-    } roller;
 
     struct
     {
         ACTION::RINGER::eRingerStates ringer;
     } automatedRoutine;
 
-    struct
-    {
-        bool shouldAlignerRelease;
-        bool shouldDeployMinibot;
-    } deployer;
 
     struct
     {
         bool shouldCollect;
     } encoderData;
-
-    struct
-    {
-        ACTION::GEARBOX::eGearboxState gear;
-        bool force;
-    } shifter;
-
-    struct
-    {
-        bool load;
-        bool save;
-        bool apply;
-    } config;
 
     bool wasDisabled;
 

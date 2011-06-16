@@ -2,6 +2,8 @@
 #include "..\ActionData\ArmAction.h"
 #include "..\ActionData\LiftAction.h"
 #include "..\ActionData\DriveAction.h"
+#include "..\ActionData\ShifterAction.h"
+#include "..\ActionData\RollerAction.h"
 
 void Brain::Auton()
 {
@@ -138,8 +140,8 @@ void Brain::EncoderAuton()
         action.arm->state = ACTION::ARM_::PRESET_TOP;
 
         // low gear driving
-        action.shifter.gear = ACTION::GEARBOX::LOW_GEAR;
-        action.shifter.force = true;
+        action.shifter->gear = ACTION::GEARBOX::LOW_GEAR;
+        action.shifter->force = true;
 
         advanceState = true;
         canPause = false;
@@ -238,8 +240,8 @@ void Brain::EncoderAuton()
     case ROTATE_ROLLER:
         stateName = "ROTATE_ROLLER";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
-        action.roller.rotateUpward = false; //go down
-        action.roller.state = ACTION::ROLLER::ROTATING;
+        action.roller->rotateUpward = false; //go down
+        action.roller->state = ACTION::ROLLER::ROTATING;
 
         if(++timer >= 75)
             advanceState = true;
@@ -249,8 +251,8 @@ void Brain::EncoderAuton()
         // automated roller routine starts moving the lift down and spits the gamepiece out
         stateName = "RELEASE_GAMEPIECE_START";
 //        AsynchronousPrinter::Printf("entering %s\n", stateName);
-        action.roller.automated = true;
-        action.roller.commenceAutomation = true;
+        action.roller->automated = true;
+        action.roller->commenceAutomation = true;
         advanceState = true;
 
         canPause = false; // pausing will cause the lift to keep moving down
@@ -264,7 +266,7 @@ void Brain::EncoderAuton()
         if(++timer >= 25)
         {
             // stop automating; stop rollers
-            action.roller.automated = false;
+            action.roller->automated = false;
             advanceState = true;
         }
         break;

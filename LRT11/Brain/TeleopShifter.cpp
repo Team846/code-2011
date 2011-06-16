@@ -1,5 +1,6 @@
 #include "Brain.h"
 #include "..\ActionData\DriveAction.h"
+#include "..\ActionData\ShifterAction.h"
 
 void Brain::TeleopShifter()
 {
@@ -8,19 +9,19 @@ void Brain::TeleopShifter()
 //    static bool forceShiftedHigh = false;
 
     //must set this way since is static
-    static int lastGear = action.shifter.gear;
+    static int lastGear = action.shifter->gear;
 
     // assume no force shift
-    action.shifter.force = false;
+    action.shifter->force = false;
 
     if(inputs.ShouldToggleGear())
     {
-        action.shifter.force = true;
+        action.shifter->force = true;
 
         if(lastGear == ACTION::GEARBOX::LOW_GEAR)
-            action.shifter.gear = ACTION::GEARBOX::HIGH_GEAR;
+            action.shifter->gear = ACTION::GEARBOX::HIGH_GEAR;
         else
-            action.shifter.gear = ACTION::GEARBOX::LOW_GEAR;
+            action.shifter->gear = ACTION::GEARBOX::LOW_GEAR;
     }
 
     // always low gear unless shift high button is pushed down
@@ -29,8 +30,8 @@ void Brain::TeleopShifter()
 //        // only force shift the first time
 //        if(!forceShiftedHigh)
 //        {
-//            action.shifter.gear = action.shifter.HIGH_GEAR;
-//            action.shifter.force = true;
+//            action.shifter->gear = action.shifter->HIGH_GEAR;
+//            action.shifter->force = true;
 //            forceShiftedHigh = true;
 //        }
 //        // shifted to high gear; set low gear flag to false
@@ -41,8 +42,8 @@ void Brain::TeleopShifter()
 //        // only force shift the first time
 //        if(!forceShiftedLow)
 //        {
-//            action.shifter.gear = action.shifter.LOW_GEAR;
-//            action.shifter.force = true;
+//            action.shifter->gear = action.shifter->LOW_GEAR;
+//            action.shifter->force = true;
 //            forceShiftedLow = true;
 //        }
 //
@@ -51,8 +52,8 @@ void Brain::TeleopShifter()
 //    }
 
     // commenced a shift; synchronize the drive train
-    if(lastGear != action.shifter.gear)
+    if(lastGear != action.shifter->gear)
         action.driveTrain->mode = ACTION::DRIVETRAIN::SYNCHRONIZING;
 
-    lastGear = action.shifter.gear;
+    lastGear = action.shifter->gear;
 }

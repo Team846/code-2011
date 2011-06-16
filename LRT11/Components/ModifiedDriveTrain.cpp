@@ -6,6 +6,7 @@
 #include "..\Jaguar\Esc.h"
 #include "..\Config\RobotConfig.h"
 #include "..\ActionData\DriveAction.h"
+#include "..\ActionData\ShifterAction.h"
 #include <math.h>
 
 ModifiedDriveTrain::ModifiedDriveTrain()
@@ -61,7 +62,7 @@ void ModifiedDriveTrain::Output()
 //        AsynchronousPrinter::Printf("Right: %6.3f\n", rightESC->GetCurrent());
 //    }
 
-    closedRateTrain->SetHighGear(action.shifter.gear == ACTION::GEARBOX::HIGH_GEAR);
+    closedRateTrain->SetHighGear(action.shifter->gear == ACTION::GEARBOX::HIGH_GEAR);
     closedRateTrain->SetClosedLoopEnabled(action.driveTrain->rate.usingClosedLoop);
 
 //    closedRateTrain->SetClosedLoopEnabled(false);

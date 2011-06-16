@@ -4,6 +4,7 @@
 #include "..\Jaguar\ProxiedCANJaguar.h"
 #include "Shifter\LRTServo.h"
 #include "Shifter\VIRTUALLRTServo.h"
+#include "..\ActionData\DeployerAction.h"
 
 MinibotDeployer::MinibotDeployer()
     : Component()
@@ -35,7 +36,7 @@ void MinibotDeployer::Configure()
 
 void MinibotDeployer::Output()
 {
-    if(action.deployer.shouldAlignerRelease)
+    if(action.deployer->shouldAlignerRelease)
         // set servo to release position
         alignerServo->Set(releasedServoValue);
     else
@@ -56,14 +57,14 @@ void MinibotDeployer::Output()
     } state = IDLE;
 
     static int timer = 0;
-    if(action.deployer.shouldDeployMinibot)
+    if(action.deployer->shouldDeployMinibot)
     {
         timer = 0; // reset timer
         state = ACCELERATING;
 
         // deployment already commenced
         deployerEsc->ShouldCollectCurrent(true);
-        action.deployer.shouldDeployMinibot = false;
+        action.deployer->shouldDeployMinibot = false;
     }
 
     // abort overrides everything

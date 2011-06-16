@@ -1,17 +1,18 @@
 #include "Brain.h"
+#include "..\ActionData\DeployerAction.h"
 
 void Brain::TeleopMinibot()
 {
     // aligner to square up with the tower
     if(inputs.ShouldDeployAligner())
-        action.deployer.shouldAlignerRelease = true;
+        action.deployer->shouldAlignerRelease = true;
 
     // used to determine if the button is let go of and
     // pressed again
     static bool deployButtonJustPressed = false;
 
     // assume that the minibot should not be deployed
-    action.deployer.shouldDeployMinibot = false;
+    action.deployer->shouldDeployMinibot = false;
 
     // only deploy minibot in the finale; let operator push
     // button down while waiting
@@ -23,7 +24,7 @@ void Brain::TeleopMinibot()
         // is pressed again
         if(!deployButtonJustPressed)
         {
-            action.deployer.shouldDeployMinibot = true;
+            action.deployer->shouldDeployMinibot = true;
             deployButtonJustPressed = true;
         }
     }

@@ -6,6 +6,7 @@
 #include "..\Sensors\DriveEncoders.h"
 #include "..\Config\RobotConfig.h"
 #include "..\ActionData\DriveAction.h"
+#include "..\ActionData\ShifterAction.h"
 
 
 Shifter::Shifter()
@@ -54,7 +55,7 @@ void Shifter::Output()
     const bool robotTryingToMove =
         (action.driveTrain->rate.rawForward != 0.0 || action.driveTrain->rate.rawTurn != 0.0);
 
-    if(robotTryingToMove || action.shifter.force)
+    if(robotTryingToMove || action.shifter->force)
         servoDisableTimer = kServoDisableDelay; //reset timer
 
     bool enableServo = servoDisableTimer > 0 ;
@@ -62,7 +63,7 @@ void Shifter::Output()
     leftServo->SetEnabled(enableServo);
     rightServo->SetEnabled(enableServo);
 
-    switch(action.shifter.gear)
+    switch(action.shifter->gear)
     {
     case ACTION::GEARBOX::LOW_GEAR:
         leftServo->Set(leftLowGearServoVal);

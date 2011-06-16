@@ -2,6 +2,11 @@
 #include "ActionData\ArmAction.h"
 #include "ActionData\LiftAction.h"
 #include "ActionData\DriveAction.h"
+#include "ActionData\RollerAction.h"
+#include "ActionData\DeployerAction.h"
+#include "ActionData\ShifterAction.h"
+#include "ActionData\ConfigAction.h"
+
 
 ActionData* ActionData::instance = NULL;
 
@@ -71,24 +76,28 @@ ActionData::ActionData()
     arm->state = ACTION::ARM_::IDLE;
     arm->completion_status = ACTION::IN_PROGRESS;
 
-    roller.state = ACTION::ROLLER::STOPPED;
-    // if in roller.ROTATING state, default to rotating upward
-    roller.rotateUpward = true;
-    roller.automated = false;
-    roller.commenceAutomation = false;
-    roller.maxSuckPower = 1.0;
+    roller = (RollerAction*) malloc(sizeof(RollerAction));
+    roller->state = ACTION::ROLLER::STOPPED;
+    // if in roller->ROTATING state, default to rotating upward
+    roller->rotateUpward = true;
+    roller->automated = false;
+    roller->commenceAutomation = false;
+    roller->maxSuckPower = 1.0;
 
-    deployer.shouldAlignerRelease = false;
-    deployer.shouldDeployMinibot = false;
+    deployer = (DeployerAction*) malloc(sizeof(DeployerAction));
+    deployer->shouldAlignerRelease = false;
+    deployer->shouldDeployMinibot = false;
 
     encoderData.shouldCollect = false;
 
-    shifter.gear = ACTION::GEARBOX::LOW_GEAR;
-    shifter.force = false;
+    shifter = (ShifterAction*) malloc(sizeof(ShifterAction));
+    shifter->gear = ACTION::GEARBOX::LOW_GEAR;
+    shifter->force = false;
 
-    config.load = false;
-    config.save = false;
-    config.apply = false;
+    config = (ConfigAction*) malloc(sizeof(ConfigAction));
+    config->load = false;
+    config->save = false;
+    config->apply = false;
 }
 
 ActionData::~ActionData()
@@ -96,4 +105,8 @@ ActionData::~ActionData()
     free(arm);
     free(lift);
     free(driveTrain);
+    free(roller);
+    free(deployer);
+    free(shifter);
+    free(config);
 }

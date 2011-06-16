@@ -1,5 +1,7 @@
 #include "VirtualLRTEncoder.h"
 #include "DriveEncoders.h"
+#include "..\ActionData\ShifterAction.h"
+
 
 #define FPS_TO_TPS(fps) ((fps) * 12.0 * 1 / (4.0 * DriveEncoders::PI)* DriveEncoders::TICKS_PER_FULL_TURN)
 
@@ -49,7 +51,7 @@ void VirtualLRTEncoder::Update(float dutyCycle)
 {
     double maxRate = 0.0;
 
-    switch(action.shifter.gear)
+    switch(action.shifter->gear)
     {
     case LOW_GEAR:
         maxRate = LOW_GEAR_MAX_RATE;

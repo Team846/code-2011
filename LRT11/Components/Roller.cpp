@@ -4,6 +4,7 @@
 #include "..\Util\Util.h"
 #include "..\Config\Config.h"
 #include "..\Config\RobotConfig.h"
+#include "..\ActionData\RollerAction.h"
 
 
 Roller::Roller()
@@ -63,9 +64,9 @@ void Roller::RollInward()
 //    }
 //    else
 //    {
-    topRoller->SetDutyCycle(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
+    topRoller->SetDutyCycle(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller->maxSuckPower,
             Util::Abs<float>(dutyCycleSucking)));
-    bottomRoller->SetDutyCycle(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller.maxSuckPower,
+    bottomRoller->SetDutyCycle(Util::Sign<float>(dutyCycleSucking) * Util::Min<float>(action.roller->maxSuckPower,
             Util::Abs<float>(dutyCycleSucking)));
 //    }
 }
@@ -112,9 +113,9 @@ void Roller::Output()
     // abort overrides everything
     if(action.master.abort)
         // stop moving rollers
-        action.roller.state = ACTION::ROLLER::STOPPED;
+        action.roller->state = ACTION::ROLLER::STOPPED;
 
-    if(action.roller.state != ACTION::ROLLER::SUCKING)
+    if(action.roller->state != ACTION::ROLLER::SUCKING)
     {
         ignoreCycles = 25;
         detected = false;
@@ -123,7 +124,7 @@ void Roller::Output()
         bottomRoller->ShouldCollectCurrent(false);
     }
 
-    switch(action.roller.state)
+    switch(action.roller->state)
     {
     case ACTION::ROLLER::STOPPED:
         Stop();
@@ -135,7 +136,7 @@ void Roller::Output()
         RollOutward();
         break;
     case ACTION::ROLLER::ROTATING:
-        RollOpposite(action.roller.rotateUpward);
+        RollOpposite(action.roller->rotateUpward);
         break;
     }
 }

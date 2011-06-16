@@ -2,6 +2,7 @@
 #include "..\ActionData\ArmAction.h"
 #include "..\ActionData\LiftAction.h"
 #include "..\ActionData\DriveAction.h"
+#include "..\ActionData\RollerAction.h"
 #define LIFT_RELEASE
 
 void Brain::AutomatedRoutineWithLift()
@@ -40,7 +41,7 @@ void Brain::AutomatedRoutineWithLift()
 
         if(++timer > 10)
         {
-            action.roller.state = ACTION::ROLLER::SPITTING;
+            action.roller->state = ACTION::ROLLER::SPITTING;
             if(timer > 20)
                 state = STOPPING;
         }
@@ -49,7 +50,7 @@ void Brain::AutomatedRoutineWithLift()
     case STOPPING:
         action.lift->power = 0;
         action.arm->state = ACTION::ARM_::PRESET_TOP;
-        action.roller.state = ACTION::ROLLER::STOPPED;
+        action.roller->state = ACTION::ROLLER::STOPPED;
         state = IDLE;
         break;
     }
@@ -107,8 +108,8 @@ void Brain::AutomatedRoutines()
 #ifdef LIFT_RELEASE
     else if(action.automatedRoutine.ringer == ACTION::RINGER::COMMENCE_DROP_RINGER)
     {
-        action.roller.commenceAutomation = true;
-        action.roller.automated = true;
+        action.roller->commenceAutomation = true;
+        action.roller->automated = true;
     }
 #endif
     else if(action.automatedRoutine.ringer == ACTION::RINGER::DROP_RINGER)
@@ -125,7 +126,7 @@ void Brain::AutomatedRoutines()
 
             if(++timer > 10)
             {
-                action.roller.state = ACTION::ROLLER::SPITTING;
+                action.roller->state = ACTION::ROLLER::SPITTING;
                 if(timer > 20)
                     state = STOPPING;
             }
@@ -134,20 +135,20 @@ void Brain::AutomatedRoutines()
         case STOPPING:
             action.lift->power = 0;
             action.arm->state = ACTION::ARM_::PRESET_TOP;
-            action.roller.state = ACTION::ROLLER::STOPPED;
+            action.roller->state = ACTION::ROLLER::STOPPED;
             action.automatedRoutine.ringer = ACTION::RINGER::IDLE;
             break;
         }
 
 #else
         action.arm->state = action.arm->PRESET_BOTTOM;
-        action.roller.state = ACTION::ROLLER::SPITTING;
+        action.roller->state = ACTION::ROLLER::SPITTING;
 #endif
     }
 #ifdef LIFT_RELEASE
     else if(action.automatedRoutine.ringer == ACTION::RINGER::TERMINATE_DROP_RINGER)
     {
-        action.roller.automated = false;
+        action.roller->automated = false;
         //automatically put the arm up and lift down
         action.automatedRoutine.ringer = ACTION::RINGER::ARM_UP;
     }
