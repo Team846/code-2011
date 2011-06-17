@@ -9,7 +9,7 @@
 Lift::Lift()
     : Component()
     , config(Config::GetInstance())
-    , prefix("Lift.")
+    , configSection("Lift")
     , timeoutCycles(0)
     , cycleCount(0)
     , prevMode(PRESET)
@@ -43,8 +43,8 @@ void Lift::Configure()
     liftEsc->SetPositionReference(LRTCANJaguar::kPosRef_Potentiometer);
 #endif
 
-    liftEsc->SetPID(config.Get<double>(prefix + "pGain", 100), config.Get<double>(prefix + "iGain", 0),
-            config.Get<double>(prefix + "dGain", 0));
+    liftEsc->SetPID(config.Get<double>(configSection, "pGain", 100), config.Get<double>(configSection, "iGain", 0),
+            config.Get<double>(configSection, "dGain", 0));
 
 //    liftEsc->ConfigSoftPositionLimits(config.Get<double>(prefix + "forwardLimit", 0),
 //            config.Get<double>(prefix + "reverseLimit", 10));
@@ -54,21 +54,21 @@ void Lift::Configure()
     Config& config = Config::GetInstance();
 
     // convert from ms into cycles
-    timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
+    timeoutCycles = (int)(config.Get<int>(configSection, "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 
     // bottom of low row is the lowest position
 //    minPosition = config.Get<float>(prefix + "lowRowReference", 1.17)
 //            + config.Get<float>(prefix + "lowRowLowPegRelative", 0.7);
 
-    minPosition = config.Get<float>(prefix + "lowColumn.lowPeg", 1.72);
+    minPosition = config.Get<float>(configSection, "lowColumn.lowPeg", 1.72);
 
     // bottom of high row + high peg relative is the highest position
 //    maxPosition = config.Get<float>(prefix + "highRowReference", 1.87)
 //            + config.Get<float>(prefix + "highPegRelative", 6.5);
 
-    maxPosition = config.Get<float>(prefix + "highColumn.highPeg", 8.64);
+    maxPosition = config.Get<float>(configSection, "highColumn.highPeg", 8.64);
 
-    potDeadband = config.Get<float>(prefix + "deadband", 0.4);
+    potDeadband = config.Get<float>(configSection, "deadband", 0.4);
 }
 
 void Lift::ConfigureManualMode()
@@ -210,14 +210,14 @@ void Lift::Output()
 //        AsynchronousPrinter::Printf("Preset\n");
         liftEsc->ShouldCollectPotValue(true);
         action.lift->completion_status = ACTION::IN_PROGRESS; // not done yet
-        string key = prefix;
+        string key;
 
         float setpoint = 0.0;
         if(action.lift->highColumn)
-            key += "highColumn.";
+            key = "highColumn.";
 //            setPoint = config.Get<float>(prefix + "highRowReference");
         else
-            key += "lowColumn.";
+            key = "lowColumn.";
 //            setPoint = config.Get<float>(prefix + "lowRowReference");
 
         switch(action.lift->lift_preset)
@@ -237,7 +237,7 @@ void Lift::Output()
         }
 
         if(ACTION::LIFT::STOWED != action.lift->lift_preset)
-            setpoint = config.Get<float>(key); // relative to bottom
+            setpoint = config.Get<float>(configSection, key, 2.0); // relative to bottom
 
 //        AsynchronousPrinter::Printf("Status: %.2f\n", Util::Abs<float>(potValue - setpoint));
         // update done flag

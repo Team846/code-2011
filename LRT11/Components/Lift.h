@@ -13,7 +13,7 @@ class Lift : public Component, public Configurable
 {
 private:
     Config& config;
-    string prefix;
+    string configSection;
     ProxiedCANJaguar* liftEsc;
 #ifdef VIRTUAL
     VirtualPot* liftPot;

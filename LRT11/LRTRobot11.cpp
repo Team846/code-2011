@@ -51,8 +51,8 @@ void LRTRobot11::RobotInit()
     config.ConfigureAll();
 //    config.Save();
 
-    const char* build = (Util::ToString<int>(config.Get<int>("BuildNumber")) + "-" +
-            Util::ToString<int>(config.Get<int>("RunNumber"))).c_str();
+    const char* build = (Util::ToString<int>(config.Get<int>("Build", "BuildNumber", -1)) + "-" +
+            Util::ToString<int>(config.Get<int>("Build", "RunNumber", -1))).c_str();
 
 #ifdef USE_DASHBOARD
     SmartDashboard::Log(build, "Build/Run");

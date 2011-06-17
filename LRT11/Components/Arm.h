@@ -13,7 +13,7 @@ class Arm : public Component, public Configurable
 {
 private:
     Config& config;
-    string prefix;
+    string configSection;
     ProxiedCANJaguar* armEsc;
 #ifdef VIRTUAL
     VirtualPot* armPot;

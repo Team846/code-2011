@@ -24,15 +24,15 @@ CLPositionDriveTrain::CLPositionDriveTrain(CLRateTrain& train)
 void CLPositionDriveTrain::Configure()
 {
     Config& config = Config::GetInstance();
-    const string prefix = "CLPositionDriveTrain.";
+    const string configSection = "CLPositionDriveTrain";
 
-    pGainFwd = config.Get<float>(prefix + "pGainFwd", 1.5);
-    pGainFwdTurnCorrection = config.Get<float>(prefix + "pGainFwdTurnCorrection", 0.01);
-    pGainTurn = config.Get<float>(prefix + "pGainTurn", 1.5);
-    pGainTurnFwdCorrection = config.Get<float>(prefix + "pGainTurnFwdCorrection", 0.02);
+    pGainFwd = config.Get<float>(configSection, "pGainFwd", 1.5);
+    pGainFwdTurnCorrection = config.Get<float>(configSection, "pGainFwdTurnCorrection", 0.01);
+    pGainTurn = config.Get<float>(configSection, "pGainTurn", 1.5);
+    pGainTurnFwdCorrection = config.Get<float>(configSection, "pGainTurnFwdCorrection", 0.02);
 
-    fwdDeadband = config.Get<float>(prefix + "fwdDeadband", 0.05);
-    turnDeadband = config.Get<float>(prefix + "turnDeadband", 0.05);
+    fwdDeadband = config.Get<float>(configSection, "fwdDeadband", 0.05);
+    turnDeadband = config.Get<float>(configSection, "turnDeadband", 0.05);
 }
 
 DriveCommand CLPositionDriveTrain::Drive(float maxFwdSpeed, float maxTurnSpeed)

@@ -79,8 +79,8 @@ void Esc::Configure()
     if(hasPartner)
         partner->Configure();
 
-    string prefix("Esc.");
-    pGain = Config::GetInstance().Get<float>(prefix + "pGain", 4.0);
+    string configSection("Esc");
+    pGain = Config::GetInstance().Get<float>(configSection, "pGain", 4.0);
 }
 
 float Esc::GetNormalizedSpeed()

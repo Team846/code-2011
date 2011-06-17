@@ -12,7 +12,7 @@ private:
     ProxiedCANJaguar* topRoller;
     ProxiedCANJaguar* bottomRoller;
 
-    string prefix;
+    string configSection;
 
     float dutyCycleSucking;
 

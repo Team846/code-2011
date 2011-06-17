@@ -10,7 +10,7 @@
 Arm::Arm()
     : Component()
     , config(Config::GetInstance())
-    , prefix("Arm.")
+    , configSection("Arm")
 //   , state(IDLE)
     , oldState(ACTION::ARM_::IDLE)
     , cycleCount(0)
@@ -43,20 +43,20 @@ Arm::~Arm()
 
 void Arm::Configure()
 {
-    minPosition = config.Get<float>(prefix + "minPosition", 280);
-    midPosition = config.Get<float>(prefix + "midPosition", 621);
-    maxPosition = config.Get<float>(prefix + "maxPosition", 530);
+    minPosition = config.Get<float>(configSection, "minPosition", 280);
+    midPosition = config.Get<float>(configSection, "midPosition", 621);
+    maxPosition = config.Get<float>(configSection, "maxPosition", 530);
 
-    midPositionDeadband = config.Get<float>(prefix + "midPositionDeadband", 10);
+    midPositionDeadband = config.Get<float>(configSection, "midPositionDeadband", 10);
 
-    powerUp = config.Get<float>(prefix + "powerUp", 0.30);
-    powerRetainUp = config.Get<float>(prefix + "powerRetainUp", 0.10);
-    powerDown = config.Get<float>(prefix + "powerDown", -0.15);
+    powerUp = config.Get<float>(configSection, "powerUp", 0.30);
+    powerRetainUp = config.Get<float>(configSection, "powerRetainUp", 0.10);
+    powerDown = config.Get<float>(configSection, "powerDown", -0.15);
 
-    midPowerUp = config.Get<float>(prefix + "midPowerUp", 0.2);
-    midPowerDown = config.Get<float>(prefix + "midPowerDown", -0.15);
+    midPowerUp = config.Get<float>(configSection, "midPowerUp", 0.2);
+    midPowerDown = config.Get<float>(configSection, "midPowerDown", -0.15);
 
-    timeoutCycles = (int)(config.Get<int>(prefix + "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
+    timeoutCycles = (int)(config.Get<int>(configSection, "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 }
 
 void Arm::Output()

@@ -28,7 +28,7 @@ LineSensor::~LineSensor()
 
 void LineSensor::Configure()
 {
-    lineThreshold = Config::GetInstance().Get<int>("LineSensor.lineThreshold", 275);
+    lineThreshold = Config::GetInstance().Get<int>("LineSensor" , "lineThreshold", 275);
 }
 
 void LineSensor::ResetPixelData()

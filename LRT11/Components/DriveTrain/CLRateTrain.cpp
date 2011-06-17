@@ -21,13 +21,13 @@ void CLRateTrain::Configure()
     // confiure parent class
     DitheredBrakeTrain::Configure();
 
-    const static string prefix = "CLRateDriveTrain.";
+    const static string configSection = "CLRateDriveTrain";
 
-    pGainTurnHighGear = config.Get<float>(prefix + "pGainTurnHighGear", 1.5);
-    pGainFwdHighGear = config.Get<float>(prefix + "pGainFwdHighGear", 1.5);
+    pGainTurnHighGear = config.Get<float>(configSection, "pGainTurnHighGear", 1.5);
+    pGainFwdHighGear = config.Get<float>(configSection, "pGainFwdHighGear", 1.5);
 
-    pGainTurnLowGear = config.Get<float>(prefix + "pGainTurnLowGear", 1.5);
-    pGainFwdLowGear = config.Get<float>(prefix + "pGainFwdLowGear", 1.5);
+    pGainTurnLowGear = config.Get<float>(configSection, "pGainTurnLowGear", 1.5);
+    pGainFwdLowGear = config.Get<float>(configSection, "pGainFwdLowGear", 1.5);
 }
 
 DriveCommand CLRateTrain::Drive(float rawFwd, float rawTurn)

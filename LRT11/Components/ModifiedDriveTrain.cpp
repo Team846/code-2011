@@ -48,7 +48,7 @@ ModifiedDriveTrain::~ModifiedDriveTrain()
 
 void ModifiedDriveTrain::Configure()
 {
-    cyclesToSynchronize = config.Get<int>("Drivetrain.CyclesToSynchronize", 60);
+    cyclesToSynchronize = config.Get<int>("Drivetrain", "CyclesToSynchronize", 60);
 }
 
 void ModifiedDriveTrain::Output()

@@ -27,7 +27,7 @@ Config::Config()
     for(int i = 0; i < kNumAnalogAssignable; ++i)
     {
         string keyname = "assignable." + Util::ToString<int>(i);
-        analogAssignments[i] = "none";
+        analogAssignmentKeys[i] = "";
         analogAssignmentScaleMin[i] = 0;
         analogAssignmentScaleMax[i] = 1;
     }
@@ -48,22 +48,23 @@ Config::~Config()
         delete sections;
 }
 
-bool Config::Load()
+void Config::Load()
 {
     ProfiledSection pf("Config.Load");
-    configData = tload(CONFIG_FILE_PATH);
+    LoadFile(CONFIG_FILE_PATH);
 
+    const static string configSection = "Build";
     if(!hasRun)
     {
-        if(Get<int>(buildNumKey, -1) == Build::GetNumber())
-            Set<int>(runNumKey, Get<int>(runNumKey) + 1);
+        if(Get<int>(configSection, buildNumKey, -1) == Build::GetNumber())
+            Set<int>(configSection, runNumKey, Get<int>(configSection, runNumKey, 0) + 1);
         else
         {
-            Set<int>(runNumKey , 1);
-            Set<int>(buildNumKey, Build::GetNumber());
+            Set<int>(configSection, runNumKey , 1);
+            Set<int>(configSection, buildNumKey, Build::GetNumber());
         }
 
-        Set<string>(buildTimeKey, Build::GetTime());
+        Set<string>(configSection, buildTimeKey, Build::GetTime());
 
         Save();
         hasRun = true;
@@ -72,13 +73,12 @@ bool Config::Load()
     //deal with assignable dials
     for(int i = 0; i < kNumAnalogAssignable; ++i)
     {
-        string keyname = "assignable." + Util::ToString<int>(i);
-        analogAssignments[i] = Get<string>(keyname + ".name");
-        analogAssignmentScaleMin[i] = Get<float>(keyname + ".scaleMin");
-        analogAssignmentScaleMax[i] = Get<float>(keyname + ".scaleMax");
+        string keyname = Util::ToString<int>(i);
+        analogAssignmentKeys[i] = Get<string>("Assignable" , keyname + ".name", "");
+        analogAssignmentSections[i] = Get<string>("Assignable" , keyname + ".section", "");
+        analogAssignmentScaleMin[i] = Get<float>("Assignable" , keyname + ".scaleMin", 1);
+        analogAssignmentScaleMax[i] = Get<float>("Assignable" , keyname + ".scaleMax", 1);
     }
-
-    return true;
 }
 
 map<string, string> Config::tload(string path)
@@ -104,62 +104,63 @@ map<string, string> Config::tload(string path)
     return ret;
 }
 
-bool Config::Save()
+void Config::Save()
 {
-    ofstream fout(CONFIG_FILE_PATH.c_str());
-    if(!fout.is_open())    // could not create file in that path
-        return false;
-
-    for(map<string, string>::const_iterator it = configData.begin();
-            it != configData.end(); it++)
-        fout << it->first << "=" << it->second << "\n";
-
-    fout.close();
-    return true;
+    SaveToFile(CONFIG_FILE_PATH);
+//    ofstream fout(CONFIG_FILE_PATH.c_str());
+//    if(!fout.is_open())    // could not create file in that path
+//        return false;
+//
+//    for(map<string, string>::const_iterator it = configData.begin();
+//            it != configData.end(); it++)
+//        fout << it->first << "=" << it->second << "\n";
+//
+//    fout.close();
+//    return true;
 }
 
-template <typename T> T Config::Get(string key)
-{
-    stringstream strstream(configData[key]);
-    T ret;
-    strstream >> ret;
-
-    // [dcl]: Cause default values to be set, in the case of blank parameters.
-    Set(key, ret);
-
-    return ret;
-}
-template float Config::Get<float>(string key);
-template bool Config::Get<bool>(string key);
-template double Config::Get<double>(string key);
-template string Config::Get<string>(string key);
-template int Config::Get<int>(string key);
-
-template <typename T> T Config::Get(string key, T defaultValue)
-{
-    if(configData.find(key) == configData.end())
-    {
-        Set(key, defaultValue);
-        return defaultValue;
-    }
-
-    return Get<T>(key);
-}
-template float Config::Get<float>(string key, float defaultValue);
-template bool Config::Get<bool>(string key, bool defaultValue);
-template double Config::Get<double>(string key, double defaultValue);
-template string Config::Get<string>(string key, string defaultValue);
-template int Config::Get<int>(string key, int defaultValue);
-
-template <typename T> void Config::Set(string key, T val)
-{
-    configData[key] = Util::ToString<T>(val);
-}
-template void Config::Set<float>(string key, float val);
-template void Config::Set<bool>(string key, bool val);
-template void Config::Set<double>(string key, double val);
-template void Config::Set<string>(string key, string val);
-template void Config::Set<int>(string key, int val);
+//template <typename T> T Config::Get(string key)
+//{
+//    stringstream strstream(configData[key]);
+//    T ret;
+//    strstream >> ret;
+//
+//    // [dcl]: Cause default values to be set, in the case of blank parameters.
+//    Set(key, ret);
+//
+//    return ret;
+//}
+//template float Config::Get<float>(string key);
+//template bool Config::Get<bool>(string key);
+//template double Config::Get<double>(string key);
+//template string Config::Get<string>(string key);
+//template int Config::Get<int>(string key);
+//
+//template <typename T> T Config::Get(string key, T defaultValue)
+//{
+//    if(configData.find(key) == configData.end())
+//    {
+//        Set(key, defaultValue);
+//        return defaultValue;
+//    }
+//
+//    return Get<T>(key);
+//}
+//template float Config::Get<float>(string key, float defaultValue);
+//template bool Config::Get<bool>(string key, bool defaultValue);
+//template double Config::Get<double>(string key, double defaultValue);
+//template string Config::Get<string>(string key, string defaultValue);
+//template int Config::Get<int>(string key, int defaultValue);
+//
+//template <typename T> void Config::Set(string key, T val)
+//{
+//    configData[key] = Util::ToString<T>(val);
+//}
+//template void Config::Set<float>(string key, float val);
+//template void Config::Set<bool>(string key, bool val);
+//template void Config::Set<double>(string key, double val);
+//template void Config::Set<string>(string key, string val);
+//template void Config::Set<int>(string key, int val);
 
 float Config::ScaleAssignableAnalogValue(float value, int analogIndex)
 {
@@ -171,22 +172,22 @@ void Config::UpdateAssignableDials()
 {
     for(int i = 0; i < kNumAnalogAssignable; ++i)
     {
-        if(analogAssignments[i].length() && analogAssignments[i] != "none")
+        if(analogAssignmentKeys[i].length() != 0)
         {
             ProfilerHelper pf;
 
             pf.Start("UpdateAssignable.Scale");
-            float newValue = ScaleAssignableAnalogValue(ds.GetAnalogIn(i + 1)
-                    , i);
+            float newValue = ScaleAssignableAnalogValue(ds.GetAnalogIn(i + 1) , i);
             pf.Finish();
 
             pf.Start("UpdateAssignable.Print");
-            Console::GetInstance().PrintMultipleTimesPerSecond(0.25, "Assgn:%s= %f\n",
-                    analogAssignments[i].c_str(), newValue);
+            Console::GetInstance().PrintMultipleTimesPerSecond(0.25, "Assgn:%s %s= %f\n",
+                    analogAssignmentSections[i].c_str(), analogAssignmentKeys[i].c_str(), newValue);
             pf.Finish();
 
             pf.Start("UpdateAssignable.Set");
-            Set(analogAssignments[i], Util::ToString<float>(newValue));
+//            Set(analogAssignments[i], Util::ToString<float>(newValue));
+            Set<float>(analogAssignmentSections[i], analogAssignmentKeys[i], newValue);
             pf.Finish();
         }
     }
@@ -258,6 +259,7 @@ template <typename T> T Config::Get(string section, string key, T defaultValue)
     }
     else
     {
+        AsynchronousPrinter::Printf("Using defualt value for %s %s which is %s\n", section.c_str(), key.c_str(), Util::ToString<T>(defaultValue).c_str());
         Set(section , key, defaultValue);
         return defaultValue;
     }

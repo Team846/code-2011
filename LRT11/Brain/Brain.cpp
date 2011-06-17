@@ -98,8 +98,8 @@ void Brain::UpdateDashboardValues(GameState gameState)
     if(previousState != DISABLED && gameState == DISABLED)
     {
         // log build and run number
-        SmartDashboard::Log((Util::ToString<int>(config.Get<int>("BuildNumber")) + "-" +
-                Util::ToString<int>(config.Get<int>("RunNumber"))).c_str(), "Build/Run");
+        SmartDashboard::Log((Util::ToString<int>(config.Get<int>("Build", "Number", -1)) + "-" +
+                Util::ToString<int>(config.Get<int>("Build", "RunNumber", -1))).c_str(), "Build/Run");
     }
 
     SmartDashboard::Log((float)gameTimer.Get(), "Game Timer");

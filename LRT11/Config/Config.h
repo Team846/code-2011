@@ -28,15 +28,14 @@ public:
     virtual ~Config();
     static Config& GetInstance();
 
-    bool Load();
-    bool Save();
+    void Load();
+    void Save();
 
-    float ScaleAssignableAnalogValue(float value, int analogIndex);
     void UpdateAssignableDials();
 
-    template <typename T> T Get(string key);
-    template <typename T> T Get(string key, T defaultValue);
-    template <typename T> void Set(string key, T val);
+//    template <typename T> T Get(string key);
+//    template <typename T> T Get(string key, T defaultValue);
+//    template <typename T> void Set(string key, T val);
 
     template <typename T> T Get(string section, string key, T defaultValue);
     template <typename T> void Set(string section, string key, T val);
@@ -69,7 +68,9 @@ private:
     void SaveToFile(string path);
 
     DriverStation& ds;
-    string analogAssignments[kNumAnalogAssignable];
+    float ScaleAssignableAnalogValue(float value, int analogIndex);
+    string analogAssignmentKeys[kNumAnalogAssignable];
+    string analogAssignmentSections[kNumAnalogAssignable];
     float analogAssignmentScaleMin[kNumAnalogAssignable];
     float analogAssignmentScaleMax[kNumAnalogAssignable];
 
