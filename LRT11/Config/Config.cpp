@@ -36,6 +36,18 @@ Config::Config()
     printf("Constructed Config\n");
 }
 
+Config::~Config()
+{
+    if(configFile != NULL)
+        delete configFile;
+
+    if(newConfigData != NULL)
+        delete newConfigData;
+
+    if(sections != NULL)
+        delete sections;
+}
+
 bool Config::Load()
 {
     ProfiledSection pf("Config.Load");
@@ -222,6 +234,63 @@ void Config::CheckForFileUpdates()
     }
 }
 
+//being post 2011 season updates
+bool Config::ValueExists(string section, string key)
+{
+    return newConfigData->find(section) != newConfigData->end() && (*newConfigData)[section].find(key) != (*newConfigData)[section].end();
+}
+
+template float Config::Get<float>(string section, string key, float defaultValue);
+template bool Config::Get<bool>(string section, string key, bool defaultValue);
+template double Config::Get<double>(string section, string key, double defaultValue);
+template string Config::Get<string>(string section, string key, string defaultValue);
+template int Config::Get<int>(string section, string key, int defaultValue);
+
+template <typename T> T Config::Get(string section, string key, T defaultValue)
+{
+    if(ValueExists(section, key))
+    {
+        stringstream sstream((*newConfigData)[section][key].val);
+        T ret;
+        sstream >> ret;
+
+        return ret;
+    }
+    else
+    {
+        Set(section , key, defaultValue);
+        return defaultValue;
+    }
+}
+
+template void Config::Set<bool>(string section, string key, bool val);
+template void Config::Set<int>(string section, string key, int val);
+template void Config::Set<float>(string section, string key, float val);
+template void Config::Set<double>(string section, string key, double val);
+template void Config::Set<string>(string section, string key, string val);
+
+template <typename T> void Config::Set(string section, string key, T val)
+{
+    string newVal = Util::ToString<T>(val);
+
+    //workaround to ancient version of gcc not supporting all features of iterators
+    list<string>::iterator sectionLocation = (*sections)[section];
+    //if the value doesn't yet exist just add it
+    if(ValueExists(section, key)) // need to add in the value in such a way that preserves whitespace and comments
+    {
+        list<string>::iterator valueLocation = (*newConfigData)[section][key].positionInFile;
+        string oldVal = (*newConfigData)[section][key].val;
+
+        //the location of the first occurence of the old value after the equals sign
+        unsigned int locationOfStartOfOldValue = valueLocation->find(oldVal, valueLocation->find('='));
+        valueLocation->replace(locationOfStartOfOldValue, oldVal.size(), newVal);
+    }
+    else // if value doesn't yet exist adding it in is easy
+        configFile->insert(++sectionLocation, key + "=" + newVal);
+
+    (*newConfigData)[section][key].val = newVal;
+}
+
 string trimWhiteSpace(string str)
 {
     int startIndex = -1, endIndex = str.size() - 1;
@@ -252,14 +321,15 @@ string trimWhiteSpace(string str)
     return str.substr(startIndex, endIndex - startIndex + 1); //trim proceeding and trailing whitespace
 }
 
-void Config::loadFile(string path)
+//Tested in windows 6/16/11 -BA
+void Config::LoadFile(string path)
 {
     ProfiledSection pf("Config.parse+load");
 
     ifstream fin(path.c_str());
     if(!fin.is_open())
     {
-        AsynchronousPrinter::Printf(strcat("Config could not open ", path.c_str()));
+        AsynchronousPrinter::Printf("Config could not open %s for reading\n", path.c_str());
         return;
     }
 
@@ -295,13 +365,13 @@ void Config::loadFile(string path)
             length = iter->size();
         string line = trimWhiteSpace(iter->substr(0, length)); //string minus the comments
 
-        if(line.size() == 0) //if line is all whitespace ignore
+        if(line.size() == 0) //if line is all whitespace ignore it
             continue;
 
         //check if start of new section
         if(line[0] == '[')
         {
-            currentSection = line.substr(1, line.find_last_of("]"));
+            currentSection = line.substr(1, line.find_last_of("]") - 1);
             (*sections)[currentSection] = iter;
             AsynchronousPrinter::Printf("%s\n", currentSection.c_str());
             continue;
@@ -311,8 +381,8 @@ void Config::loadFile(string path)
         string key, val;
         getline(sstream, key, '=');
         getline(sstream, val);
-        if(key.find("=") != string::npos)//we don't allow more than 1 equals sign per line leave a comment stating that
-            (*iter) += "; more than 1 equals sign per line is illegal";
+        if(val.find("=") != string::npos)//we don't allow more than 1 equals sign per line leave a comment stating that
+            (*iter) += " ; more than 1 equals sign per line is illegal";
 
         ConfigVal newVal;
         newVal.val = val;
@@ -320,4 +390,20 @@ void Config::loadFile(string path)
         AsynchronousPrinter::Printf("\t%s=%s\n", key.c_str(), val.c_str());
         (*newConfigData)[currentSection][key] = newVal;
     }
+    fin.close();
+}
+
+void Config::SaveToFile(string path)
+{
+    ofstream fout(path.c_str());
+    if(!fout.is_open())
+    {
+        AsynchronousPrinter::Printf("Config could not open %s for writing\n", path.c_str());
+        return;
+    }
+
+    for(list<string>::iterator iter = configFile->begin(); iter != configFile->end(); iter++)
+        fout << *iter << '\n';
+
+    fout.close();
 }

@@ -25,7 +25,7 @@ class Config
 public:
     const static int kNumAnalogAssignable = 4;
 
-    virtual ~Config() { }
+    virtual ~Config();
     static Config& GetInstance();
 
     bool Load();
@@ -37,6 +37,9 @@ public:
     template <typename T> T Get(string key);
     template <typename T> T Get(string key, T defaultValue);
     template <typename T> void Set(string key, T val);
+
+    template <typename T> T Get(string section, string key, T defaultValue);
+    template <typename T> void Set(string section, string key, T val);
 
     static void RegisterConfigurable(Configurable* configurable);
     static void ConfigureAll();
@@ -59,8 +62,11 @@ private:
     config* newConfigData;
     map<string, list<string>::iterator > *sections;
 
+    bool ValueExists(string section, string key);
+
     map<string, string> tload(string path);
-    void loadFile(string path);
+    void LoadFile(string path);
+    void SaveToFile(string path);
 
     DriverStation& ds;
     string analogAssignments[kNumAnalogAssignable];
