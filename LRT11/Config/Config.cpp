@@ -7,7 +7,7 @@
 Config* Config::instance = NULL;
 vector<Configurable*> Config::configurables;
 bool Config::hasRun = false;
-const string Config::CONFIG_FILE_PATH = "/LRTConfig11.txt";
+const string Config::CONFIG_FILE_PATH = "/LRTConfig11.conf";
 const string Config::COMMENT_DELIMITERS = "#;";
 
 Config& Config::GetInstance()
@@ -20,14 +20,17 @@ Config& Config::GetInstance()
 Config::Config()
     : configLastReadTime_(0)
     , ds(*DriverStation::GetInstance())
-    , buildNumKey("BuildNumber")
+    , buildNumKey("Number")
     , runNumKey("RunNumber")
     , buildTimeKey("BuildTime")
 {
-    configFile = NULL;
+	printf("started config construction\n");
+	
+	configFile = NULL;
     sections = NULL;
     newConfigData = NULL;
-
+	
+	
     for(int i = 0; i < kNumAnalogAssignable; ++i)
     {
         string keyname = "assignable." + Util::ToString<int>(i);
@@ -55,7 +58,9 @@ Config::~Config()
 void Config::Load()
 {
     ProfiledSection pf("Config.Load");
+    printf("Started loading file\n");
     LoadFile(CONFIG_FILE_PATH);
+    printf("Finished loading file\n");
 
     const static string configSection = "Build";
     if(!hasRun)
@@ -73,6 +78,8 @@ void Config::Load()
         Save();
         hasRun = true;
     }
+    
+    printf("done with first run\n");
 
     //deal with assignable dials
     for(int i = 0; i < kNumAnalogAssignable; ++i)
@@ -83,6 +90,7 @@ void Config::Load()
         analogAssignmentScaleMin[i] = Get<float>("Assignable" , keyname + ".scaleMin", 1);
         analogAssignmentScaleMax[i] = Get<float>("Assignable" , keyname + ".scaleMax", 1);
     }
+    AsynchronousPrinter::Printf("Done loading file\n");
 }
 
 map<string, string> Config::tload(string path)
@@ -277,13 +285,13 @@ template void Config::Set<string>(string section, string key, string val);
 
 template <typename T> void Config::Set(string section, string key, T val)
 {
+	printf("start set\n");
     string newVal = Util::ToString<T>(val);
 
-    //workaround to ancient version of gcc not supporting all features of iterators
-    list<string>::iterator sectionLocation = (*sections)[section];
     //if the value doesn't yet exist just add it
     if(ValueExists(section, key)) // need to add in the value in such a way that preserves whitespace and comments
     {
+    	printf("value exists");
         list<string>::iterator valueLocation = (*newConfigData)[section][key].positionInFile;
         string oldVal = (*newConfigData)[section][key].val;
 
@@ -292,9 +300,26 @@ template <typename T> void Config::Set(string section, string key, T val)
         valueLocation->replace(locationOfStartOfOldValue, oldVal.size(), newVal);
     }
     else // if value doesn't yet exist adding it in is easy
-        configFile->insert(++sectionLocation, key + "=" + newVal);
+    {
+    	printf("value does not exist\n");
+	    //workaround to ancient version of gcc not supporting all features of iterators
+	    list<string>::iterator sectionLocation = (*sections)[section];
+	    sectionLocation++;
+	    printf("incrementing iter\n");
+	    if (sectionLocation == configFile->end())
+	    	printf("end of file\n");
+	    printf("section %s\n", sectionLocation->c_str());
+	    string bad (*sectionLocation);
+	    printf("have string \n");
+	    printf("section %s\n", bad.c_str());
+	    string str = key + "=" + newVal;
+	    printf("string %s\n", str.c_str());
+        configFile->insert(sectionLocation, str);
+	    printf("insterted\n");
+    }
 
     (*newConfigData)[section][key].val = newVal;
+    printf("end set\n");
 }
 
 string trimWhiteSpace(string str)
@@ -338,21 +363,27 @@ void Config::LoadFile(string path)
         AsynchronousPrinter::Printf("Config could not open %s for reading\n", path.c_str());
         return;
     }
+    printf("data structs started\n");
 
     //loading a the file discards all changes
     if(configFile != NULL)
         delete configFile;
     configFile = new list<string>();
+    
+    printf("Config file\n");
 
     if(newConfigData != NULL)
         delete newConfigData;
     newConfigData = new config();
 
+    printf("Config data\n");
+
     if(sections != NULL)
         delete sections;
     sections = new map<string, list<string>::iterator >();
 
-
+    printf("data structs done\n");
+    
     //read the file into memory
     while(!fin.eof())
     {
@@ -361,6 +392,8 @@ void Config::LoadFile(string path)
         configFile->push_back(line);
     }
     fin.close();
+    
+    printf("finished reading file\n");
 
     //parse the file
     string currentSection;
@@ -396,7 +429,6 @@ void Config::LoadFile(string path)
         AsynchronousPrinter::Printf("\t%s=%s\n", key.c_str(), val.c_str());
         (*newConfigData)[currentSection][key] = newVal;
     }
-    fin.close();
 }
 
 void Config::SaveToFile(string path)
