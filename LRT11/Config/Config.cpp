@@ -24,6 +24,10 @@ Config::Config()
     , runNumKey("RunNumber")
     , buildTimeKey("BuildTime")
 {
+    configFile = NULL;
+    sections = NULL;
+    newConfigData = NULL;
+
     for(int i = 0; i < kNumAnalogAssignable; ++i)
     {
         string keyname = "assignable." + Util::ToString<int>(i);
