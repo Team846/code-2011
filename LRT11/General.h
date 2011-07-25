@@ -16,6 +16,17 @@ typedef enum GameState
 
 enum Side { LEFT, RIGHT };
 
+#define LINEAR_DRIVE_INPUT
+#ifndef LINEAR_DRIVE_INPUT
+#define INPUT_POWER 2
+#endif //LINEAR_DRIVE_INPUT
+
+//different forms of loop timing
+//#define INTERRUPT_CYCLES
+#ifndef INTERRUPT_CYCLES
+#define TIMER_CYCLES
+#endif //INTERRUPT_CYCLES
+
 // viable combinations are LRT_ROBOT_2011, LRT_ROBOT_2011 + VIRTUAL, neither
 #ifdef VIRTUAL
 #ifndef LRT_ROBOT_2011

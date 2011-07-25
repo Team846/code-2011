@@ -5,6 +5,8 @@
 #include "Util\Util.h"
 #include "Util\Profiler.h"
 #include "Util\AsynchronousPrinter.h"
+#include <semLib.h>
+#include <vxWorks.h>
 
 
 /**
@@ -47,11 +49,16 @@ protected:
 
 //   JaguarReader& reader;
     int cycleCount;
-
 //    int packetsMissedInLifetime;
 //    double minCycleTime, maxCycleTime;
 
 //    bool NextPeriodReady();
+private:
+#ifdef INTERRUPT_CYCLES
+    SEM_ID loopSemaphore;
+    Notifier loopSynchronizer;
+    static void releaseLoop(void* param);
+#endif
 };
 
 #endif

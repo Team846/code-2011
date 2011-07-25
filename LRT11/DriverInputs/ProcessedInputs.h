@@ -6,7 +6,6 @@
 #include "..\Config\DriverStationConfig.h"
 #include "..\Config\Config.h"
 #include "..\Config\Configurable.h"
-#include "..\Util\Util.h"
 
 class ProcessedInputs : public SensorBase, public Configurable
 {

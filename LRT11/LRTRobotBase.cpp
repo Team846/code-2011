@@ -9,9 +9,14 @@
 LRTRobotBase::LRTRobotBase()
     : quitting_(false)
     , cycleCount(0)
-
+#ifdef INTERRUPT_CYCLES
+    , loopSynchronizer(&releaseLoop, this)
+#endif
 {
     printf("Creating LRTRobotbase\n");
+#ifdef INTERRUPT_CYCLES
+    loopSemaphore = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
+#endif
 }
 
 /**
@@ -61,14 +66,23 @@ void LRTRobotBase::StartCompetition()
 //    // buffer for the basic report period; see bottom of method
 //    char buffer[200];
 
+#ifdef INTERRUPT_CYCLES
+    loopSynchronizer.StartPeriodic(1.0 / 50.0); //arg is period in seconds
+#endif //INTERRUPT_CYCLES
+
     // loop until we are quitting -- must be set by the destructor of the derived class.
     while(!quitting_)
     {
         cycleCount++;
-
+#ifdef TIMER_CYCLES
         // GetFPGATime() is in microseconds
         // find the start of the next twenty millisecond tick of the clock
         UINT32 cycleExpire_us = ((UINT32)(GetFPGATime() / 20000) + 1) * 20000;
+#endif //TIMER_CYCLES
+#ifdef INTERRUPT_CYCLES
+        semTake(loopSemaphore, WAIT_FOREVER);
+#endif //INTERRUPT_CYCLES
+
         profiler.StartNewCycle();
 
         {
@@ -85,9 +99,11 @@ void LRTRobotBase::StartCompetition()
 //          fflush(stdout);
         }
 
+#ifdef TIMER_CYCLES
         // implicit two's complement conversion allows sleeptime_us to be negative
         // even though both operands are UINT32s
         sleepTime_us = cycleExpire_us - GetFPGATime();
+#endif //TIMER_CYCLES
 
         //NB: This loop must be quit *before* the Jaguars are deleted!
         //TODO: This should be moved to "MainLoop()" -dg
@@ -97,6 +113,7 @@ void LRTRobotBase::StartCompetition()
 //        for(int i = 0; i < ProxiedCANJaguar::jaguars.num; i++)
 //           ProxiedCANJaguar::jaguars.j[i]->BeginComm();
 
+#ifdef TIMER_CYCLES
         // sleep allows other threads to run -KV/DG 4/2011
         if(sleepTime_us > 0)
         {
@@ -107,5 +124,17 @@ void LRTRobotBase::StartCompetition()
         // sleep often returns early -KV/DG 4/2011
         while(GetFPGATime() < cycleExpire_us)
             ; // burn off cycles until target time has passed
+#endif //TIMER_CYCLES
     }
 }
+
+#ifdef INTERRUPT_CYCLES
+//called by interupt on timer. This structure with the semaphores is to avoid the restrictions of running an ISR.
+void LRTRobotBase::releaseLoop(void* param)
+{
+    semGive(((LRTRobotBase*) param)->loopSemaphore);
+    sleep(0.01); //give the thread up to 1 ms to start
+    //taskDelay(sysClkRateGet()/50/5);//check that this is at least 1 tick
+    semTake(((LRTRobotBase*) param)->loopSemaphore, NO_WAIT);
+}
+#endif //INTERRUPT_CYCLES

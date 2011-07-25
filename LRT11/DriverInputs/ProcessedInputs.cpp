@@ -2,6 +2,7 @@
 #warning force compile
 
 #include "../Config/joystickdg.h"
+#include "../Util/Util.h"
 //Need a means of specifying both a stick and a button/axis
 //In progress - incomplete implementation -dg
 namespace JOY1
@@ -75,7 +76,12 @@ bool ProcessedInputs::ShouldAbort()
 
 float ProcessedInputs::GetForward()
 {
+#ifdef LINEAR_DRIVE_INPUT
     return -driverStick.GetY();
+#else
+    return Util::PowPreseverSign<float>(-driverStick.GetY(), INPUT_POWER);
+#endif
+
 }
 
 float ProcessedInputs::GetTurn()
@@ -83,7 +89,11 @@ float ProcessedInputs::GetTurn()
     if(Util::Abs<float>(driverStick.GetRawAxis(3)) < 1e-6)
         return 0.0;
 
+#ifdef LINEAR_DRIVE_INPUT
     return -driverStick.GetRawAxis(3);
+#else
+    return Util::PowPreseverSign<float>(-driverStick.GetRawAxis(3), INPUT_POWER);
+#endif
 }
 
 bool ProcessedInputs::ShouldBrakeLeft()

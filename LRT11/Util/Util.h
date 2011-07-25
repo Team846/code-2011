@@ -109,6 +109,17 @@ public:
             return val1;
         return val2;
     }
+
+    template <typename T>
+    static T PowPreseveSign(T val, int power)
+    {
+        T result = pow(val, power);
+        if(Sign<T>(val) == Sign<T>(result))
+            return result;
+        else
+            return -result;
+    }
+
     static void Die();
     static void Die(const char* message);
     static bool Assert(bool test, const char* message);
