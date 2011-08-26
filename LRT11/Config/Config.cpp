@@ -271,7 +271,7 @@ template <typename T> T Config::Get(string section, string key, T defaultValue)
     }
     else
     {
-        AsynchronousPrinter::Printf("Using defualt value for %s %s which is %s\n", section.c_str(), key.c_str(), Util::ToString<T>(defaultValue).c_str());
+        AsynchronousPrinter::Printf("Using default value for %s %s which is %s\n", section.c_str(), key.c_str(), Util::ToString<T>(defaultValue).c_str());
         Set(section , key, defaultValue);
         return defaultValue;
     }
