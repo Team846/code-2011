@@ -18,7 +18,7 @@ typedef struct
 class CLPositionDriveTrain : public Configurable
 {
 public:
-    CLPositionDriveTrain(CLRateTrain& train);
+    CLPositionDriveTrain(ClosedLoopRateDrivetrain& train);
 
     virtual void Configure();
 
@@ -33,7 +33,7 @@ public:
     void SetMoveDistance(float distance_in);
 
 private:
-    CLRateTrain& drive;
+    ClosedLoopRateDrivetrain& drive;
     DriveEncoders& encoders;
 
     float pGainFwd;

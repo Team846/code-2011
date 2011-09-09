@@ -14,9 +14,9 @@ ModifiedDriveTrain::ModifiedDriveTrain()
     , driveEncoders(DriveEncoders::GetInstance()) //TODO: If this is a singleton, why create it here? -dg
     , config(Config::GetInstance())
 {
-    closedRateTrain = new CLRateTrain();
+    closedRateTrain = new ClosedLoopRateDrivetrain();
     closedPositionTrain = new CLPositionDriveTrain(*closedRateTrain);
-
+    
 #ifdef LRT_ROBOT_2011
     leftESC = new Esc(RobotConfig::CAN::DRIVE_LEFT_A, RobotConfig::CAN::DRIVE_LEFT_B,
             driveEncoders.GetLeftEncoder(), "left");

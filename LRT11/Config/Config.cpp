@@ -39,7 +39,7 @@ Config::Config()
         analogAssignmentScaleMax[i] = 1;
     }
 
-    CheckForFileUpdates();
+    LoadIfFileChanged();
     printf("Constructed Config\n");
 }
 
@@ -119,60 +119,8 @@ map<string, string> Config::tload(string path)
 void Config::Save()
 {
     SaveToFile(CONFIG_FILE_PATH);
-//    ofstream fout(CONFIG_FILE_PATH.c_str());
-//    if(!fout.is_open())    // could not create file in that path
-//        return false;
-//
-//    for(map<string, string>::const_iterator it = configData.begin();
-//            it != configData.end(); it++)
-//        fout << it->first << "=" << it->second << "\n";
-//
-//    fout.close();
-//    return true;
 }
 
-//template <typename T> T Config::Get(string key)
-//{
-//    stringstream strstream(configData[key]);
-//    T ret;
-//    strstream >> ret;
-//
-//    // [dcl]: Cause default values to be set, in the case of blank parameters.
-//    Set(key, ret);
-//
-//    return ret;
-//}
-//template float Config::Get<float>(string key);
-//template bool Config::Get<bool>(string key);
-//template double Config::Get<double>(string key);
-//template string Config::Get<string>(string key);
-//template int Config::Get<int>(string key);
-//
-//template <typename T> T Config::Get(string key, T defaultValue)
-//{
-//    if(configData.find(key) == configData.end())
-//    {
-//        Set(key, defaultValue);
-//        return defaultValue;
-//    }
-//
-//    return Get<T>(key);
-//}
-//template float Config::Get<float>(string key, float defaultValue);
-//template bool Config::Get<bool>(string key, bool defaultValue);
-//template double Config::Get<double>(string key, double defaultValue);
-//template string Config::Get<string>(string key, string defaultValue);
-//template int Config::Get<int>(string key, int defaultValue);
-//
-//template <typename T> void Config::Set(string key, T val)
-//{
-//    configData[key] = Util::ToString<T>(val);
-//}
-//template void Config::Set<float>(string key, float val);
-//template void Config::Set<bool>(string key, bool val);
-//template void Config::Set<double>(string key, double val);
-//template void Config::Set<string>(string key, string val);
-//template void Config::Set<int>(string key, int val);
 
 float Config::ScaleAssignableAnalogValue(float value, int analogIndex)
 {
@@ -221,7 +169,7 @@ void Config::ConfigureAll()
  * checks to see if the Robot's configuration file on the cRio has been modified since
  * it was last loaded.
  */
-void Config::CheckForFileUpdates()
+void Config::LoadIfFileChanged()
 {
     struct stat statistics;
     stat(CONFIG_FILE_PATH.c_str(), &statistics);
@@ -306,7 +254,7 @@ template <typename T> void Config::Set(string section, string key, T val)
             configFile->push_back(string("[") + section + "]");
             list<string>::iterator sectionLocation = configFile->end();
             sectionLocation--;
-            (*sections)[section] = sectionLocation;
+            (*sections)[section] = list<string>::iterator(sectionLocation);
         }
 
         printf("value does not exist\n");

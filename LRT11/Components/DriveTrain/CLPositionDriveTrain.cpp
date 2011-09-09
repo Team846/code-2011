@@ -1,6 +1,6 @@
 #include "CLPositionDriveTrain.h"
 #include <math.h>
-CLPositionDriveTrain::CLPositionDriveTrain(CLRateTrain& train)
+CLPositionDriveTrain::CLPositionDriveTrain(ClosedLoopRateDrivetrain& train)
     : drive(train)
     , encoders(DriveEncoders::GetInstance())
 {

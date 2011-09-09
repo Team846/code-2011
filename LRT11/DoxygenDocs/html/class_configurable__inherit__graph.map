@@ -1,0 +1,14 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_arm.html" title="Arm" alt="" coords="194,5,241,32"/>
+<area shape="rect" id="node5" href="$class_c_l_position_drive_train.html" title="CLPositionDriveTrain" alt="" coords="147,56,288,83"/>
+<area shape="rect" id="node7" href="$class_dithered_brake_train.html" title="DitheredBrakeTrain" alt="" coords="151,107,283,133"/>
+<area shape="rect" id="node11" href="$class_esc.html" title="Esc" alt="" coords="195,157,240,184"/>
+<area shape="rect" id="node13" href="$class_lift.html" title="Lift" alt="" coords="198,208,237,235"/>
+<area shape="rect" id="node15" href="$class_line_sensor.html" title="LineSensor" alt="" coords="174,259,261,285"/>
+<area shape="rect" id="node17" href="$class_minibot_deployer.html" title="MinibotDeployer" alt="" coords="160,309,275,336"/>
+<area shape="rect" id="node19" href="$class_modified_drive_train.html" title="ModifiedDriveTrain" alt="" coords="154,360,281,387"/>
+<area shape="rect" id="node21" href="$class_processed_inputs.html" title="ProcessedInputs" alt="" coords="158,411,277,437"/>
+<area shape="rect" id="node23" href="$class_roller.html" title="Roller" alt="" coords="190,461,245,488"/>
+<area shape="rect" id="node25" href="$class_shifter.html" title="Shifter" alt="" coords="188,512,247,539"/>
+<area shape="rect" id="node9" href="$class_closed_loop_rate_drivetrain.html" title="ClosedLoopRateDrivetrain" alt="" coords="336,107,507,133"/>
+</map>

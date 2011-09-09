@@ -1,6 +1,6 @@
 #include "CLRateTrain.h"
 
-CLRateTrain::CLRateTrain()
+ClosedLoopRateDrivetrain::ClosedLoopRateDrivetrain()
 //    : DriveMethod(escLeft, escRight)
 //    , escLeft(escLeft)
 //    , escRight(escRight)
@@ -16,7 +16,7 @@ CLRateTrain::CLRateTrain()
     printf("Constructed CLRateTrain\n");
 }
 
-void CLRateTrain::Configure()
+void ClosedLoopRateDrivetrain::Configure()
 {
     // confiure parent class
     DitheredBrakeTrain::Configure();
@@ -30,7 +30,7 @@ void CLRateTrain::Configure()
     pGainFwdLowGear = config.Get<float>(configSection, "pGainFwdLowGear", 1.5);
 }
 
-DriveCommand CLRateTrain::Drive(float rawFwd, float rawTurn)
+DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
 {
     if(brakeLeft && brakeRight)
         Stop();
@@ -91,40 +91,40 @@ DriveCommand CLRateTrain::Drive(float rawFwd, float rawTurn)
     return DitheredBrakeTrain::Drive(newFwd, newTurn);
 }
 
-void CLRateTrain::PivotLeft(float rightSpeed)
+void ClosedLoopRateDrivetrain::PivotLeft(float rightSpeed)
 {
 //    escLeft.Stop();
 //    escRight.Set(rightSpeed);
 }
 
-void CLRateTrain::PivotRight(float leftSpeed)
+void ClosedLoopRateDrivetrain::PivotRight(float leftSpeed)
 {
 //    escRight.Stop();
 //    escLeft.Set(leftSpeed);
 }
 
-void CLRateTrain::SetBrakeLeft(bool brakeLeft)
+void ClosedLoopRateDrivetrain::SetBrakeLeft(bool brakeLeft)
 {
     this->brakeLeft = brakeLeft;
 }
 
-void CLRateTrain::SetBrakeRight(bool brakeRight)
+void ClosedLoopRateDrivetrain::SetBrakeRight(bool brakeRight)
 {
     this->brakeRight = brakeRight;
 }
 
-void CLRateTrain::Stop()
+void ClosedLoopRateDrivetrain::Stop()
 {
 //    escRight.Stop();
 //    escLeft.Stop();
 }
 
-void CLRateTrain::SetClosedLoopEnabled(bool enabled)
+void ClosedLoopRateDrivetrain::SetClosedLoopEnabled(bool enabled)
 {
     usingClosedLoop = enabled;
 }
 
-void CLRateTrain::SetHighGear(bool isHighGear)
+void ClosedLoopRateDrivetrain::SetHighGear(bool isHighGear)
 {
     highGear = isHighGear;
 }

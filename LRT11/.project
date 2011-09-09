@@ -17,4 +17,11 @@
 		<nature>org.eclipse.cdt.core.cnature</nature>
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>DoxygenDocs/index.html</name>
+			<type>1</type>
+			<locationURI>WS_ROOT_DIR/LRT11/DoxygenDocs/html/index.html</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

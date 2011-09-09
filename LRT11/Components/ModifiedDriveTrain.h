@@ -7,7 +7,7 @@
 
 class Config;
 class CLPositionDriveTrain;
-class CLRateTrain;
+class ClosedLoopRateDrivetrain;
 class Esc;
 class DriveEncoders;
 
@@ -15,7 +15,7 @@ class ModifiedDriveTrain : public Component, public Configurable
 {
 private:
     DriveEncoders& driveEncoders;
-    CLRateTrain* closedRateTrain;
+    ClosedLoopRateDrivetrain* closedRateTrain;
     CLPositionDriveTrain* closedPositionTrain;
     Esc* leftESC, *rightESC;
     Config& config;

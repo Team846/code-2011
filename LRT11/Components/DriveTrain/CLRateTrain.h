@@ -9,10 +9,10 @@
 #include "..\..\Util\RunningSum.h"
 #include "DitheredBrakeTrain.h"
 
-class CLRateTrain : public DitheredBrakeTrain
+class ClosedLoopRateDrivetrain : public DitheredBrakeTrain
 {
 public:
-    CLRateTrain();
+    ClosedLoopRateDrivetrain();
 
     virtual void Configure();
     DriveCommand Drive(float rawFwd, float rawTurn);
