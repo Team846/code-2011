@@ -9,6 +9,9 @@ class ProxiedCANJaguar;
 class Config;
 class VirtualPot;
 
+/*!
+ * \brief the component that handles the arm. It reads the sensor values and sends the motor commands based on inputs and commands. 
+ */
 class Arm : public Component, public Configurable
 {
 private:

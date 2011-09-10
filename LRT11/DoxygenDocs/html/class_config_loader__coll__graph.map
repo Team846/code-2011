@@ -1,6 +1,6 @@
 <map id="G" name="G">
 <area shape="rect" id="node2" href="$class_component.html" title="Component" alt="" coords="400,157,488,184"/>
-<area shape="rect" id="node4" href="$class_action_data.html" title="ActionData" alt="" coords="225,157,311,184"/>
+<area shape="rect" id="node4" href="$class_action_data.html" title="Singleton that holds all the actions that are to be handled by the components. In certain cases it al..." alt="" coords="225,157,311,184"/>
 <area shape="rect" id="node6" href="$struct_arm_action.html" title="ArmAction" alt="" coords="20,5,103,32"/>
 <area shape="rect" id="node8" href="$struct_deployer_action.html" title="DeployerAction" alt="" coords="6,56,117,83"/>
 <area shape="rect" id="node10" href="$struct_config_action.html" title="ConfigAction" alt="" coords="14,107,109,133"/>

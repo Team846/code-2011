@@ -92,6 +92,9 @@ struct DeployerAction;
 struct ShifterAction;
 struct ConfigAction;
 
+/*!
+ * \brief Singleton that holds all the actions that are to be handled by the components. In certain cases it also holds information about the states of the components. 
+ */
 class ActionData
 {
 private:
@@ -99,20 +102,53 @@ private:
 
 public:
     ~ActionData();
+    
+    /*!
+     * \brief Retrieves the global instance of the actionData class.
+     */
     static ActionData& GetInstance();
 
-    // master struct
+    /*!
+     * \brief contains data that is relevant to all/many components.
+     */
     struct
     {
         bool abort;
     } master;
 
+    /*!
+     * \brief contains commands and state info relevant to the drivetrain. Is defined in ActionData\DriveAction.h.
+     */
     DriveAction* driveTrain;
+
+    /*!
+     * \brief contains commands and state info relevant to the lift. Is defined in ActionData\LiftAction.h.
+     */
     LiftAction* lift;
+
+    /*!
+     * \brief contains commands and state info relevant to the arm. Is defined in ActionData\ArmAction.h.
+     */
     ArmAction* arm;
+
+    /*!
+     * \brief contains commands and state info relevant to the roller. Is defined in ActionData\RollerAction.h.
+     */
     RollerAction* roller;
+    
+    /*!
+     * \brief contains commands and state info relevant to the minibot Deployer. Is defined in ActionData\DeployerAction.h.
+     */
     DeployerAction* deployer;
+    
+    /*!
+     * \brief contains commands and state info relevant to the shifting. Is defined in ActionData\ShifterAction.h.
+     */
     ShifterAction* shifter;
+    
+    /*!
+     * \brief contains commands and state info relevant to the configuration system. Is defined in ActionData\ConfigAction.h.
+     */
     ConfigAction* config;
 
     struct
@@ -132,10 +168,16 @@ public:
         bool shouldCollect;
     } encoderData;
 
+    /*!
+     * \brief flag that indicates if the robot was disabled the previous cycle.
+     */
     bool wasDisabled;
 
 protected:
     ActionData();
+    /*!
+     * \brief defines the copy constructor as protected which prevents copies of this singleton from being made. 
+     */
     DISALLOW_COPY_AND_ASSIGN(ActionData);
 };
 

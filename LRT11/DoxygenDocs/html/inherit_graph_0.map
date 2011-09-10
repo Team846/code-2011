@@ -1,3 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$class_action_data.html" title="ActionData" alt="" coords="6,5,93,32"/>
+<area shape="rect" id="node1" href="$class_action_data.html" title="Singleton that holds all the actions that are to be handled by the components. In certain cases it al..." alt="" coords="6,5,93,32"/>
 </map>

@@ -22,7 +22,6 @@ typedef struct ConfigVal
 
 /*!
  * \brief A Singleton that stores and retrieves configuration values from a file.
- * This class manages the parsing and saving of the file as well as detecting when it has been changed. 
  * */
 class Config
 {

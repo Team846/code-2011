@@ -9,6 +9,9 @@ class Config;
 class ProxiedCANJaguar;
 class VirtualPot;
 
+/*!
+ * \brief the component that handles all io and abstraction of the lift.
+ */ 
 class Lift : public Component, public Configurable
 {
 private:

@@ -3,5 +3,5 @@
 <area shape="rect" id="node4" href="$class_l_r_t_c_a_n_jaguar.html" title="LRTCANJaguar" alt="" coords="15,5,125,32"/>
 <area shape="rect" id="node6" href="$class_c_a_n_jaguar_brake.html" title="CANJaguarBrake" alt="" coords="161,80,281,107"/>
 <area shape="rect" id="node8" href="$class_brake.html" title="Brake" alt="" coords="193,5,249,32"/>
-<area shape="rect" id="node10" href="$class_configurable.html" title="Configurable" alt="" coords="307,80,400,107"/>
+<area shape="rect" id="node10" href="$class_configurable.html" title="The base class for all classes that read values from the configuration system." alt="" coords="307,80,400,107"/>
 </map>

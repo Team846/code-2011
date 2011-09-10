@@ -4,12 +4,18 @@
 #include <queue>
 #include "WPILib.h"
 
+/*!
+ * \brief Provides an asynchronous equivilent of printf. 
+ */
 class AsynchronousPrinter
 {
 public:
     virtual ~AsynchronousPrinter(); //why is this virtual? -dg
     static AsynchronousPrinter& Instance();
 
+    /*!
+     * \brief Asynchronous alternative to Printf
+     */
     static int Printf(const char* format, ...);
     static void Quit();
     static bool QueueEmpty()

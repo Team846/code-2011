@@ -1,7 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arm.html" title="Arm" alt="" coords="5,80,51,107"/>
+<area shape="rect" id="node3" href="$class_arm.html" title="the component that handles the arm. It reads the sensor values and sends the motor commands based on ..." alt="" coords="5,80,51,107"/>
 <area shape="rect" id="node5" href="$class_config_loader.html" title="ConfigLoader" alt="" coords="75,80,172,107"/>
-<area shape="rect" id="node7" href="$class_lift.html" title="Lift" alt="" coords="197,80,235,107"/>
+<area shape="rect" id="node7" href="$class_lift.html" title="the component that handles all io and abstraction of the lift." alt="" coords="197,80,235,107"/>
 <area shape="rect" id="node9" href="$class_minibot_deployer.html" title="MinibotDeployer" alt="" coords="260,80,375,107"/>
 <area shape="rect" id="node11" href="$class_modified_drive_train.html" title="ModifiedDriveTrain" alt="" coords="399,80,525,107"/>
 <area shape="rect" id="node13" href="$class_roller.html" title="Roller" alt="" coords="550,80,604,107"/>

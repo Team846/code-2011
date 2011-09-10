@@ -1,4 +1,4 @@
 <map id="G" name="G">
 <area shape="rect" id="node5" href="$class_closed_loop_rate_drivetrain.html" title="ClosedLoopRateDrivetrain" alt="" coords="5,155,176,181"/>
-<area shape="rect" id="node2" href="$class_configurable.html" title="Configurable" alt="" coords="44,5,137,32"/>
+<area shape="rect" id="node2" href="$class_configurable.html" title="The base class for all classes that read values from the configuration system." alt="" coords="44,5,137,32"/>
 </map>
