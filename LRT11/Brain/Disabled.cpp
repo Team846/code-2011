@@ -22,5 +22,5 @@ void Brain::Disabled()
 
     static int cycleCount = 0;
     if(++cycleCount % 50 == 0) // check every second
-        Config::GetInstance().LoadIfFileChanged();
+        Config::GetInstance().CheckForFileUpdates();
 }

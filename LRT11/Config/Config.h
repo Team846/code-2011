@@ -75,7 +75,7 @@ public:
     /*!
      * \brief updates the file if it has been changed since the last time it has been loaded.
      */
-    void LoadIfFileChanged();
+    void CheckForFileUpdates();
 
 private:
     Config();
