@@ -27,7 +27,7 @@ Config::Config()
     printf("started config construction\n");
 
     configFile = NULL;
-    sections = NULL;
+    sectionsMap = NULL;
     newConfigData = NULL;
 
 
@@ -39,7 +39,7 @@ Config::Config()
         analogAssignmentScaleMax[i] = 1;
     }
 
-    LoadIfFileChanged();
+    CheckForFileUpdates();
     printf("Constructed Config\n");
 }
 
@@ -51,8 +51,8 @@ Config::~Config()
     if(newConfigData != NULL)
         delete newConfigData;
 
-    if(sections != NULL)
-        delete sections;
+    if(sectionsMap != NULL)
+        delete sectionsMap;
 }
 
 void Config::Load()
@@ -85,8 +85,8 @@ void Config::Load()
     for(int i = 0; i < kNumAnalogAssignable; ++i)
     {
         string keyname = Util::ToString<int>(i);
-        analogAssignmentKeys[i] = Get<string>("Assignable" , keyname + ".name", "");
-        analogAssignmentSections[i] = Get<string>("Assignable" , keyname + ".section", "");
+        analogAssignmentKeys[i] = Get<string>("Assignable" , keyname + ".name", "default");
+        analogAssignmentSections[i] = Get<string>("Assignable" , keyname + ".section", "default");
         analogAssignmentScaleMin[i] = Get<float>("Assignable" , keyname + ".scaleMin", 1);
         analogAssignmentScaleMax[i] = Get<float>("Assignable" , keyname + ".scaleMax", 1);
     }
@@ -169,7 +169,7 @@ void Config::ConfigureAll()
  * checks to see if the Robot's configuration file on the cRio has been modified since
  * it was last loaded.
  */
-void Config::LoadIfFileChanged()
+void Config::CheckForFileUpdates()
 {
     struct stat statistics;
     stat(CONFIG_FILE_PATH.c_str(), &statistics);
@@ -195,7 +195,6 @@ void Config::LoadIfFileChanged()
     }
 }
 
-//being post 2011 season updates
 bool Config::ValueExists(string section, string key)
 {
     return newConfigData->find(section) != newConfigData->end() && (*newConfigData)[section].find(key) != (*newConfigData)[section].end();
@@ -209,6 +208,8 @@ template int Config::Get<int>(string section, string key, int defaultValue);
 
 template <typename T> T Config::Get(string section, string key, T defaultValue)
 {
+	printf("Getting %s's %s\n", section.c_str(), key.c_str());
+	
     if(ValueExists(section, key))
     {
         stringstream sstream((*newConfigData)[section][key].val);
@@ -219,7 +220,8 @@ template <typename T> T Config::Get(string section, string key, T defaultValue)
     }
     else
     {
-        AsynchronousPrinter::Printf("Using default value for %s %s which is %s\n", section.c_str(), key.c_str(), Util::ToString<T>(defaultValue).c_str());
+//        AsynchronousPrinter::Printf("Using default value for %s %s which is %s\n", section.c_str(), key.c_str(), Util::ToString<T>(defaultValue).c_str());
+        printf("Using default value for %s %s which is %s\n", section.c_str(), key.c_str(), Util::ToString<T>(defaultValue).c_str());
         Set(section , key, defaultValue);
         return defaultValue;
     }
@@ -231,48 +233,48 @@ template void Config::Set<float>(string section, string key, float val);
 template void Config::Set<double>(string section, string key, double val);
 template void Config::Set<string>(string section, string key, string val);
 
-template <typename T> void Config::Set(string section, string key, T val)
+template <typename T> void Config::Set(string sectionName, string key, T val)
 {
     printf("start set\n");
     string newVal = Util::ToString<T>(val);
 
-    if(ValueExists(section, key)) // need to add in the value in such a way that preserves whitespace and comments
+    if(ValueExists(sectionName, key)) // need to add in the value in such a way that preserves whitespace and comments
     {
         printf("value exists");
-        list<string>::iterator valueLocation = (*newConfigData)[section][key].positionInFile;
-        string oldVal = (*newConfigData)[section][key].val;
+        ConfigVal nameValuePair = (*newConfigData)[sectionName][key];
+        list<string>::iterator valueLocation = nameValuePair.positionInFile;
+        string oldVal = nameValuePair.val;
 
         //the location of the first occurence of the old value after the equals sign
-        unsigned int locationOfStartOfOldValue = valueLocation->find(oldVal, valueLocation->find('='));
-        valueLocation->replace(locationOfStartOfOldValue, oldVal.size(), newVal);
+        unsigned int indexOfStartOfOldValue = valueLocation->find(oldVal, valueLocation->find('='));
+        valueLocation->replace(indexOfStartOfOldValue, oldVal.size(), newVal);
     }
     else //if the value doesn't yet exist add it
     {
         // if section does not yet exist add it to the end of the file
-        if(newConfigData->find(section) != newConfigData->end())
+        if(newConfigData->find(sectionName) == newConfigData->end())
         {
-            configFile->push_back(string("[") + section + "]");
+            configFile->push_back(string("[") + sectionName + "]");
             list<string>::iterator sectionLocation = configFile->end();
             sectionLocation--;
-            (*sections)[section] = list<string>::iterator(sectionLocation);
+            (*sectionsMap)[sectionName] = *(new list<string>::iterator(sectionLocation));
         }
 
         printf("value does not exist\n");
-        //workaround to ancient version of gcc not supporting all features of iterators
-        list<string>::iterator sectionLocation = (*sections)[section];
+        list<string>::iterator sectionLocation = (*sectionsMap)[sectionName];
         sectionLocation++;
         printf("incrementing iter\n");
-        printf("section %s\n", sectionLocation->c_str());
-        string bad(*sectionLocation);
-        printf("have string \n");
-        printf("section %s\n", bad.c_str());
+//        printf("section %s\n", sectionLocation->c_str());
+//        string bad(*sectionLocation);
+//        printf("have string \n");
+//        printf("section %s\n", bad.c_str());
         string str = key + "=" + newVal;
         printf("string %s\n", str.c_str());
         configFile->insert(sectionLocation, str);
-        printf("insterted\n");
+        printf("inserted\n");
     }
 
-    (*newConfigData)[section][key].val = newVal;
+    (*newConfigData)[sectionName][key].val = newVal;
     printf("end set\n");
 }
 
@@ -332,9 +334,9 @@ void Config::LoadFile(string path)
 
     printf("Config data\n");
 
-    if(sections != NULL)
-        delete sections;
-    sections = new map<string, list<string>::iterator >();
+    if(sectionsMap != NULL)
+        delete sectionsMap;
+    sectionsMap = new map<string, list<string>::iterator >();
 
     printf("data structs done\n");
 
@@ -365,7 +367,7 @@ void Config::LoadFile(string path)
         if(line[0] == '[')
         {
             currentSection = line.substr(1, line.find_last_of("]") - 1);
-            (*sections)[currentSection] = iter;
+            (*sectionsMap)[currentSection] = *(new list<string>::iterator(iter));
             AsynchronousPrinter::Printf("%s\n", currentSection.c_str());
             continue;
         }
@@ -377,11 +379,12 @@ void Config::LoadFile(string path)
         if(val.find("=") != string::npos)//we don't allow more than 1 equals sign per line leave a comment stating that
             (*iter) += " ; more than 1 equals sign per line is illegal";
 
-        ConfigVal newVal;
-        newVal.val = val;
-        newVal.positionInFile = iter;
+        ConfigVal *newVal = new ConfigVal();
+        newVal->val = val;
+        newVal->positionInFile = *(new list<string>::iterator(iter));
         AsynchronousPrinter::Printf("\t%s=%s\n", key.c_str(), val.c_str());
-        (*newConfigData)[currentSection][key] = newVal;
+//        ConfigVal *temp = new ConfigVal();
+        (*newConfigData)[currentSection][key] = *newVal;
     }
 }
 
