@@ -257,7 +257,7 @@ template <typename T> void Config::Set(string sectionName, string key, T val)
             configFile->push_back(string("[") + sectionName + "]");
             list<string>::iterator sectionLocation = configFile->end();
             sectionLocation--;
-            (*sectionsMap)[sectionName] = *(new list<string>::iterator(sectionLocation));
+            (*sectionsMap)[sectionName] = sectionLocation;
         }
 
         printf("value does not exist\n");
@@ -367,7 +367,7 @@ void Config::LoadFile(string path)
         if(line[0] == '[')
         {
             currentSection = line.substr(1, line.find_last_of("]") - 1);
-            (*sectionsMap)[currentSection] = *(new list<string>::iterator(iter));
+            (*sectionsMap)[currentSection] = iter;
             AsynchronousPrinter::Printf("%s\n", currentSection.c_str());
             continue;
         }
@@ -379,12 +379,11 @@ void Config::LoadFile(string path)
         if(val.find("=") != string::npos)//we don't allow more than 1 equals sign per line leave a comment stating that
             (*iter) += " ; more than 1 equals sign per line is illegal";
 
-        ConfigVal *newVal = new ConfigVal();
-        newVal->val = val;
-        newVal->positionInFile = *(new list<string>::iterator(iter));
+        ConfigVal newVal;
+        newVal.val = val;
+        newVal.positionInFile = iter;
         AsynchronousPrinter::Printf("\t%s=%s\n", key.c_str(), val.c_str());
-//        ConfigVal *temp = new ConfigVal();
-        (*newConfigData)[currentSection][key] = *newVal;
+        (*newConfigData)[currentSection][key] = newVal;
     }
 }
 

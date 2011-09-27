@@ -1,3 +1,4 @@
+#include <math.h>
 #include "Arm.h"
 #include "..\Config\RobotConfig.h"
 #include "..\Jaguar\ProxiedCANJaguar.h"
@@ -16,6 +17,7 @@ Arm::Arm()
     , cycleCount(0)
     , presetMode(true)
     , pulseCount(0)
+    , oldDir(0)
 {
     armEsc = new ProxiedCANJaguar(RobotConfig::CAN::ARM_, "Arm");
 
@@ -151,35 +153,28 @@ void Arm::Output()
         break;
 
     case ACTION::ARM_::PRESET_MIDDLE:
-        action.arm->completion_status = ACTION::IN_PROGRESS;
-
-        // no timeout for now
-//      if(--cycleCount < 0)
-//      {
-//          action.arm->status = ACTION::FAILURE;
-//          armEsc.Set(0.0);
-//          break; // timeout overrides everything
-//      }
-//      float error = potValue - midPosition;
-//      float correction = error * midPGain;
-//      if (Util::Abs<float>(error) < midPositionDeadband)
-//          armEsc.Set(0.0);
-//      else
-//          armEsc.Set(correction);
-
-        if(potValue > midPosition + midPositionDeadband)
-            armEsc->SetDutyCycle(midPowerDown);
-        else if(potValue < midPosition - midPositionDeadband)
-            armEsc->SetDutyCycle(midPowerUp);
-        else
         {
-            // prevent cycle count from becoming < 0
-            cycleCount = 100;
-            action.arm->completion_status = ACTION::SUCCESS;
-            armEsc->SetDutyCycle(0.0);
+        	action.arm->completion_status = ACTION::IN_PROGRESS;
+	    	float pGainMid = 0.01;
+	    	float error = midPosition - potValue;
+	    	if (fabs(error - midPosition) > midPositionDeadband) 
+	        	error -= midPositionDeadband * Util::Sign<float>(error);
+	    	else 
+	    	{
+	    		error = 0.0;
+	        	action.arm->completion_status = ACTION::SUCCESS;
+	    	}
+	
+	    	float dutyCycle = pGainMid * error;
+	
+	    	if (fabs(dutyCycle) > 0.35)
+	    		dutyCycle = Util::Sign<float>(dutyCycle)*0.25;
+	
+			armEsc->SetDutyCycle(dutyCycle);
         }
+        
         break;
-
+        
     case ACTION::ARM_::MANUAL_UP:
         if(potValue < maxPosition)
             armEsc->SetDutyCycle(powerUp);

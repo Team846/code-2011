@@ -37,6 +37,7 @@ private:
     bool presetMode;
 
     int pulseCount;
+    int oldDir;
 
     const static float ARM_UP_THRESHOLD = 10;
 
