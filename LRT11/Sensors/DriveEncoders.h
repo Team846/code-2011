@@ -86,6 +86,8 @@ public:
 //    double GetNormalizedRightSpeed();
 //    double GetNormalizedRightMotorSpeed();
     double GetNormalizedRightOppositeGearMotorSpeed();
+    double GetNormalizedOpposingGearMotorSpeed(LRTEncoder& encoder);//gets the speed of the gear we are *NOT* in for shifting -BA
+
 
     double GetNormalizedMotorSpeed(LRTEncoder& encoder);
 

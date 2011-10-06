@@ -131,12 +131,16 @@ double DriveEncoders::GetNormalizedMotorSpeed(LRTEncoder& encoder)
             (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
 }
 
+double DriveEncoders::GetNormalizedOpposingGearMotorSpeed(LRTEncoder& encoder)
+{
+    return encoder.GetRate() /
+            (isHighGear ? (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER) : MAX_ENCODER_RATE );
+}
+
 double DriveEncoders::GetNormalizedRightOppositeGearMotorSpeed()
 {
-    return Util::Clamp<double>(
-            encoderRight.GetRate() /
-            (!isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
-            , -1.0, 1.0);
+    return encoderRight.GetRate() /
+            (isHighGear ? (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER) : MAX_ENCODER_RATE );
 }
 
 void DriveEncoders::SetHighGear(bool isHighGear)

@@ -1,5 +1,6 @@
 #include "LRTServo.h"
 #include "../../Util/AsynchronousPrinter.h"
+#include "../../Util/Util.h"
 
 LRTServo::LRTServo(UINT32 channel, char* name)
     : Servo(channel)
@@ -39,6 +40,19 @@ void LRTServo::Set(float value)
             AsynchronousPrinter::Printf("%s set: %4f\n", name_, previous_value_ = value);
 
         Servo::Set(value);
+    }
+}
+
+void LRTServo::SetMicroseconds(int ms) 
+{
+    if(enabled)
+    {
+    	// TODO: CHANGE CONSTANTS TO CONFIG
+    	const int MIN_VAL = 727;
+    	const int MAX_VAL = 2252;
+    	ms = Util::Clamp(ms, MIN_VAL, MAX_VAL);
+    	float val = (float)(ms - MIN_VAL) / (MAX_VAL - MIN_VAL);
+        Servo::Set(val);
     }
 }
 

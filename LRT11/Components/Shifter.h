@@ -21,29 +21,34 @@ private:
 
     DriveEncoders& encoders;
 
-    string prefix;
-
+    string config_section;
+    
     //only let servo become disabled after a delay.
     //when Hitec HS322 servo is disabled, it jumps from it's last set point. -dg
     int servoDisableTimer;
-    static const int kServoDisableDelay = 5 * 50; // 5 sec
+    int servoDisableDelay; // 5 sec
 
+    int lowGearServoValLeft;
+    int highGearServoValLeft;
+    int lowGearServoValRight;
+    int highGearServoValRight;
+/*
 #ifdef LRT_ROBOT_2011
     //2011 robot
-    const static float leftLowGearServoVal = 0.25; // = 0.33;
-    const static float leftHighGearServoVal = 0.25 + 0.29; //= 0.62;
+    float leftLowGearServoVal = 0.25; // = 0.33;
+    float leftHighGearServoVal = 0.25 + 0.29; //= 0.62;
 
-    const static float rightLowGearServoVal = 0.67;
-    const static float rightHighGearServoVal = 0.39;
+    float rightLowGearServoVal = 0.67;
+    float rightHighGearServoVal = 0.39;
 #else
     //2010 robot
-    const static float leftLowGearServoVal = 0.85; //.62
-    const static float leftHighGearServoVal = 0.36; //.33
+    float leftLowGearServoVal = 0.85; //.62
+    float leftHighGearServoVal = 0.36; //.33
 
-    const static float rightLowGearServoVal = 0.67;
-    const static float rightHighGearServoVal = 0.30;
+    float rightLowGearServoVal = 0.67;
+    float rightHighGearServoVal = 0.30;
 #endif //LRT_ROBOT_2011 - servo endpoints
-
+*/
 public:
     Shifter();
     virtual ~Shifter();

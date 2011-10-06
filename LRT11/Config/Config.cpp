@@ -208,7 +208,7 @@ template int Config::Get<int>(string section, string key, int defaultValue);
 
 template <typename T> T Config::Get(string section, string key, T defaultValue)
 {
-	printf("Getting %s's %s\n", section.c_str(), key.c_str());
+//	printf("Getting %s's %s\n", section.c_str(), key.c_str());
 	
     if(ValueExists(section, key))
     {

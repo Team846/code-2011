@@ -1,10 +1,10 @@
 #include "Shifter.h"
 #include "../Util/AsynchronousPrinter.h"
-#include "..\Config\Config.h"
 #include "Shifter\LRTServo.h"
 #include "Shifter\VirtualLRTServo.h"
 #include "..\Sensors\DriveEncoders.h"
 #include "..\Config\RobotConfig.h"
+#include "..\Config\Config.h"
 #include "..\ActionData\DriveAction.h"
 #include "..\ActionData\ShifterAction.h"
 
@@ -12,7 +12,7 @@
 Shifter::Shifter()
     : Component()
     , encoders(DriveEncoders::GetInstance())
-    , prefix("Shifter.")
+    , config_section("Shifter")
 {
 #ifdef VIRTUAL
     leftServo = new VirtualLRTServo(RobotConfig::PWM::LEFT_GEARBOX_SERVO, "Left Shift Servo")
@@ -33,7 +33,13 @@ Shifter::~Shifter()
 
 void Shifter::Configure()
 {
-//    Config& config = Config::GetInstance();
+	// TODO: add servo values into config
+    Config& config = Config::GetInstance();
+    lowGearServoValLeft = config.Get<int>(config_section, "leftLowGearServoVal", 1700);
+    highGearServoValLeft = config.Get<int>(config_section, "leftHighGearServoVal", 1050);
+    lowGearServoValRight = config.Get<int>(config_section, "rightLowGearServoVal", 1100);
+    highGearServoValRight = config.Get<int>(config_section, "rightHighGearServoVal", 1850);
+    servoDisableDelay = config.Get<int>(config_section, "servoDisableDelay", 5 * 50);
 }
 
 void Shifter::Output()
@@ -56,7 +62,7 @@ void Shifter::Output()
         (action.driveTrain->rate.rawForward != 0.0 || action.driveTrain->rate.rawTurn != 0.0);
 
     if(robotTryingToMove || action.shifter->force)
-        servoDisableTimer = kServoDisableDelay; //reset timer
+        servoDisableTimer = servoDisableDelay; //reset timer
 
     bool enableServo = servoDisableTimer > 0 ;
 
@@ -66,14 +72,14 @@ void Shifter::Output()
     switch(action.shifter->gear)
     {
     case ACTION::GEARBOX::LOW_GEAR:
-        leftServo->Set(leftLowGearServoVal);
-        rightServo->Set(rightLowGearServoVal);
+        leftServo->SetMicroseconds(lowGearServoValLeft);
+        rightServo->SetMicroseconds(lowGearServoValRight);
         encoders.SetHighGear(false);
         break;
 
     case ACTION::GEARBOX::HIGH_GEAR:
-        leftServo->Set(leftHighGearServoVal);
-        rightServo->Set(rightHighGearServoVal);
+        leftServo->SetMicroseconds(highGearServoValLeft);
+        rightServo->SetMicroseconds(highGearServoValRight);
         encoders.SetHighGear(true);
         break;
 

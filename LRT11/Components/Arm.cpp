@@ -17,7 +17,6 @@ Arm::Arm()
     , cycleCount(0)
     , presetMode(true)
     , pulseCount(0)
-    , oldDir(0)
 {
     armEsc = new ProxiedCANJaguar(RobotConfig::CAN::ARM_, "Arm");
 
@@ -157,7 +156,7 @@ void Arm::Output()
         	action.arm->completion_status = ACTION::IN_PROGRESS;
 	    	float pGainMid = 0.01;
 	    	float error = midPosition - potValue;
-	    	if (fabs(error - midPosition) > midPositionDeadband) 
+	    	if (fabs(error) > midPositionDeadband) 
 	        	error -= midPositionDeadband * Util::Sign<float>(error);
 	    	else 
 	    	{
@@ -166,9 +165,8 @@ void Arm::Output()
 	    	}
 	
 	    	float dutyCycle = pGainMid * error;
-	
-	    	if (fabs(dutyCycle) > 0.35)
-	    		dutyCycle = Util::Sign<float>(dutyCycle)*0.25;
+	    		    	
+	    	dutyCycle = Util::Clamp<float>(dutyCycle,-0.35, 0.35);
 	
 			armEsc->SetDutyCycle(dutyCycle);
         }
