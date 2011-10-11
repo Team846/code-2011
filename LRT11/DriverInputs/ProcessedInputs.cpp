@@ -76,11 +76,12 @@ bool ProcessedInputs::ShouldAbort()
 
 float ProcessedInputs::GetForward()
 {
-#ifdef LINEAR_DRIVE_INPUT
     return -driverStick.GetY();
-#else
-    return Util::PowPreseverSign<float>(-driverStick.GetY(), INPUT_POWER);
-#endif
+//#ifdef LINEAR_DRIVE_INPUT
+//    return -driverStick.GetY();
+//#else
+//    return Util::PowPreseverSign<float>(-driverStick.GetY(), INPUT_POWER);
+//#endif
 
 }
 
@@ -89,11 +90,12 @@ float ProcessedInputs::GetTurn()
     if(Util::Abs<float>(driverStick.GetRawAxis(3)) < 1e-6)
         return 0.0;
 
-#ifdef LINEAR_DRIVE_INPUT
-    return -driverStick.GetRawAxis(3);
-#else
-    return Util::PowPreseverSign<float>(-driverStick.GetRawAxis(3), INPUT_POWER);
-#endif
+    return Util::PowPreseveSign<float>(-driverStick.GetRawAxis(3), 2);
+//#ifdef LINEAR_DRIVE_INPUT
+//    return -driverStick.GetRawAxis(3);
+//#else
+//    return Util::PowPreseverSign<float>(-driverStick.GetRawAxis(3), INPUT_POWER);
+//#endif
 }
 
 bool ProcessedInputs::ShouldBrakeLeft()

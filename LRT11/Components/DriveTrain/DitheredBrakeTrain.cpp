@@ -165,8 +165,8 @@ DriveCommand DitheredBrakeTrain::Drive(float forwardInput, float turnInput)
         rightInput = Util::Sign<float>(rightInput) * 1.0;
     }
 
-    float leftSpeed = leftEncoder.GetRate() / DriveEncoders::MAX_ENCODER_RATE;
-    float rightSpeed = rightEncoder.GetRate() / DriveEncoders::MAX_ENCODER_RATE;
+    float leftSpeed = leftEncoder.GetRate() / DriveEncoders::ENCODER_RATE_HIGH_GEAR;
+    float rightSpeed = rightEncoder.GetRate() / DriveEncoders::ENCODER_RATE_HIGH_GEAR;
 
     drive.leftCommand = CalculateBrakeAndDutyCycle(leftInput, leftSpeed);
     drive.rightCommand = CalculateBrakeAndDutyCycle(rightInput, rightSpeed);

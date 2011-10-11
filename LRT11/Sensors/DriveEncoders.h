@@ -1,3 +1,4 @@
+
 #ifndef DRIVE_ENCODERS_H_
 #define DRIVE_ENCODERS_H_
 
@@ -32,7 +33,7 @@ public:
 #ifdef LRT_ROBOT_2011
     const static float PULSES_PER_REVOLUTION = 100.0; // pulses per wheel revolution [BA]
 
-    const static float MAX_ENCODER_RATE      = 1475.0;
+    const static float ENCODER_RATE_HIGH_GEAR      = 1475.0;
     const static float MAX_TURNING_RATE      = 2950.0;
 
     // 15 degrees short at SVR -KV 3/31/11
@@ -44,7 +45,7 @@ public:
 #else
     const static float PULSES_PER_REVOLUTION = 187.5; // pulses per wheel revolution [BA]
 
-    const static float MAX_ENCODER_RATE      = 1800;
+    const static float ENCODER_RATE_HIGH_GEAR      = 1800;
     const static float MAX_TURNING_RATE      = 448.3;
 
     const static float TICKS_PER_FULL_TURN   = 997.0; // measured 3/28/11 at room 612 -KV
@@ -59,10 +60,8 @@ public:
 
     void SetHighGear(bool isHighGear);
 
-    double GetForwardSpeed();
-    double GetNormalizedForwardSpeed();
-    double GetNormalizedForwardMotorSpeed();
-    double GetNormalizedLowGearForwardSpeed();
+    double RawForwardSpeed(); //not normalized
+    double NormalizedForwardMotorSpeed(); //considers gear
     double GetNormalizedLowGearTurningSpeed();
     double GetTurningSpeed();
     double GetNormalizedTurningSpeed();
@@ -90,6 +89,7 @@ public:
 
 
     double GetNormalizedMotorSpeed(LRTEncoder& encoder);
+    bool IsHighGear();
 
 #ifdef VIRTUAL
     VirtualLRTEncoder& GetLeftEncoder();

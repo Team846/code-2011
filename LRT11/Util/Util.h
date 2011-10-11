@@ -3,6 +3,7 @@
 
 #include "../General.h"
 #include <string>
+#include <math.h>
 #include <sstream>
 
 class Util

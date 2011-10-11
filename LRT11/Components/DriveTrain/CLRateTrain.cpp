@@ -1,4 +1,5 @@
 #include "CLRateTrain.h"
+#include <math.h>
 
 ClosedLoopRateDrivetrain::ClosedLoopRateDrivetrain()
 //    : DriveMethod(escLeft, escRight)
@@ -53,23 +54,28 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
 
     float pGainTurn = highGear ? pGainTurnHighGear : pGainTurnLowGear;
     float pGainFwd = highGear ? pGainFwdHighGear : pGainFwdLowGear;
+    
+//    AsynchronousPrinter::Printf("gain %.3f\n", pGainTurn);
 
     float turningRate = highGear ? encoders.GetNormalizedTurningSpeed()
             : encoders.GetNormalizedLowGearTurningSpeed();
 
     // eliminate spurrious measurements above mag |1|
     // values over mag |1| will cause the closed loop to slow down
+    SmartDashboard::Log(turningRate, "Normalized Turning Speed");
     turningRate = Util::Clamp<float>(turningRate, -1, 1);
 
-    // update the running sum witrah the error
+    // update the running sum with the error
     float turningError = rawTurn - turningRate;
     turningError = turnRunningError.UpdateSum(turningError);
 
     float turningCorrection = turningError * pGainTurn;
     float newTurn = rawTurn + turningCorrection;
 
-    float robotSpeed = encoders.GetNormalizedForwardMotorSpeed();
+    float robotSpeed = encoders.NormalizedForwardMotorSpeed();
     // don't want to limit the top speed of the drivetrain
+    SmartDashboard::Log(robotSpeed, "Normalized Speed");
+    SmartDashboard::Log(encoders.IsHighGear(), "Is High Gear");
     robotSpeed = Util::Clamp<float>(robotSpeed, -1.0, 1.0);
 
     float fwdError = rawFwd - robotSpeed;
@@ -77,6 +83,12 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
 
     float fwdCorrection = fwdError * pGainFwd;
     float newFwd = rawFwd + fwdCorrection;
+    
+    if (fabs(rawFwd) < 1e-3 && fabs(robotSpeed) < 0.05)
+    {
+    	newFwd = 0.0;
+    }
+    
 
 #ifdef USE_DASHBOARD
 //    SmartDashboard::Log(turningRate, "Turning Rate");

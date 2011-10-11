@@ -66,8 +66,7 @@ void ModifiedDriveTrain::Output()
     closedRateTrain->SetClosedLoopEnabled(action.driveTrain->rate.usingClosedLoop);
 
 //    closedRateTrain->SetClosedLoopEnabled(false);
-//    SmartDashboard::Log(driveEncoders.GetNormalizedForwardMotorSpeed(), "Normalized Speed");
-//    SmartDashboard::Log(driveEncoders.GetNormalizedTurningMotorSpeed(), "Normalized Turning Speed");
+
 
     // calculate left duty cycle, right duty cycle, left brake, and
     // right brake based off of joystick inputs and mode
@@ -127,7 +126,7 @@ void ModifiedDriveTrain::Output()
 
 //    AsynchronousPrinter::Printf("sp:%.2f\n", driveEncoders.GetNormalizedRightMotorSpeed());
 
-    AsynchronousPrinter::Printf("R: %.3f\n",driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetRightEncoder()));
+//    AsynchronousPrinter::Printf("R: %.3f\n",driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetRightEncoder()));
     
     if(0 && synchronizedCyclesLeft > 20)   //disabled for now; -dg
     {
@@ -141,12 +140,12 @@ void ModifiedDriveTrain::Output()
     }
     else if(synchronizedCyclesLeft > 0)
     {
-        drive.rightCommand.dutyCycle = driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetRightEncoder());
+
+    	drive.rightCommand.dutyCycle = driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetRightEncoder());
         drive.rightCommand.dutyCycle = GetSynchronizedSpeed(drive.rightCommand.dutyCycle ); //limits to not less than 10%
         
         drive.leftCommand.dutyCycle  = driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetLeftEncoder());
         drive.leftCommand.dutyCycle = GetSynchronizedSpeed(drive.leftCommand.dutyCycle );
-//    	AsynchronousPrinter::Printf("R: %.3f\n", drive.rightCommand.dutyCycle);
 //       drive.leftCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedLeftMotorSpeed());
         drive.rightCommand.dutyCycle *= 1.0;  //reduce power, since the motors are unloaded.
         drive.leftCommand.dutyCycle *= 1.0;
@@ -164,14 +163,15 @@ void ModifiedDriveTrain::Output()
         leftESC->SetBrake(0);
         rightESC->SetBrake(0);
     }
-    else
+    else //Handle normal braking
     {
-        //Handle normal braking
-
         // leftBrakeDC and rightBrakeDC must be converted from a percent to a
         // value in range [1,8]; 1 means no braking while 8 means max braking
-        leftESC->SetBrake((int)(drive.leftCommand.brakingDutyCycle * 8));
-        rightESC->SetBrake((int)(drive.rightCommand.brakingDutyCycle * 8));
+//        leftESC->SetBrake((int)(drive.leftCommand.brakingDutyCycle * 8));
+//        rightESC->SetBrake((int)(drive.rightCommand.brakingDutyCycle * 8));`
+#warning Brakes turned off 
+    	leftESC->SetBrake(0);
+        rightESC->SetBrake(0);
     }   //end of normal braking
 
     // apply brakes only has an effect if SetBrake is called with a

@@ -33,26 +33,19 @@ DriveEncoders::DriveEncoders()
 DriveEncoders::~DriveEncoders() {}
 
 
-double DriveEncoders::GetForwardSpeed()
+double DriveEncoders::RawForwardSpeed()
 {
     return (encoderLeft.GetRate() + encoderRight.GetRate()) / 2;
 }
 
-//removed the clamping -BA, -DG 4/20/11
-double DriveEncoders::GetNormalizedForwardSpeed()
+double DriveEncoders::NormalizedForwardMotorSpeed()
 {
-    return GetForwardSpeed() / MAX_ENCODER_RATE;
-}
+	double forwardSpeed = RawForwardSpeed() / ENCODER_RATE_HIGH_GEAR;
 
-double DriveEncoders::GetNormalizedLowGearForwardSpeed()
-{
-    return GetNormalizedForwardSpeed() * LOW_GEAR_MULTIPLIER;
-}
-
-double DriveEncoders::GetNormalizedForwardMotorSpeed()
-{
-    return isHighGear ? GetNormalizedForwardSpeed() :
-            GetNormalizedLowGearForwardSpeed();
+	if (!isHighGear)
+		forwardSpeed *= LOW_GEAR_MULTIPLIER;
+	
+	return forwardSpeed;
 }
 
 /***************** Turning Functions ***************************/
@@ -116,7 +109,7 @@ double DriveEncoders::GetNormalizedLeftOppositeGearMotorSpeed()
 {
     return Util::Clamp<double>(
             encoderLeft.GetRate() /
-            (!isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
+            (!isHighGear ? ENCODER_RATE_HIGH_GEAR : (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER))
             , -1.0, 1.0);
 }
 
@@ -128,24 +121,29 @@ double DriveEncoders::GetRightSpeed()
 double DriveEncoders::GetNormalizedMotorSpeed(LRTEncoder& encoder)
 {
     return encoder.GetRate() /
-            (isHighGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
+            (isHighGear ? ENCODER_RATE_HIGH_GEAR : (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER));
 }
 
 double DriveEncoders::GetNormalizedOpposingGearMotorSpeed(LRTEncoder& encoder)
 {
     return encoder.GetRate() /
-            (isHighGear ? (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER) : MAX_ENCODER_RATE );
+            (isHighGear ? (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER) : ENCODER_RATE_HIGH_GEAR );
 }
 
 double DriveEncoders::GetNormalizedRightOppositeGearMotorSpeed()
 {
     return encoderRight.GetRate() /
-            (isHighGear ? (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER) : MAX_ENCODER_RATE );
+            (isHighGear ? (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER) : ENCODER_RATE_HIGH_GEAR );
 }
 
 void DriveEncoders::SetHighGear(bool isHighGear)
 {
     this->isHighGear = isHighGear;
+}
+
+bool DriveEncoders::IsHighGear()
+{
+	return isHighGear;
 }
 
 #ifdef VIRTUAL

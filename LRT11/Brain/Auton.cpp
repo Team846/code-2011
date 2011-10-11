@@ -172,13 +172,13 @@ void Brain::EncoderAuton()
         action.driveTrain->rate.rawTurn = 0.0;
 
         // Wait until robot has accelerated
-        if(driveEncoders.GetNormalizedLowGearForwardSpeed() > 0.1)
+        if(driveEncoders.NormalizedForwardMotorSpeed() > 0.1)
             timer = 51; // bypass the timer below
 
         // advance state when stalled
         // or after a timeout for testing in pits
         if((++timer > 50 &&
-                driveEncoders.GetNormalizedLowGearForwardSpeed() < 0.05) || ++timeout > 200)
+                driveEncoders.NormalizedForwardMotorSpeed() < 0.05) || ++timeout > 200)
         {
             action.driveTrain->rate.usingClosedLoop = true;
             action.driveTrain->rate.rawForward = 0.0;
