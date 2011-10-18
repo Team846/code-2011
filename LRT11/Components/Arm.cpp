@@ -50,12 +50,16 @@ void Arm::Configure()
 
     midPositionDeadband = config.Get<float>(configSection, "midPositionDeadband", 10);
 
-    powerUp = config.Get<float>(configSection, "powerUp", 0.30);
+    maxPowerUp    = config.Get<float>(configSection, "maxPowerUp", 0.30);
     powerRetainUp = config.Get<float>(configSection, "powerRetainUp", 0.10);
-    powerDown = config.Get<float>(configSection, "powerDown", -0.15);
+    powerDown     = config.Get<float>(configSection, "powerDown", -0.15);
 
-    midPowerUp = config.Get<float>(configSection, "midPowerUp", 0.2);
-    midPowerDown = config.Get<float>(configSection, "midPowerDown", -0.15);
+    midPowerUp    = config.Get<float>(configSection, "midPowerUp", 0.2);
+    midPowerDown  = config.Get<float>(configSection, "midPowerDown", -0.15);
+    
+    pGainDown 	  = config.Get<float>(configSection, "pGainDown", 0.0015); 
+    pGainUp	      = config.Get<float>(configSection, "pGainUp", 0.003); 
+    pGainMid	  = config.Get<float>(configSection, "pGainMid", 0.01);
 
     timeoutCycles = (int)(config.Get<int>(configSection, "timeoutMs", 1500) * 1.0 / 1000.0 * 50.0 / 1.0);
 }
@@ -108,10 +112,12 @@ void Arm::Output()
             // will be maintained
             cycleCount = 100;
         }
-        else
+        else //we have not yet hit the setpoint
         {
             action.arm->completion_status = ACTION::IN_PROGRESS;
-            armEsc->SetDutyCycle(powerUp);
+		    float error = maxPosition - potValue;
+            
+            armEsc->SetDutyCycle(Util::Max<float>(Util::Min<float>(maxPowerUp*1.5, error*pGainUp), 0.15));
 
             action.roller->state = ACTION::ROLLER::SUCKING;
             action.roller->maxSuckPower = 0.3; // lower duty cycle
@@ -147,14 +153,15 @@ void Arm::Output()
         else
         {
             action.arm->completion_status = ACTION::IN_PROGRESS;
-            armEsc->SetDutyCycle(powerDown);
+            float error = minPosition - potValue;
+            armEsc->SetDutyCycle(Util::Max<float>(powerDown, error*pGainDown));
+//            AsynchronousPrinter::Printf("setpoint %.3f\n",Util::Max<float>(powerDown, error*0.0015));
         }
         break;
 
     case ACTION::ARM_::PRESET_MIDDLE:
         {
         	action.arm->completion_status = ACTION::IN_PROGRESS;
-	    	float pGainMid = 0.01;
 	    	float error = midPosition - potValue;
 	    	if (fabs(error) > midPositionDeadband) 
 	        	error -= midPositionDeadband * Util::Sign<float>(error);
@@ -175,7 +182,7 @@ void Arm::Output()
         
     case ACTION::ARM_::MANUAL_UP:
         if(potValue < maxPosition)
-            armEsc->SetDutyCycle(powerUp);
+            armEsc->SetDutyCycle(maxPowerUp);
         else
             armEsc->SetDutyCycle(0.0);
 

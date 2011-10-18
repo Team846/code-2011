@@ -27,8 +27,9 @@ private:
     int oldState;
 
     float maxPosition, minPosition, midPosition, midPositionDeadband;
-    float powerUp, powerRetainUp, powerDown, midPGain;
+    float maxPowerUp, powerRetainUp, powerDown, midPGain;
     float midPowerUp, midPowerDown;
+    float pGainDown, pGainUp, pGainMid;
 
     int timeoutCycles;
     int cycleCount;

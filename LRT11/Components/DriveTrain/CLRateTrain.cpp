@@ -67,7 +67,12 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
 
     // update the running sum with the error
     float turningError = rawTurn - turningRate;
-    turningError = turnRunningError.UpdateSum(turningError);
+    
+    if (fabs(rawTurn) < 0.05) //if the joystick is not near zero switch off the integral.
+    	turningError = turnRunningError.UpdateSum(turningError);
+    else
+    	turnRunningError.Clear();
+    
 
     float turningCorrection = turningError * pGainTurn;
     float newTurn = rawTurn + turningCorrection;
@@ -79,7 +84,11 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
     robotSpeed = Util::Clamp<float>(robotSpeed, -1.0, 1.0);
 
     float fwdError = rawFwd - robotSpeed;
-    fwdError = fwdRunningError.UpdateSum(fwdError);
+    
+    if (fabs(rawFwd ) < 0.05) //if the joystick is not near zero switch off the integral.
+    	fwdError = fwdRunningError.UpdateSum(fwdError);
+    else
+    	fwdRunningError.Clear();
 
     float fwdCorrection = fwdError * pGainFwd;
     float newFwd = rawFwd + fwdCorrection;

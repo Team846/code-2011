@@ -9,12 +9,17 @@ public:
     {
 
     }
-
+    
     float UpdateSum(float x)
     {
         runningSum *= decayConstant;
         runningSum += x;
-        return runningSum * (1 - decayConstant);
+    	return runningSum * (1 - decayConstant);
+    }
+    
+    void Clear()
+    {
+    	runningSum = 0;
     }
 
 private:
