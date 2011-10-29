@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$class_proxied_c_a_n_jaguar.html" title="ProxiedCANJaguar" alt="" coords="5,84,136,111"/>
-<area shape="rect" id="node4" href="$class_l_r_t_c_a_n_jaguar.html" title="LRTCANJaguar" alt="" coords="15,5,125,32"/>
-<area shape="rect" id="node7" href="$class_c_a_n_jaguar_brake.html" title="CANJaguarBrake" alt="" coords="263,84,384,111"/>
-<area shape="rect" id="node9" href="$class_brake.html" title="Brake" alt="" coords="296,5,352,32"/>
-<area shape="rect" id="node11" href="$class_configurable.html" title="The base class for all classes that read values from the configuration system." alt="" coords="409,84,503,111"/>
-</map>

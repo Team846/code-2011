@@ -1,1 +1,0 @@
-ftp -n 10.8.46.2 -s:upload.txt

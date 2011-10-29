@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_l_r_t_c_a_n_jaguar.html#a62df7086ec827502bba1f4ee2c34742c" title="LRTCANJaguar::DisableControl" alt="" coords="232,31,435,57"/>
-<area shape="rect" id="node5" href="$class_l_r_t_c_a_n_jaguar.html#aed313d05f75459cc5af69f0dd03beaa4" title="LRTCANJaguar::setTransaction" alt="" coords="483,31,685,57"/>
-<area shape="rect" id="node7" href="$class_l_r_t_c_a_n_jaguar.html#aa9bab34297080b9e269f39a0ed0c59ef" title="LRTCANJaguar::receiveMessage" alt="" coords="733,5,944,32"/>
-<area shape="rect" id="node9" href="$class_l_r_t_c_a_n_jaguar.html#aa8fb882c8c9e0a11b77841c1fc77ebce" title="LRTCANJaguar::sendMessage" alt="" coords="739,56,938,83"/>
-</map>
