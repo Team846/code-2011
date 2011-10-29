@@ -1,0 +1,1488 @@
+\hypertarget{class_l_r_t_c_a_n_jaguar}{
+\section{\-L\-R\-T\-C\-A\-N\-Jaguar \-Class \-Reference}
+\label{class_l_r_t_c_a_n_jaguar}\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+}
+
+
+{\ttfamily \#include $<$\-L\-R\-T\-C\-A\-N\-Jaguar.\-h$>$}
+
+
+
+\-Inheritance diagram for \-L\-R\-T\-C\-A\-N\-Jaguar\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=178pt]{class_l_r_t_c_a_n_jaguar__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries \-Control\-Mode} \{ \*
+{\bfseries k\-Percent\-Vbus}, 
+{\bfseries k\-Current}, 
+{\bfseries k\-Speed}, 
+{\bfseries k\-Position}, 
+\*
+{\bfseries k\-Voltage}
+ \}
+\item 
+enum {\bfseries \-Faults} \{ {\bfseries k\-Current\-Fault} =  1, 
+{\bfseries k\-Temperature\-Fault} =  2, 
+{\bfseries k\-Bus\-Voltage\-Fault} =  4, 
+{\bfseries k\-Gate\-Driver\-Fault} =  8
+ \}
+\item 
+enum {\bfseries \-Limits} \{ {\bfseries k\-Forward\-Limit} =  1, 
+{\bfseries k\-Reverse\-Limit} =  2
+ \}
+\item 
+enum {\bfseries \-Position\-Reference} \{ {\bfseries k\-Pos\-Ref\-\_\-\-Quad\-Encoder} =  0, 
+{\bfseries k\-Pos\-Ref\-\_\-\-Potentiometer} =  1, 
+{\bfseries k\-Pos\-Ref\-\_\-\-None} =  0x\-F\-F
+ \}
+\item 
+enum {\bfseries \-Speed\-Reference} \{ {\bfseries k\-Speed\-Ref\-\_\-\-Encoder} =  0, 
+{\bfseries k\-Speed\-Ref\-\_\-\-Inv\-Encoder} =  2, 
+{\bfseries k\-Speed\-Ref\-\_\-\-Quad\-Encoder} =  3, 
+{\bfseries k\-Speed\-Ref\-\_\-\-None} =  0x\-F\-F
+ \}
+\item 
+enum {\bfseries \-Neutral\-Mode} \{ {\bfseries k\-Neutral\-Mode\-\_\-\-Jumper} =  0, 
+{\bfseries k\-Neutral\-Mode\-\_\-\-Brake} =  1, 
+{\bfseries k\-Neutral\-Mode\-\_\-\-Coast} =  2
+ \}
+\item 
+enum {\bfseries \-Limit\-Mode} \{ {\bfseries k\-Limit\-Mode\-\_\-\-Switch\-Inputs\-Only} =  0, 
+{\bfseries k\-Limit\-Mode\-\_\-\-Soft\-Position\-Limits} =  1
+ \}
+\end{DoxyCompactItemize}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_l_r_t_c_a_n_jaguar_a12b2f40b918492e3cbdeddc658e70047}{\-L\-R\-T\-C\-A\-N\-Jaguar} (\-U\-I\-N\-T8 device\-Number, \-Control\-Mode control\-Mode=k\-Percent\-Vbus)
+\item 
+virtual float \hyperlink{class_l_r_t_c_a_n_jaguar_adbff221c0f9c7486fbd88a894a4ea388}{\-Get} ()
+\item 
+virtual void \hyperlink{class_l_r_t_c_a_n_jaguar_a28a3c74d34e8997fa59a82960cf97e2d}{\-Set} (float value, \-U\-I\-N\-T8 sync\-Group=0)
+\item 
+virtual void \hyperlink{class_l_r_t_c_a_n_jaguar_a76ebe3546f5d74d2bf223ff7773b2022}{\-Disable} ()
+\item 
+virtual void \hyperlink{class_l_r_t_c_a_n_jaguar_ae3439d6c1889e682e5264f0885535b72}{\-P\-I\-D\-Write} (float output)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a51d04b4fca05ee687493989f3f6eb055}{\-Set\-Speed\-Reference} (\-Speed\-Reference reference)
+\item 
+\-Speed\-Reference \hyperlink{class_l_r_t_c_a_n_jaguar_aa241f31f3237786a6e95c6bd4c83e79f}{\-Get\-Speed\-Reference} (void)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a8fa377ad73a5bee7f6771fab4bb0116f}{\-Set\-Position\-Reference} (\-Position\-Reference reference)
+\item 
+\-Position\-Reference \hyperlink{class_l_r_t_c_a_n_jaguar_a2b3818a7988487892ef85c7fe9e8d9dc}{\-Get\-Position\-Reference} (void)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_ad03505bc4d67dc19cc77b90560d8e22e}{\-Set\-P\-I\-D} (double p, double i, double d)
+\item 
+double \hyperlink{class_l_r_t_c_a_n_jaguar_a2953bd120c5d818e52308f654c4aa3e1}{\-Get\-P} ()
+\item 
+double \hyperlink{class_l_r_t_c_a_n_jaguar_acc42ca55def0c9271b8753ca7d9e5334}{\-Get\-I} ()
+\item 
+double \hyperlink{class_l_r_t_c_a_n_jaguar_ac09f09fc4e99035db3c821ad00cac1db}{\-Get\-D} ()
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_accaa0c3284b3d50ed8113eb3055fa289}{\-Enable\-Control} (double encoder\-Initial\-Position=0.\-0)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a62df7086ec827502bba1f4ee2c34742c}{\-Disable\-Control} ()
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a420a3f09a4286a4e153a69b10f8517ad}{\-Change\-Control\-Mode} (\-Control\-Mode control\-Mode)
+\item 
+\-Control\-Mode \hyperlink{class_l_r_t_c_a_n_jaguar_a71949e1621b88599b6bd15289a0034c6}{\-Get\-Control\-Mode} ()
+\item 
+float \hyperlink{class_l_r_t_c_a_n_jaguar_a13d4019a8b813a14835434fafacc3f0d}{\-Get\-Bus\-Voltage} ()
+\item 
+float \hyperlink{class_l_r_t_c_a_n_jaguar_a54e2f48af73e76f07586520a5b79492e}{\-Get\-Output\-Voltage} ()
+\item 
+float \hyperlink{class_l_r_t_c_a_n_jaguar_a3a76dbf05064c7e2e3a0dd11fcc34dbe}{\-Get\-Output\-Current} ()
+\item 
+float \hyperlink{class_l_r_t_c_a_n_jaguar_afadcb4c87a87964c87862738deb7a41b}{\-Get\-Temperature} ()
+\item 
+double \hyperlink{class_l_r_t_c_a_n_jaguar_aed8795668927fe8039f58a8c51ef3b61}{\-Get\-Position} ()
+\item 
+double \hyperlink{class_l_r_t_c_a_n_jaguar_a8502c320c570bfc34b8e9b7c56f61a03}{\-Get\-Speed} ()
+\item 
+bool \hyperlink{class_l_r_t_c_a_n_jaguar_a31a767f645cd0d6abc2b0e2f0fea6e71}{\-Get\-Forward\-Limit\-O\-K} ()
+\item 
+bool \hyperlink{class_l_r_t_c_a_n_jaguar_aa1f4b0d8395fce90d26b6d2e74067bf9}{\-Get\-Reverse\-Limit\-O\-K} ()
+\item 
+\-U\-I\-N\-T16 \hyperlink{class_l_r_t_c_a_n_jaguar_a97afb0fc0d6a06a063f98cad06db678a}{\-Get\-Faults} ()
+\item 
+bool \hyperlink{class_l_r_t_c_a_n_jaguar_a25945193e053a1fedcc08d09ba9ee281}{\-Get\-Power\-Cycled} ()
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_abce26cf7c581a969b5270aca4e8faca2}{\-Set\-Voltage\-Ramp\-Rate} (double ramp\-Rate)
+\item 
+virtual \-U\-I\-N\-T32 \hyperlink{class_l_r_t_c_a_n_jaguar_aa1c7172289e7fce91d6b19462ab0f665}{\-Get\-Firmware\-Version} ()
+\item 
+\-U\-I\-N\-T8 \hyperlink{class_l_r_t_c_a_n_jaguar_a55730d4ef7cd2000c91060119a9aff22}{\-Get\-Hardware\-Version} ()
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a9c472bcd0668a8d72c34b49fd766fa55}{\-Config\-Neutral\-Mode} (\-Neutral\-Mode mode)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_aa95167cfd586ead9991e4a58093a80df}{\-Config\-Encoder\-Codes\-Per\-Rev} (\-U\-I\-N\-T16 codes\-Per\-Rev)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_ad156de626965a5cb1010f7739e6be61c}{\-Config\-Potentiometer\-Turns} (\-U\-I\-N\-T16 turns)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_aa728b91585e77a6fd35de143410ceacb}{\-Config\-Soft\-Position\-Limits} (double forward\-Limit\-Position, double reverse\-Limit\-Position)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a9ae520bb6946d9893975e7178ce0179b}{\-Disable\-Soft\-Position\-Limits} ()
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a7ac8f3ab7651bee6ac2e0f4c72dbcbaa}{\-Config\-Max\-Output\-Voltage} (double voltage)
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_afcdf4cbbe499bad80480299e14cc85fb}{\-Config\-Fault\-Time} (float fault\-Time)
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_ae385e0e67ece23eaf7602f1099a717fc}{
+void {\bfseries \-Set\-Expiration} (float timeout)}
+\label{class_l_r_t_c_a_n_jaguar_ae385e0e67ece23eaf7602f1099a717fc}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_af17de9f0015fb4c6963ebd2d3f86e0ad}{
+float {\bfseries \-Get\-Expiration} ()}
+\label{class_l_r_t_c_a_n_jaguar_af17de9f0015fb4c6963ebd2d3f86e0ad}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa8b4231515de25c15aaf54999da61df2}{
+bool {\bfseries \-Is\-Alive} ()}
+\label{class_l_r_t_c_a_n_jaguar_aa8b4231515de25c15aaf54999da61df2}
+
+\item 
+void \hyperlink{class_l_r_t_c_a_n_jaguar_a520a2fd72b8813e0765a123c1efc4c22}{\-Stop\-Motor} ()
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a4c0c6bd1119cf239071d3af00cc6a1e7}{
+bool {\bfseries \-Is\-Safety\-Enabled} ()}
+\label{class_l_r_t_c_a_n_jaguar_a4c0c6bd1119cf239071d3af00cc6a1e7}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a0df161342447735329123368e29d1ac8}{
+void {\bfseries \-Set\-Safety\-Enabled} (bool enabled)}
+\label{class_l_r_t_c_a_n_jaguar_a0df161342447735329123368e29d1ac8}
+
+\item 
+\-I\-N\-T32 \hyperlink{class_l_r_t_c_a_n_jaguar_aee5af81b66544bf73f94e50b8ce0c48f}{\-Get\-Status} ()
+\item 
+bool \hyperlink{class_l_r_t_c_a_n_jaguar_a8d2fcf5c949efeb916b012eeab35e099}{\-Status\-O\-K} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Static \-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_l_r_t_c_a_n_jaguar_acd27d3ef0266402cec9fe9b6d5999626}{\-Update\-Sync\-Group} (\-U\-I\-N\-T8 sync\-Group)
+\end{DoxyCompactItemize}
+\subsection*{\-Static \-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_aba356384ece87f80a237c24f93e065b8}{
+static const \-I\-N\-T32 {\bfseries k\-Controller\-Rate} = 1000}
+\label{class_l_r_t_c_a_n_jaguar_aba356384ece87f80a237c24f93e065b8}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_aba33c3ade66911fc08c33e0c6726570a}{
+static const double {\bfseries k\-Approx\-Bus\-Voltage} = 12.\-0}
+\label{class_l_r_t_c_a_n_jaguar_aba33c3ade66911fc08c33e0c6726570a}
+
+\end{DoxyCompactItemize}
+\subsection*{\-Protected \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a909efecae0b5afc309932f4c7a877aeb}{
+\-U\-I\-N\-T8 {\bfseries pack\-Percentage} (\-U\-I\-N\-T8 $\ast$buffer, double value)}
+\label{class_l_r_t_c_a_n_jaguar_a909efecae0b5afc309932f4c7a877aeb}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a812f09b796a779f7cd611ee7abc937d9}{
+\-U\-I\-N\-T8 {\bfseries pack\-F\-X\-P8\-\_\-8} (\-U\-I\-N\-T8 $\ast$buffer, double value)}
+\label{class_l_r_t_c_a_n_jaguar_a812f09b796a779f7cd611ee7abc937d9}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a3eb539cc57719e57458e50be8da5e27d}{
+\-U\-I\-N\-T8 {\bfseries pack\-F\-X\-P16\-\_\-16} (\-U\-I\-N\-T8 $\ast$buffer, double value)}
+\label{class_l_r_t_c_a_n_jaguar_a3eb539cc57719e57458e50be8da5e27d}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_af2512a80bfbf41ae8484bff2f8a32259}{
+\-U\-I\-N\-T8 {\bfseries pack\-I\-N\-T16} (\-U\-I\-N\-T8 $\ast$buffer, \-I\-N\-T16 value)}
+\label{class_l_r_t_c_a_n_jaguar_af2512a80bfbf41ae8484bff2f8a32259}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa96d27405894f2b054528d06c41562a3}{
+\-U\-I\-N\-T8 {\bfseries pack\-I\-N\-T32} (\-U\-I\-N\-T8 $\ast$buffer, \-I\-N\-T32 value)}
+\label{class_l_r_t_c_a_n_jaguar_aa96d27405894f2b054528d06c41562a3}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a079f35094879188bc62927b266f83e14}{
+double {\bfseries unpack\-Percentage} (\-U\-I\-N\-T8 $\ast$buffer)}
+\label{class_l_r_t_c_a_n_jaguar_a079f35094879188bc62927b266f83e14}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a439c73183db57d563513576c31f8b626}{
+double {\bfseries unpack\-F\-X\-P8\-\_\-8} (\-U\-I\-N\-T8 $\ast$buffer)}
+\label{class_l_r_t_c_a_n_jaguar_a439c73183db57d563513576c31f8b626}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_aea496aa1635749aad50e787d8181c12f}{
+double {\bfseries unpack\-F\-X\-P16\-\_\-16} (\-U\-I\-N\-T8 $\ast$buffer)}
+\label{class_l_r_t_c_a_n_jaguar_aea496aa1635749aad50e787d8181c12f}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a1739bd826bf714796239d8e305ec91cf}{
+\-I\-N\-T16 {\bfseries unpack\-I\-N\-T16} (\-U\-I\-N\-T8 $\ast$buffer)}
+\label{class_l_r_t_c_a_n_jaguar_a1739bd826bf714796239d8e305ec91cf}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a0a9e441ca1ed6096e5ed6a952dbf6b1e}{
+\-I\-N\-T32 {\bfseries unpack\-I\-N\-T32} (\-U\-I\-N\-T8 $\ast$buffer)}
+\label{class_l_r_t_c_a_n_jaguar_a0a9e441ca1ed6096e5ed6a952dbf6b1e}
+
+\item 
+virtual void \hyperlink{class_l_r_t_c_a_n_jaguar_aed313d05f75459cc5af69f0dd03beaa4}{set\-Transaction} (\-U\-I\-N\-T32 message\-I\-D, const \-U\-I\-N\-T8 $\ast$data, \-U\-I\-N\-T8 data\-Size)
+\item 
+virtual void \hyperlink{class_l_r_t_c_a_n_jaguar_a6717849e5854c537f4633503dd4d5a54}{get\-Transaction} (\-U\-I\-N\-T32 message\-I\-D, \-U\-I\-N\-T8 $\ast$data, \-U\-I\-N\-T8 $\ast$data\-Size)
+\end{DoxyCompactItemize}
+\subsection*{\-Static \-Protected \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \-I\-N\-T32 \hyperlink{class_l_r_t_c_a_n_jaguar_aa8fb882c8c9e0a11b77841c1fc77ebce}{send\-Message} (\-U\-I\-N\-T32 message\-I\-D, const \-U\-I\-N\-T8 $\ast$data, \-U\-I\-N\-T8 data\-Size)
+\item 
+static \-I\-N\-T32 \hyperlink{class_l_r_t_c_a_n_jaguar_aa9bab34297080b9e269f39a0ed0c59ef}{receive\-Message} (\-U\-I\-N\-T32 $\ast$message\-I\-D, \-U\-I\-N\-T8 $\ast$data, \-U\-I\-N\-T8 $\ast$data\-Size, float timeout=0.\-01)
+\end{DoxyCompactItemize}
+\subsection*{\-Protected \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_ade31101f436495618848a545efc0d03e}{
+\-U\-I\-N\-T8 {\bfseries m\-\_\-device\-Number}}
+\label{class_l_r_t_c_a_n_jaguar_ade31101f436495618848a545efc0d03e}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_af172ea4b9c50a30dff8392a88788747f}{
+\-Control\-Mode {\bfseries m\-\_\-control\-Mode}}
+\label{class_l_r_t_c_a_n_jaguar_af172ea4b9c50a30dff8392a88788747f}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a76a88e9de22fd5d90c49dcdfc2ca8766}{
+\-S\-E\-M\-\_\-\-I\-D {\bfseries m\-\_\-transaction\-Semaphore}}
+\label{class_l_r_t_c_a_n_jaguar_a76a88e9de22fd5d90c49dcdfc2ca8766}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_a301dfac2c55376e77303209b78ab1feb}{
+double {\bfseries m\-\_\-max\-Output\-Voltage}}
+\label{class_l_r_t_c_a_n_jaguar_a301dfac2c55376e77303209b78ab1feb}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_ac30146f410d3573240f49f3de26e9d6d}{
+\-Motor\-Safety\-Helper $\ast$ {\bfseries m\-\_\-safety\-Helper}}
+\label{class_l_r_t_c_a_n_jaguar_ac30146f410d3573240f49f3de26e9d6d}
+
+\item 
+\hypertarget{class_l_r_t_c_a_n_jaguar_ac6fd4860ed4324409fa023635bc889f4}{
+\-I\-N\-T32 {\bfseries m\-\_\-status}}
+\label{class_l_r_t_c_a_n_jaguar_ac6fd4860ed4324409fa023635bc889f4}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Luminary \-Micro \-Jaguar \-Speed \-Control 
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_l_r_t_c_a_n_jaguar_a12b2f40b918492e3cbdeddc658e70047}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-L\-R\-T\-C\-A\-N\-Jaguar}]{\setlength{\rightskip}{0pt plus 5cm}\-L\-R\-T\-C\-A\-N\-Jaguar\-::\-L\-R\-T\-C\-A\-N\-Jaguar (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T8}]{device\-Number, }
+\item[{\-Control\-Mode}]{control\-Mode = {\ttfamily k\-Percent\-Vbus}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}explicit\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_a12b2f40b918492e3cbdeddc658e70047}
+\-Constructor
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em device\-Number} & \-The the address of the \-Jaguar on the \-C\-A\-N bus. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_l_r_t_c_a_n_jaguar_a420a3f09a4286a4e153a69b10f8517ad}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Change\-Control\-Mode@{\-Change\-Control\-Mode}}
+\index{\-Change\-Control\-Mode@{\-Change\-Control\-Mode}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Change\-Control\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Change\-Control\-Mode (
+\begin{DoxyParamCaption}
+\item[{\-Control\-Mode}]{control\-Mode}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a420a3f09a4286a4e153a69b10f8517ad}
+\-Change the control mode of this \-Jaguar object.
+
+\-After changing modes, configure any \-P\-I\-D constants or other settings needed and then \hyperlink{class_l_r_t_c_a_n_jaguar_accaa0c3284b3d50ed8113eb3055fa289}{\-Enable\-Control()} to actually change the mode on the \-Jaguar.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em control\-Mode} & \-The new mode. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a420a3f09a4286a4e153a69b10f8517ad_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa95167cfd586ead9991e4a58093a80df}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Config\-Encoder\-Codes\-Per\-Rev@{\-Config\-Encoder\-Codes\-Per\-Rev}}
+\index{\-Config\-Encoder\-Codes\-Per\-Rev@{\-Config\-Encoder\-Codes\-Per\-Rev}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Config\-Encoder\-Codes\-Per\-Rev}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Config\-Encoder\-Codes\-Per\-Rev (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T16}]{codes\-Per\-Rev}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_aa95167cfd586ead9991e4a58093a80df}
+\-Configure how many codes per revolution are generated by your encoder.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em codes\-Per\-Rev} & \-The number of counts per revolution in 1\-X mode. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_aa95167cfd586ead9991e4a58093a80df_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_afcdf4cbbe499bad80480299e14cc85fb}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Config\-Fault\-Time@{\-Config\-Fault\-Time}}
+\index{\-Config\-Fault\-Time@{\-Config\-Fault\-Time}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Config\-Fault\-Time}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Config\-Fault\-Time (
+\begin{DoxyParamCaption}
+\item[{float}]{fault\-Time}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_afcdf4cbbe499bad80480299e14cc85fb}
+\-Configure how long the \-Jaguar waits in the case of a fault before resuming operation.
+
+\-Faults include over temerature, over current, and bus under voltage. \-The default is 3.\-0 seconds, but can be reduced to as low as 0.\-5 seconds.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em fault\-Time} & \-The time to wait before resuming operation, in seconds. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_afcdf4cbbe499bad80480299e14cc85fb_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a7ac8f3ab7651bee6ac2e0f4c72dbcbaa}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Config\-Max\-Output\-Voltage@{\-Config\-Max\-Output\-Voltage}}
+\index{\-Config\-Max\-Output\-Voltage@{\-Config\-Max\-Output\-Voltage}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Config\-Max\-Output\-Voltage}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Config\-Max\-Output\-Voltage (
+\begin{DoxyParamCaption}
+\item[{double}]{voltage}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a7ac8f3ab7651bee6ac2e0f4c72dbcbaa}
+\-Configure the maximum voltage that the \-Jaguar will ever output.
+
+\-This can be used to limit the maximum output voltage in all modes so that motors which cannot withstand full bus voltage can be used safely.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em voltage} & \-The maximum voltage output by the \-Jaguar. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a7ac8f3ab7651bee6ac2e0f4c72dbcbaa_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a9c472bcd0668a8d72c34b49fd766fa55}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Config\-Neutral\-Mode@{\-Config\-Neutral\-Mode}}
+\index{\-Config\-Neutral\-Mode@{\-Config\-Neutral\-Mode}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Config\-Neutral\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Config\-Neutral\-Mode (
+\begin{DoxyParamCaption}
+\item[{\-Neutral\-Mode}]{mode}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a9c472bcd0668a8d72c34b49fd766fa55}
+\-Configure what the controller does to the \-H-\/\-Bridge when neutral (not driving the output).
+
+\-This allows you to override the jumper configuration for brake or coast.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em mode} & \-Select to use the jumper setting or to override it to coast or brake. \\
+\hline
+\end{DoxyParams}
+
+
+\-Reimplemented in \hyperlink{class_proxied_c_a_n_jaguar_ad48392e718aa8b168b587d368a7f6e1b}{\-Proxied\-C\-A\-N\-Jaguar}.
+
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a9c472bcd0668a8d72c34b49fd766fa55_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_ad156de626965a5cb1010f7739e6be61c}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Config\-Potentiometer\-Turns@{\-Config\-Potentiometer\-Turns}}
+\index{\-Config\-Potentiometer\-Turns@{\-Config\-Potentiometer\-Turns}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Config\-Potentiometer\-Turns}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Config\-Potentiometer\-Turns (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T16}]{turns}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_ad156de626965a5cb1010f7739e6be61c}
+\-Configure the number of turns on the potentiometer.
+
+\-There is no special support for continuous turn potentiometers. \-Only integer numbers of turns are supported.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em turns} & \-The number of turns of the potentiometer \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_ad156de626965a5cb1010f7739e6be61c_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa728b91585e77a6fd35de143410ceacb}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Config\-Soft\-Position\-Limits@{\-Config\-Soft\-Position\-Limits}}
+\index{\-Config\-Soft\-Position\-Limits@{\-Config\-Soft\-Position\-Limits}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Config\-Soft\-Position\-Limits}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Config\-Soft\-Position\-Limits (
+\begin{DoxyParamCaption}
+\item[{double}]{forward\-Limit\-Position, }
+\item[{double}]{reverse\-Limit\-Position}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_aa728b91585e77a6fd35de143410ceacb}
+\-Configure \-Soft \-Position \-Limits when in \-Position \-Controller mode.
+
+\-When controlling position, you can add additional limits on top of the limit switch inputs that are based on the position feedback. \-If the position limit is reached or the switch is opened, that direction will be disabled.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em forward\-Limit\-Position} & \-The position that if exceeded will disable the forward direction. \\
+\hline
+{\em reverse\-Limit\-Position} & \-The position that if exceeded will disable the reverse direction. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_aa728b91585e77a6fd35de143410ceacb_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a76ebe3546f5d74d2bf223ff7773b2022}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Disable@{\-Disable}}
+\index{\-Disable@{\-Disable}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Disable}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Disable (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_a76ebe3546f5d74d2bf223ff7773b2022}
+\-Common interface for disabling a motor.
+
+\begin{DoxyRefDesc}{\-Deprecated}
+\item[\hyperlink{deprecated__deprecated000001}{\-Deprecated}]\-Call \-Disable\-Control instead. \end{DoxyRefDesc}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a76ebe3546f5d74d2bf223ff7773b2022_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a62df7086ec827502bba1f4ee2c34742c}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Disable\-Control@{\-Disable\-Control}}
+\index{\-Disable\-Control@{\-Disable\-Control}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Disable\-Control}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Disable\-Control (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a62df7086ec827502bba1f4ee2c34742c}
+\-Disable the closed loop controller.
+
+\-Stop driving the output based on the feedback. 
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a62df7086ec827502bba1f4ee2c34742c_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a9ae520bb6946d9893975e7178ce0179b}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Disable\-Soft\-Position\-Limits@{\-Disable\-Soft\-Position\-Limits}}
+\index{\-Disable\-Soft\-Position\-Limits@{\-Disable\-Soft\-Position\-Limits}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Disable\-Soft\-Position\-Limits}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Disable\-Soft\-Position\-Limits (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a9ae520bb6946d9893975e7178ce0179b}
+\-Disable \-Soft \-Position \-Limits if previously enabled.
+
+\-Soft \-Position \-Limits are disabled by default. 
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a9ae520bb6946d9893975e7178ce0179b_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_accaa0c3284b3d50ed8113eb3055fa289}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Enable\-Control@{\-Enable\-Control}}
+\index{\-Enable\-Control@{\-Enable\-Control}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Enable\-Control}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Enable\-Control (
+\begin{DoxyParamCaption}
+\item[{double}]{encoder\-Initial\-Position = {\ttfamily 0.0}}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_accaa0c3284b3d50ed8113eb3055fa289}
+\-Enable the closed loop controller.
+
+\-Start actually controlling the output based on the feedback. \-If starting a position controller with an encoder reference, use the encoder\-Initial\-Position parameter to initialize the encoder state.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em encoder\-Initial\-Position} & \-Encoder position to set if position with encoder reference. \-Ignored otherwise. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_accaa0c3284b3d50ed8113eb3055fa289_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_adbff221c0f9c7486fbd88a894a4ea388}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get@{\-Get}}
+\index{\-Get@{\-Get}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get}]{\setlength{\rightskip}{0pt plus 5cm}float \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_adbff221c0f9c7486fbd88a894a4ea388}
+\-Get the recently set output\-Value setpoint.
+
+\-The scale and the units depend on the mode the \-Jaguar is in. \-In \-Percent\-Vbus \-Mode, the output\-Value is from -\/1.\-0 to 1.\-0 (same as \-P\-W\-M \-Jaguar). \-In \-Voltage \-Mode, the output\-Value is in \-Volts. \-In \-Current \-Mode, the output\-Value is in \-Amps. \-In \-Speed \-Mode, the output\-Value is in \-Rotations/\-Minute. \-In \-Position \-Mode, the output\-Value is in \-Rotations.
+
+\begin{DoxyReturn}{\-Returns}
+\-The most recently set output\-Value setpoint. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_adbff221c0f9c7486fbd88a894a4ea388_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a13d4019a8b813a14835434fafacc3f0d}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Bus\-Voltage@{\-Get\-Bus\-Voltage}}
+\index{\-Get\-Bus\-Voltage@{\-Get\-Bus\-Voltage}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Bus\-Voltage}]{\setlength{\rightskip}{0pt plus 5cm}float \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Bus\-Voltage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a13d4019a8b813a14835434fafacc3f0d}
+\-Get the voltage at the battery input terminals of the \-Jaguar.
+
+\begin{DoxyReturn}{\-Returns}
+\-The bus voltage in \-Volts. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a13d4019a8b813a14835434fafacc3f0d_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a71949e1621b88599b6bd15289a0034c6}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Control\-Mode@{\-Get\-Control\-Mode}}
+\index{\-Get\-Control\-Mode@{\-Get\-Control\-Mode}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Control\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}\-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Control\-Mode \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Control\-Mode (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a71949e1621b88599b6bd15289a0034c6}
+\-Get the active control mode from the \-Jaguar.
+
+\-Ask the \-Jag what mode it is in.
+
+\begin{DoxyReturn}{\-Returns}
+\-Control\-Mode that the \-Jag is in. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a71949e1621b88599b6bd15289a0034c6_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_ac09f09fc4e99035db3c821ad00cac1db}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-D@{\-Get\-D}}
+\index{\-Get\-D@{\-Get\-D}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-D}]{\setlength{\rightskip}{0pt plus 5cm}double \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-D (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_ac09f09fc4e99035db3c821ad00cac1db}
+\-Get the \-Differential gain of the controller.
+
+\begin{DoxyReturn}{\-Returns}
+\-The differential gain. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_ac09f09fc4e99035db3c821ad00cac1db_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a97afb0fc0d6a06a063f98cad06db678a}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Faults@{\-Get\-Faults}}
+\index{\-Get\-Faults@{\-Get\-Faults}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Faults}]{\setlength{\rightskip}{0pt plus 5cm}\-U\-I\-N\-T16 \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Faults (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a97afb0fc0d6a06a063f98cad06db678a}
+\-Get the status of any faults the \-Jaguar has detected.
+
+\begin{DoxyReturn}{\-Returns}
+\-A bit-\/mask of faults defined by the \char`\"{}\-Faults\char`\"{} enum. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a97afb0fc0d6a06a063f98cad06db678a_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa1c7172289e7fce91d6b19462ab0f665}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Firmware\-Version@{\-Get\-Firmware\-Version}}
+\index{\-Get\-Firmware\-Version@{\-Get\-Firmware\-Version}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Firmware\-Version}]{\setlength{\rightskip}{0pt plus 5cm}\-U\-I\-N\-T32 \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Firmware\-Version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_aa1c7172289e7fce91d6b19462ab0f665}
+\-Get the version of the firmware running on the \-Jaguar.
+
+\begin{DoxyReturn}{\-Returns}
+\-The firmware version. 0 if the device did not respond. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_aa1c7172289e7fce91d6b19462ab0f665_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a31a767f645cd0d6abc2b0e2f0fea6e71}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Forward\-Limit\-O\-K@{\-Get\-Forward\-Limit\-O\-K}}
+\index{\-Get\-Forward\-Limit\-O\-K@{\-Get\-Forward\-Limit\-O\-K}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Forward\-Limit\-O\-K}]{\setlength{\rightskip}{0pt plus 5cm}bool \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Forward\-Limit\-O\-K (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a31a767f645cd0d6abc2b0e2f0fea6e71}
+\-Get the status of the forward limit switch.
+
+\begin{DoxyReturn}{\-Returns}
+\-The motor is allowed to turn in the forward direction when true. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a31a767f645cd0d6abc2b0e2f0fea6e71_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a55730d4ef7cd2000c91060119a9aff22}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Hardware\-Version@{\-Get\-Hardware\-Version}}
+\index{\-Get\-Hardware\-Version@{\-Get\-Hardware\-Version}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Hardware\-Version}]{\setlength{\rightskip}{0pt plus 5cm}\-U\-I\-N\-T8 \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Hardware\-Version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a55730d4ef7cd2000c91060119a9aff22}
+\-Get the version of the \-Jaguar hardware.
+
+\begin{DoxyReturn}{\-Returns}
+\-The hardware version. 1\-: \-Jaguar, 2\-: \-Black \-Jaguar 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a55730d4ef7cd2000c91060119a9aff22_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_acc42ca55def0c9271b8753ca7d9e5334}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-I@{\-Get\-I}}
+\index{\-Get\-I@{\-Get\-I}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-I}]{\setlength{\rightskip}{0pt plus 5cm}double \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-I (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_acc42ca55def0c9271b8753ca7d9e5334}
+\-Get the \-Intregral gain of the controller.
+
+\begin{DoxyReturn}{\-Returns}
+\-The integral gain. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_acc42ca55def0c9271b8753ca7d9e5334_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a3a76dbf05064c7e2e3a0dd11fcc34dbe}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Output\-Current@{\-Get\-Output\-Current}}
+\index{\-Get\-Output\-Current@{\-Get\-Output\-Current}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Output\-Current}]{\setlength{\rightskip}{0pt plus 5cm}float \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Output\-Current (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a3a76dbf05064c7e2e3a0dd11fcc34dbe}
+\-Get the current through the motor terminals of the \-Jaguar.
+
+\begin{DoxyReturn}{\-Returns}
+\-The output current in \-Amps. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a3a76dbf05064c7e2e3a0dd11fcc34dbe_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a54e2f48af73e76f07586520a5b79492e}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Output\-Voltage@{\-Get\-Output\-Voltage}}
+\index{\-Get\-Output\-Voltage@{\-Get\-Output\-Voltage}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Output\-Voltage}]{\setlength{\rightskip}{0pt plus 5cm}float \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Output\-Voltage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a54e2f48af73e76f07586520a5b79492e}
+\-Get the voltage being output from the motor terminals of the \-Jaguar.
+
+\begin{DoxyReturn}{\-Returns}
+\-The output voltage in \-Volts. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a54e2f48af73e76f07586520a5b79492e_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a2953bd120c5d818e52308f654c4aa3e1}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-P@{\-Get\-P}}
+\index{\-Get\-P@{\-Get\-P}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-P}]{\setlength{\rightskip}{0pt plus 5cm}double \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a2953bd120c5d818e52308f654c4aa3e1}
+\-Get the \-Proportional gain of the controller.
+
+\begin{DoxyReturn}{\-Returns}
+\-The proportional gain. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a2953bd120c5d818e52308f654c4aa3e1_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aed8795668927fe8039f58a8c51ef3b61}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Position@{\-Get\-Position}}
+\index{\-Get\-Position@{\-Get\-Position}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Position}]{\setlength{\rightskip}{0pt plus 5cm}double \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Position (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_aed8795668927fe8039f58a8c51ef3b61}
+\-Get the position of the encoder or potentiometer.
+
+\begin{DoxyReturn}{\-Returns}
+\-The position of the motor in rotations based on the configured feedback. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_aed8795668927fe8039f58a8c51ef3b61_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a2b3818a7988487892ef85c7fe9e8d9dc}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Position\-Reference@{\-Get\-Position\-Reference}}
+\index{\-Get\-Position\-Reference@{\-Get\-Position\-Reference}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Position\-Reference}]{\setlength{\rightskip}{0pt plus 5cm}\-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Position\-Reference \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Position\-Reference (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a2b3818a7988487892ef85c7fe9e8d9dc}
+\-Get the reference source device for position controller mode.
+
+\begin{DoxyReturn}{\-Returns}
+\-A \-Position\-Reference indicating the currently selected reference device for position controller mode. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a2b3818a7988487892ef85c7fe9e8d9dc_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a25945193e053a1fedcc08d09ba9ee281}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Power\-Cycled@{\-Get\-Power\-Cycled}}
+\index{\-Get\-Power\-Cycled@{\-Get\-Power\-Cycled}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Power\-Cycled}]{\setlength{\rightskip}{0pt plus 5cm}bool \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Power\-Cycled (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a25945193e053a1fedcc08d09ba9ee281}
+\-Check if the \-Jaguar's power has been cycled since this was last called.
+
+\-This should return true the first time called after a \-Jaguar power up, and false after that.
+
+\begin{DoxyReturn}{\-Returns}
+\-The \-Jaguar was power cycled since the last call to this function. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a25945193e053a1fedcc08d09ba9ee281_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa1f4b0d8395fce90d26b6d2e74067bf9}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Reverse\-Limit\-O\-K@{\-Get\-Reverse\-Limit\-O\-K}}
+\index{\-Get\-Reverse\-Limit\-O\-K@{\-Get\-Reverse\-Limit\-O\-K}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Reverse\-Limit\-O\-K}]{\setlength{\rightskip}{0pt plus 5cm}bool \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Reverse\-Limit\-O\-K (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_aa1f4b0d8395fce90d26b6d2e74067bf9}
+\-Get the status of the reverse limit switch.
+
+\begin{DoxyReturn}{\-Returns}
+\-The motor is allowed to turn in the reverse direction when true. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_aa1f4b0d8395fce90d26b6d2e74067bf9_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a8502c320c570bfc34b8e9b7c56f61a03}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Speed@{\-Get\-Speed}}
+\index{\-Get\-Speed@{\-Get\-Speed}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}double \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Speed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a8502c320c570bfc34b8e9b7c56f61a03}
+\-Get the speed of the encoder.
+
+\begin{DoxyReturn}{\-Returns}
+\-The speed of the motor in \-R\-P\-M based on the configured feedback. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a8502c320c570bfc34b8e9b7c56f61a03_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa241f31f3237786a6e95c6bd4c83e79f}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Speed\-Reference@{\-Get\-Speed\-Reference}}
+\index{\-Get\-Speed\-Reference@{\-Get\-Speed\-Reference}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Speed\-Reference}]{\setlength{\rightskip}{0pt plus 5cm}\-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Speed\-Reference \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Speed\-Reference (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_aa241f31f3237786a6e95c6bd4c83e79f}
+\-Get the reference source device for speed controller mode.
+
+\begin{DoxyReturn}{\-Returns}
+\-A \-Speed\-Reference indicating the currently selected reference device for speed controller mode. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_aa241f31f3237786a6e95c6bd4c83e79f_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aee5af81b66544bf73f94e50b8ce0c48f}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Status@{\-Get\-Status}}
+\index{\-Get\-Status@{\-Get\-Status}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Status}]{\setlength{\rightskip}{0pt plus 5cm}\-I\-N\-T32 \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Status (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_aee5af81b66544bf73f94e50b8ce0c48f}
+\-Get the returned status from the last transaction. \-A non-\/zero status indicates an error. \hypertarget{class_l_r_t_c_a_n_jaguar_afadcb4c87a87964c87862738deb7a41b}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Get\-Temperature@{\-Get\-Temperature}}
+\index{\-Get\-Temperature@{\-Get\-Temperature}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Get\-Temperature}]{\setlength{\rightskip}{0pt plus 5cm}float \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Get\-Temperature (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_afadcb4c87a87964c87862738deb7a41b}
+\-Get the internal temperature of the \-Jaguar.
+
+\begin{DoxyReturn}{\-Returns}
+\-The temperature of the \-Jaguar in degrees \-Celsius. 
+\end{DoxyReturn}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_afadcb4c87a87964c87862738deb7a41b_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a6717849e5854c537f4633503dd4d5a54}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!get\-Transaction@{get\-Transaction}}
+\index{get\-Transaction@{get\-Transaction}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{get\-Transaction}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::get\-Transaction (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T32}]{message\-I\-D, }
+\item[{\-U\-I\-N\-T8 $\ast$}]{data, }
+\item[{\-U\-I\-N\-T8 $\ast$}]{data\-Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected, virtual\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_a6717849e5854c537f4633503dd4d5a54}
+\-Execute a transaction with a \-Jaguar that gets some property.
+
+\-Jaguar always generates a message with the same message \-I\-D when replying.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em message\-I\-D} & \-The message\-I\-D to read from the \-C\-A\-N bus (device number is added internally) \\
+\hline
+{\em data} & \-The up to 8 bytes of data that was received with the message \\
+\hline
+{\em data\-Size} & \-Indicates how much data was received \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a6717849e5854c537f4633503dd4d5a54_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_ae3439d6c1889e682e5264f0885535b72}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-P\-I\-D\-Write@{\-P\-I\-D\-Write}}
+\index{\-P\-I\-D\-Write@{\-P\-I\-D\-Write}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-P\-I\-D\-Write}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-P\-I\-D\-Write (
+\begin{DoxyParamCaption}
+\item[{float}]{output}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_ae3439d6c1889e682e5264f0885535b72}
+\-Write out the \-P\-I\-D value as seen in the \-P\-I\-D\-Output base object.
+
+\begin{DoxyRefDesc}{\-Deprecated}
+\item[\hyperlink{deprecated__deprecated000002}{\-Deprecated}]\-Call \-Set instead.\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em output} & \-Write out the \-Percent\-Vbus value as was computed by the \-P\-I\-D\-Controller \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_ae3439d6c1889e682e5264f0885535b72_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa9bab34297080b9e269f39a0ed0c59ef}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!receive\-Message@{receive\-Message}}
+\index{receive\-Message@{receive\-Message}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{receive\-Message}]{\setlength{\rightskip}{0pt plus 5cm}\-I\-N\-T32 \-L\-R\-T\-C\-A\-N\-Jaguar\-::receive\-Message (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T32 $\ast$}]{message\-I\-D, }
+\item[{\-U\-I\-N\-T8 $\ast$}]{data, }
+\item[{\-U\-I\-N\-T8 $\ast$}]{data\-Size, }
+\item[{float}]{timeout = {\ttfamily 0.01}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static, protected\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_aa9bab34297080b9e269f39a0ed0c59ef}
+\-Receive a message from the \-C\-A\-N bus through the \-C\-A\-N driver in \-F\-R\-C\-\_\-\-Network\-Communication
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em message\-I\-D} & \-The message\-I\-D to read from the \-C\-A\-N bus \\
+\hline
+{\em data} & \-The up to 8 bytes of data that was received with the message \\
+\hline
+{\em data\-Size} & \-Indicates how much data was received \\
+\hline
+{\em timeout} & \-Specify how long to wait for a message (in seconds) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Status of receive call 
+\end{DoxyReturn}
+\hypertarget{class_l_r_t_c_a_n_jaguar_aa8fb882c8c9e0a11b77841c1fc77ebce}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!send\-Message@{send\-Message}}
+\index{send\-Message@{send\-Message}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{send\-Message}]{\setlength{\rightskip}{0pt plus 5cm}\-I\-N\-T32 \-L\-R\-T\-C\-A\-N\-Jaguar\-::send\-Message (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T32}]{message\-I\-D, }
+\item[{const \-U\-I\-N\-T8 $\ast$}]{data, }
+\item[{\-U\-I\-N\-T8}]{data\-Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static, protected\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_aa8fb882c8c9e0a11b77841c1fc77ebce}
+\-Send a message on the \-C\-A\-N bus through the \-C\-A\-N driver in \-F\-R\-C\-\_\-\-Network\-Communication
+
+\-Trusted messages require a 2-\/byte token at the beginning of the data payload. \-If the message being sent is trusted, make space for the token.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em message\-I\-D} & \-The message\-I\-D to be used on the \-C\-A\-N bus \\
+\hline
+{\em data} & \-The up to 8 bytes of data to be sent with the message \\
+\hline
+{\em data\-Size} & \-Specify how much of the data in \char`\"{}data\char`\"{} to send \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Status of send call 
+\end{DoxyReturn}
+\hypertarget{class_l_r_t_c_a_n_jaguar_a28a3c74d34e8997fa59a82960cf97e2d}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Set@{\-Set}}
+\index{\-Set@{\-Set}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Set}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Set (
+\begin{DoxyParamCaption}
+\item[{float}]{output\-Value, }
+\item[{\-U\-I\-N\-T8}]{sync\-Group = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_a28a3c74d34e8997fa59a82960cf97e2d}
+\-Set the output set-\/point value.
+
+\-The scale and the units depend on the mode the \-Jaguar is in. \-In \-Percent\-Vbus \-Mode, the output\-Value is from -\/1.\-0 to 1.\-0 (same as \-P\-W\-M \-Jaguar). \-In \-Voltage \-Mode, the output\-Value is in \-Volts. \-In \-Current \-Mode, the output\-Value is in \-Amps. \-In \-Speed \-Mode, the output\-Value is in \-Rotations/\-Minute. \-In \-Position \-Mode, the output\-Value is in \-Rotations.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em output\-Value} & \-The set-\/point to sent to the motor controller. \\
+\hline
+{\em sync\-Group} & \-The update group to add this \hyperlink{class_l_r_t_c_a_n_jaguar_a28a3c74d34e8997fa59a82960cf97e2d}{\-Set()} to, pending \hyperlink{class_l_r_t_c_a_n_jaguar_acd27d3ef0266402cec9fe9b6d5999626}{\-Update\-Sync\-Group()}. \-If 0, update immediately. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a28a3c74d34e8997fa59a82960cf97e2d_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_ad03505bc4d67dc19cc77b90560d8e22e}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Set\-P\-I\-D@{\-Set\-P\-I\-D}}
+\index{\-Set\-P\-I\-D@{\-Set\-P\-I\-D}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Set\-P\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Set\-P\-I\-D (
+\begin{DoxyParamCaption}
+\item[{double}]{p, }
+\item[{double}]{i, }
+\item[{double}]{d}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_ad03505bc4d67dc19cc77b90560d8e22e}
+\-Set the \-P, \-I, and \-D constants for the closed loop modes.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p} & \-The proportional gain of the \-Jaguar's \-P\-I\-D controller. \\
+\hline
+{\em i} & \-The integral gain of the \-Jaguar's \-P\-I\-D controller. \\
+\hline
+{\em d} & \-The differential gain of the \-Jaguar's \-P\-I\-D controller. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_ad03505bc4d67dc19cc77b90560d8e22e_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a8fa377ad73a5bee7f6771fab4bb0116f}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Set\-Position\-Reference@{\-Set\-Position\-Reference}}
+\index{\-Set\-Position\-Reference@{\-Set\-Position\-Reference}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Set\-Position\-Reference}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Set\-Position\-Reference (
+\begin{DoxyParamCaption}
+\item[{\-Position\-Reference}]{reference}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a8fa377ad73a5bee7f6771fab4bb0116f}
+\-Set the reference source device for position controller mode.
+
+\-Choose between using and encoder and using a potentiometer as the source of position feedback when in position control mode.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em reference} & \-Specify a \-Position\-Reference. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a8fa377ad73a5bee7f6771fab4bb0116f_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a51d04b4fca05ee687493989f3f6eb055}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Set\-Speed\-Reference@{\-Set\-Speed\-Reference}}
+\index{\-Set\-Speed\-Reference@{\-Set\-Speed\-Reference}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Set\-Speed\-Reference}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Set\-Speed\-Reference (
+\begin{DoxyParamCaption}
+\item[{\-Speed\-Reference}]{reference}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a51d04b4fca05ee687493989f3f6eb055}
+\-Set the reference source device for speed controller mode.
+
+\-Choose encoder as the source of speed feedback when in speed control mode.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em reference} & \-Specify a \-Speed\-Reference. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a51d04b4fca05ee687493989f3f6eb055_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_aed313d05f75459cc5af69f0dd03beaa4}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!set\-Transaction@{set\-Transaction}}
+\index{set\-Transaction@{set\-Transaction}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{set\-Transaction}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::set\-Transaction (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T32}]{message\-I\-D, }
+\item[{const \-U\-I\-N\-T8 $\ast$}]{data, }
+\item[{\-U\-I\-N\-T8}]{data\-Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected, virtual\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_aed313d05f75459cc5af69f0dd03beaa4}
+\-Execute a transaction with a \-Jaguar that sets some property.
+
+\-Jaguar always acks when it receives a message. \-If we don't wait for an ack, the message object in the \-Jaguar could get overwritten before it is handled.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em message\-I\-D} & \-The message\-I\-D to be used on the \-C\-A\-N bus (device number is added internally) \\
+\hline
+{\em data} & \-The up to 8 bytes of data to be sent with the message \\
+\hline
+{\em data\-Size} & \-Specify how much of the data in \char`\"{}data\char`\"{} to send \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_aed313d05f75459cc5af69f0dd03beaa4_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_abce26cf7c581a969b5270aca4e8faca2}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Set\-Voltage\-Ramp\-Rate@{\-Set\-Voltage\-Ramp\-Rate}}
+\index{\-Set\-Voltage\-Ramp\-Rate@{\-Set\-Voltage\-Ramp\-Rate}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Set\-Voltage\-Ramp\-Rate}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Set\-Voltage\-Ramp\-Rate (
+\begin{DoxyParamCaption}
+\item[{double}]{ramp\-Rate}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_abce26cf7c581a969b5270aca4e8faca2}
+\-Set the maximum voltage change rate.
+
+\-When in \-Percent\-Vbus or \-Voltage output mode, the rate at which the voltage changes can be limited to reduce current spikes. \-Set this to 0.\-0 to disable rate limiting.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ramp\-Rate} & \-The maximum rate of voltage change in \-Percent \-Voltage mode in \-V/s. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_abce26cf7c581a969b5270aca4e8faca2_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a8d2fcf5c949efeb916b012eeab35e099}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Status\-O\-K@{\-Status\-O\-K}}
+\index{\-Status\-O\-K@{\-Status\-O\-K}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Status\-O\-K}]{\setlength{\rightskip}{0pt plus 5cm}bool \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Status\-O\-K (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a8d2fcf5c949efeb916b012eeab35e099}
+\-Returns true if the last transaction returned a non-\/zero status (no error). \-This is equivalent to \hyperlink{class_l_r_t_c_a_n_jaguar_aee5af81b66544bf73f94e50b8ce0c48f}{\-Get\-Status()} == 0 
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a8d2fcf5c949efeb916b012eeab35e099_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_a520a2fd72b8813e0765a123c1efc4c22}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Stop\-Motor@{\-Stop\-Motor}}
+\index{\-Stop\-Motor@{\-Stop\-Motor}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Stop\-Motor}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Stop\-Motor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_l_r_t_c_a_n_jaguar_a520a2fd72b8813e0765a123c1efc4c22}
+\-Common interface for stopping the motor \-Part of the \-Motor\-Safety interface
+
+\begin{DoxyRefDesc}{\-Deprecated}
+\item[\hyperlink{deprecated__deprecated000003}{\-Deprecated}]\-Call \-Disable\-Control instead. \end{DoxyRefDesc}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_a520a2fd72b8813e0765a123c1efc4c22_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{class_l_r_t_c_a_n_jaguar_acd27d3ef0266402cec9fe9b6d5999626}{
+\index{\-L\-R\-T\-C\-A\-N\-Jaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}!\-Update\-Sync\-Group@{\-Update\-Sync\-Group}}
+\index{\-Update\-Sync\-Group@{\-Update\-Sync\-Group}!LRTCANJaguar@{\-L\-R\-T\-C\-A\-N\-Jaguar}}
+\subsubsection[{\-Update\-Sync\-Group}]{\setlength{\rightskip}{0pt plus 5cm}void \-L\-R\-T\-C\-A\-N\-Jaguar\-::\-Update\-Sync\-Group (
+\begin{DoxyParamCaption}
+\item[{\-U\-I\-N\-T8}]{sync\-Group}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}
+\label{class_l_r_t_c_a_n_jaguar_acd27d3ef0266402cec9fe9b6d5999626}
+\-Update all the motors that have pending sets in the sync\-Group.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em sync\-Group} & \-A bitmask of groups to generate synchronous output. \\
+\hline
+\end{DoxyParams}
+
+
+\-Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_l_r_t_c_a_n_jaguar_acd27d3ef0266402cec9fe9b6d5999626_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-Jaguar/\-L\-R\-T\-C\-A\-N\-Jaguar.\-h\item 
+\-Jaguar/\-L\-R\-T\-C\-A\-N\-Jaguar.\-cpp\end{DoxyCompactItemize}
