@@ -1,7 +1,7 @@
-#include "CLRateTrain.h"
+#include "RateControlDrive.h"
 #include <math.h>
 
-ClosedLoopRateDrivetrain::ClosedLoopRateDrivetrain()
+RateControlDrive::RateControlDrive()
 //    : DriveMethod(escLeft, escRight)
 //    , escLeft(escLeft)
 //    , escRight(escRight)
@@ -17,10 +17,10 @@ ClosedLoopRateDrivetrain::ClosedLoopRateDrivetrain()
     printf("Constructed CLRateTrain\n");
 }
 
-void ClosedLoopRateDrivetrain::Configure()
+void RateControlDrive::Configure()
 {
     // confiure parent class
-    DitheredBrakeTrain::Configure();
+    DBSDrive::Configure();
 
     const static string configSection = "CLRateDriveTrain";
 
@@ -31,7 +31,7 @@ void ClosedLoopRateDrivetrain::Configure()
     pGainFwdLowGear = config.Get<float>(configSection, "pGainFwdLowGear", 1.5);
 }
 
-DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
+DriveCommand RateControlDrive::Drive(float rawFwd, float rawTurn)
 {
     if(brakeLeft && brakeRight)
         Stop();
@@ -49,7 +49,7 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
 //        SmartDashboard::Log(rawFwd, "Raw Forward (CLDT)");
 //        SmartDashboard::Log(rawTurn, "Raw Turn (CLDT)");
 #endif
-        return DitheredBrakeTrain::Drive(rawFwd, rawTurn);
+        return DBSDrive::Drive(rawFwd, rawTurn);
     }
 
     float pGainTurn = highGear ? pGainTurnHighGear : pGainTurnLowGear;
@@ -57,8 +57,8 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
     
 //    AsynchronousPrinter::Printf("gain %.3f\n", pGainTurn);
 
-    float turningRate = highGear ? encoders.GetNormalizedTurningSpeed()
-            : encoders.GetNormalizedLowGearTurningSpeed();
+    float turningRate = highGear ? encoders.NormalizedTurningSpeed()
+            : encoders.NormalizedLowGearTurningSpeed();
 
     // eliminate spurrious measurements above mag |1|
     // values over mag |1| will cause the closed loop to slow down
@@ -80,8 +80,6 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
     float robotSpeed = encoders.NormalizedForwardMotorSpeed();
     // don't want to limit the top speed of the drivetrain
     SmartDashboard::Log(robotSpeed, "Normalized Speed");
-    SmartDashboard::Log(encoders.IsHighGear(), "Is High Gear");
-    robotSpeed = Util::Clamp<float>(robotSpeed, -1.0, 1.0);
 
     float fwdError = rawFwd - robotSpeed;
     
@@ -109,43 +107,43 @@ DriveCommand ClosedLoopRateDrivetrain::Drive(float rawFwd, float rawTurn)
 //    SmartDashboard::Log(newTurn, "Turn");
 #endif
 
-    return DitheredBrakeTrain::Drive(newFwd, newTurn);
+    return DBSDrive::Drive(newFwd, newTurn);
 }
 
-void ClosedLoopRateDrivetrain::PivotLeft(float rightSpeed)
+void RateControlDrive::PivotLeft(float rightSpeed)
 {
 //    escLeft.Stop();
 //    escRight.Set(rightSpeed);
 }
 
-void ClosedLoopRateDrivetrain::PivotRight(float leftSpeed)
+void RateControlDrive::PivotRight(float leftSpeed)
 {
 //    escRight.Stop();
 //    escLeft.Set(leftSpeed);
 }
 
-void ClosedLoopRateDrivetrain::SetBrakeLeft(bool brakeLeft)
+void RateControlDrive::SetBrakeLeft(bool brakeLeft)
 {
     this->brakeLeft = brakeLeft;
 }
 
-void ClosedLoopRateDrivetrain::SetBrakeRight(bool brakeRight)
+void RateControlDrive::SetBrakeRight(bool brakeRight)
 {
     this->brakeRight = brakeRight;
 }
 
-void ClosedLoopRateDrivetrain::Stop()
+void RateControlDrive::Stop()
 {
 //    escRight.Stop();
 //    escLeft.Stop();
 }
 
-void ClosedLoopRateDrivetrain::SetClosedLoopEnabled(bool enabled)
+void RateControlDrive::SetClosedLoopEnabled(bool enabled)
 {
     usingClosedLoop = enabled;
 }
 
-void ClosedLoopRateDrivetrain::SetHighGear(bool isHighGear)
+void RateControlDrive::SetHighGear(bool isHighGear)
 {
     highGear = isHighGear;
 }

@@ -7,14 +7,6 @@ void Brain::Teleop()
     TeleopDriveTrain();
     TeleopShifter();
 
-    TeleopLift();
-    TeleopArm();
-    TeleopRoller();
-
-    TeleopMinibot();
-
-    AutomatedRoutineWithLift();
-
     if(inputs.ShouldAbort())
         action.master.abort = true;
     else

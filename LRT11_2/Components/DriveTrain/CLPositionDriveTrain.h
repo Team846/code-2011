@@ -6,8 +6,8 @@
 #include "..\..\Config\Config.h"
 #include "..\..\Config\Configurable.h"
 #include "..\..\Util\RunningSum.h"
-#include "CLRateTrain.h"
-#include "DitheredBrakeTrain.h"
+#include "RateControlDrive.h"
+#include "DBSDrive.h"
 
 typedef struct
 {
@@ -18,7 +18,7 @@ typedef struct
 class CLPositionDriveTrain : public Configurable
 {
 public:
-    CLPositionDriveTrain(ClosedLoopRateDrivetrain& train);
+    CLPositionDriveTrain(RateControlDrive& train);
 
     virtual void Configure();
 
@@ -33,7 +33,7 @@ public:
     void SetMoveDistance(float distance_in);
 
 private:
-    ClosedLoopRateDrivetrain& drive;
+    RateControlDrive& drive;
     DriveEncoders& encoders;
 
     float pGainFwd;

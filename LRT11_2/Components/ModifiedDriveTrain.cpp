@@ -1,7 +1,8 @@
 #include "ModifiedDriveTrain.h"
 #include "..\Config\Config.h"
-#include "DriveTrain\CLRateTrain.h"
+#include "DriveTrain\RateControlDrive.h"
 #include "DriveTrain\CLPositionDriveTrain.h"
+#include "DriveTrain\SynchronizedDrive.h"
 #include "..\Sensors\DriveEncoders.h"
 #include "..\Jaguar\Esc.h"
 #include "..\Config\RobotConfig.h"
@@ -14,19 +15,14 @@ ModifiedDriveTrain::ModifiedDriveTrain()
     , driveEncoders(DriveEncoders::GetInstance()) //TODO: If this is a singleton, why create it here? -dg
     , config(Config::GetInstance())
 {
-    closedRateTrain = new ClosedLoopRateDrivetrain();
+    closedRateTrain 	= new RateControlDrive();
     closedPositionTrain = new CLPositionDriveTrain(*closedRateTrain);
+    synchronizedDrive 	= new SynchronizedDrive();
     
-#ifdef LRT_ROBOT_2011
     leftESC = new Esc(RobotConfig::CAN::DRIVE_LEFT_A, RobotConfig::CAN::DRIVE_LEFT_B,
             driveEncoders.GetLeftEncoder(), "left");
     rightESC = new Esc(RobotConfig::CAN::DRIVE_RIGHT_A, RobotConfig::CAN::DRIVE_RIGHT_B,
             driveEncoders.GetRightEncoder(), "right");
-#else
-    // TODO fix initialization
-    leftESC = new Esc(RobotConfig::CAN::DRIVE_LEFT,  driveEncoders.GetLeftEncoder(),  "left");
-    rightESC = new Esc(RobotConfig::CAN::DRIVE_RIGHT, driveEncoders.GetRightEncoder(), "right");
-#endif
 
     Configure();
     synchronizedCyclesLeft = 0;
@@ -122,84 +118,34 @@ void ModifiedDriveTrain::Output()
     }
 
     if(synchronizedCyclesLeft > 0)
+    {
+	    drive = synchronizedDrive->Drive();
         synchronizedCyclesLeft--;
-
-//    AsynchronousPrinter::Printf("sp:%.2f\n", driveEncoders.GetNormalizedRightMotorSpeed());
-
-//    AsynchronousPrinter::Printf("R: %.3f\n",driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetRightEncoder()));
-    
-    if(0 && synchronizedCyclesLeft > 20)   //disabled for now; -dg
-    {
-    	drive.rightCommand.dutyCycle = driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetRightEncoder());
-    	drive.leftCommand.dutyCycle = driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetLeftEncoder());
-    	
-//        drive.rightCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedRightOppositeGearMotorSpeed());
-//        drive.leftCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedLeftOppositeGearMotorSpeed());
-//        drive.rightCommand.dutyCycle = 0;
-//        drive.leftCommand.dutyCycle = 0;
     }
-    else if(synchronizedCyclesLeft > 0)
-    {
-
-    	drive.rightCommand.dutyCycle = driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetRightEncoder());
-        drive.rightCommand.dutyCycle = GetSynchronizedSpeed(drive.rightCommand.dutyCycle ); //limits to not less than 10%
-        
-        drive.leftCommand.dutyCycle  = driveEncoders.GetNormalizedOpposingGearMotorSpeed(driveEncoders.GetLeftEncoder());
-        drive.leftCommand.dutyCycle = GetSynchronizedSpeed(drive.leftCommand.dutyCycle );
-//       drive.leftCommand.dutyCycle = GetSynchronizedSpeed(driveEncoders.GetNormalizedLeftMotorSpeed());
-        drive.rightCommand.dutyCycle *= 1.0;  //reduce power, since the motors are unloaded.
-        drive.leftCommand.dutyCycle *= 1.0;
-    }
-//    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedLowGearForwardSpeed());
-//    AsynchronousPrinter::Printf("speed:%.2f\n", driveEncoders.GetNormalizedForwardMotorSpeed());
 
     // leftDC and rightDC are set to 0 if there is a need to brake;
     // see DitheredBrakeTrain's Drive method
     leftESC->SetDutyCycle(drive.leftCommand.dutyCycle);
     rightESC->SetDutyCycle(drive.rightCommand.dutyCycle);
 
-    if(synchronizedCyclesLeft > 0) //trying to shift?  Then don't apply brakes
+    if (!drive.shouldBrake)
     {
         leftESC->SetBrake(0);
         rightESC->SetBrake(0);
     }
-    else //Handle normal braking
-    {
-        // leftBrakeDC and rightBrakeDC must be converted from a percent to a
-        // value in range [1,8]; 1 means no braking while 8 means max braking
-//        leftESC->SetBrake((int)(drive.leftCommand.brakingDutyCycle * 8));
-//        rightESC->SetBrake((int)(drive.rightCommand.brakingDutyCycle * 8));`
-#warning Brakes turned off 
-    	leftESC->SetBrake(0);
-        rightESC->SetBrake(0);
-    }   //end of normal braking
 
     // apply brakes only has an effect if SetBrake is called with a
     // non-zero parameter
     leftESC->ApplyBrakes();
     rightESC->ApplyBrakes();
 
-    if(action.wasDisabled)
+    if(action.wasDisabled) //if the robot was just enabled reset the cache
     {
         leftESC->ResetCache();
         rightESC->ResetCache();
     }
 }
 
-//returns a minumum of 10% speed, so the gears can mesh when stopped or low speed.
-float ModifiedDriveTrain::GetSynchronizedSpeed(float motorSpeed) //motor speed refers to the speed of the motor if it were engaged
-{
-    return motorSpeed;
-
-    float absMotorSpeed = fabs(motorSpeed);
-    
-    if(absMotorSpeed < 1E-4) // for the case where sign returns zero
-        return 0.1; //We can't shift without moving so if we are stopped we spin forward at 10%
-    else if(absMotorSpeed < .10)
-        return 0.10 * Util::Sign<float>(motorSpeed); //If we are moving very slowly apply 10% power in the direction of movement to ensure the motor actually spins
-    else 
-    	return motorSpeed; //Otherwise just spin the motor close the the speed of the output shaft
-}
 
 string ModifiedDriveTrain::GetName()
 {

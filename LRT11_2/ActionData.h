@@ -83,12 +83,7 @@ namespace ACTION
 
 } //namespace ACTION
 
-struct ArmAction;
-struct LiftAction;
 struct DriveAction;
-
-struct RollerAction;
-struct DeployerAction;
 struct ShifterAction;
 struct ConfigAction;
 
@@ -121,26 +116,6 @@ public:
      */
     DriveAction* driveTrain;
 
-    /*!
-     * \brief contains commands and state info relevant to the lift. Is defined in ActionData\LiftAction.h.
-     */
-    LiftAction* lift;
-
-    /*!
-     * \brief contains commands and state info relevant to the arm. Is defined in ActionData\ArmAction.h.
-     */
-    ArmAction* arm;
-
-    /*!
-     * \brief contains commands and state info relevant to the roller. Is defined in ActionData\RollerAction.h.
-     */
-    RollerAction* roller;
-    
-    /*!
-     * \brief contains commands and state info relevant to the minibot Deployer. Is defined in ActionData\DeployerAction.h.
-     */
-    DeployerAction* deployer;
-    
     /*!
      * \brief contains commands and state info relevant to the shifting. Is defined in ActionData\ShifterAction.h.
      */

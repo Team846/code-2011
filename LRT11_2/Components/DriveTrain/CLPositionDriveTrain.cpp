@@ -1,6 +1,6 @@
 #include "CLPositionDriveTrain.h"
 #include <math.h>
-CLPositionDriveTrain::CLPositionDriveTrain(ClosedLoopRateDrivetrain& train)
+CLPositionDriveTrain::CLPositionDriveTrain(RateControlDrive& train)
     : drive(train)
     , encoders(DriveEncoders::GetInstance())
 {
@@ -42,23 +42,23 @@ DriveCommand CLPositionDriveTrain::Drive(float maxFwdSpeed, float maxTurnSpeed)
 
     if(movePositionInfo.hasCommand)
     {
-        float error = movePositionInfo.target - encoders.GetRobotDist();
+        float error = movePositionInfo.target - encoders.RobotDist();
         fwdCorrection = error * pGainFwd;
 
 //        AsynchronousPrinter::Printf("Moving error: %.2f\n", error);
 
-        int turnError = movePositionInfo.initialBearing - encoders.GetTurnTicks();
+        int turnError = movePositionInfo.initialBearing - encoders.TurnTicks();
         turnCorrection = turnError * pGainFwdTurnCorrection;
         done = fabs(error) < fwdDeadband;
     }
     else if(turnAngleInfo.hasCommand)
     {
-        int error = turnAngleInfo.target - encoders.GetTurnTicks();
+        int error = turnAngleInfo.target - encoders.TurnTicks();
         turnCorrection = error * pGainTurn;
 
 //        AsynchronousPrinter::Printf("Turning error: %d\n", error);
 
-        float fwdError = turnAngleInfo.initialDistance - encoders.GetRobotDist();
+        float fwdError = turnAngleInfo.initialDistance - encoders.RobotDist();
         fwdCorrection = pGainTurnFwdCorrection * fwdError;
         done = fabs(error) < turnDeadband;
     }
@@ -78,7 +78,7 @@ CLPositionCommand CLPositionDriveTrain::DriveAtLeastDistance(float dutyCycle)
 
     if(moveDistanceInfo.hasCommand)
     {
-        float turnError = moveDistanceInfo.initialBearing - encoders.GetTurnTicks();
+        float turnError = moveDistanceInfo.initialBearing - encoders.TurnTicks();
         turnCorrection = turnError * pGainFwdTurnCorrection;
 
         if(moveDistanceInfo.goingForward)
@@ -86,7 +86,7 @@ CLPositionCommand CLPositionDriveTrain::DriveAtLeastDistance(float dutyCycle)
         else
             fwdCorrection = -dutyCycle;
 
-        float error = moveDistanceInfo.target - encoders.GetRobotDist();
+        float error = moveDistanceInfo.target - encoders.RobotDist();
         if(moveDistanceInfo.goingForward)
             command.done = error <= 0;
         else
@@ -99,24 +99,24 @@ CLPositionCommand CLPositionDriveTrain::DriveAtLeastDistance(float dutyCycle)
 
 void CLPositionDriveTrain::SetMovePosition(float distance_in)
 {
-    movePositionInfo.target = encoders.GetRobotDist() + distance_in;
-    movePositionInfo.initialBearing = encoders.GetTurnTicks();
+    movePositionInfo.target = encoders.RobotDist() + distance_in;
+    movePositionInfo.initialBearing = encoders.TurnTicks();
     movePositionInfo.hasCommand = true;
     turnAngleInfo.hasCommand = false; // either run move or turn
 }
 
 void CLPositionDriveTrain::SetTurnAngle(float angle_dg)
 {
-    turnAngleInfo.target = (int)(encoders.GetTurnTicks() + angle_dg / 360.0 * DriveEncoders::TICKS_PER_FULL_TURN);
-    turnAngleInfo.initialDistance = encoders.GetRobotDist();
+    turnAngleInfo.target = (int)(encoders.TurnTicks() + angle_dg / 360.0 * DriveEncoders::TICKS_PER_FULL_TURN);
+    turnAngleInfo.initialDistance = encoders.RobotDist();
     turnAngleInfo.hasCommand = true;
     movePositionInfo.hasCommand = false; // either run move or turn
 }
 
 void CLPositionDriveTrain::SetMoveDistance(float distance_in)
 {
-    moveDistanceInfo.target = encoders.GetRobotDist() + distance_in;
-    moveDistanceInfo.initialBearing = encoders.GetTurnTicks();
+    moveDistanceInfo.target = encoders.RobotDist() + distance_in;
+    moveDistanceInfo.initialBearing = encoders.TurnTicks();
     moveDistanceInfo.goingForward = distance_in > 0;
     moveDistanceInfo.hasCommand = true;
 }

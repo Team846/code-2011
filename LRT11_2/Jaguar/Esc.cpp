@@ -85,7 +85,7 @@ void Esc::Configure()
 
 float Esc::GetNormalizedSpeed()
 {
-    return encoder.GetRate() / DriveEncoders::ENCODER_RATE_HIGH_GEAR;
+    return DriveEncoders::GetInstance().NormalizedMotorSpeed(encoder);
 }
 
 void Esc::Stop()

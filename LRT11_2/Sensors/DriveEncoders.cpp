@@ -19,7 +19,7 @@ DriveEncoders::DriveEncoders()
     , encoderRight(
         RobotConfig::DIGITAL_IO::ENCODER_RIGHT_A,
         RobotConfig::DIGITAL_IO::ENCODER_RIGHT_B)
-    , isHighGear(false)
+    , highGear(false)
 {
     // want to stay with ticks/second
     encoderLeft.SetDistancePerPulse(1);
@@ -40,110 +40,110 @@ double DriveEncoders::RawForwardSpeed()
 
 double DriveEncoders::NormalizedForwardMotorSpeed()
 {
-	double forwardSpeed = RawForwardSpeed() / ENCODER_RATE_HIGH_GEAR;
+	double forwardSpeed = RawForwardSpeed() / MAX_ENCODER_RATE;
 
-	if (!isHighGear)
+	if (!highGear)
 		forwardSpeed *= LOW_GEAR_MULTIPLIER;
 	
 	return forwardSpeed;
 }
 
 /***************** Turning Functions ***************************/
-double DriveEncoders::GetNormalizedLowGearTurningSpeed()
+double DriveEncoders::NormalizedLowGearTurningSpeed()
 {
-    return GetNormalizedTurningSpeed() * LOW_GEAR_MULTIPLIER;
+    return NormalizedTurningSpeed() * LOW_GEAR_MULTIPLIER;
 }
 
-double DriveEncoders::GetTurningSpeed()
+double DriveEncoders::TurningSpeed()
 {
     // WPILib GetRate error still exists with LRTEncoder?
     return encoderRight.GetRate() - encoderLeft.GetRate();
 }
 
-double DriveEncoders::GetNormalizedTurningSpeed()
+double DriveEncoders::NormalizedTurningSpeed()
 {
-    return GetTurningSpeed() / MAX_TURNING_RATE;
+    return TurningSpeed() / MAX_TURNING_RATE;
 }
 
-double DriveEncoders::GetNormalizedTurningMotorSpeed()
+double DriveEncoders::NormalizedTurningMotorSpeed()
 {
-    return isHighGear ? GetNormalizedTurningSpeed() :
-            GetNormalizedLowGearTurningSpeed();
+    return highGear ? NormalizedTurningSpeed() :
+            NormalizedLowGearTurningSpeed();
 }
 
-double DriveEncoders::GetRobotDist()
+double DriveEncoders::RobotDist()
 {
-    return (GetWheelDist(LEFT) + GetWheelDist(RIGHT)) / 2;
+    return (WheelDist(LEFT) + WheelDist(RIGHT)) / 2;
 }
 
-int DriveEncoders::GetTurnTicks()
+int DriveEncoders::TurnTicks()
 {
     // CCW is positive, CW is negative
     return encoderRight.Get() - encoderLeft.Get();
 }
 
-double DriveEncoders::GetTurnRevolutions()
+double DriveEncoders::TurnRevolutions()
 {
-    return GetTurnTicks() / TICKS_PER_FULL_TURN;
+    return TurnTicks() / TICKS_PER_FULL_TURN;
 }
 
-double DriveEncoders::GetTurnAngle()
+double DriveEncoders::TurnAngle()
 {
-    return GetTurnRevolutions() * 360.0;
+    return TurnRevolutions() * 360.0;
 }
 
 /************* Distance functions **************************************/
-double DriveEncoders::GetWheelDist(int side)
+double DriveEncoders::WheelDist(int side)
 {
     // pulses / ( pulses / revolution ) * distance / revolution = inch distance
     LRTEncoder& e = (side == LEFT ? encoderLeft : encoderRight);
     return e.Get() / PULSES_PER_REVOLUTION * WHEEL_DIAMETER * PI;
 }
 
-double DriveEncoders::GetLeftSpeed()
+double DriveEncoders::LeftSpeed()
 {
     return encoderLeft.GetRate();
 }
 
-double DriveEncoders::GetNormalizedLeftOppositeGearMotorSpeed()
+double DriveEncoders::NormalizedLeftOppositeGearMotorSpeed()
 {
     return Util::Clamp<double>(
             encoderLeft.GetRate() /
-            (!isHighGear ? ENCODER_RATE_HIGH_GEAR : (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER))
+            (!highGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER))
             , -1.0, 1.0);
 }
 
-double DriveEncoders::GetRightSpeed()
+double DriveEncoders::RightSpeed()
 {
     return encoderRight.GetRate();
 }
 
-double DriveEncoders::GetNormalizedMotorSpeed(LRTEncoder& encoder)
+double DriveEncoders::NormalizedMotorSpeed(LRTEncoder& encoder)
 {
     return encoder.GetRate() /
-            (isHighGear ? ENCODER_RATE_HIGH_GEAR : (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER));
+            (highGear ? MAX_ENCODER_RATE : (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER));
 }
 
-double DriveEncoders::GetNormalizedOpposingGearMotorSpeed(LRTEncoder& encoder)
+double DriveEncoders::NormalizedOpposingGearMotorSpeed(LRTEncoder& encoder)
 {
     return encoder.GetRate() /
-            (isHighGear ? (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER) : ENCODER_RATE_HIGH_GEAR );
+            (highGear ? (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER) : MAX_ENCODER_RATE );
 }
 
-double DriveEncoders::GetNormalizedRightOppositeGearMotorSpeed()
+double DriveEncoders::NormalizedRightOppositeGearMotorSpeed()
 {
     return encoderRight.GetRate() /
-            (isHighGear ? (ENCODER_RATE_HIGH_GEAR / LOW_GEAR_MULTIPLIER) : ENCODER_RATE_HIGH_GEAR );
+            (highGear ? (MAX_ENCODER_RATE / LOW_GEAR_MULTIPLIER) : MAX_ENCODER_RATE );
 }
 
-void DriveEncoders::SetHighGear(bool isHighGear)
+void DriveEncoders::SetHighGear(bool highGear)
 {
-    this->isHighGear = isHighGear;
+    this->highGear = highGear;
 }
 
-bool DriveEncoders::IsHighGear()
+bool DriveEncoders::isHighGear()
 {
-	return isHighGear;
+	return highGear;
 }
 
 #ifdef VIRTUAL

@@ -61,19 +61,12 @@ private:
     void Teleop();
 
     // Subroutines used in multiple modes
-    void AutomatedRoutineWithLift();
     void AutomatedRoutines();
     void AutomatedFollowLine();
 
     // Teleop subroutines
     void TeleopDriveTrain();
     void TeleopShifter();
-
-    void TeleopLift();
-    void TeleopArm();
-
-    void TeleopRoller();
-    void TeleopMinibot();
 
     // Autonomous routines
     void Side();

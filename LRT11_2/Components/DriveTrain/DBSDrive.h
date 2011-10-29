@@ -1,5 +1,5 @@
-#ifndef DITHERED_BRAKE_DRIVE
-#define DITHERED_BRAKE_DRIVE
+#ifndef DBS_DRIVE
+#define DBS_DRIVE
 
 #include "..\..\General.h"
 #include "..\..\Sensors\DriveEncoders.h"
@@ -16,19 +16,19 @@ typedef struct
 {
     ESCCommand leftCommand;
     ESCCommand rightCommand;
+    bool shouldBrake;
 } DriveCommand;
 
-class DitheredBrakeTrain : public Configurable
+class DBSDrive : public Configurable
 {
 private:
     LRTEncoder& leftEncoder;
     LRTEncoder& rightEncoder;
-
-//    float brakeGain;
+    DriveEncoders& driveEncoders;
 
 public:
-    DitheredBrakeTrain();
-    ~DitheredBrakeTrain();
+    DBSDrive();
+    ~DBSDrive();
 
     virtual void Configure();
     DriveCommand Drive(float forwardInput, float turnInput);

@@ -7,12 +7,12 @@
 #include "..\..\Config\Configurable.h"
 #include "..\..\Jaguar\Esc.h"
 #include "..\..\Util\RunningSum.h"
-#include "DitheredBrakeTrain.h"
+#include "DBSDrive.h"
 
-class ClosedLoopRateDrivetrain : public DitheredBrakeTrain
+class RateControlDrive : public DBSDrive
 {
 public:
-    ClosedLoopRateDrivetrain();
+    RateControlDrive();
 
     virtual void Configure();
     DriveCommand Drive(float rawFwd, float rawTurn);

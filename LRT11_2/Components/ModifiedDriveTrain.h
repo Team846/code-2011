@@ -7,16 +7,20 @@
 
 class Config;
 class CLPositionDriveTrain;
-class ClosedLoopRateDrivetrain;
+class RateControlDrive;
 class Esc;
 class DriveEncoders;
+class SynchronizedDrive;
 
 class ModifiedDriveTrain : public Component, public Configurable
 {
 private:
     DriveEncoders& driveEncoders;
-    ClosedLoopRateDrivetrain* closedRateTrain;
+    
+    RateControlDrive* closedRateTrain;
     CLPositionDriveTrain* closedPositionTrain;
+    SynchronizedDrive* synchronizedDrive;
+    
     Esc* leftESC, *rightESC;
     Config& config;
 
@@ -24,7 +28,6 @@ private:
     int synchronizedCyclesLeft;
 
 
-    float GetSynchronizedSpeed(float motorSpeed);
     virtual void Configure();
 
 public:

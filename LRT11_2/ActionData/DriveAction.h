@@ -35,6 +35,5 @@ struct DriveAction
     } distance;
 
     bool test;
-
 };
 #endif //DRIVE_ACTION_H

@@ -1,7 +1,5 @@
 #include "Brain.h"
-#include "..\ActionData\LiftAction.h"
 #include "..\ActionData\DriveAction.h"
-#include "..\ActionData\DeployerAction.h"
 
 void Brain::Disabled()
 {
@@ -11,11 +9,6 @@ void Brain::Disabled()
 
     action.driveTrain->position.givenCommand = false;
     action.driveTrain->distance.givenCommand = false;
-
-    action.lift->givenCommand = false;
-
-    // default to locked aligner
-    action.deployer->shouldAlignerRelease = false;
 
     hasMoved = false;
     wasDisabledLastCycle = true;
