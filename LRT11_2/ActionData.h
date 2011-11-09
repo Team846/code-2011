@@ -43,7 +43,8 @@ namespace ACTION
             SPEED = 0,
             POSITION = 1,
             DISTANCE = 2,
-            SYNCHRONIZING = 3
+            SYNCHRONIZING = 3,
+            VECTOR = 4
         };
         char* const mode_strings[4] = {"RATE", "POSITION", "DISTANCE", "SYNCHRONIZING"};
     }

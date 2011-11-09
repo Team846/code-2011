@@ -37,6 +37,9 @@ public:
     bool ShouldAbort();
 
     // drive train
+    float GetX();
+    float GetY();
+    
     float GetForward();
     float GetTurn();
 

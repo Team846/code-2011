@@ -1,6 +1,6 @@
 #include "ModifiedDriveTrain.h"
 #include "..\Config\Config.h"
-#include "DriveTrain\RateControlDrive.h"
+#include "DriveTrain\VectorDrive.h"
 #include "DriveTrain\CLPositionDriveTrain.h"
 #include "DriveTrain\SynchronizedDrive.h"
 #include "..\Sensors\DriveEncoders.h"
@@ -15,7 +15,7 @@ ModifiedDriveTrain::ModifiedDriveTrain()
     , driveEncoders(DriveEncoders::GetInstance()) //TODO: If this is a singleton, why create it here? -dg
     , config(Config::GetInstance())
 {
-    closedRateTrain 	= new RateControlDrive();
+    closedRateTrain 	= new VectorDrive();
     closedPositionTrain = new CLPositionDriveTrain(*closedRateTrain);
     synchronizedDrive 	= new SynchronizedDrive();
     
@@ -69,11 +69,11 @@ void ModifiedDriveTrain::Output()
     switch(action.driveTrain->mode)
     {
     case ACTION::DRIVETRAIN::SPEED:
-        if(action.driveTrain->rate.thirdGear)
-            // scale raw turn to a max of 0.3
-            drive = closedRateTrain->Drive(action.driveTrain->rate.rawForward, action.driveTrain->rate.rawTurn * 0.3);
-        else
-            drive = closedRateTrain->Drive(action.driveTrain->rate.rawForward, action.driveTrain->rate.rawTurn);
+//        if(action.driveTrain->rate.thirdGear)
+//            // scale raw turn to a max of 0.3
+//            drive = closedRateTrain->Drive(action.driveTrain->rate.rawForward, action.driveTrain->rate.rawTurn * 0.3);
+//        else
+//            drive = closedRateTrain->Drive(action.driveTrain->rate.rawForward, action.driveTrain->rate.rawTurn);
         break;
 
     case ACTION::DRIVETRAIN::POSITION:
@@ -115,6 +115,9 @@ void ModifiedDriveTrain::Output()
     case ACTION::DRIVETRAIN::SYNCHRONIZING:
         synchronizedCyclesLeft = cyclesToSynchronize;  //set shift timer from value in config file
         break;
+    case ACTION::DRIVETRAIN::VECTOR:
+    	drive = closedRateTrain->Drive(action.driveTrain->vector.heading, action.driveTrain->vector.fwd);
+    	break;
     }
 
     if(synchronizedCyclesLeft > 0)

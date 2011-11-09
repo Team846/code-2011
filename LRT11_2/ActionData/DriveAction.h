@@ -15,6 +15,12 @@ struct DriveAction
 
     struct
     {
+        float heading, fwd;
+        bool usingClosedLoop;
+    } vector;
+
+    struct
+    {
         bool givenCommand;
         bool shouldMoveDistance, shouldTurnAngle;
 

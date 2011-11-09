@@ -1,5 +1,6 @@
 #include "Brain.h"
 #include "..\ActionData\DriveAction.h"
+#include <math.h>
 
 void Brain::TeleopDriveTrain()
 {
@@ -37,12 +38,20 @@ void Brain::TeleopDriveTrain()
     }
     else
     {
-        action.driveTrain->mode = ACTION::DRIVETRAIN::SPEED;
-        action.driveTrain->rate.rawForward = inputs.GetForward();
-        action.driveTrain->rate.rawTurn    = inputs.GetTurn();
+    	//code for old control scheme
+//        action.driveTrain->mode = ACTION::DRIVETRAIN::SPEED;
+//        action.driveTrain->rate.rawForward = inputs.GetForward();
+//        action.driveTrain->rate.rawTurn    = inputs.GetTurn();
+//
+//        action.driveTrain->rate.brakeLeft  = inputs.ShouldBrakeLeft();
+//        action.driveTrain->rate.brakeRight = inputs.ShouldBrakeRight();
+//
+//        action.driveTrain->rate.thirdGear  = inputs.ShouldShiftThird();
 
-        action.driveTrain->rate.brakeLeft  = inputs.ShouldBrakeLeft();
-        action.driveTrain->rate.brakeRight = inputs.ShouldBrakeRight();
+    	action.driveTrain->mode = ACTION::DRIVETRAIN::VECTOR;
+    	
+    	action.driveTrain->vector.heading = atan2(inputs.GetX(), inputs.GetY());
+    	action.driveTrain->vector.fwd = sqrt(inputs.GetX()*inputs.GetX()+ inputs.GetY()*inputs.GetY());
 
         action.driveTrain->rate.thirdGear  = inputs.ShouldShiftThird();
     }

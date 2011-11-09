@@ -7,17 +7,18 @@
 
 class Config;
 class CLPositionDriveTrain;
-class RateControlDrive;
+class VectorDrive;
 class Esc;
 class DriveEncoders;
 class SynchronizedDrive;
+
 
 class ModifiedDriveTrain : public Component, public Configurable
 {
 private:
     DriveEncoders& driveEncoders;
     
-    RateControlDrive* closedRateTrain;
+    VectorDrive* closedRateTrain;
     CLPositionDriveTrain* closedPositionTrain;
     SynchronizedDrive* synchronizedDrive;
     
