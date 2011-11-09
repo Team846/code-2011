@@ -147,3 +147,13 @@ void RateControlDrive::SetHighGear(bool isHighGear)
 {
     highGear = isHighGear;
 }
+
+bool RateControlDrive::IsHighGear()
+{
+	return highGear;
+}
+
+bool RateControlDrive::UsingClosedLoop()
+{
+	return UsingClosedLoop();
+}

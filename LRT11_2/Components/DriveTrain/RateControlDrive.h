@@ -27,12 +27,15 @@ public:
     void SetHighGear(bool isHighGear);
 
     void Stop();
+    
+protected:
+    DriveEncoders& encoders;
+    Config& config;
+    bool IsHighGear();
+    bool UsingClosedLoop();
 
 private:
 //    Esc& escLeft, &escRight;
-    DriveEncoders& encoders;
-
-    Config& config;
 
     float pGainTurnLowGear;
     float pGainFwdLowGear;
