@@ -95,6 +95,11 @@ float ProcessedInputs::GetX()
 	return -driverStick.GetX();
 }
 
+float ProcessedInputs::GetVectorForward()
+{
+	return -operatorStick.GetY();
+}
+
 float ProcessedInputs::GetTurn()
 {
     if(Util::Abs<float>(driverStick.GetRawAxis(3)) < 1e-6)

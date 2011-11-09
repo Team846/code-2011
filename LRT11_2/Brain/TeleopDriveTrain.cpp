@@ -51,7 +51,7 @@ void Brain::TeleopDriveTrain()
     	action.driveTrain->mode = ACTION::DRIVETRAIN::VECTOR;
     	
     	action.driveTrain->vector.heading = atan2(inputs.GetX(), inputs.GetY());
-    	action.driveTrain->vector.fwd = sqrt(inputs.GetX()*inputs.GetX()+ inputs.GetY()*inputs.GetY());
+    	action.driveTrain->vector.fwd = inputs.GetVectorForward();//sqrt(inputs.GetX()*inputs.GetX()+ inputs.GetY()*inputs.GetY());
 
         action.driveTrain->rate.thirdGear  = inputs.ShouldShiftThird();
     }

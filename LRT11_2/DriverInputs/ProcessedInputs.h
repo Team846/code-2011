@@ -39,6 +39,7 @@ public:
     // drive train
     float GetX();
     float GetY();
+    float GetVectorForward();
     
     float GetForward();
     float GetTurn();
